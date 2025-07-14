@@ -1,0 +1,33 @@
+import { ColorPalette } from "../../ColorPalette";
+import type { TextmodeFont } from "../Font";
+import type { Framebuffer } from "../../rendering/Framebuffer";
+import type { Renderer } from "../../rendering/Renderer";
+import type { TextmodeGrid } from "../Grid";
+export declare class TextmodeFeatureConverter {
+    protected renderer: Renderer;
+    protected fontManager: TextmodeFont;
+    protected grid: TextmodeGrid;
+    protected _characterFramebuffer: Framebuffer;
+    protected _primaryColorFramebuffer: Framebuffer;
+    protected _secondaryColorFramebuffer: Framebuffer;
+    protected _rotationFramebuffer: Framebuffer;
+    protected _transformFramebuffer: Framebuffer;
+    protected palette: ColorPalette;
+    protected options: any;
+    constructor(renderer: Renderer, fontManager: TextmodeFont, grid: TextmodeGrid, options?: any);
+    resize(): void;
+    characters(characters: string): void;
+    characterColor(r: number, g?: number, b?: number, a?: number): void;
+    characterColorMode(mode: "sampled" | "fixed"): void;
+    backgroundColor(r: number, g?: number, b?: number, a?: number): void;
+    backgroundColorMode(mode: "sampled" | "fixed"): void;
+    invert(invert: boolean | number): void;
+    rotation(angle: number): void;
+    flipHorizontally(flip: boolean | number): void;
+    flipVertically(flip: boolean | number): void;
+    get characterFramebuffer(): Framebuffer;
+    get primaryColorFramebuffer(): Framebuffer;
+    get secondaryColorFramebuffer(): Framebuffer;
+    get rotationFramebuffer(): Framebuffer;
+    get transformFramebuffer(): Framebuffer;
+}
