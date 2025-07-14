@@ -1,0 +1,12 @@
+{
+  "name": "textmode.js",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "vite": "^6.3.4"
+  }
+}
