@@ -1,4 +1,5 @@
-import { Textmodifier } from '../../dist/textmode.esm.js';
+// examples/three.js/sketch.js
+import { textmode } from '../../dist/textmode.esm.js';
 
 export const createSketch = (THREE) => {
   let textmodifier = null;
@@ -64,7 +65,7 @@ export const createSketch = (THREE) => {
     scene.add(directionalLight);
 
     // Attach textmode post-processing
-    textmodifier = await Textmodifier.create(canvas);
+    textmodifier = await textmode.create(canvas);
 
     window.addEventListener('resize', onWindowResize);
 

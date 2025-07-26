@@ -1,4 +1,4 @@
-import { Textmodifier } from '../../dist/textmode.esm.js';
+import { textmode } from '../../dist/textmode.esm.js';
 
 class VanillaSketch {
   constructor(canvasId) {
@@ -11,9 +11,9 @@ class VanillaSketch {
 
   async init() {
     this.setupCanvas();
-    
+
     // Initialize textmodifier after canvas is set up
-    this.textmodifier = await Textmodifier.create(this.canvas);
+    this.textmodifier = await textmode.create(this.canvas);
 
     this.start();
   }
@@ -49,10 +49,7 @@ class VanillaSketch {
 
     this.ctx.restore();
 
-    // Apply textmode post-processing
-    if (this.textmodifier && this.textmodifier.isInitialized()) {
-      this.textmodifier.render();
-    }
+    this.textmodifier.render();
   }
 
   animate() {

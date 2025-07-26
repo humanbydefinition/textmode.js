@@ -1,4 +1,4 @@
-[**textmode.js v0.0.2**](../README.md)
+[**textmode.js v0.0.10-beta.5**](../README.md)
 
 ***
 
@@ -6,11 +6,12 @@
 
 # Class: TextmodeFont
 
-Defined in: [textmode/Font.ts:30](https://github.com/humanbydefinition/textmode.js-dev/blob/b5681e0940ee259e7c3e1b7f6452addade1503bd/src/textmode/Font.ts#L30)
+Defined in: [textmode/font/TextmodeFont.ts:20](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/font/TextmodeFont.ts#L20)
 
 Manages the textmode font used for rendering characters.
 
-This class handles loading the font, creating a texture atlas, and providing character color information.
+This class coordinates font loading, character extraction, texture atlas creation,
+and provides character color information. It acts as a facade for the font system.
 
 ## Accessors
 
@@ -20,7 +21,7 @@ This class handles loading the font, creating a texture atlas, and providing cha
 
 > **get** **characters**(): [`TextmodeCharacter`](../type-aliases/TextmodeCharacter.md)[]
 
-Defined in: [textmode/Font.ts:375](https://github.com/humanbydefinition/textmode.js-dev/blob/b5681e0940ee259e7c3e1b7f6452addade1503bd/src/textmode/Font.ts#L375)
+Defined in: [textmode/font/TextmodeFont.ts:222](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/font/TextmodeFont.ts#L222)
 
 Returns the array of [TextmodeCharacter](../type-aliases/TextmodeCharacter.md) objects in the font.
 
@@ -30,29 +31,13 @@ Returns the array of [TextmodeCharacter](../type-aliases/TextmodeCharacter.md) o
 
 ***
 
-### charactersString
-
-#### Get Signature
-
-> **get** **charactersString**(): `string`
-
-Defined in: [textmode/Font.ts:378](https://github.com/humanbydefinition/textmode.js-dev/blob/b5681e0940ee259e7c3e1b7f6452addade1503bd/src/textmode/Font.ts#L378)
-
-Returns a string representation of all characters in the font.
-
-##### Returns
-
-`string`
-
-***
-
 ### fontSize
 
 #### Get Signature
 
 > **get** **fontSize**(): `number`
 
-Defined in: [textmode/Font.ts:390](https://github.com/humanbydefinition/textmode.js-dev/blob/b5681e0940ee259e7c3e1b7f6452addade1503bd/src/textmode/Font.ts#L390)
+Defined in: [textmode/font/TextmodeFont.ts:234](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/font/TextmodeFont.ts#L234)
 
 Returns the font size used for rendering.
 
@@ -68,7 +53,7 @@ Returns the font size used for rendering.
 
 > **get** **maxGlyphDimensions**(): `object`
 
-Defined in: [textmode/Font.ts:387](https://github.com/humanbydefinition/textmode.js-dev/blob/b5681e0940ee259e7c3e1b7f6452addade1503bd/src/textmode/Font.ts#L387)
+Defined in: [textmode/font/TextmodeFont.ts:231](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/font/TextmodeFont.ts#L231)
 
 Returns the maximum dimensions of a glyph in the font.
 
@@ -78,8 +63,8 @@ Returns the maximum dimensions of a glyph in the font.
 
 | Name | Type | Defined in |
 | ------ | ------ | ------ |
-| `height` | `number` | [textmode/Font.ts:387](https://github.com/humanbydefinition/textmode.js-dev/blob/b5681e0940ee259e7c3e1b7f6452addade1503bd/src/textmode/Font.ts#L387) |
-| `width` | `number` | [textmode/Font.ts:387](https://github.com/humanbydefinition/textmode.js-dev/blob/b5681e0940ee259e7c3e1b7f6452addade1503bd/src/textmode/Font.ts#L387) |
+| `height` | `number` | [textmode/font/TextmodeFont.ts:231](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/font/TextmodeFont.ts#L231) |
+| `width` | `number` | [textmode/font/TextmodeFont.ts:231](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/font/TextmodeFont.ts#L231) |
 
 ***
 
@@ -89,7 +74,7 @@ Returns the maximum dimensions of a glyph in the font.
 
 > **get** **textureColumns**(): `number`
 
-Defined in: [textmode/Font.ts:381](https://github.com/humanbydefinition/textmode.js-dev/blob/b5681e0940ee259e7c3e1b7f6452addade1503bd/src/textmode/Font.ts#L381)
+Defined in: [textmode/font/TextmodeFont.ts:225](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/font/TextmodeFont.ts#L225)
 
 Returns the number of columns in the texture atlas.
 
@@ -105,7 +90,7 @@ Returns the number of columns in the texture atlas.
 
 > **get** **textureRows**(): `number`
 
-Defined in: [textmode/Font.ts:384](https://github.com/humanbydefinition/textmode.js-dev/blob/b5681e0940ee259e7c3e1b7f6452addade1503bd/src/textmode/Font.ts#L384)
+Defined in: [textmode/font/TextmodeFont.ts:228](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/font/TextmodeFont.ts#L228)
 
 Returns the number of rows in the texture atlas.
 
@@ -119,7 +104,7 @@ Returns the number of rows in the texture atlas.
 
 > **getCharacterColor**(`character`): \[`number`, `number`, `number`\]
 
-Defined in: [textmode/Font.ts:276](https://github.com/humanbydefinition/textmode.js-dev/blob/b5681e0940ee259e7c3e1b7f6452addade1503bd/src/textmode/Font.ts#L276)
+Defined in: [textmode/font/TextmodeFont.ts:187](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/font/TextmodeFont.ts#L187)
 
 Get the color associated with a character.
 
@@ -141,7 +126,7 @@ The RGB color as an array `[r, g, b]`.
 
 > **getCharacterColors**(`characters`): \[`number`, `number`, `number`\][]
 
-Defined in: [textmode/Font.ts:295](https://github.com/humanbydefinition/textmode.js-dev/blob/b5681e0940ee259e7c3e1b7f6452addade1503bd/src/textmode/Font.ts#L295)
+Defined in: [textmode/font/TextmodeFont.ts:197](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/font/TextmodeFont.ts#L197)
 
 Get the colors associated with a string of characters.
 
@@ -164,7 +149,7 @@ Each color is represented as an array `[r, g, b]`.
 
 > **hasAllCharacters**(`str`): `boolean`
 
-Defined in: [textmode/Font.ts:315](https://github.com/humanbydefinition/textmode.js-dev/blob/b5681e0940ee259e7c3e1b7f6452addade1503bd/src/textmode/Font.ts#L315)
+Defined in: [textmode/font/TextmodeFont.ts:206](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/font/TextmodeFont.ts#L206)
 
 Checks if all characters in the given string exist in the font.
 

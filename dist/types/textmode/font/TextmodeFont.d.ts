@@ -1,59 +1,61 @@
-import type { Renderer } from '../rendering/Renderer.ts';
-import type { Framebuffer } from '../rendering/Framebuffer.ts';
-/**
- * Represents a single character in the textmode font.
- */
-export type TextmodeCharacter = {
-    /** The character itself. */
-    character: string;
-    /** The Unicode code point of the character. */
-    unicode: number;
-    /** The RGB color associated with the character for identification. */
-    color: [number, number, number];
-};
+import type { Renderer } from '../../rendering/webgl/Renderer.ts';
+import type { Framebuffer } from '../../rendering/webgl/Framebuffer.ts';
+import type { TextmodeCharacter } from './types.ts';
 /**
  * Manages the textmode font used for rendering characters.
  *
- * This class handles loading the font, creating a texture atlas, and providing character color information.
+ * This class coordinates font loading, character extraction, texture atlas creation,
+ * and provides character color information. It acts as a facade for the font system.
  */
 export declare class TextmodeFont {
     private _font;
     private _characters;
     private _fontFramebuffer;
-    private _textureCanvas;
-    private _textureContext;
     private _fontSize;
     private _textureColumns;
     private _textureRows;
     private _maxGlyphDimensions;
-    private _renderer;
     private _fontFace;
     private _fontFamilyName;
+    private _characterExtractor;
+    private _textureAtlas;
+    private _metricsCalculator;
+    private _characterColorMapper;
     /**
-     * Creates a new FontManager instance
+     * Creates a new TextmodeFont instance.
      * @param renderer Renderer instance for texture creation
      * @param fontSize Font size to use for the texture atlas
      * @ignore
      */
     constructor(renderer: Renderer, fontSize?: number);
     /**
-     * Initializes the font manager by loading the font and creating the texture atlas
+     * Initializes the font manager by loading the font and creating the texture atlas.
      * @returns Promise that resolves when initialization is complete
      * @ignore
      */
     initialize(): Promise<void>;
     /**
-     * Initializes the characters array from the font's cmap table
+     * Sets the font size for rendering.
+     * @param size The font size to set. If undefined, returns the current font size.
+     * @ignore
      */
-    private _initializeCharacters;
+    setFontSize(size: number | undefined): void | number;
     /**
-     * Calculates the maximum glyph dimensions for the given font size
+     * Loads a new font from a file path.
+     * @param fontPath Path to the .otf or .ttf font file
+     * @returns Promise that resolves when font loading is complete
+     * @ignore
      */
-    private _calculateMaxGlyphDimensions;
+    loadFont(fontPath: string): Promise<void>;
     /**
-     * Creates the texture atlas containing all characters
+     * Loads a FontFace from a font buffer.
+     * @param fontBuffer ArrayBuffer containing font data
      */
-    private _createTextureAtlas;
+    private _loadFontFace;
+    /**
+     * Initializes all font-dependent properties using the component classes.
+     */
+    private _initializeFont;
     /**
      * Get the color associated with a character.
      * @param character The character to get the color for.
@@ -74,23 +76,13 @@ export declare class TextmodeFont {
      */
     hasAllCharacters(str: string): boolean;
     /**
-     * Updates the font by loading a new font file and regenerating all related properties
-     * @param fontPath Path to the .otf or .ttf font file
-     * @param fontSize Optional new font size (defaults to current fontSize)
-     * @returns Promise that resolves when font update is complete
-     * @ignore
-     */
-    loadFont(fontPath: string): Promise<void>;
-    /**
      * Returns the WebGL framebuffer containing the font texture atlas.
      * @ignore
      */
     get fontFramebuffer(): Framebuffer;
     /** Returns the array of {@link TextmodeCharacter} objects in the font. */
     get characters(): TextmodeCharacter[];
-    /** Returns a string representation of all characters in the font.*/
-    get charactersString(): string;
-    /** Returns the number of columns in the texture atlas.*/
+    /** Returns the number of columns in the texture atlas. */
     get textureColumns(): number;
     /** Returns the number of rows in the texture atlas. */
     get textureRows(): number;

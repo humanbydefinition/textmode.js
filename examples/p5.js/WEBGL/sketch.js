@@ -1,11 +1,15 @@
-import { Textmodifier } from '../../../dist/textmode.esm.js';
+// examples/sketch.js
+import p5 from 'https://cdn.jsdelivr.net/npm/p5@1.11.9/+esm';
+import { textmode } from '../../../dist/textmode.esm.js';
 
 import DotGothicFont from '../../assets/fonts/DotGothic16-Regular.ttf';
-import BesciiFont from '../../assets/fonts/Bescii-Mono.ttf';
 
 const sketch = (p) => {
 
   let textmodifier = null;
+  let brightnessConverter = null;
+  let brightnessConverter2 = null;
+  let customConverter = null;
   let font = null;
 
   p.preload = () => {
@@ -15,15 +19,11 @@ const sketch = (p) => {
 
   p.setup = async () => {
     p.setAttributes('antialias', false);
+    //p.pixelDensity(2);
     p.createCanvas(p.windowWidth, p.windowHeight, p.WEBGL);
 
-    textmodifier = await Textmodifier.create(p.canvas);
-
-    textmodifier.brightnessConverter.backgroundColor(255, 0, 0, 255);
-
-    await textmodifier.loadFont(BesciiFont);
-
-    textmodifier.brightnessConverter.characters("←↖↑↗→↓↘↙");
+    textmodifier = await textmode.create(p.canvas, { fontSize: 16 });
+    textmodifier.fontSize(32);
   };
 
   p.draw = () => {
@@ -46,10 +46,23 @@ const sketch = (p) => {
     p.text('test', 0, 0, 0);
     p.pop();
 
-    // Only render if textmodifier is initialized
-    if (textmodifier && textmodifier.isInitialized()) {
-      textmodifier.render();
+    if (p.frameCount === 60) {
+      // textmodifier.saveSVG({
+      //   filename: 'my-ascii-art',
+      //   drawMode: 'fill',
+      //   includeBackgroundRectangles: true,
+      //   strokeWidth: 1.0,
+      //   backgroundColor: [0, 0, 0, 255]
+      // });
+
+      // p.noLoop();
+      // textmodifier.renderMode('manual');
+
     }
+
+    //console.log("FPS:", textmodifier.frameRate());
+
+    
   };
 
   p.windowResized = () => {
@@ -58,3 +71,4 @@ const sketch = (p) => {
 };
 
 new p5(sketch);
+

@@ -1,6 +1,6 @@
 // Import the libraries
 import hydraSynth from 'https://cdn.jsdelivr.net/npm/hydra-synth@1.3.29/+esm';
-import { Textmodifier } from '../../dist/textmode.esm.js';
+import { textmode } from '../../dist/textmode.esm.js';
 
 // Initialize hydra-synth
 const hydraInstance = new hydraSynth({
@@ -19,7 +19,7 @@ hydra.osc().rotate().out();
 const canvas = hydraInstance.canvas;
 
 // Initialize textmodifier
-const textmodifier = await Textmodifier.create(canvas);
+const textmodifier = await textmode.create(canvas);
 
 // Configure the text effect
 textmodifier.brightnessConverter.characters("abcdefghijklmnopqrstuvwxyz");

@@ -7,9 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -17,152 +15,100 @@
   <div class="container">
     <header class="header">
       <h1>textmode.js</h1>
-      <p class="subtitle">apply real-time textmode conversion to any html canvas instantly</p>
-      <p class="description">
-        lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-      </p>
+      <p class="subtitle">// real-time textmode conversion for any html canvas</p>
     </header>
 
     <section class="examples-grid">
       <article class="example-card">
-        <div class="example-card-content">
-          <div class="example-header">
-            <div class="example-icon">🎨</div>
-            <div>
-              <h3 class="example-title">Vanilla Canvas 2D</h3>
-              <span class="example-tech">Canvas 2D API</span>
-            </div>
-          </div>
-          <p class="example-description">
-            A pure implementation using the native Canvas 2D API without any external dependencies.
-          </p>
+        <div class="example-header">
+          <h3 class="example-title">[01] vanilla canvas 2d</h3>
+          <span class="example-tech">canvas api</span>
         </div>
-        <div class="example-card-footer">
-          <a href="./vanilla/" class="example-link">
-            View Demo <span>→</span>
-          </a>
+        <p class="example-description">
+          pure implementation using native canvas 2d api
+        </p>
+        <div class="example-links">
+          <a href="./vanilla/" class="example-link">run demo</a>
+          <a href="https://github.com/humanbydefinition/textmode.js/tree/main/examples/vanilla" target="_blank" class="example-link source-link">source</a>
         </div>
       </article>
 
       <article class="example-card">
-        <div class="example-card-content">
-          <div class="example-header">
-            <div class="example-icon">🟢</div>
-            <div>
-              <h3 class="example-title">p5.js <i>(P2D)</i></h3>
-              <span class="example-tech">p5.js</span>
-            </div>
-          </div>
-          <p class="example-description">
-            A simple p5.js sketch demonstrating textmode.js in P2D mode.
-          </p>
+        <div class="example-header">
+          <h3 class="example-title">[02] p5.js p2d</h3>
+          <span class="example-tech">p5.js</span>
         </div>
-        <div class="example-card-footer">
-          <a href="./p5.js/P2D/" class="example-link">
-            View Demo <span>→</span>
-          </a>
+        <p class="example-description">
+          simple p5.js sketch in p2d rendering mode
+        </p>
+        <div class="example-links">
+          <a href="./p5.js/P2D/" class="example-link">run demo</a>
+          <a href="https://github.com/humanbydefinition/textmode.js/tree/main/examples/p5.js/P2D" target="_blank" class="example-link source-link">source</a>
         </div>
       </article>
 
       <article class="example-card">
-        <div class="example-card-content">
-          <div class="example-header">
-            <div class="example-icon">🔷</div>
-            <div>
-              <h3 class="example-title">p5.js <i>(WEBGL)</i></h3>
-              <span class="example-tech">p5.js</span>
-            </div>
-          </div>
-          <p class="example-description">
-            A simple p5.js sketch demonstrating textmode.js in WEBGL mode.
-          </p>
+        <div class="example-header">
+          <h3 class="example-title">[03] p5.js webgl</h3>
+          <span class="example-tech">p5.js</span>
         </div>
-        <div class="example-card-footer">
-          <a href="./p5.js/WEBGL/" class="example-link">
-            View Demo <span>→</span>
-          </a>
+        <p class="example-description">
+          simple p5.js sketch in webgl rendering mode
+        </p>
+        <div class="example-links">
+          <a href="./p5.js/WEBGL/" class="example-link">run demo</a>
+          <a href="https://github.com/humanbydefinition/textmode.js/tree/main/examples/p5.js/WEBGL" target="_blank" class="example-link source-link">source</a>
         </div>
       </article>
 
       <article class="example-card">
-        <div class="example-card-content">
-          <div class="example-header">
-            <div class="example-icon">🎲</div>
-            <div>
-              <h3 class="example-title">Three.js</h3>
-              <span class="example-tech">Three.js</span>
-            </div>
-          </div>
-          <p class="example-description">
-            A Three.js WebGL scene with animated 3D objects and chromatic aberration post-processing.
-          </p>
+        <div class="example-header">
+          <h3 class="example-title">[04] three.js</h3>
+          <span class="example-tech">three.js</span>
         </div>
-        <div class="example-card-footer">
-          <a href="./three.js/" class="example-link">
-            View Demo <span>→</span>
-          </a>
+        <p class="example-description">
+          webgl scene with 3d objects
+        </p>
+        <div class="example-links">
+          <a href="./three.js/" class="example-link">run demo</a>
+          <a href="https://github.com/humanbydefinition/textmode.js/tree/main/examples/three.js" target="_blank" class="example-link source-link">source</a>
         </div>
       </article>
 
       <article class="example-card">
-        <div class="example-card-content">
-          <div class="example-header">
-            <div class="example-icon">🌊</div>
-            <div>
-              <h3 class="example-title">Hydra Synth</h3>
-              <span class="example-tech">Hydra Synth</span>
-            </div>
-          </div>
-          <p class="example-description">
-            Live coding visual synthesis with hydra-synth, enhanced with chromatic aberration post-processing.
-          </p>
+        <div class="example-header">
+          <h3 class="example-title">[05] hydra synth</h3>
+          <span class="example-tech">hydra</span>
         </div>
-        <div class="example-card-footer">
-          <a href="./hydra-synth/" class="example-link">
-            View Demo <span>→</span>
-          </a>
+        <p class="example-description">
+          simple hydra sketch
+        </p>
+        <div class="example-links">
+          <a href="./hydra-synth/" class="example-link">run demo</a>
+          <a href="https://github.com/humanbydefinition/textmode.js/tree/main/examples/hydra-synth" target="_blank" class="example-link source-link">source</a>
         </div>
       </article>
     </section>
 
     <footer class="footer">
-      <p>built with <span style="color: var(--accent-color);">&lt;3</span> by <a
-          href="https://github.com/humanbydefinition" target="_blank">humanbydefinition</a>
-      <p></p>
-      <a href="https://github.com/humanbydefinition/textmode.js" target="_blank">GitHub Repository</a> |
-      <a href="#" target="_blank">...</a> |
-      <a href="#" target="_blank">...</a>
+      <p>
+        <a href="https://github.com/humanbydefinition" target="_blank">@humanbydefinition</a> |
+        <a href="https://github.com/humanbydefinition/textmode.js" target="_blank">github</a> |
+        <a href="https://code.textmode.art" target="_blank">docs</a>
       </p>
     </footer>
   </div>
 
   <script>
-    // Add some interactivity to the page
+    // Minimal terminal-like effects
     document.addEventListener('DOMContentLoaded', function () {
-      const cards = document.querySelectorAll('.example-card');
-
-      cards.forEach(card => {
-        card.addEventListener('mouseenter', function () {
-          // Add a subtle glow effect
-          this.style.boxShadow = '0 8px 30px rgba(0, 255, 136, 0.2)';
-        });
-
-        card.addEventListener('mouseleave', function () {
-          this.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3)';
-        });
-      });
-
-      // Add smooth scrolling for any anchor links
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-          e.preventDefault();
-          document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-          });
-        });
-      });
+      // Add blinking cursor effect to title
+      const title = document.querySelector('.header h1');
+      if (title) {
+        setInterval(() => {
+          title.style.borderRight = title.style.borderRight === '2px solid #00ff00' ? 'none' : '2px solid #00ff00';
+        }, 800);
+      }
     });
   </script>
 </body>

@@ -1,4 +1,6 @@
-import { Textmodifier } from '../../../dist/textmode.esm.js';
+// examples/sketch-2d.js
+import p5 from 'https://cdn.jsdelivr.net/npm/p5@1.11.9/+esm';
+import { textmode } from '../../../dist/textmode.esm.js';
 
 const sketch = (p) => {
 
@@ -7,6 +9,7 @@ const sketch = (p) => {
 
   p.setup = async () => {
     // Create a regular 2D canvas (not WebGL)
+    p.pixelDensity(1);
     p.createCanvas(p.windowWidth, p.windowHeight);
 
     // Set up some 2D drawing properties
@@ -14,7 +17,7 @@ const sketch = (p) => {
     p.strokeWeight(2);
 
 
-    textmodifier = await Textmodifier.create(p.canvas);
+    textmodifier = await textmode.create(p.canvas);
   };
 
   p.draw = () => {

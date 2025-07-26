@@ -65,47 +65,28 @@ export declare class TextmodeGrid {
      * @param canvas The new canvas element to use for the grid.
      * @ignore
      */
-    updateCanvas(canvas: HTMLCanvasElement): void;
+    resize(): void;
     /**
-     * Returns the width of each cell in the grid.
-     */
-    get cellWidth(): number;
-    /**
-     * Returns the height of each cell in the grid.
-     */
-    get cellHeight(): number;
-    /**
-     * Returns the number of columns in the grid.
-     */
-    get cols(): number;
-    /**
-     * Returns the number of rows in the grid.
-     */
-    get rows(): number;
-    /**
-     * Returns the total width of the grid.
-     */
-    get width(): number;
-    /**
-     * Returns the total height of the grid.
-     */
-    get height(): number;
-    /**
-     * Returns the offset to the outer canvas borders on the x-axis when centering the grid.
-     */
-    get offsetX(): number;
-    /**
-     * Returns the offset to the outer canvas borders on the y-axis when centering the grid.
-     */
-    get offsetY(): number;
-    /**
-     * Returns `true` if the grid dimensions *(columns and rows)* are fixed, or `false` if they are responsive based on the canvas dimensions.
-     */
-    get fixedDimensions(): boolean;
-    /**
-     * Sets whether the grid dimensions *(columns and rows)* are fixed or responsive based on the canvas dimensions.
-     * @param value `true` to make the grid dimensions fixed, or `false` to make them responsive.
+     * Gets or sets whether the grid dimensions *(columns and rows)* are fixed or responsive based on the canvas dimensions.
+     * @param value Optional. `true` to make the grid dimensions fixed, or `false` to make them responsive. If not provided, returns the current state.
+     * @returns If no parameter is provided, returns `true` if the grid dimensions are fixed, or `false` if they are responsive.
      * @ignore
      */
-    set fixedDimensions(value: boolean);
+    fixedDimensions(value?: boolean): boolean | void;
+    /** Returns the width of each cell in the grid. */
+    get cellWidth(): number;
+    /** Returns the height of each cell in the grid. */
+    get cellHeight(): number;
+    /** Returns the number of columns in the grid. */
+    get cols(): number;
+    /** Returns the number of rows in the grid. */
+    get rows(): number;
+    /** Returns the total width of the grid. */
+    get width(): number;
+    /** Returns the total height of the grid. */
+    get height(): number;
+    /** Returns the offset to the outer canvas borders on the x-axis when centering the grid. */
+    get offsetX(): number;
+    /** Returns the offset to the outer canvas borders on the y-axis when centering the grid. */
+    get offsetY(): number;
 }

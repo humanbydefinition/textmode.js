@@ -7,7 +7,7 @@
  * @example
  *
  * // Set to `WARNING` level to log errors without stopping execution
- * textmodifier.setErrorLevel(TextmodeErrorLevel.WARNING);
+ * textmode.setErrorLevel(TextmodeErrorLevel.WARNING);
  */
 export declare enum TextmodeErrorLevel {
     /**
@@ -17,17 +17,14 @@ export declare enum TextmodeErrorLevel {
     SILENT = 0,
     /**
      * Log validation failures as warnings.
-     * Execution continues normally, but issues are reported to the console.
      */
     WARNING = 1,
     /**
      * Log validation failures as errors.
-     * Execution continues, but errors are prominently displayed in the console.
      */
     ERROR = 2,
     /**
-     * Throw exceptions on validation failures.
-     * Stops execution immediately when errors occur *(default behavior)*.
+     * Throw exceptions on validation failures *(default behavior)*.
      */
     THROW = 3
 }

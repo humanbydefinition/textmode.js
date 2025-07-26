@@ -1,5 +1,5 @@
-import { Framebuffer } from './rendering/Framebuffer';
-import type { Renderer } from './rendering/Renderer';
+import { Framebuffer } from './rendering/webgl/Framebuffer';
+import type { Renderer } from './rendering/webgl/Renderer';
 /**
  * A 1D color palette stored in a framebuffer that is used to pass colors to shaders.
  *
