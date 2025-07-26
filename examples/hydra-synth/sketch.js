@@ -29,9 +29,6 @@ const canvas = hydraInstance.canvas;
 // Initialize textmodifier
 const textmodifier = await textmode.create(canvas);
 
-// Configure the text effect
-textmodifier.brightnessConverter.characters("abcdefghijklmnopqrstuvwxyz");
-
 // Handle window resize
 window.addEventListener('resize', () => {
     hydra.setResolution(window.innerWidth, window.innerHeight);
