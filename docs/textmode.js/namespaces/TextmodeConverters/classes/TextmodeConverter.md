@@ -1,4 +1,4 @@
-[**textmode.js v0.0.10-beta.5**](../../../../README.md)
+[**textmode.js v0.1.0**](../../../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: TextmodeConverter
 
-Defined in: [textmode/converters/Converter.ts:9](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/converters/Converter.ts#L9)
+Defined in: [textmode/converters/Converter.ts:9](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/converters/Converter.ts#L9)
 
 Base class for all textmode converters.
 
@@ -22,7 +22,7 @@ Base class for all textmode converters.
 
 > **get** **characterFramebuffer**(): `Framebuffer`
 
-Defined in: [textmode/converters/Converter.ts:58](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/converters/Converter.ts#L58)
+Defined in: [textmode/converters/Converter.ts:58](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/converters/Converter.ts#L58)
 
 Returns the framebuffer containing character data.
 
@@ -38,7 +38,7 @@ Returns the framebuffer containing character data.
 
 > **get** **primaryColorFramebuffer**(): `Framebuffer`
 
-Defined in: [textmode/converters/Converter.ts:61](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/converters/Converter.ts#L61)
+Defined in: [textmode/converters/Converter.ts:61](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/converters/Converter.ts#L61)
 
 Returns the framebuffer containing primary color data.
 
@@ -54,7 +54,7 @@ Returns the framebuffer containing primary color data.
 
 > **get** **rotationFramebuffer**(): `Framebuffer`
 
-Defined in: [textmode/converters/Converter.ts:67](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/converters/Converter.ts#L67)
+Defined in: [textmode/converters/Converter.ts:67](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/converters/Converter.ts#L67)
 
 Returns the framebuffer containing rotation data.
 
@@ -70,7 +70,7 @@ Returns the framebuffer containing rotation data.
 
 > **get** **secondaryColorFramebuffer**(): `Framebuffer`
 
-Defined in: [textmode/converters/Converter.ts:64](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/converters/Converter.ts#L64)
+Defined in: [textmode/converters/Converter.ts:64](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/converters/Converter.ts#L64)
 
 Returns the framebuffer containing secondary color data.
 
@@ -86,7 +86,7 @@ Returns the framebuffer containing secondary color data.
 
 > **get** **transformFramebuffer**(): `Framebuffer`
 
-Defined in: [textmode/converters/Converter.ts:70](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/textmode/converters/Converter.ts#L70)
+Defined in: [textmode/converters/Converter.ts:70](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/converters/Converter.ts#L70)
 
 Returns the framebuffer containing transformation data.
 

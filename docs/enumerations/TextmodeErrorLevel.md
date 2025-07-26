@@ -1,4 +1,4 @@
-[**textmode.js v0.0.10-beta.5**](../README.md)
+[**textmode.js v0.1.0**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Enumeration: TextmodeErrorLevel
 
-Defined in: [errors/ErrorHandler.ts:14](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/errors/ErrorHandler.ts#L14)
+Defined in: [errors/ErrorHandler.ts:14](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/errors/ErrorHandler.ts#L14)
 
 Error handling levels to control how errors are reported and handled.
 
@@ -24,7 +24,7 @@ textmode.setErrorLevel(TextmodeErrorLevel.WARNING);
 
 | Enumeration Member | Value | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="error"></a> `ERROR` | `2` | Log validation failures as errors. | [errors/ErrorHandler.ts:29](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/errors/ErrorHandler.ts#L29) |
-| <a id="silent"></a> `SILENT` | `0` | Suppress all error output. Validation failures are handled silently without any console messages. | [errors/ErrorHandler.ts:19](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/errors/ErrorHandler.ts#L19) |
-| <a id="throw"></a> `THROW` | `3` | Throw exceptions on validation failures *(default behavior)*. | [errors/ErrorHandler.ts:34](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/errors/ErrorHandler.ts#L34) |
-| <a id="warning"></a> `WARNING` | `1` | Log validation failures as warnings. | [errors/ErrorHandler.ts:24](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/errors/ErrorHandler.ts#L24) |
+| <a id="error"></a> `ERROR` | `2` | Log validation failures as errors. | [errors/ErrorHandler.ts:29](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/errors/ErrorHandler.ts#L29) |
+| <a id="silent"></a> `SILENT` | `0` | Suppress all error output. Validation failures are handled silently without any console messages. | [errors/ErrorHandler.ts:19](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/errors/ErrorHandler.ts#L19) |
+| <a id="throw"></a> `THROW` | `3` | Throw exceptions on validation failures *(default behavior)*. | [errors/ErrorHandler.ts:34](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/errors/ErrorHandler.ts#L34) |
+| <a id="warning"></a> `WARNING` | `1` | Log validation failures as warnings. | [errors/ErrorHandler.ts:24](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/errors/ErrorHandler.ts#L24) |

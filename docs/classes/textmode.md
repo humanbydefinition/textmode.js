@@ -1,4 +1,4 @@
-[**textmode.js v0.0.10-beta.5**](../README.md)
+[**textmode.js v0.1.0**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: textmode
 
-Defined in: [Textmode.ts:25](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/Textmode.ts#L25)
+Defined in: [Textmode.ts:25](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/Textmode.ts#L25)
 
 The main entry point for the `textmode.js` library.
 
@@ -20,7 +20,7 @@ Provides static methods for creating textmode instances and managing global sett
 
 > **get** `static` **version**(): `string`
 
-Defined in: [Textmode.ts:67](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/Textmode.ts#L67)
+Defined in: [Textmode.ts:67](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/Textmode.ts#L67)
 
 Returns the current version of the `textmode.js` library.
 
@@ -40,7 +40,7 @@ console.log(textmode.version); // "1.0.0"
 
 > `static` **create**(`canvas`, `opts`): `Promise`\<[`Textmodifier`](Textmodifier.md)\>
 
-Defined in: [Textmode.ts:41](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/Textmode.ts#L41)
+Defined in: [Textmode.ts:41](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/Textmode.ts#L41)
 
 Create a [Textmodifier](Textmodifier.md) instance to apply textmode rendering to a given canvas.
 
@@ -73,7 +73,7 @@ const textmodifier = await textmode.create(canvas);
 
 > `static` **setErrorLevel**(`level`): `void`
 
-Defined in: [Textmode.ts:55](https://github.com/humanbydefinition/textmode.js-dev/blob/e3dc79bc1521c853de25f7f80d6e8ec46edd909c/src/Textmode.ts#L55)
+Defined in: [Textmode.ts:55](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/Textmode.ts#L55)
 
 Set the global error handling level for the library. This applies to all `Textmodifier` instances.
 

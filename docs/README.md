@@ -1,8 +1,8 @@
-**textmode.js v0.0.10-beta.5**
+**textmode.js v0.1.0**
 
 ***
 
-# textmode.js v0.0.10-beta.5
+# textmode.js v0.1.0
 
 ## Namespaces
 
