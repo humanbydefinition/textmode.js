@@ -29,7 +29,7 @@
 
 To get started with `textmode.js`, you'll need:
 - A **modern web browser** with `WebGL` support
-- **Node.js 16+** and `npm`/`yarn` *(optional, for ESM installation)*
+- **Node.js 16+** and `npm` *(optional, for ESM installation)*
 - A **HTML canvas element** in your project to apply textmode conversion to
 
 ### Importing `textmode.js`
@@ -66,16 +66,10 @@ To use `textmode.js` in a UMD environment, download the latest `umd` build from 
 
 #### ESM
 
-To use `textmode.js` in an ESM environment, you can install it via npm or yarn:
+To use `textmode.js` in an ESM environment, you can install it via `npm`:
 
 ```bash
 npm install textmode.js
-```
-
-or
-
-```bash
-yarn add textmode.js
 ```
 
 Then, you can import it in your JavaScript or TypeScript files:
