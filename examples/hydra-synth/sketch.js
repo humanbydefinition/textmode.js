@@ -1,4 +1,12 @@
-// Import the libraries
+/**
+ * @name [textmode.js] hydra-synth Example
+ * @description A simple example of using textmode.js with hydra-synth.
+ * @author humanbydefinition
+ * @link https://github.com/humanbydefinition/textmode.js
+ *
+ * This example demonstrates how to use textmode.js with hydra-synth.
+ */
+
 import hydraSynth from 'https://cdn.jsdelivr.net/npm/hydra-synth@1.3.29/+esm';
 import { textmode } from '../../dist/textmode.esm.js';
 
@@ -24,16 +32,7 @@ const textmodifier = await textmode.create(canvas);
 // Configure the text effect
 textmodifier.brightnessConverter.characters("abcdefghijklmnopqrstuvwxyz");
 
-// Start the render loop
-function render() {
-    textmodifier.render();
-    requestAnimationFrame(render);
-}
-
 // Handle window resize
 window.addEventListener('resize', () => {
     hydra.setResolution(window.innerWidth, window.innerHeight);
 });
-
-// Start rendering
-render();

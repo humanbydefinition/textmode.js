@@ -1,4 +1,12 @@
-// examples/three.js/sketch.js
+/**
+ * @name [textmode.js] Three.js Example
+ * @description A simple example of using textmode.js with Three.js.
+ * @author humanbydefinition
+ * @link https://github.com/humanbydefinition/textmode.js
+ *
+ * This example demonstrates how to use textmode.js with Three.js.
+ */
+
 import { textmode } from '../../dist/textmode.esm.js';
 
 export const createSketch = (THREE) => {
@@ -54,10 +62,10 @@ export const createSketch = (THREE) => {
     scene.add(sphere);
 
     // Add lighting
-    const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.8);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.8);
     directionalLight.position.set(5, 5, 5);
     directionalLight.castShadow = true;
     directionalLight.shadow.mapSize.width = 2048;
@@ -65,7 +73,7 @@ export const createSketch = (THREE) => {
     scene.add(directionalLight);
 
     // Attach textmode post-processing
-    textmodifier = await textmode.create(canvas);
+    textmodifier = await textmode.create(canvas, { renderMode: 'manual'});
 
     window.addEventListener('resize', onWindowResize);
 
@@ -96,8 +104,8 @@ export const createSketch = (THREE) => {
     // Render scene
     renderer.render(scene, camera);
 
+    // Render textmode
     textmodifier.render();
-
   };
 
   const onWindowResize = () => {

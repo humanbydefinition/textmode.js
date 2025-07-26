@@ -1,3 +1,12 @@
+/**
+ * @name [textmode.js] Vanilla Example
+ * @description A simple example of using textmode.js with Vanilla JavaScript.
+ * @author humanbydefinition
+ * @link https://github.com/humanbydefinition/textmode.js
+ *
+ * This example demonstrates how to use textmode.js with Vanilla JavaScript.
+ */
+
 import { textmode } from '../../dist/textmode.esm.js';
 
 class VanillaSketch {
@@ -48,8 +57,6 @@ class VanillaSketch {
     this.ctx.fillText('vanilla', x, y);
 
     this.ctx.restore();
-
-    this.textmodifier.render();
   }
 
   animate() {

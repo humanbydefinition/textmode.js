@@ -1,4 +1,12 @@
-// examples/sketch-2d.js
+/**
+ * @name [textmode.js] p5.js P2D Example
+ * @description A simple example of using textmode.js with p5.js in P2D mode.
+ * @author humanbydefinition
+ * @link https://github.com/humanbydefinition/textmode.js
+ * 
+ * This example demonstrates how to use textmode.js with p5.js in P2D mode.
+ */
+
 import p5 from 'https://cdn.jsdelivr.net/npm/p5@1.11.9/+esm';
 import { textmode } from '../../../dist/textmode.esm.js';
 
@@ -8,14 +16,10 @@ const sketch = (p) => {
   let angle = 0;
 
   p.setup = async () => {
-    // Create a regular 2D canvas (not WebGL)
-    p.pixelDensity(1);
     p.createCanvas(p.windowWidth, p.windowHeight);
 
-    // Set up some 2D drawing properties
     p.colorMode(p.HSB, 360, 100, 100);
     p.strokeWeight(2);
-
 
     textmodifier = await textmode.create(p.canvas);
   };
@@ -24,10 +28,9 @@ const sketch = (p) => {
     // Clear the canvas with a dark background
     p.background(220, 20, 10);
 
-    // Draw some 2D graphics
+    // Draw some 2D text
     p.push();
     p.translate(p.width / 2, p.height / 2);
-
     p.fill(0, 0, 100);
     p.textAlign(p.CENTER, p.CENTER);
     p.textSize(256);
@@ -46,9 +49,6 @@ const sketch = (p) => {
 
     // Increment the angle for rotation
     angle += 1;
-
-
-    textmodifier.render();
   };
 
   p.windowResized = () => {
