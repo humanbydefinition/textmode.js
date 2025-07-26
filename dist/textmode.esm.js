@@ -551,11 +551,11 @@ Q.parse = function(i) {
       HVAR: d.HVAR
       //"VORG",
     }, _ = { _data: I, _index: v, _offset: p };
-    for (var U in f) {
-      var b = Q.findTable(I, U, p);
-      if (b) {
-        var S = b[0], y = w[S];
-        y == null && (y = f[U].parseTab(I, S, b[1], _)), _[U] = w[S] = y;
+    for (var b in f) {
+      var U = Q.findTable(I, b, p);
+      if (U) {
+        var S = U[0], y = w[S];
+        y == null && (y = f[b].parseTab(I, S, U[1], _)), _[b] = w[S] = y;
       }
     }
     return _;
@@ -564,12 +564,12 @@ Q.parse = function(i) {
     var v = A.readUshort(I, 12), p = A.readUint(I, 16), w = new Uint8Array(p), d = 12 + v * 16;
     A.writeASCII(w, 0, "OTTO"), A.writeUshort(w, 4, v);
     for (var f = 44, _ = 0; _ < v; _++) {
-      var U = A.readASCII(I, f, 4), b = A.readUint(I, f + 4), S = A.readUint(I, f + 8), y = A.readUint(I, f + 12);
+      var b = A.readASCII(I, f, 4), U = A.readUint(I, f + 4), S = A.readUint(I, f + 8), y = A.readUint(I, f + 12);
       f += 20;
-      var x = I.slice(b, b + S);
+      var x = I.slice(U, U + S);
       S != y && (x = pako.inflate(x));
       var G = 12 + _ * 16;
-      A.writeASCII(w, G, U), A.writeUint(w, G + 8, d), A.writeUint(w, G + 12, y), w.set(x, d), d += y;
+      A.writeASCII(w, G, b), A.writeUint(w, G + 8, d), A.writeUint(w, G + 12, y), w.set(x, d), d += y;
     }
     return w;
   }
@@ -1337,17 +1337,17 @@ Q.T.glyf = {
         f = r.readUshort(e, n), n += 2;
         var _ = { m: { a: 1, b: 0, c: 0, d: 1, tx: 0, ty: 0 }, p1: -1, p2: -1 };
         if (a.parts.push(_), _.glyphIndex = r.readUshort(e, n), n += 2, f & P) {
-          var U = r.readShort(e, n);
-          n += 2;
           var b = r.readShort(e, n);
           n += 2;
+          var U = r.readShort(e, n);
+          n += 2;
         } else {
-          var U = r.readInt8(e, n);
-          n++;
           var b = r.readInt8(e, n);
           n++;
+          var U = r.readInt8(e, n);
+          n++;
         }
-        f & m ? (_.m.tx = U, _.m.ty = b) : (_.p1 = U, _.p2 = b), f & I ? (_.m.a = _.m.d = r.readF2dot14(e, n), n += 2) : f & p ? (_.m.a = r.readF2dot14(e, n), n += 2, _.m.d = r.readF2dot14(e, n), n += 2) : f & w && (_.m.a = r.readF2dot14(e, n), n += 2, _.m.b = r.readF2dot14(e, n), n += 2, _.m.c = r.readF2dot14(e, n), n += 2, _.m.d = r.readF2dot14(e, n), n += 2);
+        f & m ? (_.m.tx = b, _.m.ty = U) : (_.p1 = b, _.p2 = U), f & I ? (_.m.a = _.m.d = r.readF2dot14(e, n), n += 2) : f & p ? (_.m.a = r.readF2dot14(e, n), n += 2, _.m.d = r.readF2dot14(e, n), n += 2) : f & w && (_.m.a = r.readF2dot14(e, n), n += 2, _.m.b = r.readF2dot14(e, n), n += 2, _.m.c = r.readF2dot14(e, n), n += 2, _.m.d = r.readF2dot14(e, n), n += 2);
       } while (f & v);
       if (f & d) {
         var S = r.readUshort(e, n);
@@ -1728,13 +1728,13 @@ Q.T.gvar = function() {
     var p = s.readUint(h, C);
     C += 4;
     for (var w = [], d = 0; d < v + 1; d++) w.push(s.readUint(h, C + d * 4));
-    var f = [], _ = [], U = [];
+    var f = [], _ = [], b = [];
     C = c + I;
     for (var d = 0; d < m; d++) {
-      var b = B(h, C + d * P * 2, P), S = [], y = [];
-      f.push(b), _.push(S), U.push(y);
+      var U = B(h, C + d * P * 2, P), S = [], y = [];
+      f.push(U), _.push(S), b.push(y);
       for (var x = 0; x < P; x++)
-        S[x] = Math.min(b[x], 0), y[x] = Math.max(b[x], 0);
+        S[x] = Math.min(U[x], 0), y[x] = Math.max(U[x], 0);
     }
     for (var G = new Int8Array(h.buffer), N = [], d = 0; d < v; d++) {
       C = c + p + w[d];
@@ -1773,7 +1773,7 @@ Q.T.gvar = function() {
         if (L.push([[
           M[3] ? M[3] : _[AA],
           M[4] ? M[4] : f[AA],
-          M[5] ? M[5] : U[AA]
+          M[5] ? M[5] : b[AA]
         ], X, W.length == 0 ? null : W]), W.length != 0 && W.length * 2 != X.length) throw "e";
       }
     }
@@ -1841,14 +1841,14 @@ Q.T.HVAR = {
       if (t += 2, _ & 32768) throw "e";
       var P = a.readUshort(i, t);
       t += 2;
-      for (var U = [], v = 0; v < P; v++) U.push(a.readUshort(i, t + v * 2));
+      for (var b = [], v = 0; v < P; v++) b.push(a.readUshort(i, t + v * 2));
       t += P * 2;
-      for (var b = 0; b < f; b++) {
+      for (var U = 0; U < f; U++) {
         for (var S = [], y = 0; y < P; y++)
           S.push(y < _ ? a.readShort(i, t) : p[t]), t += y < _ ? 2 : 1;
         var x = new Array(m.length);
         x.fill(0), d.push(x);
-        for (var v = 0; v < U.length; v++) x[U[v]] = S[v];
+        for (var v = 0; v < b.length; v++) x[b[v]] = S[v];
       }
     }
     t = n + B;
@@ -2796,8 +2796,8 @@ const OA = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   TextmodeConverter: k,
   TextmodeFeatureConverter: tA
 }, Symbol.toStringTag, { value: "Module" }));
-var bA = "precision mediump float;uniform sampler2D u_characterTexture;uniform vec2 u_charsetDimensions;uniform sampler2D u_primaryColorTexture;uniform sampler2D u_secondaryColorTexture;uniform sampler2D u_transformTexture;uniform sampler2D u_asciiCharacterTexture;uniform sampler2D u_rotationTexture;uniform sampler2D u_captureTexture;uniform vec2 u_captureDimensions;uniform int u_backgroundMode;uniform vec2 u_gridCellDimensions;uniform vec2 u_gridPixelDimensions;mat2 rotate2D(float angle){float s=sin(angle);float c=cos(angle);return mat2(c,-s,s,c);}void main(){vec2 adjustedCoord=gl_FragCoord.xy/u_gridPixelDimensions;vec2 gridCoord=adjustedCoord*u_gridCellDimensions;vec2 cellCoord=floor(gridCoord);vec2 charIndexTexCoord=(cellCoord+0.5)/u_gridCellDimensions;vec4 primaryColor=texture2D(u_primaryColorTexture,charIndexTexCoord);vec4 secondaryColor=texture2D(u_secondaryColorTexture,charIndexTexCoord);vec4 transformColor=texture2D(u_transformTexture,charIndexTexCoord);bool isInverted=transformColor.r>0.5;bool flipHorizontal=transformColor.g>0.5;bool flipVertical=transformColor.b>0.5;vec4 encodedIndexVec=texture2D(u_asciiCharacterTexture,charIndexTexCoord);if(encodedIndexVec.a<0.01){gl_FragColor=(u_backgroundMode==0)? vec4(0.0):texture2D(u_captureTexture,gl_FragCoord.xy/u_captureDimensions);return;}int charIndex=int(encodedIndexVec.r*255.0+0.5)+int(encodedIndexVec.g*255.0+0.5)*256;int charCol=int(mod(float(charIndex),u_charsetDimensions.x));int charRow=charIndex/int(u_charsetDimensions.x);vec2 charCoord=vec2(charCol,charRow)/u_charsetDimensions;vec4 rotationColor=texture2D(u_rotationTexture,charIndexTexCoord);float scaledAngle=rotationColor.r*255.0+rotationColor.g;float rotationAngle=(scaledAngle*360.0/255.0)*0.017453292;vec2 fractionalPart=fract(gridCoord)-0.5;if(flipHorizontal)fractionalPart.x=-fractionalPart.x;if(flipVertical)fractionalPart.y=-fractionalPart.y;fractionalPart=rotate2D(rotationAngle)*fractionalPart+0.5;vec2 cellSize=1.0/u_charsetDimensions;vec2 texCoord=charCoord+fractionalPart*cellSize;vec2 cellMax=charCoord+cellSize;if(any(lessThan(texCoord,charCoord))||any(greaterThan(texCoord,cellMax))){gl_FragColor=isInverted ? primaryColor : secondaryColor;return;}vec4 charTexel=texture2D(u_characterTexture,texCoord);if(isInverted)charTexel.rgb=1.0-charTexel.rgb;gl_FragColor=mix(secondaryColor,primaryColor,charTexel);}";
-class UA {
+var UA = "precision mediump float;uniform sampler2D u_characterTexture;uniform vec2 u_charsetDimensions;uniform sampler2D u_primaryColorTexture;uniform sampler2D u_secondaryColorTexture;uniform sampler2D u_transformTexture;uniform sampler2D u_asciiCharacterTexture;uniform sampler2D u_rotationTexture;uniform sampler2D u_captureTexture;uniform vec2 u_captureDimensions;uniform int u_backgroundMode;uniform vec2 u_gridCellDimensions;uniform vec2 u_gridPixelDimensions;mat2 rotate2D(float angle){float s=sin(angle);float c=cos(angle);return mat2(c,-s,s,c);}void main(){vec2 adjustedCoord=gl_FragCoord.xy/u_gridPixelDimensions;vec2 gridCoord=adjustedCoord*u_gridCellDimensions;vec2 cellCoord=floor(gridCoord);vec2 charIndexTexCoord=(cellCoord+0.5)/u_gridCellDimensions;vec4 primaryColor=texture2D(u_primaryColorTexture,charIndexTexCoord);vec4 secondaryColor=texture2D(u_secondaryColorTexture,charIndexTexCoord);vec4 transformColor=texture2D(u_transformTexture,charIndexTexCoord);bool isInverted=transformColor.r>0.5;bool flipHorizontal=transformColor.g>0.5;bool flipVertical=transformColor.b>0.5;vec4 encodedIndexVec=texture2D(u_asciiCharacterTexture,charIndexTexCoord);if(encodedIndexVec.a<0.01){gl_FragColor=(u_backgroundMode==0)? vec4(0.0):texture2D(u_captureTexture,gl_FragCoord.xy/u_captureDimensions);return;}int charIndex=int(encodedIndexVec.r*255.0+0.5)+int(encodedIndexVec.g*255.0+0.5)*256;int charCol=int(mod(float(charIndex),u_charsetDimensions.x));int charRow=charIndex/int(u_charsetDimensions.x);vec2 charCoord=vec2(charCol,charRow)/u_charsetDimensions;vec4 rotationColor=texture2D(u_rotationTexture,charIndexTexCoord);float scaledAngle=rotationColor.r*255.0+rotationColor.g;float rotationAngle=(scaledAngle*360.0/255.0)*0.017453292;vec2 fractionalPart=fract(gridCoord)-0.5;if(flipHorizontal)fractionalPart.x=-fractionalPart.x;if(flipVertical)fractionalPart.y=-fractionalPart.y;fractionalPart=rotate2D(rotationAngle)*fractionalPart+0.5;vec2 cellSize=1.0/u_charsetDimensions;vec2 texCoord=charCoord+fractionalPart*cellSize;vec2 cellMax=charCoord+cellSize;if(any(lessThan(texCoord,charCoord))||any(greaterThan(texCoord,cellMax))){gl_FragColor=isInverted ? primaryColor : secondaryColor;return;}vec4 charTexel=texture2D(u_characterTexture,texCoord);if(isInverted)charTexel.rgb=1.0-charTexel.rgb;gl_FragColor=mix(secondaryColor,primaryColor,charTexel);}";
+class bA {
   /**
    * Creates an instance of TextmodeConversionPipeline.
    * @param renderer The renderer to use for the pipeline.
@@ -2817,7 +2817,7 @@ class UA {
     E(this, "_secondaryColorFramebuffer");
     E(this, "_rotationFramebuffer");
     E(this, "_transformFramebuffer");
-    this.renderer = A, this.font = r, this.grid = e, this._asciiShader = this.renderer.createShader(O, bA), this.converters = [
+    this.renderer = A, this.font = r, this.grid = e, this._asciiShader = this.renderer.createShader(O, UA), this.converters = [
       { name: "brightness", converter: new eA(A, r, e) },
       { name: "custom", converter: new k(A, r, e) }
     ], this._characterFramebuffer = this.renderer.createFramebuffer(e.cols, e.rows), this._primaryColorFramebuffer = this.renderer.createFramebuffer(e.cols, e.rows), this._secondaryColorFramebuffer = this.renderer.createFramebuffer(e.cols, e.rows), this._rotationFramebuffer = this.renderer.createFramebuffer(e.cols, e.rows), this._transformFramebuffer = this.renderer.createFramebuffer(e.cols, e.rows), this._resultFramebuffer = this.renderer.createFramebuffer(this.grid.width, this.grid.height);
@@ -3563,7 +3563,7 @@ class iA {
     const e = new iA(A, r);
     await e._font.initialize();
     const t = e._font.maxGlyphDimensions;
-    return e._grid = new mA(e.captureCanvas, t.width, t.height), e._pipeline = new UA(e.renderer, e._font, e._grid), e.setupEventListeners(), e.startAutoRendering(), e;
+    return e._grid = new mA(e.captureCanvas, t.width, t.height), e._pipeline = new bA(e.renderer, e._font, e._grid), e.setupEventListeners(), e.startAutoRendering(), e;
   }
   setupEventListeners() {
     window.addEventListener("resize", this.resize.bind(this)), window.ResizeObserver && (this.resizeObserver = new ResizeObserver(() => {
@@ -3851,7 +3851,7 @@ class nA {
    * ```
    */
   static get version() {
-    return "0.0.10-beta.5";
+    return "0.1.0";
   }
   constructor() {
     throw new Error("Textmode is a static class and cannot be instantiated.");
@@ -3860,7 +3860,7 @@ class nA {
 const YA = nA.create, VA = nA.setErrorLevel, zA = nA.version;
 export {
   IA as TextmodeCanvas,
-  UA as TextmodeConversionPipeline,
+  bA as TextmodeConversionPipeline,
   OA as TextmodeConverters,
   gA as TextmodeErrorLevel,
   PA as TextmodeFont,
