@@ -1,4 +1,4 @@
-[**textmode.js v0.1.0**](../README.md)
+[**textmode.js v0.1.1**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **TextmodeCharacter** = `object`
 
-Defined in: [textmode/font/types.ts:4](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/font/types.ts#L4)
+Defined in: [textmode/font/types.ts:4](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/font/types.ts#L4)
 
 Represents a single character in the textmode font.
 
@@ -18,7 +18,7 @@ Represents a single character in the textmode font.
 
 > **advanceWidth**: `number`
 
-Defined in: [textmode/font/types.ts:15](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/font/types.ts#L15)
+Defined in: [textmode/font/types.ts:15](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/font/types.ts#L15)
 
 The advance width of the character.
 
@@ -28,7 +28,7 @@ The advance width of the character.
 
 > **character**: `string`
 
-Defined in: [textmode/font/types.ts:6](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/font/types.ts#L6)
+Defined in: [textmode/font/types.ts:6](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/font/types.ts#L6)
 
 The character itself.
 
@@ -38,7 +38,7 @@ The character itself.
 
 > **color**: \[`number`, `number`, `number`\]
 
-Defined in: [textmode/font/types.ts:12](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/font/types.ts#L12)
+Defined in: [textmode/font/types.ts:12](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/font/types.ts#L12)
 
 The RGB color associated with the character for identification.
 
@@ -48,6 +48,6 @@ The RGB color associated with the character for identification.
 
 > **unicode**: `number`
 
-Defined in: [textmode/font/types.ts:9](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/font/types.ts#L9)
+Defined in: [textmode/font/types.ts:9](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/font/types.ts#L9)
 
 The Unicode code point of the character.

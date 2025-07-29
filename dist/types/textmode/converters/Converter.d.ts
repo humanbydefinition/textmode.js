@@ -14,7 +14,7 @@ export declare class TextmodeConverter {
     protected _secondaryColorFramebuffer: Framebuffer;
     protected _rotationFramebuffer: Framebuffer;
     protected _transformFramebuffer: Framebuffer;
-    protected options: any;
+    protected _options: any;
     /**
      * Creates a new TextmodeConverter instance.
      * @param renderer Renderer instance for texture creation
@@ -29,6 +29,19 @@ export declare class TextmodeConverter {
      * @ignore
      */
     resize(): void;
+    /**
+     * Enables or disables the converter.
+     * @param enabled Whether to enable or disable the converter.
+     */
+    enabled(enabled: boolean): void;
+    /**
+     * Enables the converter.
+     */
+    enable(): void;
+    /**
+     * Disables the converter.
+     */
+    disable(): void;
     /** Returns the framebuffer containing character data. */
     get characterFramebuffer(): Framebuffer;
     /** Returns the framebuffer containing primary color data. */
@@ -39,4 +52,6 @@ export declare class TextmodeConverter {
     get rotationFramebuffer(): Framebuffer;
     /** Returns the framebuffer containing transformation data. */
     get transformFramebuffer(): Framebuffer;
+    /** Returns the renderer used by this converter. */
+    get options(): any;
 }

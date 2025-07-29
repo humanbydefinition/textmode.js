@@ -46,25 +46,6 @@ export interface SVGCellData {
     position: CellPosition;
 }
 /**
- * Grid dimensions and cell sizing information.
- */
-export interface GridInfo {
-    cols: number;
-    rows: number;
-    width: number;
-    height: number;
-    cellWidth: number;
-    cellHeight: number;
-}
-/**
- * Font information needed for SVG generation.
- */
-export interface FontInfo {
-    fontSize: number;
-    fontData: any;
-    characters: any[];
-}
-/**
  * Framebuffer data extracted for SVG generation.
  */
 export interface FramebufferData {

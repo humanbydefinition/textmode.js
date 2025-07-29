@@ -1,4 +1,5 @@
-import type { SVGCellData, GridInfo, FontInfo, SVGGenerationOptions } from './types';
+import type { SVGCellData, SVGGenerationOptions } from './types';
+import type { TextmodeFont, TextmodeGrid } from '../../Textmode';
 /**
  * Generates SVG content and markup from processed cell data.
  * This class handles the creation of SVG elements, groups, and styling.
@@ -11,7 +12,7 @@ export declare class SVGContentGenerator {
      * @param gridInfo Grid dimensions
      * @returns SVG header string
      */
-    generateSVGHeader(gridInfo: GridInfo): string;
+    generateSVGHeader(gridInfo: TextmodeGrid): string;
     /**
      * Generates the SVG footer
      * @returns SVG footer string
@@ -23,7 +24,7 @@ export declare class SVGContentGenerator {
      * @param options SVG generation options
      * @returns Background rectangle SVG string or empty string
      */
-    generateBackground(gridInfo: GridInfo, options: SVGGenerationOptions): string;
+    generateBackground(gridInfo: TextmodeGrid, options: SVGGenerationOptions): string;
     /**
      * Converts RGBA object to CSS color string
      * @param color RGBA color object
@@ -62,16 +63,16 @@ export declare class SVGContentGenerator {
      * @param options SVG generation options
      * @returns Complete cell SVG content
      */
-    generateCellContent(cellData: SVGCellData, gridInfo: GridInfo, fontInfo: FontInfo, options: SVGGenerationOptions): string;
+    generateCellContent(cellData: SVGCellData, gridInfo: TextmodeGrid, fontInfo: TextmodeFont, options: SVGGenerationOptions): string;
     /**
      * Generates the complete SVG content from cell data
      * @param cellDataArray Array of cell data
-     * @param gridInfo Grid information
+     * @param grid Grid information
      * @param fontInfo Font information
      * @param options SVG generation options
      * @returns Complete SVG string
      */
-    generateSVGContent(cellDataArray: SVGCellData[], gridInfo: GridInfo, fontInfo: FontInfo, options: SVGGenerationOptions): string;
+    generateSVGContent(cellDataArray: SVGCellData[], grid: TextmodeGrid, fontInfo: TextmodeFont, options: SVGGenerationOptions): string;
     /**
      * Optimizes SVG content by removing empty elements and unnecessary whitespace
      * @param svgContent Raw SVG content

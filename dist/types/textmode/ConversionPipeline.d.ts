@@ -64,6 +64,7 @@ export declare class TextmodeConversionPipeline {
      * @ignore
      */
     resize(): void;
+    hasEnabledConverters(): boolean;
     /** Returns the character framebuffer containing the combined result of all converters. @ignore */
     get characterFramebuffer(): Framebuffer;
     /** Returns the primary color framebuffer containing the combined result of all converters. @ignore */

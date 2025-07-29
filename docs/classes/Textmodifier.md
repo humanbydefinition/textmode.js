@@ -1,4 +1,4 @@
-[**textmode.js v0.1.0**](../README.md)
+[**textmode.js v0.1.1**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: Textmodifier
 
-Defined in: [textmode/Textmodifier.ts:34](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/Textmodifier.ts#L34)
+Defined in: [textmode/Textmodifier.ts:36](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L36)
 
 Manages textmode rendering on a canvas.
 
@@ -20,7 +20,7 @@ Each `Textmodifier` instance is applied to a specific HTML canvas element via `t
 
 > **get** **font**(): [`TextmodeFont`](TextmodeFont.md)
 
-Defined in: [textmode/Textmodifier.ts:416](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/Textmodifier.ts#L416)
+Defined in: [textmode/Textmodifier.ts:552](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L552)
 
 Get the current font object used for rendering.
 
@@ -36,7 +36,7 @@ Get the current font object used for rendering.
 
 > **get** **frameCount**(): `number`
 
-Defined in: [textmode/Textmodifier.ts:425](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/Textmodifier.ts#L425)
+Defined in: [textmode/Textmodifier.ts:561](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L561)
 
 Get the current frame count.
 
@@ -52,7 +52,7 @@ Get the current frame count.
 
 > **get** **grid**(): [`TextmodeGrid`](TextmodeGrid.md)
 
-Defined in: [textmode/Textmodifier.ts:413](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/Textmodifier.ts#L413)
+Defined in: [textmode/Textmodifier.ts:549](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L549)
 
 Get the current grid object used for rendering.
 
@@ -68,7 +68,7 @@ Get the current grid object used for rendering.
 
 > **get** **mode**(): `"manual"` \| `"auto"`
 
-Defined in: [textmode/Textmodifier.ts:419](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/Textmodifier.ts#L419)
+Defined in: [textmode/Textmodifier.ts:555](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L555)
 
 Get the current rendering mode.
 
@@ -84,7 +84,7 @@ Get the current rendering mode.
 
 > **get** **pipeline**(): [`TextmodeConversionPipeline`](TextmodeConversionPipeline.md)
 
-Defined in: [textmode/Textmodifier.ts:422](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/Textmodifier.ts#L422)
+Defined in: [textmode/Textmodifier.ts:558](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L558)
 
 Get the current textmode conversion pipeline
 
@@ -98,7 +98,7 @@ Get the current textmode conversion pipeline
 
 > **converter**(`name`): `void` \| [`TextmodeConverter`](../textmode.js/namespaces/TextmodeConverters/classes/TextmodeConverter.md)
 
-Defined in: [textmode/Textmodifier.ts:408](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/Textmodifier.ts#L408)
+Defined in: [textmode/Textmodifier.ts:544](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L544)
 
 Get a specific converter by name.
 
@@ -137,7 +137,7 @@ brightnessConverter.characters(" .,;:*");
 
 > **fontSize**(`size?`): `number` \| `void`
 
-Defined in: [textmode/Textmodifier.ts:376](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/Textmodifier.ts#L376)
+Defined in: [textmode/Textmodifier.ts:512](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L512)
 
 Get or set the font size used for rendering. 
 If called without arguments, returns the current font size.
@@ -173,7 +173,7 @@ textmodifier.fontSize(24);
 
 > **frameRate**(`fps?`): `number` \| `void`
 
-Defined in: [textmode/Textmodifier.ts:349](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/Textmodifier.ts#L349)
+Defined in: [textmode/Textmodifier.ts:485](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L485)
 
 Set the maximum frame rate for auto rendering. If called without arguments, returns the current measured frame rate.
 
@@ -206,7 +206,7 @@ textmodifier.frameRate(60);
 
 > **loadFont**(`fontUrl`): `Promise`\<`void`\>
 
-Defined in: [textmode/Textmodifier.ts:159](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/Textmodifier.ts#L159)
+Defined in: [textmode/Textmodifier.ts:291](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L291)
 
 Update the font used for rendering.
 
@@ -242,7 +242,7 @@ textmodifier.loadFont('https://example.com/fonts/myfont.ttf');
 
 > **render**(): `void`
 
-Defined in: [textmode/Textmodifier.ts:205](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/Textmodifier.ts#L205)
+Defined in: [textmode/Textmodifier.ts:337](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L337)
 
 Apply textmode rendering to the canvas.
 
@@ -292,7 +292,7 @@ function draw() {
 
 > **renderMode**(`mode?`): `void` \| `"manual"` \| `"auto"`
 
-Defined in: [textmode/Textmodifier.ts:318](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/Textmodifier.ts#L318)
+Defined in: [textmode/Textmodifier.ts:454](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L454)
 
 Update the rendering mode. 
 
@@ -328,11 +328,95 @@ textmodifier.renderMode('manual');
 
 ***
 
+### saveCanvas()
+
+> **saveCanvas**(`filename`, `format`, `options`): `Promise`\<`void`\>
+
+Defined in: [textmode/Textmodifier.ts:259](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L259)
+
+Export the current textmode rendering to an image file.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `filename` | `string` | The filename (without extension) to save the image as |
+| `format` | `"png"` \| `"jpg"` \| `"webp"` | The image format ('png', 'jpg', or 'webp') |
+| `options` | `Omit`\<[`ImageExportOptions`](../textmode.js/namespaces/ExportOptions/type-aliases/ImageExportOptions.md), `"filename"` \| `"format"`\> | Additional options for image export |
+
+#### Returns
+
+`Promise`\<`void`\>
+
+#### Example
+
+```javascript
+// Fetch a canvas element to apply textmode rendering to
+const canvas = document.querySelector('canvas#myCanvas');
+
+// Create a Textmodifier instance
+const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
+
+// Render a single frame
+textmodifier.render();
+
+// Export the current rendering to a PNG file
+textmodifier.saveCanvas('my_textmode_rendering', 'png');
+
+// Export with custom options
+textmodifier.saveCanvas('my_textmode_rendering', 'jpg', {
+  quality: 0.8,
+  scale: 2.0,
+  backgroundColor: 'white'
+});
+```
+
+***
+
+### saveStrings()
+
+> **saveStrings**(`options`): `void`
+
+Defined in: [textmode/Textmodifier.ts:169](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L169)
+
+Export the current textmode rendering to a TXT file.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options` | [`TXTExportOptions`](../textmode.js/namespaces/ExportOptions/type-aliases/TXTExportOptions.md) | Options for TXT export |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+// Fetch a canvas element to apply textmode rendering to
+const canvas = document.querySelector('canvas#myCanvas');
+
+// Create a Textmodifier instance
+const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
+
+// Render a single frame
+textmodifier.render();
+
+// Export the current rendering to a TXT file
+textmodifier.saveStrings({
+  filename: 'my_textmode_rendering',
+  preserveTrailingSpaces: false
+});
+```
+
+***
+
 ### saveSVG()
 
 > **saveSVG**(`options`): `void`
 
-Defined in: [textmode/Textmodifier.ts:135](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/Textmodifier.ts#L135)
+Defined in: [textmode/Textmodifier.ts:226](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L226)
 
 Export the current textmode rendering to an SVG file.
 
@@ -340,7 +424,7 @@ Export the current textmode rendering to an SVG file.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `options` | [`SVGExportOptions`](../type-aliases/SVGExportOptions.md) | Options for SVG export |
+| `options` | [`SVGExportOptions`](../textmode.js/namespaces/ExportOptions/type-aliases/SVGExportOptions.md) | Options for SVG export |
 
 #### Returns
 
@@ -362,4 +446,92 @@ textmodifier.render();
 textmodifier.saveSVG({
   filename: 'my_textmode_rendering',
 });
+```
+
+***
+
+### toString()
+
+> **toString**(`options`): `string`
+
+Defined in: [textmode/Textmodifier.ts:142](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L142)
+
+Generate the current textmode rendering as a text string.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options` | `Omit`\<[`TXTExportOptions`](../textmode.js/namespaces/ExportOptions/type-aliases/TXTExportOptions.md), `"filename"`\> | Options for TXT generation (excluding filename) |
+
+#### Returns
+
+`string`
+
+TXT content as a string
+
+#### Example
+
+```javascript
+// Fetch a canvas element to apply textmode rendering to
+const canvas = document.querySelector('canvas#myCanvas');
+
+// Create a Textmodifier instance
+const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
+
+// Render a single frame
+textmodifier.render();
+
+// Get the current rendering as a text string
+const textString = textmodifier.toString({
+  preserveTrailingSpaces: false,
+  lineEnding: 'lf'
+});
+
+// Print to console or use otherwise
+console.log(textString);
+```
+
+***
+
+### toSVG()
+
+> **toSVG**(`options`): `string`
+
+Defined in: [textmode/Textmodifier.ts:200](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/Textmodifier.ts#L200)
+
+Generate the current textmode rendering as an SVG string.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options` | `Omit`\<[`SVGExportOptions`](../textmode.js/namespaces/ExportOptions/type-aliases/SVGExportOptions.md), `"filename"`\> | Options for SVG generation (excluding filename) |
+
+#### Returns
+
+`string`
+
+SVG content as a string
+
+#### Example
+
+```javascript
+// Fetch a canvas element to apply textmode rendering to
+const canvas = document.querySelector('canvas#myCanvas');
+
+// Create a Textmodifier instance
+const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
+
+// Render a single frame
+textmodifier.render();
+
+// Get the current rendering as an SVG string
+const svgString = textmodifier.toSVG({
+  includeBackgroundRectangles: true,
+  drawMode: 'fill'
+});
+
+// Print to console or use otherwise
+console.log(svgString);
 ```

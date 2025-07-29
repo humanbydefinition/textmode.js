@@ -1,13 +1,14 @@
-**textmode.js v0.1.0**
+**textmode.js v0.1.1**
 
 ***
 
-# textmode.js v0.1.0
+# textmode.js v0.1.1
 
 ## Namespaces
 
 | Namespace | Description |
 | ------ | ------ |
+| [ExportOptions](textmode.js/namespaces/ExportOptions/README.md) | All types related to export options for different formats. |
 | [TextmodeConverters](textmode.js/namespaces/TextmodeConverters/README.md) | Contains all converters that can be added to a rendering pipeline to shape the textmode output. |
 
 ## Enumerations
@@ -30,6 +31,5 @@
 
 | Type Alias | Description |
 | ------ | ------ |
-| [SVGExportOptions](type-aliases/SVGExportOptions.md) | Options for exporting the textmode content to SVG format. |
 | [TextmodeCharacter](type-aliases/TextmodeCharacter.md) | Represents a single character in the textmode font. |
 | [TextmodeOptions](type-aliases/TextmodeOptions.md) | Options for creating a [Textmodifier](classes/Textmodifier.md) instance. |

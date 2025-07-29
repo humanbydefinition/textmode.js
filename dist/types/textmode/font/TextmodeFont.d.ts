@@ -1,6 +1,6 @@
 import type { Renderer } from '../../rendering/webgl/Renderer.ts';
 import type { Framebuffer } from '../../rendering/webgl/Framebuffer.ts';
-import type { TextmodeCharacter } from './types.ts';
+import type { TextmodeCharacter, TyprFont } from './types.ts';
 /**
  * Manages the textmode font used for rendering characters.
  *
@@ -93,4 +93,6 @@ export declare class TextmodeFont {
     };
     /** Returns the font size used for rendering. */
     get fontSize(): number;
+    /** Returns the Typr.js font object. @ignore */
+    get font(): TyprFont;
 }

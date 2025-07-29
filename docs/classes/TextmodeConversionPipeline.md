@@ -1,4 +1,4 @@
-[**textmode.js v0.1.0**](../README.md)
+[**textmode.js v0.1.1**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: TextmodeConversionPipeline
 
-Defined in: [textmode/ConversionPipeline.ts:19](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/ConversionPipeline.ts#L19)
+Defined in: [textmode/ConversionPipeline.ts:19](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/ConversionPipeline.ts#L19)
 
 Manages the conversion pipeline for textmode rendering.
 
@@ -22,7 +22,7 @@ color adjustments, transformations, and more.
 
 > **get** **texture**(): `Framebuffer`
 
-Defined in: [textmode/ConversionPipeline.ts:225](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/ConversionPipeline.ts#L225)
+Defined in: [textmode/ConversionPipeline.ts:229](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/ConversionPipeline.ts#L229)
 
 Returns the framebuffer containing the textmode conversion result.
 
@@ -36,7 +36,7 @@ Returns the framebuffer containing the textmode conversion result.
 
 > **add**(`name`, `type`): `void` \| [`TextmodeConverter`](../textmode.js/namespaces/TextmodeConverters/classes/TextmodeConverter.md)
 
-Defined in: [textmode/ConversionPipeline.ts:148](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/ConversionPipeline.ts#L148)
+Defined in: [textmode/ConversionPipeline.ts:152](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/ConversionPipeline.ts#L152)
 
 Adds a new converter to the pipeline.
 
@@ -59,7 +59,7 @@ The newly created [TextmodeConverter](../textmode.js/namespaces/TextmodeConverte
 
 > **get**(`name`): `void` \| [`TextmodeConverter`](../textmode.js/namespaces/TextmodeConverters/classes/TextmodeConverter.md)
 
-Defined in: [textmode/ConversionPipeline.ts:119](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/ConversionPipeline.ts#L119)
+Defined in: [textmode/ConversionPipeline.ts:123](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/ConversionPipeline.ts#L123)
 
 Retrieves a converter by name. Useful for accessing the pre-defined converters in the pipeline.
 
@@ -77,11 +77,23 @@ The requested [TextmodeConverter](../textmode.js/namespaces/TextmodeConverters/c
 
 ***
 
+### hasEnabledConverters()
+
+> **hasEnabledConverters**(): `boolean`
+
+Defined in: [textmode/ConversionPipeline.ts:251](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/ConversionPipeline.ts#L251)
+
+#### Returns
+
+`boolean`
+
+***
+
 ### remove()
 
 > **remove**(`nameOrInstance`): `boolean`
 
-Defined in: [textmode/ConversionPipeline.ts:182](https://github.com/humanbydefinition/textmode.js-dev/blob/343f9ecda8003c649bb7b0b4174c4e0103447484/src/textmode/ConversionPipeline.ts#L182)
+Defined in: [textmode/ConversionPipeline.ts:186](https://github.com/humanbydefinition/textmode.js-dev/blob/a65ef74f9f1cec2f9aa76c00793fa738c0824751/src/textmode/ConversionPipeline.ts#L186)
 
 Removes a converter from the pipeline by name or instance.
 

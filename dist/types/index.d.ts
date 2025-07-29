@@ -5,7 +5,8 @@ export { TextmodeCanvas } from './textmode/Canvas';
 export { TextmodeGrid } from './textmode/Grid';
 export type { TextmodeOptions } from './textmode/Textmodifier';
 export type { TextmodeCharacter } from './textmode/font';
-export type { SVGExportOptions } from './export/svg';
+/** All types related to export options for different formats. */
+export * as ExportOptions from './export';
 export { TextmodeConversionPipeline } from './textmode/ConversionPipeline';
 export { TextmodeErrorLevel } from './errors/ErrorHandler';
 /** Contains all converters that can be added to a rendering pipeline to shape the textmode output. */

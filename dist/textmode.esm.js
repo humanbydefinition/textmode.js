@@ -1,89 +1,89 @@
-var BA = Object.defineProperty;
-var oA = (i, A, r) => A in i ? BA(i, A, { enumerable: !0, configurable: !0, writable: !0, value: r }) : i[A] = r;
-var E = (i, A, r) => oA(i, typeof A != "symbol" ? A + "" : A, r);
-class T extends Error {
-  constructor(r, e, t = {}) {
-    const n = T.createFormattedMessage(r, t);
-    super(n);
-    E(this, "originalError");
-    E(this, "context");
-    this.name = "TextmodeError", this.originalError = e, this.context = t;
+var k = Object.defineProperty;
+var N = (n, A, e) => A in n ? k(n, A, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[A] = e;
+var o = (n, A, e) => N(n, typeof A != "symbol" ? A + "" : A, e);
+class f extends Error {
+  constructor(e, t, r = {}) {
+    const i = f.createFormattedMessage(e, r);
+    super(i);
+    o(this, "originalError");
+    o(this, "context");
+    this.name = "TextmodeError", this.originalError = t, this.context = r;
   }
   /**
    * Create a formatted error message that includes context
    */
-  static createFormattedMessage(r, e) {
-    let t = r;
-    if (e && Object.keys(e).length > 0) {
-      t += `
+  static createFormattedMessage(e, t) {
+    let r = e;
+    if (t && Object.keys(t).length > 0) {
+      r += `
 
 📋 Context:`;
-      for (const [n, a] of Object.entries(e)) {
-        const s = T.formatValue(a);
-        t += `
-  - ${n}: ${s}`;
+      for (const [i, a] of Object.entries(t)) {
+        const s = f.formatValue(a);
+        r += `
+  - ${i}: ${s}`;
       }
     }
-    return t += `
+    return r += `
 
-`, t += "↓".repeat(24) + `
-`, t;
+`, r += "↓".repeat(24) + `
+`, r;
   }
   /**
    * Format values for better display in error messages
    */
-  static formatValue(r) {
-    if (r === null) return "null";
-    if (r === void 0) return "undefined";
-    if (typeof r == "string") return `"${r}"`;
-    if (typeof r == "number" || typeof r == "boolean") return String(r);
-    if (Array.isArray(r))
-      return r.length === 0 ? "[]" : r.length <= 5 ? `[${r.map((e) => T.formatValue(e)).join(", ")}]` : `[${r.slice(0, 3).map((e) => T.formatValue(e)).join(", ")}, ... +${r.length - 3} more]`;
-    if (typeof r == "object") {
-      const e = Object.keys(r);
-      return e.length === 0 ? "{}" : e.length <= 3 ? `{ ${e.map((a) => `${a}: ${T.formatValue(r[a])}`).join(", ")} }` : `{ ${e.slice(0, 2).map((n) => `${n}: ${T.formatValue(r[n])}`).join(", ")}, ... +${e.length - 2} more }`;
+  static formatValue(e) {
+    if (e === null) return "null";
+    if (e === void 0) return "undefined";
+    if (typeof e == "string") return `"${e}"`;
+    if (typeof e == "number" || typeof e == "boolean") return String(e);
+    if (Array.isArray(e))
+      return e.length === 0 ? "[]" : e.length <= 5 ? `[${e.map((t) => f.formatValue(t)).join(", ")}]` : `[${e.slice(0, 3).map((t) => f.formatValue(t)).join(", ")}, ... +${e.length - 3} more]`;
+    if (typeof e == "object") {
+      const t = Object.keys(e);
+      return t.length === 0 ? "{}" : t.length <= 3 ? `{ ${t.map((a) => `${a}: ${f.formatValue(e[a])}`).join(", ")} }` : `{ ${t.slice(0, 2).map((i) => `${i}: ${f.formatValue(e[i])}`).join(", ")}, ... +${t.length - 2} more }`;
     }
-    return String(r);
+    return String(e);
   }
 }
-var gA = /* @__PURE__ */ ((i) => (i[i.SILENT = 0] = "SILENT", i[i.WARNING = 1] = "WARNING", i[i.ERROR = 2] = "ERROR", i[i.THROW = 3] = "THROW", i))(gA || {});
-const z = class z {
+var X = /* @__PURE__ */ ((n) => (n[n.SILENT = 0] = "SILENT", n[n.WARNING = 1] = "WARNING", n[n.ERROR = 2] = "ERROR", n[n.THROW = 3] = "THROW", n))(X || {});
+const v = class v {
   constructor() {
-    E(this, "_options", {
+    o(this, "_options", {
       globalLevel: 3
       /* THROW */
     });
   }
   static getInstance() {
-    return z._instance || (z._instance = new z()), z._instance;
+    return v._instance || (v._instance = new v()), v._instance;
   }
   /**
    * Handle an error based on the configured settings
    * @returns true if execution should continue, false if error was handled
    */
-  _handle(A, r, e) {
-    const t = "[textmode.js]";
+  _handle(A, e, t) {
+    const r = "[textmode.js]";
     switch (this._options.globalLevel) {
       case 0:
         return !1;
       // Validation failed, handled silently
       case 1:
         return console.group(
-          `%c${t} Oops! (╯°□°)╯︵ Something went wrong in your code.`,
+          `%c${r} Oops! (╯°□°)╯︵ Something went wrong in your code.`,
           "color: #f44336; font-weight: bold; background: #ffebee; padding: 2px 6px; border-radius: 3px;"
-        ), console.warn(T.createFormattedMessage(A, r)), console.groupEnd(), !1;
+        ), console.warn(f.createFormattedMessage(A, e)), console.groupEnd(), !1;
       case 2:
         return console.group(
-          `%c${t} Oops! (╯°□°)╯︵ Something went wrong in your code.`,
+          `%c${r} Oops! (╯°□°)╯︵ Something went wrong in your code.`,
           "color: #f44336; font-weight: bold; background: #ffebee; padding: 2px 6px; border-radius: 3px;"
-        ), console.error(T.createFormattedMessage(A, r)), console.groupEnd(), !1;
+        ), console.error(f.createFormattedMessage(A, e)), console.groupEnd(), !1;
       case 3:
       default:
-        const n = new T(A, e, r);
+        const i = new f(A, t, e);
         throw console.group(
-          `%c${t} Oops! (╯°□°)╯︵ Something went wrong in your code.`,
+          `%c${r} Oops! (╯°□°)╯︵ Something went wrong in your code.`,
           "color: #d32f2f; font-weight: bold; background: #ffcdd2; padding: 2px 6px; border-radius: 3px;"
-        ), n;
+        ), i;
     }
   }
   /**
@@ -93,8 +93,8 @@ const z = class z {
    * @param context Additional context for debugging
    * @returns true if validation passed, false if validation failed and was handled
    */
-  validate(A, r, e) {
-    return A ? !0 : (this._handle(r, e), !1);
+  validate(A, e, t) {
+    return A ? !0 : (this._handle(e, t), !1);
   }
   /**
    * Set global error level
@@ -103,36 +103,36 @@ const z = class z {
     this._options.globalLevel = A;
   }
 };
-E(z, "_instance", null);
-let rA = z;
-const F = rA.getInstance();
-class EA {
-  constructor(A, r, e = r, t = {}) {
-    E(this, "gl");
-    E(this, "_framebuffer");
-    E(this, "_texture");
-    E(this, "_width");
-    E(this, "_height");
-    E(this, "options");
-    E(this, "previousState", null);
-    E(this, "_pixels", null);
-    this.gl = A, this._width = r, this._height = e, this.options = {
+o(v, "_instance", null);
+let T = v;
+const C = T.getInstance();
+class W {
+  constructor(A, e, t = e, r = {}) {
+    o(this, "gl");
+    o(this, "_framebuffer");
+    o(this, "_texture");
+    o(this, "_width");
+    o(this, "_height");
+    o(this, "options");
+    o(this, "previousState", null);
+    o(this, "_pixels", null);
+    this.gl = A, this._width = e, this._height = t, this.options = {
       filter: "nearest",
       wrap: "clamp",
       format: "rgba",
       type: "unsigned_byte",
-      ...t
+      ...r
     }, this._texture = this.createTexture(), this._framebuffer = A.createFramebuffer(), this.attachTexture();
   }
   createTexture() {
-    const { gl: A } = this, r = A.createTexture();
-    A.bindTexture(A.TEXTURE_2D, r);
-    const e = this.options.filter === "linear" ? A.LINEAR : A.NEAREST, t = this.options.wrap === "repeat" ? A.REPEAT : A.CLAMP_TO_EDGE;
-    return A.texParameteri(A.TEXTURE_2D, A.TEXTURE_MIN_FILTER, e), A.texParameteri(A.TEXTURE_2D, A.TEXTURE_MAG_FILTER, e), A.texParameteri(A.TEXTURE_2D, A.TEXTURE_WRAP_S, t), A.texParameteri(A.TEXTURE_2D, A.TEXTURE_WRAP_T, t), this.updateTextureSize(), r;
+    const { gl: A } = this, e = A.createTexture();
+    A.bindTexture(A.TEXTURE_2D, e);
+    const t = this.options.filter === "linear" ? A.LINEAR : A.NEAREST, r = this.options.wrap === "repeat" ? A.REPEAT : A.CLAMP_TO_EDGE;
+    return A.texParameteri(A.TEXTURE_2D, A.TEXTURE_MIN_FILTER, t), A.texParameteri(A.TEXTURE_2D, A.TEXTURE_MAG_FILTER, t), A.texParameteri(A.TEXTURE_2D, A.TEXTURE_WRAP_S, r), A.texParameteri(A.TEXTURE_2D, A.TEXTURE_WRAP_T, r), this.updateTextureSize(), e;
   }
   updateTextureSize() {
-    const { gl: A } = this, r = A.RGBA, e = A.RGBA, t = this.options.type === "float" ? A.FLOAT : A.UNSIGNED_BYTE;
-    A.texImage2D(A.TEXTURE_2D, 0, r, this._width, this._height, 0, e, t, null);
+    const { gl: A } = this, e = A.RGBA, t = A.RGBA, r = this.options.type === "float" ? A.FLOAT : A.UNSIGNED_BYTE;
+    A.texImage2D(A.TEXTURE_2D, 0, e, this._width, this._height, 0, t, r, null);
   }
   attachTexture() {
     const { gl: A } = this;
@@ -142,21 +142,21 @@ class EA {
    * Update the framebuffer texture with canvas content
    */
   update(A) {
-    const { gl: r } = this;
-    r.bindTexture(r.TEXTURE_2D, this._texture), r.texImage2D(r.TEXTURE_2D, 0, r.RGBA, r.RGBA, r.UNSIGNED_BYTE, A), r.bindTexture(r.TEXTURE_2D, null);
+    const { gl: e } = this;
+    e.bindTexture(e.TEXTURE_2D, this._texture), e.texImage2D(e.TEXTURE_2D, 0, e.RGBA, e.RGBA, e.UNSIGNED_BYTE, A), e.bindTexture(e.TEXTURE_2D, null);
   }
   /**
    * Update the framebuffer texture with pixel data
    */
-  updatePixels(A, r, e) {
-    const { gl: t } = this;
-    t.bindTexture(t.TEXTURE_2D, this._texture), t.texImage2D(t.TEXTURE_2D, 0, t.RGBA, r, e, 0, t.RGBA, t.UNSIGNED_BYTE, A), t.bindTexture(t.TEXTURE_2D, null);
+  updatePixels(A, e, t) {
+    const { gl: r } = this;
+    r.bindTexture(r.TEXTURE_2D, this._texture), r.texImage2D(r.TEXTURE_2D, 0, r.RGBA, e, t, 0, r.RGBA, r.UNSIGNED_BYTE, A), r.bindTexture(r.TEXTURE_2D, null);
   }
   /**
    * Resize the framebuffer
    */
-  resize(A, r) {
-    this._width = A, this._height = r, this.gl.bindTexture(this.gl.TEXTURE_2D, this._texture), this.updateTextureSize(), this.gl.bindTexture(this.gl.TEXTURE_2D, null);
+  resize(A, e) {
+    this._width = A, this._height = e, this.gl.bindTexture(this.gl.TEXTURE_2D, this._texture), this.updateTextureSize(), this.gl.bindTexture(this.gl.TEXTURE_2D, null);
   }
   /**
    * Begin rendering to this framebuffer
@@ -182,22 +182,22 @@ class EA {
   loadPixels() {
     const { gl: A } = this;
     this._pixels || (this._pixels = new Uint8Array(this._width * this._height * 4));
-    const r = A.getParameter(A.FRAMEBUFFER_BINDING);
-    A.bindFramebuffer(A.FRAMEBUFFER, this._framebuffer), A.readPixels(0, 0, this._width, this._height, A.RGBA, A.UNSIGNED_BYTE, this._pixels), A.bindFramebuffer(A.FRAMEBUFFER, r);
+    const e = A.getParameter(A.FRAMEBUFFER_BINDING);
+    A.bindFramebuffer(A.FRAMEBUFFER, this._framebuffer), A.readPixels(0, 0, this._width, this._height, A.RGBA, A.UNSIGNED_BYTE, this._pixels), A.bindFramebuffer(A.FRAMEBUFFER, e);
   }
-  get(A, r, e, t) {
-    const { gl: n } = this;
-    if (A === void 0 && r === void 0) {
-      const a = new Uint8Array(this._width * this._height * 4), s = n.getParameter(n.FRAMEBUFFER_BINDING);
-      return n.bindFramebuffer(n.FRAMEBUFFER, this._framebuffer), n.readPixels(0, 0, this._width, this._height, n.RGBA, n.UNSIGNED_BYTE, a), n.bindFramebuffer(n.FRAMEBUFFER, s), a;
-    } else if (e === void 0 && t === void 0) {
-      (A < 0 || r < 0 || A >= this._width || r >= this._height) && (console.warn("The x and y values passed to Framebuffer.get are outside of its range and will be clamped."), A = Math.max(0, Math.min(A, this._width - 1)), r = Math.max(0, Math.min(r, this._height - 1)));
-      const a = new Uint8Array(4), s = n.getParameter(n.FRAMEBUFFER_BINDING);
-      return n.bindFramebuffer(n.FRAMEBUFFER, this._framebuffer), n.readPixels(A, r, 1, 1, n.RGBA, n.UNSIGNED_BYTE, a), n.bindFramebuffer(n.FRAMEBUFFER, s), [a[0], a[1], a[2], a[3]];
+  get(A, e, t, r) {
+    const { gl: i } = this;
+    if (A === void 0 && e === void 0) {
+      const a = new Uint8Array(this._width * this._height * 4), s = i.getParameter(i.FRAMEBUFFER_BINDING);
+      return i.bindFramebuffer(i.FRAMEBUFFER, this._framebuffer), i.readPixels(0, 0, this._width, this._height, i.RGBA, i.UNSIGNED_BYTE, a), i.bindFramebuffer(i.FRAMEBUFFER, s), a;
+    } else if (t === void 0 && r === void 0) {
+      (A < 0 || e < 0 || A >= this._width || e >= this._height) && (console.warn("The x and y values passed to Framebuffer.get are outside of its range and will be clamped."), A = Math.max(0, Math.min(A, this._width - 1)), e = Math.max(0, Math.min(e, this._height - 1)));
+      const a = new Uint8Array(4), s = i.getParameter(i.FRAMEBUFFER_BINDING);
+      return i.bindFramebuffer(i.FRAMEBUFFER, this._framebuffer), i.readPixels(A, e, 1, 1, i.RGBA, i.UNSIGNED_BYTE, a), i.bindFramebuffer(i.FRAMEBUFFER, s), [a[0], a[1], a[2], a[3]];
     } else {
-      A = Math.max(0, Math.min(A, this._width - 1)), r = Math.max(0, Math.min(r, this._height - 1)), e = Math.max(1, Math.min(e, this._width - A)), t = Math.max(1, Math.min(t, this._height - r));
-      const a = new Uint8Array(e * t * 4), s = n.getParameter(n.FRAMEBUFFER_BINDING);
-      return n.bindFramebuffer(n.FRAMEBUFFER, this._framebuffer), n.readPixels(A, r, e, t, n.RGBA, n.UNSIGNED_BYTE, a), n.bindFramebuffer(n.FRAMEBUFFER, s), a;
+      A = Math.max(0, Math.min(A, this._width - 1)), e = Math.max(0, Math.min(e, this._height - 1)), t = Math.max(1, Math.min(t, this._width - A)), r = Math.max(1, Math.min(r, this._height - e));
+      const a = new Uint8Array(t * r * 4), s = i.getParameter(i.FRAMEBUFFER_BINDING);
+      return i.bindFramebuffer(i.FRAMEBUFFER, this._framebuffer), i.readPixels(A, e, t, r, i.RGBA, i.UNSIGNED_BYTE, a), i.bindFramebuffer(i.FRAMEBUFFER, s), a;
     }
   }
   // Getters
@@ -217,81 +217,81 @@ class EA {
     return this._pixels;
   }
 }
-class aA {
-  constructor(A, r, e, t, n, a = {}) {
+class O {
+  constructor(A, e, t, r, i, a = {}) {
     /** The WebGL rendering context */
-    E(this, "gl");
+    o(this, "gl");
     /** The vertex buffer containing position and optional texture coordinates */
-    E(this, "vertexBuffer");
+    o(this, "vertexBuffer");
     /** The number of vertices in this geometry (always 6 for two triangles) */
-    E(this, "vertexCount", 6);
+    o(this, "vertexCount", 6);
     /** The rendering mode: textured or solid color */
-    E(this, "renderMode");
+    o(this, "renderMode");
     /** Bytes per vertex: 8 for position-only, 16 for position+texture */
-    E(this, "bytesPerVertex");
+    o(this, "bytesPerVertex");
     this.gl = A;
     const s = a.textured ?? !0;
     this.renderMode = s ? "textured" : "solid", this.bytesPerVertex = s ? 16 : 8;
-    const B = A.getParameter(A.VIEWPORT), g = B[2], o = B[3], u = A.getParameter(A.FRAMEBUFFER_BINDING) !== null, h = r / g * 2 - 1, c = (r + t) / g * 2 - 1;
-    let D, l;
-    u ? (D = e / o * 2 - 1, l = (e + n) / o * 2 - 1) : (D = 1 - e / o * 2, l = 1 - (e + n) / o * 2);
-    const C = this.generateVertices(h, D, c, l, s);
-    this.vertexBuffer = A.createBuffer(), A.bindBuffer(A.ARRAY_BUFFER, this.vertexBuffer), A.bufferData(A.ARRAY_BUFFER, C, A.STATIC_DRAW);
+    const B = A.getParameter(A.VIEWPORT), g = B[2], Q = B[3], l = A.getParameter(A.FRAMEBUFFER_BINDING) !== null, h = e / g * 2 - 1, u = (e + r) / g * 2 - 1;
+    let d, c;
+    l ? (d = t / Q * 2 - 1, c = (t + i) / Q * 2 - 1) : (d = 1 - t / Q * 2, c = 1 - (t + i) / Q * 2);
+    const D = this.generateVertices(h, d, u, c, s);
+    this.vertexBuffer = A.createBuffer(), A.bindBuffer(A.ARRAY_BUFFER, this.vertexBuffer), A.bufferData(A.ARRAY_BUFFER, D, A.STATIC_DRAW);
   }
   /**
    * Generate vertex data for the rectangle
    * @private
    */
-  generateVertices(A, r, e, t, n) {
-    return n ? new Float32Array([
+  generateVertices(A, e, t, r, i) {
+    return i ? new Float32Array([
       A,
-      t,
+      r,
       0,
       1,
       // bottom-left
-      e,
       t,
+      r,
       1,
       1,
       // bottom-right
       A,
-      r,
+      e,
       0,
       0,
       // top-left
       A,
-      r,
+      e,
       0,
       0,
       // top-left
-      e,
       t,
+      r,
       1,
       1,
       // bottom-right
+      t,
       e,
-      r,
       1,
       0
       // top-right
     ]) : new Float32Array([
       A,
-      t,
+      r,
       // bottom-left
-      e,
       t,
+      r,
       // bottom-right
       A,
-      r,
+      e,
       // top-left
       A,
-      r,
+      e,
       // top-left
-      e,
       t,
+      r,
       // bottom-right
-      e,
-      r
+      t,
+      e
       // top-right
     ]);
   }
@@ -300,50 +300,50 @@ class aA {
    */
   render() {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer);
-    const A = 0, r = 1;
-    this.gl.enableVertexAttribArray(A), this.gl.vertexAttribPointer(A, 2, this.gl.FLOAT, !1, this.bytesPerVertex, 0), this.renderMode === "textured" && (this.gl.enableVertexAttribArray(r), this.gl.vertexAttribPointer(r, 2, this.gl.FLOAT, !1, this.bytesPerVertex, 8)), this.gl.drawArrays(this.gl.TRIANGLES, 0, this.vertexCount), this.gl.disableVertexAttribArray(A), this.renderMode === "textured" && this.gl.disableVertexAttribArray(r);
+    const A = 0, e = 1;
+    this.gl.enableVertexAttribArray(A), this.gl.vertexAttribPointer(A, 2, this.gl.FLOAT, !1, this.bytesPerVertex, 0), this.renderMode === "textured" && (this.gl.enableVertexAttribArray(e), this.gl.vertexAttribPointer(e, 2, this.gl.FLOAT, !1, this.bytesPerVertex, 8)), this.gl.drawArrays(this.gl.TRIANGLES, 0, this.vertexCount), this.gl.disableVertexAttribArray(A), this.renderMode === "textured" && this.gl.disableVertexAttribArray(e);
   }
 }
-class R {
-  constructor(A, r, e) {
-    E(this, "gl");
-    E(this, "program");
-    E(this, "uniformLocations", /* @__PURE__ */ new Map());
-    E(this, "attributeLocations", /* @__PURE__ */ new Map());
-    E(this, "textureUnitCounter", 0);
-    this.gl = A, this.program = this.createProgram(r, e), this.cacheLocations();
+class w {
+  constructor(A, e, t) {
+    o(this, "gl");
+    o(this, "program");
+    o(this, "uniformLocations", /* @__PURE__ */ new Map());
+    o(this, "attributeLocations", /* @__PURE__ */ new Map());
+    o(this, "textureUnitCounter", 0);
+    this.gl = A, this.program = this.createProgram(e, t), this.cacheLocations();
   }
-  createProgram(A, r) {
-    const e = this.createShader(this.gl.VERTEX_SHADER, A), t = this.createShader(this.gl.FRAGMENT_SHADER, r), n = this.gl.createProgram();
-    if (this.gl.attachShader(n, e), this.gl.attachShader(n, t), this.gl.linkProgram(n), !this.gl.getProgramParameter(n, this.gl.LINK_STATUS)) {
-      const a = this.gl.getProgramInfoLog(n);
+  createProgram(A, e) {
+    const t = this.createShader(this.gl.VERTEX_SHADER, A), r = this.createShader(this.gl.FRAGMENT_SHADER, e), i = this.gl.createProgram();
+    if (this.gl.attachShader(i, t), this.gl.attachShader(i, r), this.gl.linkProgram(i), !this.gl.getProgramParameter(i, this.gl.LINK_STATUS)) {
+      const a = this.gl.getProgramInfoLog(i);
       throw new Error(`Shader program link error: ${a}`);
     }
-    return this.gl.deleteShader(e), this.gl.deleteShader(t), n;
+    return this.gl.deleteShader(t), this.gl.deleteShader(r), i;
   }
-  createShader(A, r) {
-    const e = this.gl.createShader(A);
-    if (this.gl.shaderSource(e, r), this.gl.compileShader(e), !this.gl.getShaderParameter(e, this.gl.COMPILE_STATUS)) {
-      const t = this.gl.getShaderInfoLog(e);
-      throw this.gl.deleteShader(e), new Error(`Shader compilation error: ${t}`);
+  createShader(A, e) {
+    const t = this.gl.createShader(A);
+    if (this.gl.shaderSource(t, e), this.gl.compileShader(t), !this.gl.getShaderParameter(t, this.gl.COMPILE_STATUS)) {
+      const r = this.gl.getShaderInfoLog(t);
+      throw this.gl.deleteShader(t), new Error(`Shader compilation error: ${r}`);
     }
-    return e;
+    return t;
   }
   cacheLocations() {
     const A = this.gl.getProgramParameter(this.program, this.gl.ACTIVE_UNIFORMS);
-    for (let e = 0; e < A; e++) {
-      const t = this.gl.getActiveUniform(this.program, e);
-      if (t) {
-        const n = this.gl.getUniformLocation(this.program, t.name);
-        n && this.uniformLocations.set(t.name, n);
+    for (let t = 0; t < A; t++) {
+      const r = this.gl.getActiveUniform(this.program, t);
+      if (r) {
+        const i = this.gl.getUniformLocation(this.program, r.name);
+        i && this.uniformLocations.set(r.name, i);
       }
     }
-    const r = this.gl.getProgramParameter(this.program, this.gl.ACTIVE_ATTRIBUTES);
-    for (let e = 0; e < r; e++) {
-      const t = this.gl.getActiveAttrib(this.program, e);
-      if (t) {
-        const n = this.gl.getAttribLocation(this.program, t.name);
-        this.attributeLocations.set(t.name, n);
+    const e = this.gl.getProgramParameter(this.program, this.gl.ACTIVE_ATTRIBUTES);
+    for (let t = 0; t < e; t++) {
+      const r = this.gl.getActiveAttrib(this.program, t);
+      if (r) {
+        const i = this.gl.getAttribLocation(this.program, r.name);
+        this.attributeLocations.set(r.name, i);
       }
     }
   }
@@ -356,38 +356,38 @@ class R {
   /**
    * Set a single uniform value with automatic texture unit management
    */
-  setUniform(A, r) {
-    const e = this.uniformLocations.get(A);
-    if (!e) {
+  setUniform(A, e) {
+    const t = this.uniformLocations.get(A);
+    if (!t) {
       console.warn(`Uniform '${A}' not found in shader`);
       return;
     }
-    if (typeof r == "number")
-      this.gl.uniform1f(e, r);
-    else if (typeof r == "boolean")
-      this.gl.uniform1i(e, r ? 1 : 0);
-    else if (Array.isArray(r))
-      switch (r.length) {
+    if (typeof e == "number")
+      this.gl.uniform1f(t, e);
+    else if (typeof e == "boolean")
+      this.gl.uniform1i(t, e ? 1 : 0);
+    else if (Array.isArray(e))
+      switch (e.length) {
         case 2:
-          this.gl.uniform2f(e, r[0], r[1]);
+          this.gl.uniform2f(t, e[0], e[1]);
           break;
         case 3:
-          this.gl.uniform3f(e, r[0], r[1], r[2]);
+          this.gl.uniform3f(t, e[0], e[1], e[2]);
           break;
         case 4:
-          this.gl.uniform4f(e, r[0], r[1], r[2], r[3]);
+          this.gl.uniform4f(t, e[0], e[1], e[2], e[3]);
           break;
         default:
-          console.warn(`Unsupported array length ${r.length} for uniform '${A}'`);
+          console.warn(`Unsupported array length ${e.length} for uniform '${A}'`);
       }
-    else if (r instanceof WebGLTexture) {
-      const t = this.getNextTextureUnit();
-      this.gl.uniform1i(e, t), this.gl.activeTexture(this.gl.TEXTURE0 + t), this.gl.bindTexture(this.gl.TEXTURE_2D, r);
-    } else if (r && typeof r == "object" && "texture" in r) {
-      const t = this.getNextTextureUnit();
-      this.gl.uniform1i(e, t), this.gl.activeTexture(this.gl.TEXTURE0 + t), this.gl.bindTexture(this.gl.TEXTURE_2D, r.texture);
+    else if (e instanceof WebGLTexture) {
+      const r = this.getNextTextureUnit();
+      this.gl.uniform1i(t, r), this.gl.activeTexture(this.gl.TEXTURE0 + r), this.gl.bindTexture(this.gl.TEXTURE_2D, e);
+    } else if (e && typeof e == "object" && "texture" in e) {
+      const r = this.getNextTextureUnit();
+      this.gl.uniform1i(t, r), this.gl.activeTexture(this.gl.TEXTURE0 + r), this.gl.bindTexture(this.gl.TEXTURE_2D, e.texture);
     } else
-      console.warn(`Unsupported uniform type for '${A}':`, typeof r);
+      console.warn(`Unsupported uniform type for '${A}':`, typeof e);
   }
   getNextTextureUnit() {
     return this.textureUnitCounter++;
@@ -399,18 +399,18 @@ class R {
     this.textureUnitCounter = 0;
   }
 }
-var O = "attribute vec2 a_position;attribute vec2 a_texCoord;varying vec2 v_uv;void main(){v_uv=a_texCoord;gl_Position=vec4(a_position,0.0,1.0);}", QA = "precision lowp float;uniform sampler2D u_texture;varying vec2 v_uv;void main(){gl_FragColor=texture2D(u_texture,v_uv);}", hA = "precision lowp float;uniform vec4 u_color;void main(){gl_FragColor=u_color;}";
-class lA {
+var p = "attribute vec2 a_position;attribute vec2 a_texCoord;varying vec2 v_uv;void main(){v_uv=a_texCoord;gl_Position=vec4(a_position,0.0,1.0);}", J = "precision lowp float;uniform sampler2D u_texture;varying vec2 v_uv;void main(){gl_FragColor=texture2D(u_texture,v_uv);}", K = "precision lowp float;uniform vec4 u_color;void main(){gl_FragColor=u_color;}";
+class j {
   constructor(A) {
-    E(this, "gl");
-    E(this, "imageShader");
-    E(this, "solidColorShader");
-    E(this, "currentShader", null);
-    E(this, "currentBlendMode", "normal");
+    o(this, "gl");
+    o(this, "imageShader");
+    o(this, "solidColorShader");
+    o(this, "currentShader", null);
+    o(this, "currentBlendMode", "normal");
     // Fill state management
-    E(this, "currentFillColor", [1, 1, 1, 1]);
-    E(this, "fillMode", !1);
-    this.gl = A, this.imageShader = new R(this.gl, O, QA), this.solidColorShader = new R(this.gl, O, hA), this.gl.enable(this.gl.BLEND), this.gl.blendEquation(this.gl.FUNC_ADD), this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+    o(this, "currentFillColor", [1, 1, 1, 1]);
+    o(this, "fillMode", !1);
+    this.gl = A, this.imageShader = new w(this.gl, p, J), this.solidColorShader = new w(this.gl, p, K), this.gl.enable(this.gl.BLEND), this.gl.blendEquation(this.gl.FUNC_ADD), this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
   }
   /**
    * Set the current shader (p5.js-like API)
@@ -423,14 +423,14 @@ class lA {
    * This only stores the color state and sets the fill mode.
    * No WebGL operations should happen here.
    */
-  fill(A, r, e, t) {
-    if (this.fillMode = !0, r === void 0 && e === void 0 && t === void 0) {
-      const n = A / 255;
-      this.currentFillColor = [n, n, n, 1];
-    } else if (e !== void 0 && t === void 0)
-      this.currentFillColor = [A / 255, r / 255, e / 255, 1];
-    else if (e !== void 0 && t !== void 0)
-      this.currentFillColor = [A / 255, r / 255, e / 255, t / 255];
+  fill(A, e, t, r) {
+    if (this.fillMode = !0, e === void 0 && t === void 0 && r === void 0) {
+      const i = A / 255;
+      this.currentFillColor = [i, i, i, 1];
+    } else if (t !== void 0 && r === void 0)
+      this.currentFillColor = [A / 255, e / 255, t / 255, 1];
+    else if (t !== void 0 && r !== void 0)
+      this.currentFillColor = [A / 255, e / 255, t / 255, r / 255];
     else
       throw new Error("Invalid fill parameters. Use fill(gray), fill(r,g,b), or fill(r,g,b,a)");
   }
@@ -440,46 +440,46 @@ class lA {
   reset() {
     this.fillMode = !1;
   }
-  createShader(A, r) {
-    return new R(this.gl, A, r);
+  createShader(A, e) {
+    return new w(this.gl, A, e);
   }
   /**
    * Set a uniform value for the current shader (p5.js-like API)
    */
-  setUniform(A, r) {
-    this.currentShader.setUniform(A, r);
+  setUniform(A, e) {
+    this.currentShader.setUniform(A, e);
   }
   /**
    * Draw a rectangle with the current shader or fill color (p5.js-like API)
    */
-  rect(A, r, e, t) {
+  rect(A, e, t, r) {
     if (this.fillMode && this.currentShader === null) {
-      const n = this.currentBlendMode;
+      const i = this.currentBlendMode;
       this.setBlendMode(
         "premultiplied"
         /* PREMULTIPLIED */
-      ), this.shader(this.solidColorShader), this.setUniform("u_color", this.currentFillColor), new aA(this.gl, A, r, e, t, { textured: !1 }).render(), this.setBlendMode(n);
+      ), this.shader(this.solidColorShader), this.setUniform("u_color", this.currentFillColor), new O(this.gl, A, e, t, r, { textured: !1 }).render(), this.setBlendMode(i);
     } else
-      new aA(this.gl, A, r, e, t, { textured: !0 }).render();
+      new O(this.gl, A, e, t, r, { textured: !0 }).render();
     this.currentShader = null;
   }
   /**
    * Create a new framebuffer
    */
-  createFramebuffer(A, r, e = {}) {
-    return new EA(this.gl, A, r, e);
+  createFramebuffer(A, e, t = {}) {
+    return new W(this.gl, A, e, t);
   }
   /**
    * Fill the current framebuffer with a solid color (p5.js-like API)
    */
-  background(A, r = A, e = A, t = 1) {
-    this.clear(A / 255, r / 255, e / 255, t);
+  background(A, e = A, t = A, r = 1) {
+    this.clear(A / 255, e / 255, t / 255, r);
   }
   /**
    * Clear the current framebuffer
    */
-  clear(A = 0, r = 0, e = 0, t = 0) {
-    this.gl.clearColor(A, r, e, t), this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+  clear(A = 0, e = 0, t = 0, r = 0) {
+    this.gl.clearColor(A, e, t, r), this.gl.clear(this.gl.COLOR_BUFFER_BIT);
   }
   /**
    * Ensure viewport matches canvas dimensions
@@ -510,866 +510,177 @@ class lA {
   /**
    * Render a framebuffer at a specific position with optional scaling
    */
-  image(A, r, e, t, n) {
+  image(A, e, t, r, i) {
     const a = this.currentBlendMode;
     this.setBlendMode(
       "premultiplied"
       /* PREMULTIPLIED */
-    ), this.shader(this.imageShader), this.setUniform("u_texture", A.texture), this.rect(r, e, t ?? A.width, n ?? A.height), this.setBlendMode(a);
+    ), this.shader(this.imageShader), this.setUniform("u_texture", A.texture), this.rect(e, t, r ?? A.width, i ?? A.height), this.setBlendMode(a);
   }
 }
-var Q = {};
-Q.parse = function(i) {
-  var A = Q.B, r = function(I, v, p, w) {
-    var d = Q.T, f = {
-      cmap: d.cmap,
-      head: d.head,
-      hhea: d.hhea,
-      maxp: d.maxp,
-      hmtx: d.hmtx,
-      name: d.name,
-      "OS/2": d.OS2,
-      post: d.post,
-      loca: d.loca,
-      kern: d.kern,
-      glyf: d.glyf,
-      "CFF ": d.CFF,
-      /*
-      "GPOS",
-      "GSUB",
-      "GDEF",*/
-      GSUB: d.GSUB,
-      CBLC: d.CBLC,
-      CBDT: d.CBDT,
-      "SVG ": d.SVG,
-      COLR: d.colr,
-      CPAL: d.cpal,
-      sbix: d.sbix,
-      fvar: d.fvar,
-      gvar: d.gvar,
-      avar: d.avar,
-      HVAR: d.HVAR
-      //"VORG",
-    }, _ = { _data: I, _index: v, _offset: p };
-    for (var b in f) {
-      var U = Q.findTable(I, b, p);
-      if (U) {
-        var S = U[0], y = w[S];
-        y == null && (y = f[b].parseTab(I, S, U[1], _)), _[b] = w[S] = y;
+var E = {};
+E.parse = function(n) {
+  var A = E.B, e = function(h, u, d, c) {
+    var D = E.T, I = {
+      cmap: D.cmap,
+      head: D.head,
+      hhea: D.hhea,
+      maxp: D.maxp,
+      hmtx: D.hmtx,
+      loca: D.loca,
+      glyf: D.glyf
+    }, P = { _data: h, _index: u, _offset: d };
+    for (var m in I) {
+      var F = E.findTable(h, m, d);
+      if (F) {
+        var _ = F[0], x = c[_];
+        x == null && (x = I[m].parseTab(h, _, F[1], P)), P[m] = c[_] = x;
       }
     }
-    return _;
-  };
-  function e(I) {
-    var v = A.readUshort(I, 12), p = A.readUint(I, 16), w = new Uint8Array(p), d = 12 + v * 16;
-    A.writeASCII(w, 0, "OTTO"), A.writeUshort(w, 4, v);
-    for (var f = 44, _ = 0; _ < v; _++) {
-      var b = A.readASCII(I, f, 4), U = A.readUint(I, f + 4), S = A.readUint(I, f + 8), y = A.readUint(I, f + 12);
-      f += 20;
-      var x = I.slice(U, U + S);
-      S != y && (x = pako.inflate(x));
-      var G = 12 + _ * 16;
-      A.writeASCII(w, G, b), A.writeUint(w, G + 8, d), A.writeUint(w, G + 12, y), w.set(x, d), d += y;
+    return P;
+  }, t = new Uint8Array(n), r = {}, i = A.readASCII(t, 0, 4);
+  if (i == "ttcf") {
+    var a = 4;
+    A.readUshort(t, a), a += 2, A.readUshort(t, a), a += 2;
+    var s = A.readUint(t, a);
+    a += 4;
+    for (var B = [], g = 0; g < s; g++) {
+      var Q = A.readUint(t, a);
+      a += 4, B.push(e(t, g, Q, r));
     }
-    return w;
+    return B;
   }
-  var t = new Uint8Array(i);
-  t[0] == 119 && (t = e(t));
-  var n = {}, a = A.readASCII(t, 0, 4);
-  if (a == "ttcf") {
-    var s = 4;
-    A.readUshort(t, s), s += 2, A.readUshort(t, s), s += 2;
-    var B = A.readUint(t, s);
-    s += 4;
-    for (var g = [], o = 0; o < B; o++) {
-      var u = A.readUint(t, s);
-      s += 4, g.push(r(t, o, u, n));
-    }
-    return g;
-  }
-  var h = r(t, 0, 0, n), c = h.fvar;
-  if (c) {
-    for (var D = [h], o = 0; o < c[1].length; o++) {
-      var l = c[1][o], C = {};
-      D.push(C);
-      for (var P in h) C[P] = h[P];
-      C._index = o;
-      var m = C.name = JSON.parse(JSON.stringify(C.name));
-      m.fontSubfamily = l[0], l[3] == null && (l[3] = (m.fontFamily + "-" + m.fontSubfamily).replaceAll(" ", "")), m.postScriptName = l[3];
-    }
-    return D;
-  }
-  return [h];
+  var l = e(t, 0, 0, r);
+  return [l];
 };
-Q.findTable = function(i, A, r) {
-  for (var e = Q.B, t = e.readUshort(i, r + 4), n = r + 12, a = 0; a < t; a++) {
-    var s = e.readASCII(i, n, 4);
-    e.readUint(i, n + 4);
-    var B = e.readUint(i, n + 8), g = e.readUint(i, n + 12);
+E.findTable = function(n, A, e) {
+  for (var t = E.B, r = t.readUshort(n, e + 4), i = e + 12, a = 0; a < r; a++) {
+    var s = t.readASCII(n, i, 4);
+    t.readUint(n, i + 4);
+    var B = t.readUint(n, i + 8), g = t.readUint(n, i + 12);
     if (s == A) return [B, g];
-    n += 16;
+    i += 16;
   }
   return null;
 };
-Q.T = {};
-Q.B = {
-  readFixed: function(i, A) {
-    return (i[A] << 8 | i[A + 1]) + (i[A + 2] << 8 | i[A + 3]) / (256 * 256 + 4);
+E.T = {};
+E.B = {
+  readFixed: function(n, A) {
+    return (n[A] << 8 | n[A + 1]) + (n[A + 2] << 8 | n[A + 3]) / (256 * 256 + 4);
   },
-  readF2dot14: function(i, A) {
-    var r = Q.B.readShort(i, A);
-    return r / 16384;
+  readF2dot14: function(n, A) {
+    var e = E.B.readShort(n, A);
+    return e / 16384;
   },
-  readInt: function(i, A) {
-    var r = Q.B.t.uint8;
-    return r[0] = i[A + 3], r[1] = i[A + 2], r[2] = i[A + 1], r[3] = i[A], Q.B.t.int32[0];
+  readInt: function(n, A) {
+    var e = E.B.t.uint8;
+    return e[0] = n[A + 3], e[1] = n[A + 2], e[2] = n[A + 1], e[3] = n[A], E.B.t.int32[0];
   },
-  readInt8: function(i, A) {
-    var r = Q.B.t.uint8;
-    return r[0] = i[A], Q.B.t.int8[0];
+  readInt8: function(n, A) {
+    var e = E.B.t.uint8;
+    return e[0] = n[A], E.B.t.int8[0];
   },
-  readShort: function(i, A) {
-    var r = Q.B.t.uint16;
-    return r[0] = i[A] << 8 | i[A + 1], Q.B.t.int16[0];
+  readShort: function(n, A) {
+    var e = E.B.t.uint16;
+    return e[0] = n[A] << 8 | n[A + 1], E.B.t.int16[0];
   },
-  readUshort: function(i, A) {
-    return i[A] << 8 | i[A + 1];
+  readUshort: function(n, A) {
+    return n[A] << 8 | n[A + 1];
   },
-  writeUshort: function(i, A, r) {
-    i[A] = r >> 8 & 255, i[A + 1] = r & 255;
+  readUshorts: function(n, A, e) {
+    for (var t = [], r = 0; r < e; r++)
+      t.push(E.B.readUshort(n, A + r * 2));
+    return t;
   },
-  readUshorts: function(i, A, r) {
-    for (var e = [], t = 0; t < r; t++) {
-      var n = Q.B.readUshort(i, A + t * 2);
-      e.push(n);
-    }
-    return e;
+  readUint: function(n, A) {
+    var e = E.B.t.uint8;
+    return e[3] = n[A], e[2] = n[A + 1], e[1] = n[A + 2], e[0] = n[A + 3], E.B.t.uint32[0];
   },
-  readUint: function(i, A) {
-    var r = Q.B.t.uint8;
-    return r[3] = i[A], r[2] = i[A + 1], r[1] = i[A + 2], r[0] = i[A + 3], Q.B.t.uint32[0];
+  readUint64: function(n, A) {
+    return E.B.readUint(n, A) * 4294967296 + E.B.readUint(n, A + 4);
   },
-  writeUint: function(i, A, r) {
-    i[A] = r >> 24 & 255, i[A + 1] = r >> 16 & 255, i[A + 2] = r >> 8 & 255, i[A + 3] = r >> 0 & 255;
+  readASCII: function(n, A, e) {
+    for (var t = "", r = 0; r < e; r++) t += String.fromCharCode(n[A + r]);
+    return t;
   },
-  readUint64: function(i, A) {
-    return Q.B.readUint(i, A) * 4294967296 + Q.B.readUint(i, A + 4);
-  },
-  readASCII: function(i, A, r) {
-    for (var e = "", t = 0; t < r; t++) e += String.fromCharCode(i[A + t]);
-    return e;
-  },
-  writeASCII: function(i, A, r) {
-    for (var e = 0; e < r.length; e++)
-      i[A + e] = r.charCodeAt(e);
-  },
-  readUnicode: function(i, A, r) {
-    for (var e = "", t = 0; t < r; t++) {
-      var n = i[A++] << 8 | i[A++];
-      e += String.fromCharCode(n);
-    }
-    return e;
-  },
-  _tdec: window.TextDecoder ? new window.TextDecoder() : null,
-  readUTF8: function(i, A, r) {
-    var e = Q.B._tdec;
-    return e && A == 0 && r == i.length ? e.decode(i) : Q.B.readASCII(i, A, r);
-  },
-  readBytes: function(i, A, r) {
-    for (var e = [], t = 0; t < r; t++) e.push(i[A + t]);
-    return e;
-  },
-  readASCIIArray: function(i, A, r) {
-    for (var e = [], t = 0; t < r; t++)
-      e.push(String.fromCharCode(i[A + t]));
-    return e;
+  readBytes: function(n, A, e) {
+    for (var t = [], r = 0; r < e; r++) t.push(n[A + r]);
+    return t;
   },
   t: function() {
-    var i = new ArrayBuffer(8);
+    var n = new ArrayBuffer(8);
     return {
-      buff: i,
-      int8: new Int8Array(i),
-      uint8: new Uint8Array(i),
-      int16: new Int16Array(i),
-      uint16: new Uint16Array(i),
-      int32: new Int32Array(i),
-      uint32: new Uint32Array(i)
+      buff: n,
+      int8: new Int8Array(n),
+      uint8: new Uint8Array(n),
+      int16: new Int16Array(n),
+      uint16: new Uint16Array(n),
+      int32: new Int32Array(n),
+      uint32: new Uint32Array(n)
     };
   }()
 };
-Q.T.CFF = {
-  parseTab: function(i, A, r) {
-    var e = Q.B, t = Q.T.CFF;
-    i = new Uint8Array(i.buffer, A, r), A = 0, i[A], A++, i[A], A++, i[A], A++, i[A], A++;
-    var n = [];
-    A = t.readIndex(i, A, n);
-    for (var a = [], s = 0; s < n.length - 1; s++) a.push(e.readASCII(i, A + n[s], n[s + 1] - n[s]));
-    A += n[n.length - 1];
-    var B = [];
-    A = t.readIndex(i, A, B);
-    for (var g = [], s = 0; s < B.length - 1; s++) g.push(t.readDict(i, A + B[s], A + B[s + 1]));
-    A += B[B.length - 1];
-    var o = g[0], u = [];
-    A = t.readIndex(i, A, u);
-    for (var h = [], s = 0; s < u.length - 1; s++) h.push(e.readASCII(i, A + u[s], u[s + 1] - u[s]));
-    if (A += u[u.length - 1], t.readSubrs(i, A, o), o.CharStrings && (o.CharStrings = t.readBytes(i, o.CharStrings)), o.ROS) {
-      A = o.FDArray;
-      var c = [];
-      A = t.readIndex(i, A, c), o.FDArray = [];
-      for (var s = 0; s < c.length - 1; s++) {
-        var D = t.readDict(i, A + c[s], A + c[s + 1]);
-        t._readFDict(i, D, h), o.FDArray.push(D);
-      }
-      A += c[c.length - 1], A = o.FDSelect, o.FDSelect = [];
-      var l = i[A];
-      if (A++, l == 3) {
-        var C = e.readUshort(i, A);
-        A += 2;
-        for (var s = 0; s < C + 1; s++)
-          o.FDSelect.push(e.readUshort(i, A), i[A + 2]), A += 3;
-      } else throw l;
-    }
-    return o.charset && (o.charset = t.readCharset(i, o.charset, o.CharStrings.length)), t._readFDict(i, o, h), o;
-  },
-  _readFDict: function(i, A, r) {
-    var e = Q.T.CFF, t;
-    A.Private && (t = A.Private[1], A.Private = e.readDict(i, t, t + A.Private[0]), A.Private.Subrs && e.readSubrs(i, t + A.Private.Subrs, A.Private));
-    for (var n in A) ["FamilyName", "FontName", "FullName", "Notice", "version", "Copyright"].indexOf(n) != -1 && (A[n] = r[A[n] - 426 + 35]);
-  },
-  readSubrs: function(i, A, r) {
-    r.Subrs = Q.T.CFF.readBytes(i, A);
-    var e, t = r.Subrs.length + 1;
-    t < 1240 ? e = 107 : t < 33900 ? e = 1131 : e = 32768, r.Bias = e;
-  },
-  readBytes: function(i, A) {
-    Q.B;
-    var r = [];
-    A = Q.T.CFF.readIndex(i, A, r);
-    for (var e = [], t = r.length - 1, n = i.byteOffset + A, a = 0; a < t; a++) {
-      var s = r[a];
-      e.push(new Uint8Array(i.buffer, n + s, r[a + 1] - s));
-    }
-    return e;
-  },
-  tableSE: [
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26,
-    27,
-    28,
-    29,
-    30,
-    31,
-    32,
-    33,
-    34,
-    35,
-    36,
-    37,
-    38,
-    39,
-    40,
-    41,
-    42,
-    43,
-    44,
-    45,
-    46,
-    47,
-    48,
-    49,
-    50,
-    51,
-    52,
-    53,
-    54,
-    55,
-    56,
-    57,
-    58,
-    59,
-    60,
-    61,
-    62,
-    63,
-    64,
-    65,
-    66,
-    67,
-    68,
-    69,
-    70,
-    71,
-    72,
-    73,
-    74,
-    75,
-    76,
-    77,
-    78,
-    79,
-    80,
-    81,
-    82,
-    83,
-    84,
-    85,
-    86,
-    87,
-    88,
-    89,
-    90,
-    91,
-    92,
-    93,
-    94,
-    95,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    96,
-    97,
-    98,
-    99,
-    100,
-    101,
-    102,
-    103,
-    104,
-    105,
-    106,
-    107,
-    108,
-    109,
-    110,
-    0,
-    111,
-    112,
-    113,
-    114,
-    0,
-    115,
-    116,
-    117,
-    118,
-    119,
-    120,
-    121,
-    122,
-    0,
-    123,
-    0,
-    124,
-    125,
-    126,
-    127,
-    128,
-    129,
-    130,
-    131,
-    0,
-    132,
-    133,
-    0,
-    134,
-    135,
-    136,
-    137,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    138,
-    0,
-    139,
-    0,
-    0,
-    0,
-    0,
-    140,
-    141,
-    142,
-    143,
-    0,
-    0,
-    0,
-    0,
-    0,
-    144,
-    0,
-    0,
-    0,
-    145,
-    0,
-    0,
-    146,
-    147,
-    148,
-    149,
-    0,
-    0,
-    0,
-    0
-  ],
-  glyphByUnicode: function(i, A) {
-    for (var r = 0; r < i.charset.length; r++) if (i.charset[r] == A) return r;
-    return -1;
-  },
-  glyphBySE: function(i, A) {
-    return A < 0 || A > 255 ? -1 : Q.T.CFF.glyphByUnicode(i, Q.T.CFF.tableSE[A]);
-  },
-  /*readEncoding : function(data, offset, num)
-  {
-  	var bin = Typr["B"];
-  	
-  	var array = ['.notdef'];
-  	var format = data[offset];  offset++;
-  	//console.log("Encoding");
-  	//console.log(format);
-  	
-  	if(format==0)
-  	{
-  		var nCodes = data[offset];  offset++;
-  		for(var i=0; i<nCodes; i++)  array.push(data[offset+i]);
-  	}
-  	/*
-  	else if(format==1 || format==2)
-  	{
-  		while(charset.length<num)
-  		{
-  			var first = bin.readUshort(data, offset);  offset+=2;
-  			var nLeft=0;
-  			if(format==1) {  nLeft = data[offset];  offset++;  }
-  			else          {  nLeft = bin.readUshort(data, offset);  offset+=2;  }
-  			for(var i=0; i<=nLeft; i++)  {  charset.push(first);  first++;  }
-  		}
-  	}
-  	
-  	else throw "error: unknown encoding format: " + format;
-  	
-  	return array;
-  },*/
-  readCharset: function(i, A, r) {
-    var e = Q.B, t = [".notdef"], n = i[A];
-    if (A++, n == 0)
-      for (var a = 0; a < r; a++) {
-        var s = e.readUshort(i, A);
-        A += 2, t.push(s);
-      }
-    else if (n == 1 || n == 2)
-      for (; t.length < r; ) {
-        var s = e.readUshort(i, A);
-        A += 2;
-        var B = 0;
-        n == 1 ? (B = i[A], A++) : (B = e.readUshort(i, A), A += 2);
-        for (var a = 0; a <= B; a++)
-          t.push(s), s++;
-      }
-    else throw "error: format: " + n;
-    return t;
-  },
-  readIndex: function(i, A, r) {
-    var e = Q.B, t = e.readUshort(i, A) + 1;
-    A += 2;
-    var n = i[A];
-    if (A++, n == 1) for (var a = 0; a < t; a++) r.push(i[A + a]);
-    else if (n == 2) for (var a = 0; a < t; a++) r.push(e.readUshort(i, A + a * 2));
-    else if (n == 3) for (var a = 0; a < t; a++) r.push(e.readUint(i, A + a * 3 - 1) & 16777215);
-    else if (n == 4) for (var a = 0; a < t; a++) r.push(e.readUint(i, A + a * 4));
-    else if (t != 1) throw "unsupported offset size: " + n + ", count: " + t;
-    return A += t * n, A - 1;
-  },
-  getCharString: function(i, A, r) {
-    var e = Q.B, t = i[A], n = i[A + 1];
-    i[A + 2], i[A + 3], i[A + 4];
-    var a = 1, s = null, B = null;
-    t <= 20 && (s = t, a = 1), t == 12 && (s = t * 100 + n, a = 2), 21 <= t && t <= 27 && (s = t, a = 1), t == 28 && (B = e.readShort(i, A + 1), a = 3), 29 <= t && t <= 31 && (s = t, a = 1), 32 <= t && t <= 246 && (B = t - 139, a = 1), 247 <= t && t <= 250 && (B = (t - 247) * 256 + n + 108, a = 2), 251 <= t && t <= 254 && (B = -(t - 251) * 256 - n - 108, a = 2), t == 255 && (B = e.readInt(i, A + 1) / 65535, a = 5), r.val = B ?? "o" + s, r.size = a;
-  },
-  readCharString: function(i, A, r) {
-    for (var e = A + r, t = Q.B, n = []; A < e; ) {
-      var a = i[A], s = i[A + 1];
-      i[A + 2], i[A + 3], i[A + 4];
-      var B = 1, g = null, o = null;
-      a <= 20 && (g = a, B = 1), a == 12 && (g = a * 100 + s, B = 2), (a == 19 || a == 20) && (g = a, B = 2), 21 <= a && a <= 27 && (g = a, B = 1), a == 28 && (o = t.readShort(i, A + 1), B = 3), 29 <= a && a <= 31 && (g = a, B = 1), 32 <= a && a <= 246 && (o = a - 139, B = 1), 247 <= a && a <= 250 && (o = (a - 247) * 256 + s + 108, B = 2), 251 <= a && a <= 254 && (o = -(a - 251) * 256 - s - 108, B = 2), a == 255 && (o = t.readInt(i, A + 1) / 65535, B = 5), n.push(o ?? "o" + g), A += B;
-    }
-    return n;
-  },
-  readDict: function(i, A, r) {
-    for (var e = Q.B, t = {}, n = []; A < r; ) {
-      var a = i[A], s = i[A + 1];
-      i[A + 2], i[A + 3], i[A + 4];
-      var B = 1, g = null, o = null;
-      if (a == 28 && (o = e.readShort(i, A + 1), B = 3), a == 29 && (o = e.readInt(i, A + 1), B = 5), 32 <= a && a <= 246 && (o = a - 139, B = 1), 247 <= a && a <= 250 && (o = (a - 247) * 256 + s + 108, B = 2), 251 <= a && a <= 254 && (o = -(a - 251) * 256 - s - 108, B = 2), a == 255)
-        throw o = e.readInt(i, A + 1) / 65535, B = 5, "unknown number";
-      if (a == 30) {
-        var u = [];
-        for (B = 1; ; ) {
-          var h = i[A + B];
-          B++;
-          var c = h >> 4, D = h & 15;
-          if (c != 15 && u.push(c), D != 15 && u.push(D), D == 15) break;
-        }
-        for (var l = "", C = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ".", "e", "e-", "reserved", "-", "endOfNumber"], P = 0; P < u.length; P++) l += C[u[P]];
-        o = parseFloat(l);
-      }
-      if (a <= 21) {
-        var m = [
-          "version",
-          "Notice",
-          "FullName",
-          "FamilyName",
-          "Weight",
-          "FontBBox",
-          "BlueValues",
-          "OtherBlues",
-          "FamilyBlues",
-          "FamilyOtherBlues",
-          "StdHW",
-          "StdVW",
-          "escape",
-          "UniqueID",
-          "XUID",
-          "charset",
-          "Encoding",
-          "CharStrings",
-          "Private",
-          "Subrs",
-          "defaultWidthX",
-          "nominalWidthX"
-        ];
-        if (g = m[a], B = 1, a == 12) {
-          var m = [
-            "Copyright",
-            "isFixedPitch",
-            "ItalicAngle",
-            "UnderlinePosition",
-            "UnderlineThickness",
-            "PaintType",
-            "CharstringType",
-            "FontMatrix",
-            "StrokeWidth",
-            "BlueScale",
-            "BlueShift",
-            "BlueFuzz",
-            "StemSnapH",
-            "StemSnapV",
-            "ForceBold",
-            "",
-            "",
-            "LanguageGroup",
-            "ExpansionFactor",
-            "initialRandomSeed",
-            "SyntheticBase",
-            "PostScript",
-            "BaseFontName",
-            "BaseFontBlend",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "ROS",
-            "CIDFontVersion",
-            "CIDFontRevision",
-            "CIDFontType",
-            "CIDCount",
-            "UIDBase",
-            "FDArray",
-            "FDSelect",
-            "FontName"
-          ];
-          g = m[s], B = 2;
-        }
-      }
-      g != null ? (t[g] = n.length == 1 ? n[0] : n, n = []) : n.push(o), A += B;
-    }
-    return t;
-  }
-};
-Q.T.cmap = {
-  parseTab: function(i, A, r) {
-    var e = { tables: [], ids: {}, off: A };
-    i = new Uint8Array(i.buffer, A, r), A = 0;
-    var t = Q.B, n = t.readUshort, a = Q.T.cmap;
-    n(i, A), A += 2;
-    var s = n(i, A);
+E.T.cmap = {
+  parseTab: function(n, A, e) {
+    var t = { tables: [], ids: {}, off: A };
+    n = new Uint8Array(n.buffer, A, e), A = 0;
+    var r = E.B, i = r.readUshort, a = E.T.cmap;
+    i(n, A), A += 2;
+    var s = i(n, A);
     A += 2;
     for (var B = [], g = 0; g < s; g++) {
-      var o = n(i, A);
+      var Q = i(n, A);
       A += 2;
-      var u = n(i, A);
+      var l = i(n, A);
       A += 2;
-      var h = t.readUint(i, A);
+      var h = r.readUint(n, A);
       A += 4;
-      var c = "p" + o + "e" + u, D = B.indexOf(h);
-      if (D == -1) {
-        D = e.tables.length;
-        var l = {};
+      var u = "p" + Q + "e" + l, d = B.indexOf(h);
+      if (d == -1) {
+        d = t.tables.length;
+        var c = {};
         B.push(h);
-        var C = l.format = n(i, h);
-        C == 0 ? l = a.parse0(i, h, l) : C == 4 ? l = a.parse4(i, h, l) : C == 6 ? l = a.parse6(i, h, l) : C == 12 && (l = a.parse12(i, h, l)), e.tables.push(l);
+        var D = c.format = i(n, h);
+        D == 4 ? c = a.parse4(n, h, c) : D == 12 && (c = a.parse12(n, h, c)), t.tables.push(c);
       }
-      e.ids[c] != null && console.log("multiple tables for one platform+encoding: " + c), e.ids[c] = D;
+      t.ids[u] != null && console.log("multiple tables for one platform+encoding: " + u), t.ids[u] = d;
     }
-    return e;
-  },
-  parse0: function(i, A, r) {
-    var e = Q.B;
-    A += 2;
-    var t = e.readUshort(i, A);
-    A += 2, e.readUshort(i, A), A += 2, r.map = [];
-    for (var n = 0; n < t - 6; n++) r.map.push(i[A + n]);
-    return r;
-  },
-  parse4: function(i, A, r) {
-    var e = Q.B, t = e.readUshort, n = e.readUshorts, a = A;
-    A += 2;
-    var s = t(i, A);
-    A += 2, t(i, A), A += 2;
-    var B = t(i, A);
-    A += 2;
-    var g = B >>> 1;
-    r.searchRange = t(i, A), A += 2, r.entrySelector = t(i, A), A += 2, r.rangeShift = t(i, A), A += 2, r.endCount = n(i, A, g), A += g * 2, A += 2, r.startCount = n(i, A, g), A += g * 2, r.idDelta = [];
-    for (var o = 0; o < g; o++)
-      r.idDelta.push(e.readShort(i, A)), A += 2;
-    return r.idRangeOffset = n(i, A, g), A += g * 2, r.glyphIdArray = n(i, A, a + s - A >> 1), r;
-  },
-  parse6: function(i, A, r) {
-    var e = Q.B;
-    A += 2, e.readUshort(i, A), A += 2, e.readUshort(i, A), A += 2, r.firstCode = e.readUshort(i, A), A += 2;
-    var t = e.readUshort(i, A);
-    A += 2, r.glyphIdArray = [];
-    for (var n = 0; n < t; n++)
-      r.glyphIdArray.push(e.readUshort(i, A)), A += 2;
-    return r;
-  },
-  parse12: function(i, A, r) {
-    var e = Q.B, t = e.readUint;
-    A += 4, t(i, A), A += 4, t(i, A), A += 4;
-    var n = t(i, A) * 3;
-    A += 4;
-    for (var a = r.groups = new Uint32Array(n), s = 0; s < n; s += 3)
-      a[s] = t(i, A + (s << 2)), a[s + 1] = t(i, A + (s << 2) + 4), a[s + 2] = t(i, A + (s << 2) + 8);
-    return r;
-  }
-};
-Q.T.CBLC = {
-  parseTab: function(i, A, r) {
-    var e = Q.B, t = A;
-    e.readUshort(i, A), A += 2, e.readUshort(i, A), A += 2;
-    var n = e.readUint(i, A);
-    A += 4;
-    for (var a = [], s = 0; s < n; s++) {
-      var B = e.readUint(i, A);
-      A += 4, e.readUint(i, A), A += 4, e.readUint(i, A), A += 4, A += 4, A += 2 * 12, e.readUshort(i, A), A += 2, e.readUshort(i, A), A += 2, A += 4;
-      for (var g = t + B, o = 0; o < 3; o++) {
-        var u = e.readUshort(i, g);
-        g += 2;
-        var h = e.readUshort(i, g);
-        g += 2;
-        var c = e.readUint(i, g);
-        g += 4;
-        var D = h - u + 1, l = t + B + c, C = e.readUshort(i, l);
-        if (l += 2, C != 1) throw C;
-        var P = e.readUshort(i, l);
-        l += 2;
-        var m = e.readUint(i, l);
-        l += 4;
-        for (var I = [], v = 0; v < D; v++) {
-          var p = e.readUint(i, l + v * 4);
-          I.push(m + p);
-        }
-        a.push([u, h, P, I]);
-      }
-    }
-    return a;
-  }
-};
-Q.T.CBDT = {
-  parseTab: function(i, A, r) {
-    return Q.B, new Uint8Array(i.buffer, i.byteOffset + A, r);
-  }
-};
-Q.T.glyf = {
-  parseTab: function(i, A, r, e) {
-    for (var t = [], n = e.maxp.numGlyphs, a = 0; a < n; a++) t.push(null);
     return t;
   },
-  _parseGlyf: function(i, A) {
-    var r = Q.B, e = i._data, t = i.loca;
-    if (t[A] == t[A + 1]) return null;
-    var n = Q.findTable(e, "glyf", i._offset)[0] + t[A], a = {};
-    if (a.noc = r.readShort(e, n), n += 2, a.xMin = r.readShort(e, n), n += 2, a.yMin = r.readShort(e, n), n += 2, a.xMax = r.readShort(e, n), n += 2, a.yMax = r.readShort(e, n), n += 2, a.xMin >= a.xMax || a.yMin >= a.yMax) return null;
-    if (a.noc > 0) {
-      a.endPts = [];
-      for (var s = 0; s < a.noc; s++)
-        a.endPts.push(r.readUshort(e, n)), n += 2;
-      var B = r.readUshort(e, n);
-      if (n += 2, e.length - n < B) return null;
-      a.instructions = r.readBytes(e, n, B), n += B;
-      var g = a.endPts[a.noc - 1] + 1;
-      a.flags = [];
-      for (var s = 0; s < g; s++) {
-        var o = e[n];
-        if (n++, a.flags.push(o), (o & 8) != 0) {
-          var u = e[n];
-          n++;
-          for (var h = 0; h < u; h++)
-            a.flags.push(o), s++;
-        }
-      }
-      a.xs = [];
-      for (var s = 0; s < g; s++) {
-        var c = (a.flags[s] & 2) != 0, D = (a.flags[s] & 16) != 0;
-        c ? (a.xs.push(D ? e[n] : -e[n]), n++) : D ? a.xs.push(0) : (a.xs.push(r.readShort(e, n)), n += 2);
-      }
-      a.ys = [];
-      for (var s = 0; s < g; s++) {
-        var c = (a.flags[s] & 4) != 0, D = (a.flags[s] & 32) != 0;
-        c ? (a.ys.push(D ? e[n] : -e[n]), n++) : D ? a.ys.push(0) : (a.ys.push(r.readShort(e, n)), n += 2);
-      }
-      for (var l = 0, C = 0, s = 0; s < g; s++)
-        l += a.xs[s], C += a.ys[s], a.xs[s] = l, a.ys[s] = C;
-    } else {
-      var P = 1, m = 2, I = 8, v = 32, p = 64, w = 128, d = 256;
-      a.parts = [];
-      var f;
-      do {
-        f = r.readUshort(e, n), n += 2;
-        var _ = { m: { a: 1, b: 0, c: 0, d: 1, tx: 0, ty: 0 }, p1: -1, p2: -1 };
-        if (a.parts.push(_), _.glyphIndex = r.readUshort(e, n), n += 2, f & P) {
-          var b = r.readShort(e, n);
-          n += 2;
-          var U = r.readShort(e, n);
-          n += 2;
-        } else {
-          var b = r.readInt8(e, n);
-          n++;
-          var U = r.readInt8(e, n);
-          n++;
-        }
-        f & m ? (_.m.tx = b, _.m.ty = U) : (_.p1 = b, _.p2 = U), f & I ? (_.m.a = _.m.d = r.readF2dot14(e, n), n += 2) : f & p ? (_.m.a = r.readF2dot14(e, n), n += 2, _.m.d = r.readF2dot14(e, n), n += 2) : f & w && (_.m.a = r.readF2dot14(e, n), n += 2, _.m.b = r.readF2dot14(e, n), n += 2, _.m.c = r.readF2dot14(e, n), n += 2, _.m.d = r.readF2dot14(e, n), n += 2);
-      } while (f & v);
-      if (f & d) {
-        var S = r.readUshort(e, n);
-        n += 2, a.instr = [];
-        for (var s = 0; s < S; s++)
-          a.instr.push(e[n]), n++;
-      }
-    }
-    return a;
+  parse4: function(n, A, e) {
+    var t = E.B, r = t.readUshort, i = t.readUshorts, a = A;
+    A += 2;
+    var s = r(n, A);
+    A += 2, r(n, A), A += 2;
+    var B = r(n, A);
+    A += 2;
+    var g = B >>> 1;
+    e.searchRange = r(n, A), A += 2, e.entrySelector = r(n, A), A += 2, e.rangeShift = r(n, A), A += 2, e.endCount = i(n, A, g), A += g * 2, A += 2, e.startCount = i(n, A, g), A += g * 2, e.idDelta = [];
+    for (var Q = 0; Q < g; Q++)
+      e.idDelta.push(t.readShort(n, A)), A += 2;
+    return e.idRangeOffset = i(n, A, g), A += g * 2, e.glyphIdArray = i(n, A, a + s - A >> 1), e;
+  },
+  parse12: function(n, A, e) {
+    var t = E.B, r = t.readUint;
+    A += 4, r(n, A), A += 4, r(n, A), A += 4;
+    var i = r(n, A) * 3;
+    A += 4;
+    for (var a = e.groups = new Uint32Array(i), s = 0; s < i; s += 3)
+      a[s] = r(n, A + (s << 2)), a[s + 1] = r(n, A + (s << 2) + 4), a[s + 2] = r(n, A + (s << 2) + 8);
+    return e;
   }
 };
-Q.T.head = {
-  parseTab: function(i, A, r) {
-    var e = Q.B, t = {};
-    return e.readFixed(i, A), A += 4, t.fontRevision = e.readFixed(i, A), A += 4, e.readUint(i, A), A += 4, e.readUint(i, A), A += 4, t.flags = e.readUshort(i, A), A += 2, t.unitsPerEm = e.readUshort(i, A), A += 2, t.created = e.readUint64(i, A), A += 8, t.modified = e.readUint64(i, A), A += 8, t.xMin = e.readShort(i, A), A += 2, t.yMin = e.readShort(i, A), A += 2, t.xMax = e.readShort(i, A), A += 2, t.yMax = e.readShort(i, A), A += 2, t.macStyle = e.readUshort(i, A), A += 2, t.lowestRecPPEM = e.readUshort(i, A), A += 2, t.fontDirectionHint = e.readShort(i, A), A += 2, t.indexToLocFormat = e.readShort(i, A), A += 2, t.glyphDataFormat = e.readShort(i, A), A += 2, t;
+E.T.head = {
+  parseTab: function(n, A, e) {
+    var t = E.B, r = {};
+    return t.readFixed(n, A), A += 4, r.fontRevision = t.readFixed(n, A), A += 4, t.readUint(n, A), A += 4, t.readUint(n, A), A += 4, r.flags = t.readUshort(n, A), A += 2, r.unitsPerEm = t.readUshort(n, A), A += 2, r.created = t.readUint64(n, A), A += 8, r.modified = t.readUint64(n, A), A += 8, r.xMin = t.readShort(n, A), A += 2, r.yMin = t.readShort(n, A), A += 2, r.xMax = t.readShort(n, A), A += 2, r.yMax = t.readShort(n, A), A += 2, r.macStyle = t.readUshort(n, A), A += 2, r.lowestRecPPEM = t.readUshort(n, A), A += 2, r.fontDirectionHint = t.readShort(n, A), A += 2, r.indexToLocFormat = t.readShort(n, A), A += 2, r.glyphDataFormat = t.readShort(n, A), A += 2, r;
   }
 };
-Q.T.hhea = {
-  parseTab: function(i, A, r) {
-    var e = Q.B, t = {};
-    e.readFixed(i, A), A += 4;
-    for (var n = [
+E.T.hhea = {
+  parseTab: function(n, A, e) {
+    var t = E.B, r = {};
+    t.readFixed(n, A), A += 4;
+    for (var i = [
       "ascender",
       "descender",
       "lineGap",
@@ -1386,506 +697,102 @@ Q.T.hhea = {
       "res3",
       "metricDataFormat",
       "numberOfHMetrics"
-    ], a = 0; a < n.length; a++) {
-      var s = n[a], B = s == "advanceWidthMax" || s == "numberOfHMetrics" ? e.readUshort : e.readShort;
-      t[s] = B(i, A + a * 2);
+    ], a = 0; a < i.length; a++) {
+      var s = i[a], B = s == "advanceWidthMax" || s == "numberOfHMetrics" ? t.readUshort : t.readShort;
+      r[s] = B(n, A + a * 2);
     }
-    return t;
+    return r;
   }
 };
-Q.T.hmtx = {
-  parseTab: function(i, A, r, e) {
-    for (var t = Q.B, n = [], a = [], s = e.maxp.numGlyphs, B = e.hhea.numberOfHMetrics, g = 0, o = 0, u = 0; u < B; )
-      g = t.readUshort(i, A + (u << 2)), o = t.readShort(i, A + (u << 2) + 2), n.push(g), a.push(o), u++;
-    for (; u < s; )
-      n.push(g), a.push(o), u++;
-    return { aWidth: n, lsBearing: a };
+E.T.hmtx = {
+  parseTab: function(n, A, e, t) {
+    for (var r = E.B, i = [], a = [], s = t.maxp.numGlyphs, B = t.hhea.numberOfHMetrics, g = 0, Q = 0, l = 0; l < B; )
+      g = r.readUshort(n, A + (l << 2)), Q = r.readShort(n, A + (l << 2) + 2), i.push(g), a.push(Q), l++;
+    for (; l < s; )
+      i.push(g), a.push(Q), l++;
+    return { aWidth: i, lsBearing: a };
   }
 };
-Q.T.kern = {
-  parseTab: function(i, A, r, e) {
-    var t = Q.B, n = Q.T.kern, a = t.readUshort(i, A);
-    if (a == 1) return n.parseV1(i, A, r, e);
-    var s = t.readUshort(i, A + 2);
-    A += 4;
-    for (var B = { glyph1: [], rval: [] }, g = 0; g < s; g++) {
-      A += 2;
-      var r = t.readUshort(i, A);
-      A += 2;
-      var o = t.readUshort(i, A);
-      A += 2;
-      var u = o >>> 8;
-      u &= 15, u == 0 && (A = n.readFormat0(i, A, B));
-    }
-    return B;
+E.T.maxp = {
+  parseTab: function(n, A, e) {
+    var t = E.B, r = t.readUshort, i = {};
+    return t.readUint(n, A), A += 4, i.numGlyphs = r(n, A), A += 2, i;
+  }
+};
+E.T.loca = {
+  parseTab: function(n, A, e, t) {
+    var r = E.B, i = [], a = t.head.indexToLocFormat, s = t.maxp.numGlyphs + 1;
+    if (a == 0) for (var B = 0; B < s; B++) i.push(r.readUshort(n, A + (B << 1)) << 1);
+    if (a == 1) for (var B = 0; B < s; B++) i.push(r.readUint(n, A + (B << 2)));
+    return i;
+  }
+};
+E.T.glyf = {
+  parseTab: function(n, A, e, t) {
+    for (var r = [], i = t.maxp.numGlyphs, a = 0; a < i; a++) r.push(null);
+    return r;
   },
-  parseV1: function(i, A, r, e) {
-    var t = Q.B, n = Q.T.kern;
-    t.readFixed(i, A);
-    var a = t.readUint(i, A + 4);
-    A += 8;
-    for (var s = { glyph1: [], rval: [] }, B = 0; B < a; B++) {
-      t.readUint(i, A), A += 4;
-      var g = t.readUshort(i, A);
-      A += 2, t.readUshort(i, A), A += 2;
-      var o = g & 255;
-      o == 0 && (A = n.readFormat0(i, A, s));
-    }
-    return s;
-  },
-  readFormat0: function(i, A, r) {
-    var e = Q.B, t = e.readUshort, n = -1, a = t(i, A);
-    t(i, A + 2), t(i, A + 4), t(i, A + 6), A += 8;
-    for (var s = 0; s < a; s++) {
-      var B = t(i, A);
-      A += 2;
-      var g = t(i, A);
-      A += 2;
-      var o = e.readShort(i, A);
-      A += 2, B != n && (r.glyph1.push(B), r.rval.push({ glyph2: [], vals: [] }));
-      var u = r.rval[r.rval.length - 1];
-      u.glyph2.push(g), u.vals.push(o), n = B;
-    }
-    return A;
-  }
-};
-Q.T.loca = {
-  parseTab: function(i, A, r, e) {
-    var t = Q.B, n = [], a = e.head.indexToLocFormat, s = e.maxp.numGlyphs + 1;
-    if (a == 0) for (var B = 0; B < s; B++) n.push(t.readUshort(i, A + (B << 1)) << 1);
-    if (a == 1) for (var B = 0; B < s; B++) n.push(t.readUint(i, A + (B << 2)));
-    return n;
-  }
-};
-Q.T.maxp = {
-  parseTab: function(i, A, r) {
-    var e = Q.B, t = e.readUshort, n = {};
-    return e.readUint(i, A), A += 4, n.numGlyphs = t(i, A), A += 2, n;
-  }
-};
-Q.T.name = {
-  parseTab: function(i, A, r) {
-    var e = Q.B, t = {};
-    e.readUshort(i, A), A += 2;
-    var n = e.readUshort(i, A);
-    A += 2;
-    var a = e.readUshort(i, A);
-    A += 2;
-    for (var s = A - 6 + a, B = [
-      "copyright",
-      "fontFamily",
-      "fontSubfamily",
-      "ID",
-      "fullName",
-      "version",
-      "postScriptName",
-      "trademark",
-      "manufacturer",
-      "designer",
-      "description",
-      "urlVendor",
-      "urlDesigner",
-      "licence",
-      "licenceURL",
-      "---",
-      "typoFamilyName",
-      "typoSubfamilyName",
-      "compatibleFull",
-      "sampleText",
-      "postScriptCID",
-      "wwsFamilyName",
-      "wwsSubfamilyName",
-      "lightPalette",
-      "darkPalette"
-    ], g = e.readUshort, o = 0; o < n; o++) {
-      var u = g(i, A);
-      A += 2;
-      var h = g(i, A);
-      A += 2;
-      var c = g(i, A);
-      A += 2;
-      var D = g(i, A);
-      A += 2;
-      var l = g(i, A);
-      A += 2;
-      var C = g(i, A);
-      A += 2;
-      var P = s + C, m;
-      u == 0 || u == 3 && h == 0 || u == 1 && h == 25 ? m = e.readUnicode(i, P, l / 2) : h == 0 ? m = e.readASCII(i, P, l) : h == 1 || h == 3 || h == 4 || h == 5 || h == 10 ? m = e.readUnicode(i, P, l / 2) : u == 1 ? (m = e.readASCII(i, P, l), console.log("reading unknown MAC encoding " + h + " as ASCII")) : (console.log("unknown encoding " + h + ", platformID: " + u), m = e.readASCII(i, P, l));
-      var I = "p" + u + "," + c.toString(16);
-      t[I] == null && (t[I] = {});
-      var v = B[D];
-      v == null && (v = "_" + D), t[I][v] = m, t[I]._lang = c;
-    }
-    var p = Q.T.name.selectOne(t), w = "fontFamily";
-    if (p[w] == null) for (var d in t) t[d][w] != null && (p[w] = t[d][w]);
-    return p;
-  },
-  selectOne: function(i) {
-    var A = "postScriptName";
-    for (var r in i) if (i[r][A] != null && i[r]._lang == 1033) return i[r];
-    for (var r in i) if (i[r][A] != null && i[r]._lang == 0) return i[r];
-    for (var r in i) if (i[r][A] != null && i[r]._lang == 3084) return i[r];
-    for (var r in i) if (i[r][A] != null) return i[r];
-    var e;
-    for (var r in i) {
-      e = i[r];
-      break;
-    }
-    return console.log("returning name table with languageID " + e._lang), e[A] == null && e.ID != null && (e[A] = e.ID), e;
-  }
-};
-Q.T.OS2 = {
-  parseTab: function(i, A, r) {
-    var e = Q.B, t = e.readUshort(i, A);
-    A += 2;
-    var n = Q.T.OS2, a = {};
-    if (t == 0) n.version0(i, A, a);
-    else if (t == 1) n.version1(i, A, a);
-    else if (t == 2 || t == 3 || t == 4) n.version2(i, A, a);
-    else if (t == 5) n.version5(i, A, a);
-    else throw "unknown OS/2 table version: " + t;
-    return a;
-  },
-  version0: function(i, A, r) {
-    var e = Q.B;
-    return r.xAvgCharWidth = e.readShort(i, A), A += 2, r.usWeightClass = e.readUshort(i, A), A += 2, r.usWidthClass = e.readUshort(i, A), A += 2, r.fsType = e.readUshort(i, A), A += 2, r.ySubscriptXSize = e.readShort(i, A), A += 2, r.ySubscriptYSize = e.readShort(i, A), A += 2, r.ySubscriptXOffset = e.readShort(i, A), A += 2, r.ySubscriptYOffset = e.readShort(i, A), A += 2, r.ySuperscriptXSize = e.readShort(i, A), A += 2, r.ySuperscriptYSize = e.readShort(i, A), A += 2, r.ySuperscriptXOffset = e.readShort(i, A), A += 2, r.ySuperscriptYOffset = e.readShort(i, A), A += 2, r.yStrikeoutSize = e.readShort(i, A), A += 2, r.yStrikeoutPosition = e.readShort(i, A), A += 2, r.sFamilyClass = e.readShort(i, A), A += 2, r.panose = e.readBytes(i, A, 10), A += 10, r.ulUnicodeRange1 = e.readUint(i, A), A += 4, r.ulUnicodeRange2 = e.readUint(i, A), A += 4, r.ulUnicodeRange3 = e.readUint(i, A), A += 4, r.ulUnicodeRange4 = e.readUint(i, A), A += 4, r.achVendID = e.readASCII(i, A, 4), A += 4, r.fsSelection = e.readUshort(i, A), A += 2, r.usFirstCharIndex = e.readUshort(i, A), A += 2, r.usLastCharIndex = e.readUshort(i, A), A += 2, r.sTypoAscender = e.readShort(i, A), A += 2, r.sTypoDescender = e.readShort(i, A), A += 2, r.sTypoLineGap = e.readShort(i, A), A += 2, r.usWinAscent = e.readUshort(i, A), A += 2, r.usWinDescent = e.readUshort(i, A), A += 2, A;
-  },
-  version1: function(i, A, r) {
-    var e = Q.B;
-    return A = Q.T.OS2.version0(i, A, r), r.ulCodePageRange1 = e.readUint(i, A), A += 4, r.ulCodePageRange2 = e.readUint(i, A), A += 4, A;
-  },
-  version2: function(i, A, r) {
-    var e = Q.B, t = e.readUshort;
-    return A = Q.T.OS2.version1(i, A, r), r.sxHeight = e.readShort(i, A), A += 2, r.sCapHeight = e.readShort(i, A), A += 2, r.usDefault = t(i, A), A += 2, r.usBreak = t(i, A), A += 2, r.usMaxContext = t(i, A), A += 2, A;
-  },
-  version5: function(i, A, r) {
-    var e = Q.B.readUshort;
-    return A = Q.T.OS2.version2(i, A, r), r.usLowerOpticalPointSize = e(i, A), A += 2, r.usUpperOpticalPointSize = e(i, A), A += 2, A;
-  }
-};
-Q.T.post = {
-  parseTab: function(i, A, r) {
-    var e = Q.B, t = {};
-    return t.version = e.readFixed(i, A), A += 4, t.italicAngle = e.readFixed(i, A), A += 4, t.underlinePosition = e.readShort(i, A), A += 2, t.underlineThickness = e.readShort(i, A), A += 2, t;
-  }
-};
-Q.T.SVG = {
-  parseTab: function(i, A, r) {
-    var e = Q.B, t = { entries: [], svgs: [] }, n = A;
-    e.readUshort(i, A), A += 2;
-    var a = e.readUint(i, A);
-    A += 4, e.readUint(i, A), A += 4, A = a + n;
-    var s = e.readUshort(i, A);
-    A += 2;
-    for (var B = 0; B < s; B++) {
-      var g = e.readUshort(i, A);
-      A += 2;
-      var o = e.readUshort(i, A);
-      A += 2;
-      var u = e.readUint(i, A);
-      A += 4;
-      var h = e.readUint(i, A);
-      A += 4;
-      var c = new Uint8Array(i.buffer, n + u + a, h);
-      c[0] == 31 && c[1] == 139 && c[2] == 8 && (c = pako.inflate(c));
-      for (var D = e.readUTF8(c, 0, c.length), l = g; l <= o; l++)
-        t.entries[l] = t.svgs.length;
-      t.svgs.push(D);
-    }
-    return t;
-  }
-};
-Q.T.sbix = {
-  parseTab: function(i, A, r, e) {
-    for (var t = e.maxp.numGlyphs, n = A, a = Q.B, s = a.readUint(i, A + 4), B = [], g = s - 1; g < s; g++)
-      for (var o = n + a.readUint(i, A + 8 + g * 4), u = 0; u < t; u++) {
-        var h = a.readUint(i, o + 4 + u * 4), c = a.readUint(i, o + 4 + u * 4 + 4);
-        if (h == c) {
-          B[u] = null;
-          continue;
+  _parseGlyf: function(n, A) {
+    var e = E.B, t = n._data, r = n.loca;
+    if (r[A] == r[A + 1]) return null;
+    var i = E.findTable(t, "glyf", n._offset)[0] + r[A], a = {};
+    if (a.noc = e.readShort(t, i), i += 2, a.xMin = e.readShort(t, i), i += 2, a.yMin = e.readShort(t, i), i += 2, a.xMax = e.readShort(t, i), i += 2, a.yMax = e.readShort(t, i), i += 2, a.xMin >= a.xMax || a.yMin >= a.yMax) return null;
+    if (a.noc > 0) {
+      a.endPts = [];
+      for (var s = 0; s < a.noc; s++)
+        a.endPts.push(e.readUshort(t, i)), i += 2;
+      var B = e.readUshort(t, i);
+      if (i += 2, t.length - i < B) return null;
+      a.instructions = e.readBytes(t, i, B), i += B;
+      var g = a.endPts[a.noc - 1] + 1;
+      a.flags = [];
+      for (var s = 0; s < g; s++) {
+        var Q = t[i];
+        if (i++, a.flags.push(Q), Q & 8) {
+          var l = t[i];
+          i++;
+          for (var h = 0; h < l; h++)
+            a.flags.push(Q), s++;
         }
-        var D = o + h, l = a.readASCII(i, D + 4, 4);
-        if (l != "png ") throw l;
-        B[u] = new Uint8Array(i.buffer, i.byteOffset + D + 8, c - h - 8);
       }
-    return B;
-  }
-};
-Q.T.colr = {
-  parseTab: function(i, A, r) {
-    var e = Q.B, t = A;
-    A += 2;
-    var n = e.readUshort(i, A);
-    A += 2;
-    var a = e.readUint(i, A);
-    A += 4;
-    var s = e.readUint(i, A);
-    A += 4;
-    var B = e.readUshort(i, A);
-    A += 2;
-    for (var g = {}, o = t + a, u = 0; u < n; u++)
-      g["g" + e.readUshort(i, o)] = [e.readUshort(i, o + 2), e.readUshort(i, o + 4)], o += 6;
-    var h = [];
-    o = t + s;
-    for (var u = 0; u < B; u++)
-      h.push(e.readUshort(i, o), e.readUshort(i, o + 2)), o += 4;
-    return [g, h];
-  }
-};
-Q.T.cpal = {
-  parseTab: function(i, A, r) {
-    var e = Q.B, t = A, n = e.readUshort(i, A);
-    if (A += 2, n == 0) {
-      e.readUshort(i, A), A += 2, e.readUshort(i, A), A += 2;
-      var a = e.readUshort(i, A);
-      A += 2;
-      var s = e.readUint(i, A);
-      return A += 4, new Uint8Array(i.buffer, t + s, a * 4);
-    } else throw n;
-  }
-};
-Q.T.GSUB = {
-  parseTab: function(i, A, r, e) {
-    var t = Q.B, n = t.readUshort;
-    t.readUint;
-    var a = A;
-    n(i, a), a += 2, n(i, a), a += 2, n(i, a), a += 2;
-    var s = n(i, a);
-    a += 2, n(i, a), a += 2, a = A + s;
-    var B = {}, g = n(i, a);
-    a += 2;
-    for (var o = 0; o < g; o++) {
-      var u = t.readASCII(i, a, 4);
-      a += 4, n(i, a), a += 2, B[u] = !0;
-    }
-    return B;
-  }
-};
-Q.T.fvar = {
-  parseTab: function(i, A, r, e) {
-    var t = e.name, n = A, a = Q.B, s = [], B = [];
-    n += 8;
-    var g = a.readUshort(i, n);
-    n += 2, n += 2;
-    var o = a.readUshort(i, n);
-    n += 2;
-    var u = a.readUshort(i, n);
-    n += 2;
-    for (var h = 0; h < g; h++) {
-      var c = a.readASCII(i, n, 4), D = a.readFixed(i, n + 4), l = a.readFixed(i, n + 8), C = a.readFixed(i, n + 12), P = a.readUshort(i, n + 16), m = a.readUshort(i, n + 18);
-      s.push([c, D, l, C, P, t["_" + m]]), n += 20;
-    }
-    for (var h = 0; h < o; h++) {
-      for (var I = a.readUshort(i, n), v = null, P = a.readUshort(i, n + 2), p = [], w = 0; w < g; w++) p.push(a.readFixed(i, n + 4 + w * 4));
-      n += 4 + g * 4, (u & 3) == 2 && (v = a.readUshort(i, n), n += 2), B.push([t["_" + I], P, p, v]);
-    }
-    return [s, B];
-  }
-};
-Q.T.gvar = function() {
-  var i = 32768, A = 16384, r = 8192, e = 128, t = 64, n = 128, a = 32768, s = Q.B;
-  function B(h, c, D) {
-    for (var l = [], C = 0; C < D; C++) l.push(s.readF2dot14(h, c + C * 2));
-    return l;
-  }
-  function g(h, c, D, l, C) {
-    for (var P = [], m = 0; m < D; m++) {
-      var I = s.readUshort(h, c);
-      c += 2;
-      var v = s.readUshort(h, c), p = v & 61440;
-      v = v & 4095, c += 2;
-      var w = null, d = null, f = null;
-      p & i && (w = B(h, c, l), c += l * 2), p & A && (d = B(h, c, l), c += l * 2), p & A && (f = B(h, c, l), c += l * 2), P.push([I, v, p, d, w, f]);
-    }
-    return P;
-  }
-  function o(h, c, D) {
-    var l = h[c];
-    if (c++, l == 0) return [[], c];
-    127 < l && (l = (l & 127) << 8 | h[c++]);
-    for (var C = [], P = 0; C.length < l; ) {
-      var m = h[c];
-      c++;
-      var I = (m & n) != 0;
-      m = (m & 127) + 1;
-      for (var v = 0; v < m; v++) {
-        var p = 0;
-        I ? (p = s.readUshort(h, c), c += 2) : (p = h[c], c++), P += p, C.push(P);
+      a.xs = [];
+      for (var s = 0; s < g; s++) {
+        var u = (a.flags[s] & 2) != 0, d = (a.flags[s] & 16) != 0;
+        u ? (a.xs.push(d ? t[i] : -t[i]), i++) : d ? a.xs.push(0) : (a.xs.push(e.readShort(t, i)), i += 2);
       }
-    }
-    return [C, c];
-  }
-  function u(h, c, D, l) {
-    var C = c + 4, P = s.readUshort(h, C);
-    C += 2;
-    var m = s.readUshort(h, C);
-    C += 2;
-    var I = s.readUint(h, C);
-    C += 4;
-    var v = s.readUshort(h, C);
-    C += 2, s.readUshort(h, C), C += 2;
-    var p = s.readUint(h, C);
-    C += 4;
-    for (var w = [], d = 0; d < v + 1; d++) w.push(s.readUint(h, C + d * 4));
-    var f = [], _ = [], b = [];
-    C = c + I;
-    for (var d = 0; d < m; d++) {
-      var U = B(h, C + d * P * 2, P), S = [], y = [];
-      f.push(U), _.push(S), b.push(y);
-      for (var x = 0; x < P; x++)
-        S[x] = Math.min(U[x], 0), y[x] = Math.max(U[x], 0);
-    }
-    for (var G = new Int8Array(h.buffer), N = [], d = 0; d < v; d++) {
-      C = c + p + w[d];
-      var H = s.readUshort(h, C);
-      C += 2;
-      var K = H & a;
-      H &= 4095;
-      var Z = s.readUshort(h, C);
-      C += 2;
-      var q = g(h, C, H, P), L = [];
-      N.push(L), C = c + p + w[d] + Z;
-      var Y = null;
-      if (K) {
-        var V = o(h, C);
-        Y = V[0], C = V[1];
+      a.ys = [];
+      for (var s = 0; s < g; s++) {
+        var u = (a.flags[s] & 4) != 0, d = (a.flags[s] & 32) != 0;
+        u ? (a.ys.push(d ? t[i] : -t[i]), i++) : d ? a.ys.push(0) : (a.ys.push(e.readShort(t, i)), i += 2);
       }
-      for (var $ = 0; $ < H; $++) {
-        var M = q[$], sA = C + M[0], W = Y;
-        if (M[2] & r) {
-          var V = o(h, C);
-          W = V[0], C = V[1];
-        }
-        for (var X = []; C < sA; ) {
-          var j = h[C++], J = (j & 63) + 1;
-          if (j & e)
-            for (var x = 0; x < J; x++) X.push(0);
-          else if (j & t) {
-            for (var x = 0; x < J; x++) X.push(s.readShort(h, C + x * 2));
-            C += J * 2;
-          } else {
-            for (var x = 0; x < J; x++) X.push(G[C + x]);
-            C += J;
-          }
-        }
-        var AA = M[1];
-        if (L.push([[
-          M[3] ? M[3] : _[AA],
-          M[4] ? M[4] : f[AA],
-          M[5] ? M[5] : b[AA]
-        ], X, W.length == 0 ? null : W]), W.length != 0 && W.length * 2 != X.length) throw "e";
-      }
-    }
-    return N;
-  }
-  return { parseTab: u };
-}();
-Q.T.avar = {
-  parseTab: function(i, A, r, e) {
-    var t = A, n = Q.B, a = [];
-    t += 6;
-    var s = n.readUshort(i, t);
-    t += 2;
-    for (var B = 0; B < s; B++) {
-      var g = n.readUshort(i, t);
-      t += 2;
-      var o = [];
-      a.push(o);
-      for (var u = 0; u < g; u++) {
-        var h = n.readF2dot14(i, t), c = n.readF2dot14(i, t + 2);
-        t += 4, o.push(h, c);
-      }
-    }
+      for (var c = 0, D = 0, s = 0; s < g; s++)
+        c += a.xs[s], D += a.ys[s], a.xs[s] = c, a.ys[s] = D;
+    } else
+      a.parts = [];
     return a;
   }
 };
-Q.T.HVAR = {
-  parseTab: function(i, A, r, e) {
-    var t = A, n = A, a = Q.B;
-    t += 4;
-    var s = a.readUint(i, t);
-    t += 4;
-    var B = a.readUint(i, t);
-    t += 4;
-    var g = a.readUint(i, t);
-    t += 4;
-    var o = a.readUint(i, t);
-    if (t += 4, g != 0 || o != 0) throw g;
-    t = n + s;
-    var u = t, G = a.readUshort(i, t);
-    if (t += 2, G != 1) throw "e";
-    var h = a.readUint(i, t);
-    t += 4;
-    var c = a.readUshort(i, t);
-    t += 2;
-    for (var D = [], l = 0; l < c; l++) D.push(a.readUint(i, t + l * 4));
-    t += c * 4, t = u + h;
-    var C = a.readUshort(i, t);
-    t += 2;
-    var P = a.readUshort(i, t);
-    t += 2;
-    for (var m = [], l = 0; l < P; l++) {
-      var I = [[], [], []];
-      m.push(I);
-      for (var v = 0; v < C; v++)
-        I[0].push(a.readF2dot14(i, t + 0)), I[1].push(a.readF2dot14(i, t + 2)), I[2].push(a.readF2dot14(i, t + 4)), t += 6;
-    }
-    for (var p = new Int8Array(i.buffer), w = [], l = 0; l < D.length; l++) {
-      t = n + s + D[l];
-      var d = [];
-      w.push(d);
-      var f = a.readUshort(i, t);
-      t += 2;
-      var _ = a.readUshort(i, t);
-      if (t += 2, _ & 32768) throw "e";
-      var P = a.readUshort(i, t);
-      t += 2;
-      for (var b = [], v = 0; v < P; v++) b.push(a.readUshort(i, t + v * 2));
-      t += P * 2;
-      for (var U = 0; U < f; U++) {
-        for (var S = [], y = 0; y < P; y++)
-          S.push(y < _ ? a.readShort(i, t) : p[t]), t += y < _ ? 2 : 1;
-        var x = new Array(m.length);
-        x.fill(0), d.push(x);
-        for (var v = 0; v < b.length; v++) x[b[v]] = S[v];
-      }
-    }
-    t = n + B;
-    var G = i[t++];
-    if (G != 0) throw "e";
-    var N = i[t++], H = a.readUshort(i, t);
-    t += 2;
-    for (var K = 15, Z = 48, q = ((N & Z) >> 4) + 1, L = [], l = 0; l < H; l++) {
-      var Y = 0;
-      q == 1 ? Y = i[t++] : (Y = a.readUshort(i, t), t += 2);
-      var V = Y >> (N & K) + 1, $ = Y & (1 << (N & K) + 1) - 1;
-      L.push(w[V][$]);
-    }
-    return [m, L];
-  }
-};
-typeof module < "u" && module.exports ? module.exports = Q : typeof window < "u" && (window.Typr = Q);
-const cA = `data:font/truetype;charset=utf-8;base64,AAEAAAAKAIAAAwAgT1MvMs+QEyQAAAEoAAAAYGNtYXAg7yVJAAAFjAAACSBnbHlmuHLTdAAAErQAAGi0aGVhZFvXdUwAAACsAAAANmhoZWELAQUCAAAA5AAAACRobXR4BACDgAAAAYgAAAQEbG9jYQAy54AAAA6sAAAECG1heHABIgCCAAABCAAAACBuYW1lVs/OSgAAe2gAAAOicG9zdABpADQAAH8MAAAAIAABAAAAAQAAzOWHqV8PPPUAAAQAAAAAAHxiGCcAAAAAfGIYJwAAAAAEAAQAAAAACAACAAEAAAAAAAEAAAQAAAAAAAQAAAAAAAcAAAEAAAAAAAAAAAAAAAAAAAEBAAEAAAEBAIAAIAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgQAAZAABQAEAgACAAAAAAACAAIAAAACAAAzAMwAAAAABAAAAAAAAACAAACLAABw4wAAAAAAAAAAWUFMLgBAACAmawQAAAAAAAQAAAAAAAFRAAAAAAMABAAAAAAgAAAEAAAABAAAAAQAAAAEAAGABAABAAQAAIAEAACABAAAgAQAAIAEAAGABAABAAQAAQAEAACABAABAAQAAIAEAACABAABAAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAABAAQAAIAEAAEABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAABAAQAAIAEAAEABAAAgAQAAIAEAAEABAAAgAQAAIAEAACABAAAgAQAAIAEAAEABAAAgAQAAIAEAAGABAAAgAQAAIAEAAGABAAAgAQAAIAEAACABAAAgAQAAIAEAAEABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAABgAQAAQAEAACABAAAAAQAAgAEAACABAAAgAQAAIAEAACABAACAAQAAAAEAAIABAABgAQAAgAEAACABAAAgAQAAAAEAACABAAAAAQAAAAEAAAABAAAAAQAAAAEAAIABAADAAQAAAAEAAAABAAAgAQAAYAEAAAABAAAAAQAAIAEAAAA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AIAAAACA/YAAgAAAAIAAAP8AAoABAAAA/4AAAP+A/4AAgAAAAIAAAP8AA4AAAP8AAAAAgAAAAIAAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAP+AAAD/gAAAAAAAAP8AAAAAgAAAAAAAAP+AAAD/gAAAAAAAAwCAAIAEAAQAABcAHQAjAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/4AAAACAAAAAgAAA/4AAAACAAAD9AAAA/4AAAACAAAD/gAAAAIAAgAAAAIAAAACAAAD/AAAAAQAAAP+AAAAEAAAA/4AAAP8AAAD/gAAAAIAAAP8AAAD/gAAA/4AAAACAAAABAAAAAIAAAAEAAAAAAP+AAAD/gAAAAQD+gP8AAAAAgAAAAIAAAAABAYACgAKABAAAAwAAAQEBAQGAAQAAAP8ABAAAAP6AAAAAAAABAQAAgAMABAAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQECAAEAAAD/gAAA/4AAAACAAAAAgAAA/wAAAP+AAAD/gAAAAIAAAACABAAAAP+AAAD/gAAA/oAAAP+AAAD/gAAAAIAAAACAAAABgAAAAIAAAAAAAAEBAACAAwAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEAAQAAAACAAAAAgAAA/4AAAP+AAAD/AAAAAIAAAACAAAD/gAAA/4AEAAAA/4AAAP+AAAD+gAAA/4AAAP+AAAAAgAAAAIAAAAGAAAAAgAAAAAAABQCAAYADgAQAAAMABwATABcAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAIAAAP+AAYAAgAAA/4D/AAEAAAABAAAA/wAAAP8AAAD/AAAAAQD/gACAAAD/gAGAAIAAAP+ABAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/gAAAAIAAAP+AAAAAAAABAQAAgAOAAwAACwAAAQEBAQEBAQEBAQEBAgAAgAAAAQAAAP8AAAD/gAAA/wAAAAEAAwAAAP8AAAD/gAAA/wAAAAEAAAAAgAAAAAAAAQCAAAACAAGAAAcAAAEBAQEBAQEBAQABAAAA/4AAAP8AAAAAgAGAAAD/AAAA/4AAAACAAAAAAAABAIABgAOAAgAAAwAAAQEBAQCAAwAAAP0AAgAAAP+AAAAAAAABAQAAgAIAAYAAAwAAAQEBAQEAAQAAAP8AAYAAAP8AAAAAAAABAIAAgAQAA4AAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAwABAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAA4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAwCAAIADgAQAAAsAEQAXAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/4AAAP4AAAD/gAAAAIAAgAAAAIAAAACAAAD/gAAA/4AAAAEAAAAEAAAA/4AAAP2AAAD/gAAAAIAAAAKAAAAAAP8AAAAAgAAAAID/AP+AAAD/AAAAAYAAAAABAIAAgAOABAAADQAAAQEBAQEBAQEBAQEBAQEBgAEAAAABAAAA/QAAAAEAAAD/AAAAAIAAAACABAAAAP0AAAD/gAAAAIAAAAGAAAAAgAAAAIAAAAABAIAAgAOABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAD/gAAA/4AAAP+AAAABgAAA/QAAAACAAAAAgAAAAIAAAACAAAD/AAAA/wAAAACABAAAAP+AAAD/AAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAABAAAA/wAAAAEAAAAAAAABAIAAgAOABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAD/gAAAAIAAAP+AAAD+AAAA/4AAAAEAAAABAAAA/wAAAAEAAAD/AAAA/wAAAACABAAAAP+AAAD/AAAA/4AAAP8AAAD/gAAAAIAAAACAAAD/gAAAAQAAAACAAAABAAAA/4AAAACAAAAAAAABAIAAgAOABAAAEQAAAQEBAQEBAQEBAQEBAQEBAQEBAYABAAAA/4AAAP+AAAABAAAAAQAAAP8AAAD+AAAAAIAAAACABAAAAP+AAAD/gAAA/wAAAAEAAAD9gAAAAQAAAAGAAAAAgAAAAAEAgACAA4AEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQCAAwAAAP4AAAABgAAAAIAAAP+AAAD+AAAA/4AAAAEAAAABAAAA/gAEAAAA/4AAAP8AAAD/gAAA/wAAAP+AAAAAgAAAAIAAAP+AAAABAAAAAAAAAgCAAIADgAQAABMAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP8AAAD/AAAAAYAAAACAAAD/gAAA/gAAAP+AAAAAgACAAAABAAAABAAAAP+AAAD/gAAAAIAAAP8AAAD/gAAA/wAAAP+AAAAAgAAAAoAAAP6A/wAAAAEAAAEAgACAA4AEAAAPAAABAQEBAQEBAQEBAQEBAQEBAIADAAAA/4AAAP+AAAD/AAAAAIAAAACAAAD+gAAA/4AEAAAA/oAAAP+AAAD+gAAAAYAAAACAAAABAAAA/4AAAAAAAAMAgACAA4AEAAATABcAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAD/gAAAAIAAAP+AAAD+AAAA/4AAAACAAAD/gAAAAIAAgAAAAQAAAP8AAAABAAAABAAAAP+AAAD/AAAA/4AAAP8AAAD/gAAAAIAAAAEAAAAAgAAAAQAAAAAA/wAAAAEA/oD/AAAAAQAAAAACAIAAgAOABAAACwAPAAABAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP8AAAD+gAAA/4AAAACAAIAAAAEAAAAEAAAA/4AAAP0AAAABAAAAAIAAAAGAAAAAAP6AAAABgAACAQABAAIAA4AAAwAHAAABAQEBAQEBAQEAAQAAAP8AAAABAAAA/wADgAAA/wAAAP+AAAD/AAAAAAIAgACAAgADgAADAAsAAAEBAQEBAQEBAQEBAQEAAQAAAP8AAAABAAAA/4AAAP8AAAAAgAOAAAD/AAAA/4AAAP8AAAD/gAAAAIAAAAABAQAAgAOABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQKAAQAAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACABAAAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAACAIABgAOAAwAAAwAHAAABAQEBAQEBAQCAAwAAAP0AAAADAAAA/QADAAAA/4AAAP+AAAD/gAAAAAEAgACAAwAEAAAbAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAIABAAAAAIAAAACAAAAAgAAA/4AAAP+AAAD/gAAA/wAAAACAAAAAgAAAAIAAAP+AAAD/gAAA/4AEAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAAAAAAIAgACAA4AEAAATABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAD/gAAA/4AAAP8AAAAAgAAAAIAAAP8AAAD/AAAAAIAAgAEAAAD/AAQAAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAA/4AAAACAAAD+AAAA/wAAAAACAIAAgAOABAAAEQAVAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP6AAAAAgAAA/wAAAAGAAAD+AAAA/4AAAACAAgAAgAAA/4AEAAAA/4AAAP6AAAABAAAAAIAAAP2AAAD/gAAAAIAAAAKAAAD+AAAA/4AAAAAAAAIAgACAA4AEAAAPABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAYABAAAAAIAAAACAAAD/AAAA/wAAAP8AAAAAgAAAAIAAAAAAAQAAAAQAAAD/gAAA/4AAAP2AAAABAAAA/wAAAAKAAAAAgAAA/4D/AAAAAQAAAwCAAIADgAQAAAsADwATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQCAAoAAAACAAAD/gAAAAIAAAP+AAAD9gAEAAAABAAAA/wAAAAEAAAAEAAAA/4AAAP8AAAD/gAAA/wAAAP+AAAADAP8AAAABAP6A/wAAAAEAAAAAAQCAAIADgAQAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP8AAAD/AAAAAQAAAAEAAAD/gAAA/gAAAP+AAAAAgAQAAAD/gAAA/4AAAACAAAD9gAAAAIAAAP+AAAD/gAAAAIAAAAKAAAAAAAACAIAAgAOABAAACwATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQCAAgAAAACAAAAAgAAA/4AAAP+AAAD+AAEAAAAAgAAAAIAAAP+AAAAEAAAA/4AAAP+AAAD+gAAA/4AAAP+AAAADAP2AAAAAgAAAAYAAAACAAAEAgACAA4AEAAAXAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/wAAAP8AAAABAAAA/wAAAAEAAAABAAAA/4AAAP4AAAD/gAAAAIAEAAAA/4AAAP+AAAAAgAAA/wAAAP+AAAD/AAAAAIAAAP+AAAD/gAAAAIAAAAKAAAAAAAABAIAAgAOABAAACQAAAQEBAQEBAQEBAQCAAwAAAP4AAAABAAAA/wAAAP8ABAAAAP+AAAD/AAAA/4AAAP6AAAAAAQCAAIADgAQAABUAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/wAAAP8AAAABAAAA/4AAAAGAAAD/gAAA/gAAAP+AAAAAgAQAAAD/gAAA/4AAAACAAAD9gAAAAQAAAACAAAD+gAAA/4AAAACAAAACgAAAAAEAgACAA4AEAAALAAABAQEBAQEBAQEBAQEAgAEAAAABAAAAAQAAAP8AAAD/AAAA/wAEAAAA/gAAAAIAAAD8gAAAAQAAAP8AAAAAAAABAIAAgAOABAAACwAAAQEBAQEBAQEBAQEBAIADAAAA/wAAAAEAAAD9AAAAAQAAAP8ABAAAAP+AAAD9gAAA/4AAAACAAAACgAAAAAAAAQCAAIAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEBAAMAAAD/gAAA/4AAAP4AAAD/gAAAAQAAAAEAAAD+gAQAAAD/gAAA/YAAAP+AAAAAgAAAAQAAAP8AAAACgAAAAAAAAQCAAIADgAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAEAAAAAgAAAAIAAAAEAAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/AAQAAAD/AAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAD/AAAAAAAAAQCAAIADgAQAAAUAAAEBAQEBAQCAAQAAAAIAAAD9AAQAAAD9AAAA/4AAAAABAIAAgAQABAAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAEAAAAAgAAAAIAAAACAAAABAAAA/wAAAP+AAAD/gAAA/4AAAP8ABAAAAP+AAAD/gAAAAIAAAACAAAD8gAAAAgAAAP+AAAAAgAAA/gAAAAAAAAEAgACABAAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQCAAQAAAACAAAAAgAAAAIAAAAEAAAD/AAAA/4AAAP+AAAD/gAAA/wAEAAAA/4AAAP+AAAD/gAAAAYAAAPyAAAABAAAAAIAAAACAAAD+AAAAAAAAAgCAAIADgAQAAAsADwAAAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAD/gAAA/gAAAP+AAAAAgACAAAABAAAABAAAAP+AAAD9gAAA/4AAAACAAAACgAAAAAD9gAAAAoAAAgCAAIADgAQAAAkADQAAAQEBAQEBAQEBAQEBAQEAgAKAAAAAgAAA/4AAAP6AAAD/AAEAAAABAAAABAAAAP+AAAD+gAAA/4AAAP8AAAADAP6AAAABgAAAAAIAgACABAAEAAAPABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAAAgAAA/4AAAP+AAAD+AAAA/4AAAACAAIAAAAEAAAD/gAAAAIAAAAQAAAD/gAAA/gAAAP8AAAAAgAAA/4AAAACAAAACgAAAAAD9gAAAAIAAAACAAAABgAACAIAAgAOABAAAEwAXAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAKAAAAAgAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP8AAQAAAAEAAAAEAAAA/4AAAP8AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAD/AAAAAwD/AAAAAQAAAQCAAIADgAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/wAAAP8AAAABgAAAAIAAAP+AAAD+AAAA/4AAAAEAAAABAAAA/oAAAP+AAAAAgAQAAAD/gAAA/4AAAACAAAD/AAAA/4AAAP8AAAD/gAAAAIAAAACAAAD/gAAAAQAAAACAAAABAAAAAAAAAQCAAIADgAQAAAcAAAEBAQEBAQEBAIADAAAA/wAAAP8AAAD/AAQAAAD/gAAA/QAAAAMAAAAAAAABAIAAgAOABAAACwAAAQEBAQEBAQEBAQEBAIABAAAAAQAAAAEAAAD/gAAA/gAAAP+ABAAAAP0AAAADAAAA/QAAAP+AAAAAgAAAAAAAAQCAAIADgAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEAgAEAAAABAAAAAQAAAP+AAAD/gAAA/wAAAP+AAAD/gAQAAAD+AAAAAgAAAP4AAAD/AAAA/4AAAACAAAABAAAAAAAAAQCAAIAEAAQAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAIABAAAAAIAAAACAAAAAgAAAAQAAAP8AAAD/gAAA/4AAAP+AAAD/AAQAAAD+AAAAAIAAAP+AAAACAAAA/IAAAACAAAAAgAAA/4AAAP+AAAAAAAABAIAAgAOABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQCAAQAAAAEAAAABAAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/AAAA/wAAAACAAAAAgAAA/4AAAP+ABAAAAP8AAAABAAAA/wAAAP+AAAD/gAAA/4AAAP8AAAABAAAA/wAAAAEAAAAAgAAAAIAAAACAAAAAAAABAIAAgAOABAAADwAAAQEBAQEBAQEBAQEBAQEBAQCAAQAAAAEAAAABAAAA/4AAAP+AAAD/AAAA/4AAAP+ABAAAAP6AAAABgAAA/oAAAP+AAAD+gAAAAYAAAACAAAAAAAABAIAAgAOABAAAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAIADAAAA/4AAAP+AAAD/gAAA/4AAAAIAAAD9AAAAAIAAAACAAAAAgAAAAIAAAP4ABAAAAP8AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAAEAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQEAAIADAAQAAAcAAAEBAQEBAQEBAQACAAAA/wAAAAEAAAD+AAQAAAD/gAAA/YAAAP+AAAAAAAABAIAAgAQAA4AAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAIABAAAAAIAAAACAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/gAAA/4AAAP+AA4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQEAAIADAAQAAAcAAAEBAQEBAQEBAQACAAAA/gAAAAEAAAD/AAQAAAD8gAAAAIAAAAKAAAAAAAABAIACAAQABAAAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAgAAgAAAAIAAAACAAAAAgAAA/wAAAP+AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAACABAAAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAP+AAAD/gAAAAIAAAACAAAAAgAAAAAAAAQCAAIADgAEAAAMAAAEBAQEAgAMAAAD9AAEAAAD/gAAAAAAAAQEAAoACgAQAAAkAAAEBAQEBAQEBAQEBAAEAAAAAgAAA/4AAAP+AAAD/gAQAAAD/gAAA/wAAAACAAAAAgAAAAAEAgACAA4ADAAAPAAABAQEBAQEBAQEBAQEBAQEBAQACgAAA/4AAAP+AAAD/AAAAAQAAAP6AAAD/gAAAAIADAAAA/YAAAACAAAABgAAA/oAAAP+AAAAAgAAAAYAAAAAAAAIAgACAA4AEAAAJAA0AAAEBAQEBAQEBAQEBAQEBAIABAAAAAYAAAACAAAD/gAAA/YABAAAAAQAAAAQAAAD/AAAA/4AAAP6AAAD/gAAAAgD+gAAAAYAAAAABAIAAgAOAAwAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/wAAAP8AAAABAAAAAQAAAP+AAAD+AAAA/4AAAACAAwAAAP+AAAD/gAAAAIAAAP6AAAAAgAAA/4AAAP+AAAAAgAAAAYAAAAAAAAIAgACAA4AEAAAJAA0AAAEBAQEBAQEBAQEBAQEBAoABAAAA/YAAAP+AAAAAgAAAAYD/AAAAAQAAAAQAAAD8gAAAAIAAAAGAAAAAgAAA/4D+gAAAAYAAAAACAIAAgAOAAwAADQARAAABAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/gAAAAGAAAD+AAAA/4AAAACAAIAAAAEAAAADAAAA/4AAAP8AAAD/gAAA/4AAAACAAAABgAAAAAD/gAAAAIAAAAABAQAAgAOAA4AACwAAAQEBAQEBAQEBAQEBAYACAAAA/oAAAAEAAAD/AAAA/wAAAACAA4AAAP+AAAD/AAAA/4AAAP8AAAACgAAAAAAAAgCAAIADgAOAAA8AEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/4AAAP4AAAABgAAA/oAAAP+AAAAAgACAAAABAAAAA4AAAP+AAAD+AAAA/4AAAACAAAAAgAAAAIAAAAEAAAAAAP8AAAABAAABAIAAgAOABAAACwAAAQEBAQEBAQEBAQEBAIABAAAAAYAAAACAAAD/AAAA/wAAAP8ABAAAAP8AAAD/gAAA/gAAAAIAAAD+AAAAAAAAAgGAAIACgAQAAAMABwAAAQEBAQEBAQEBgAEAAAD/AAAAAQAAAP8ABAAAAP+AAAD/gAAA/YAAAAACAIAAgAOABAAAAwAPAAABAQEBAQEBAQEBAQEBAQEBAoABAAAA/wAAAAEAAAD/gAAA/gAAAP+AAAABAAAAAQAEAAAA/4AAAP+AAAD+AAAA/4AAAACAAAABAAAA/wAAAAABAIAAgAOAA4AAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAEAAAAAgAAAAQAAAP+AAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP8AA4AAAP8AAAAAgAAA/4AAAP8AAAD/gAAA/4AAAACAAAAAgAAA/wAAAAAAAAEBgACAAwAEAAAHAAABAQEBAQEBAQGAAQAAAACAAAD/AAAA/4AEAAAA/QAAAP+AAAAAgAAAAAAAAQCAAIAEAAMAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQABAAAAAIAAAAEAAAAAgAAA/wAAAP+AAAD/gAAA/4AAAP8AAAAAgAMAAAD/gAAAAIAAAP+AAAD+AAAAAYAAAP+AAAAAgAAA/oAAAAIAAAAAAAABAIAAgAOAAwAADwAAAQEBAQEBAQEBAQEBAQEBAQCAAQAAAACAAAABAAAAAIAAAP8AAAD/gAAA/4AAAP8AAwAAAP+AAAAAgAAA/4AAAP4AAAABgAAA/4AAAP8AAAAAAAACAIAAgAOAAwAACwAPAAABAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP+AAAD+AAAA/4AAAACAAIAAAAEAAAADAAAA/4AAAP6AAAD/gAAAAIAAAAGAAAAAAP6AAAABgAACAIAAgAOAAwAACQANAAABAQEBAQEBAQEBAQEBAQCAAoAAAACAAAD/gAAA/oAAAP8AAQAAAAEAAAADAAAA/4AAAP+AAAD/gAAA/wAAAAIA/4AAAACAAAAAAgCAAIAEAAMAAA0AEQAAAQEBAQEBAQEBAQEBAQEBAQEBAQACgAAAAIAAAP+AAAD/AAAA/oAAAP+AAAAAgACAAAABAAAAAwAAAP6AAAD/gAAA/4AAAAEAAAAAgAAAAIAAAAAA/4AAAACAAAAAAQEAAIADgAMAAAkAAAEBAQEBAQEBAQEBAAIAAAAAgAAA/wAAAP+AAAD/AAMAAAD/gAAA/wAAAAEAAAD+AAAAAAEAgACABAADAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEAAoAAAP6AAAABgAAAAIAAAP+AAAD9AAAAAgAAAP6AAAD/gAAAAIADAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAAAgAAAAAAAAQCAAIADgAOAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQABAAAAAQAAAP8AAAAAgAAAAQAAAP+AAAD+gAAA/4AAAP+AAAAAgAOAAAD/gAAA/4AAAP6AAAAAgAAA/4AAAP+AAAAAgAAAAYAAAACAAAAAAAABAIAAgAOAAwAADwAAAQEBAQEBAQEBAQEBAQEBAQCAAQAAAACAAAAAgAAAAQAAAP+AAAD/gAAA/oAAAP+AAwAAAP4AAAAAgAAAAYAAAP2AAAAAgAAA/4AAAACAAAAAAAABAIAAgAOAAwAADwAAAQEBAQEBAQEBAQEBAQEBAQCAAQAAAAEAAAABAAAA/4AAAP+AAAD/AAAA/4AAAP+AAwAAAP6AAAABgAAA/oAAAP+AAAD/gAAAAIAAAACAAAAAAAABAIAAgAQAAwAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAEAAAAAgAAAAIAAAACAAAABAAAA/4AAAP8AAAD/gAAA/wAAAP+AAwAAAP6AAAAAgAAA/4AAAAGAAAD+AAAA/4AAAACAAAD/gAAAAIAAAAAAAAEAgACAA4ADAAAbAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAIABAAAAAQAAAAEAAAD/gAAA/4AAAACAAAAAgAAA/wAAAP8AAAD/AAAAAIAAAACAAAD/gAAA/4ADAAAA/4AAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAD/gAAAAIAAAACAAAAAgAAAAIAAAAAAAAEAgACAA4ADAAAPAAABAQEBAQEBAQEBAQEBAQEBAIABAAAAAQAAAAEAAAD/gAAA/gAAAAGAAAD+gAAA/4ADAAAA/wAAAAEAAAD+AAAA/4AAAACAAAAAgAAAAIAAAAAAAAEAgACAA4ADAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQCAAwAAAP+AAAD/gAAA/4AAAAGAAAD9AAAAAIAAAACAAAAAgAAA/oADAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAAAgAAAAAAAAQCAAIADAAQAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAYABgAAA/wAAAP+AAAAAgAAAAQAAAP6AAAD/gAAA/4AAAACAAAAAgAQAAAD/gAAA/wAAAP+AAAD/AAAA/4AAAACAAAABAAAAAIAAAAEAAAAAAAABAYAAgAKABAAAAwAAAQEBAQGAAQAAAP8ABAAAAPyAAAAAAAABAQAAgAOABAAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAGAAAAAgAAAAIAAAP+AAAD/gAAA/oAAAAEAAAAAgAAA/4AAAP8ABAAAAP+AAAD/AAAA/4AAAP8AAAD/gAAAAIAAAAEAAAAAgAAAAQAAAAAAAAEAgAGAA4ADAAAPAAABAQEBAQEBAQEBAQEBAQEBAQABAAAAAQAAAACAAAD/gAAA/wAAAP8AAAD/gAAAAIADAAAA/4AAAACAAAD/AAAA/4AAAACAAAD/gAAAAQAAAAAAAAEAAAAABAAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQAAAYAAAAEAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/AAAA/wAEAAAA/4AAAP+AAAD/gAAA/wAAAP6AAAABAAAAAQAAAACAAAAAgAAAAAAAAQIAAAAEAAQAAAMAAAEBAQECAAIAAAD+AAQAAAD8AAAAAAAAAgCAAIADgAQAABcAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQGAAYAAAP8AAAABAAAA/4AAAP+AAAABgAAA/QAAAACAAAAAgAAA/wAAAACAAAAAgAGAAIAAAP+ABAAAAP+AAAD/AAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAABAAAAAAAAAP+AAAAAAQCAAIADgAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAEAAAABAAAAAQAAAP+AAAAAgAAA/wAAAAEAAAD/AAAA/wAAAP8AAAABAAAA/wAAAACAAAD/gAQAAAD+gAAAAYAAAP8AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAABACAAIAEAAQAABcAGwAfACMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAoAAAP4AAAABgAAAAIAAAACAAAD/gAAA/YAAAAIAAAD+gAAA/4AAAP+AAAAAgAEAAAAAgAAAAQAAgAAA/4D9AACAAAD/gAQAAAD/gAAA/4AAAP+AAAD/gAAA/wAAAP+AAAAAgAAAAIAAAACAAAAAgAAAAQAAAP8A/4AAAACAAQAAAP+AAAD+gAAA/4AAAAAEAIAAgAQAA4AAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQCAAIAAAP+AAQAAgAAA/4ABAACAAAD/gAEAAIAAAP+AA4AAAP0AAAADAAAA/QAAAAMAAAD9AAAAAwAAAP0AAAAAAQIAAAAEAAQAAAkAAAEBAQEBAQEBAQEDgACAAAD+AAAAAIAAAACAAAAAgAQAAAD8AAAAAQAAAAEAAAABAAAAAAgAAAAABAAEAAADAAcACwAPABMAFwAbAB8AAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAABAAAA/wACAAEAAAD/AP8AAQAAAP8AAgABAAAA/wD9AAEAAAD/AAIAAQAAAP8A/wABAAAA/wACAAEAAAD/AAQAAAD/AAAAAQAAAP8AAAAAAAAA/wAAAAEAAAD/AAAAAAAAAP8AAAABAAAA/wAAAAAAAAD/AAAAAQAAAP8AAAAAAQIAAAADAAQAAAMAAAEBAQECAAEAAAD/AAQAAAD8AAAAAAAAAgGAAIACgAQAAAMABwAAAQEBAQEBAQEBgAEAAAD/AAAAAQAAAP8ABAAAAP6AAAD/gAAA/oAAAAABAgAAAAQAAgAAAwAAAQEBAQIAAgAAAP4AAgAAAP4AAAAAAAAEAIAAAAQABAAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQCAAIAAAP+AAQAAgAAA/4ABAACAAAD/gAEAAIAAAP+ABAAAAPwAAAAEAAAA/AAAAAQAAAD8AAAABAAAAPwAAAAAAQCAAIADgAOAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAoABAAAA/oAAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAAEAAAD/gAOAAAD+AAAA/wAAAACAAAAAgAAAAIAAAACAAAAAgAAA/wAAAAEAAAAAAAABAAAAAAQABAAACwAAAQEBAQEBAQEBAQEBAAAEAAAA/gAAAP+AAAD/gAAA/4AAAP+ABAAAAPwAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQCAAIAEAAOAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAOAAAD/gAAAAIAAAP8AAAABAAAA/oAAAAGAAAD9AAAAAIAAAP+AAAABAAAA/wAAAAGAAAD+gAAAAAAAAQAAAAACAAQAAAkAAAEBAQEBAQEBAQEAAACAAAAAgAAAAIAAAACAAAD+AAQAAAD/AAAA/wAAAP8AAAD/AAAAAAEAAAAABAAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQKAAYAAAP8AAAD/AAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAQAEAAAA/wAAAP+AAAD/gAAA/wAAAP8AAAABgAAAAQAAAACAAAAAgAAAAAAAAQAAAAAEAAIAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAEAAAAAgAAAAIAAAACAAAD8AAAAAIAAAACAAAAAgAIAAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAAAAAgAAAAAEAAQAAAMABwAAAQEBAQEBAQEAAAIAAAD+AAIAAgAAAP4ABAAAAP4AAAAAAAAA/gAAAAAEAAACAAQABAAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAP8AAgABAAAA/wD/AAEAAAD/AAIAAQAAAP8ABAAAAP8AAAABAAAA/wAAAAAAAAD/AAAAAQAAAP8AAAAABAIAAAAEAAQAAAMABwALAA8AAAEBAQEBAQEBAQEBAQEBAQECAAEAAAD/AAEAAQAAAP8A/wABAAAA/wABAAEAAAD/AAQAAAD/AAAAAAAAAP8AAAAAAAAA/wAAAAAAAAD/AAAAAAEDAAAABAAEAAADAAABAQEBAwABAAAA/wAEAAAA/AAAAAAAAAEAAAAABAAEAAAFAAABAQEBAQEAAAQAAAD9AAAA/wAEAAAA/wAAAP0AAAAAAQAAAAABAAQAAAMAAAEBAQEAAAEAAAD/AAQAAAD8AAAAAAAAAwCAAIADAAOAAAMABwALAAABAQEBAQEBAQEBAQEAgACAAAD/gAEAAIAAAP+AAQAAgAAA/4ADgAAA/QAAAAMAAAD9AAAAAwAAAP0AAAAAAAABAYABgAQABAAACwAAAQEBAQEBAQEBAQEBAYABAAAAAIAAAAEAAAD+gAAA/4AAAP+ABAAAAP8AAAD/gAAA/wAAAACAAAAAgAAAAAAAAQAAAYACgAQAAAsAAAEBAQEBAQEBAQEBAQGAAQAAAP+AAAD/gAAA/oAAAAEAAAAAgAQAAAD+gAAA/4AAAP+AAAABAAAAAIAAAAAAAAEAAAAABAAEAAAJAAABAQEBAQEBAQEBAwABAAAA/AAAAAEAAAABAAAAAQAEAAAA/AAAAAKAAAAAgAAAAIAAAAABAIAAgAMABAAACwAAAQEBAQEBAQEBAQEBAgABAAAA/4AAAP6AAAD/gAAAAIAAAAEABAAAAP0AAAD/gAAAAIAAAAEAAAAAgAAAAAAAAQAAAAAEAAQAAAUAAAEBAQEBAQAAAQAAAAMAAAD8AAQAAAD9AAAA/wAAAAACAIAAgAMAAoAACwAPAAABAQEBAQEBAQEBAQEBAQEBAQABgAAAAIAAAP+AAAD+gAAAAQAAAP8A/4AAgAAA/4ACgAAA/4AAAP8AAAD/gAAAAIAAAAEAAAAAAAAA/wAAAAACAIAAgAMABAAACwAPAAABAQEBAQEBAQEBAQEBAQEBAgABAAAA/4AAAP6AAAABAAAA/wAAAAEA/oAAgAAA/4AEAAAA/QAAAP+AAAAAgAAAAQAAAACAAAD/gAAA/wAAAAABAIAAgAQABAAADQAAAQEBAQEBAQEBAQEBAQECAAIAAAD/AAAA/4AAAP6AAAD/gAAAAIAAAAEABAAAAP+AAAD9gAAA/4AAAACAAAABAAAAAIAAAAACAAAAAAQABAAAAwAHAAABAQEBAQEBAQAABAAAAPwAAQAAAAIAAAAEAAAA/AAAAAMA/gAAAAIAAAEAgACABAAEAAARAAABAQEBAQEBAQEBAQEBAQEBAQECAAIAAAD/AAAAAQAAAP8AAAD/gAAA/oAAAP+AAAAAgAAAAQAEAAAA/4AAAP+AAAD/gAAA/oAAAP+AAAAAgAAAAQAAAACAAAAAAQAAAAACgAKAAAsAAAEBAQEBAQEBAQEBAQAAAYAAAACAAAAAgAAA/wAAAP+AAAD/AAKAAAD/gAAA/4AAAP6AAAABAAAAAIAAAAAAAAEAAAAABAAEAAAFAAABAQEBAQEAAAQAAAD/AAAA/QAEAAAA/AAAAAMAAAAAAQCAAIAEAAQAABUAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAAIAAAD/AAAAAQAAAP8AAAABAAAA/wAAAP+AAAD+gAAA/4AAAACAAAABAAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAAEAAAAAgAAAAAEBgAAABAACgAALAAABAQEBAQEBAQEBAQECgAGAAAD/AAAA/4AAAP8AAAAAgAAAAIACgAAA/wAAAP+AAAD/AAAAAYAAAACAAAAAAAABAAAAAAQABAAAEQAAAQEBAQEBAQEBAQEBAQEBAQEBAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAPwABAAAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAAEAAAAABAABAAADAAABAQEBAAAEAAAA/AABAAAA/wAAAAAAAAEAAAAABAAEAAARAAABAQEBAQEBAQEBAQEBAQEBAQEDgACAAAD8AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAEAAAA/AAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAQAAAgAEAAQAAAMAAAEBAQEAAAQAAAD8AAQAAAD+AAAAAAAAAgCAAIACAAOAAAMABwAAAQEBAQEBAQEAgACAAAD/gAEAAIAAAP+AA4AAAP0AAAADAAAA/QAAAAAEAIAAgAQABAAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQCAA4AAAPyAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAABAAAAPyAAAADAP+AAAAAgP8A/4AAAACA/wD/gAAAAIAAAQAAAAAEAAQAAAUAAAEBAQEBAQMAAQAAAPwAAAADAAQAAAD8AAAAAQAAAAACAIAAgAQABAAAAwAHAAABAQEBAQEBAQCAA4AAAPyAAYAAAACAAAAEAAAA/IAAAAIA/4AAAACAAAMAgACABAAEAAADAAcACwAAAQEBAQEBAQEBAQEBAIADgAAA/IAAgAAAAIAAAAGAAAAAgAAABAAAAPyAAAADAP+AAAAAgP4A/4AAAACAAAAABAAAAIAEAAQAAAMABwALAA8AAAEBAQEBAQEBAQEBAQEBAQEAAAQAAAD8AAAABAAAAPwAAAAEAAAA/AAAAAQAAAD8AAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAAYAgACABAAEAAADAAcACwAPABMAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAIADgAAA/IAAgAAAAIAAAAGAAAAAgAAA/oAAAACAAAD+gAAAAIAAAAGAAAAAgAAABAAAAPyAAAADAP+AAAAAgAAA/4AAAACA/wD/gAAAAID/AP+AAAAAgAAA/4AAAACAAAEAgACAAQADgAADAAABAQEBAIAAgAAA/4ADgAAA/QAAAAAAAAUAgACABAAEAAADAAcACwAPABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAIADgAAA/IAAgAAAAIAAAAGAAAAAgAAA/YAAAACAAAABgAAAAIAAAAQAAAD8gAAAAwD/gAAAAIAAAP+AAAAAgP4A/4AAAACAAAD/gAAAAIAAAAABAAADAAQABAAAAwAAAQEBAQAABAAAAPwABAAAAP8AAAAAAAAHAIAAgAQABAAAAwAHAAsADwATABcAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQCAA4AAAPyAAIAAAACAAAABgAAAAIAAAP2AAAAAgAAAAYAAAACAAAD9gAAAAIAAAAGAAAAAgAAABAAAAPyAAAADAP+AAAAAgAAA/4AAAACA/wD/gAAAAIAAAP+AAAAAgP8A/4AAAACAAAD/gAAAAIAAAAAEAAAAAAQAAgAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAP8AAgABAAAA/wD/AAEAAAD/AAIAAQAAAP8AAgAAAP8AAAABAAAA/wAAAAAAAAD/AAAAAQAAAP8AAAAAAQAAAAAEAAQAAAkAAAEBAQEBAQEBAQEAAAEAAAABAAAAAQAAAAEAAAD8AAQAAAD/gAAA/4AAAP+AAAD9gAAAAAEBAAAAAgAEAAADAAABAQEBAQABAAAA/wAEAAAA/AAAAAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQECgAGAAAD8AAAAAIAAAACAAAAAgAAAAQAEAAAA/AAAAAGAAAABAAAAAIAAAACAAAAAAAABAAABAAQAAgAAAwAAAQEBAQAABAAAAPwAAgAAAP8AAAAAAAABAAAAAAQABAAACwAAAQEBAQEBAQEBAQEBAgACAAAA/AAAAACAAAAAgAAAAIAAAACABAAAAPwAAAACAAAAAIAAAACAAAAAgAAAAAAAAQAAAAAEAAIAAAkAAAEBAQEBAQEBAQEDAAEAAAD8AAAAAQAAAAEAAAABAAIAAAD+AAAAAIAAAACAAAAAgAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQEAAAIAAAAAgAAAAIAAAACAAAAAgAAA/AAEAAAA/4AAAP+AAAD/gAAA/4AAAP4AAAAAAAADAAAAAAQABAAAGwAnADMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAEAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAIAAYAAAACAAAD/gAAA/4AAAP+AAAD/gP4AAIAAAACAAAAAgAAAAIAAAP6AAAD/gAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAQAAAP+AAAD+gAAAAIAAAACAAAAAgAAA/oAAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAAAAAQAAAAAEAAIAAAkAAAEBAQEBAQEBAQEAAAEAAAABAAAAAQAAAAEAAAD8AAIAAAD/gAAA/4AAAP+AAAD/gAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQEAAAGAAAABAAAAAIAAAACAAAAAgAAA/AAEAAAA/4AAAP+AAAD/gAAA/wAAAP6AAAAAAAAEAAAAgAQABAAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQCAAYAAAP6AAgABgAAA/oD9gAGAAAD+gAIAAYAAAP6ABAAAAP6AAAABgAAA/oAAAP+AAAD+gAAAAYAAAP6AAAAAAQIAAgAEAAQAAAMAAAEBAQECAAIAAAD+AAQAAAD+AAAAAAAABACAAIAEAAQAAAMABwAjACcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAEAAAD/AAGAAQAAAP8A/gAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4ABgACAAAD/gAQAAAD/gAAAAIAAAP+AAAAAAAAA/wAAAP+AAAD/gAAAAIAAAACAAAABAAAA/oAAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAAGAAAD/gAAAAAQAAAAABAAEAAADAAcACwAPAAABAQEBAQEBAQEBAQEBAQEBAAAAgAAA/4ADgACAAAD/gPyAAIAAAP+AA4AAgAAA/4AEAAAA/4AAAACAAAD/gAAA/QAAAP+AAAAAgAAA/4AAAAABAAAAAAIAAgAAAwAAAQEBAQAAAgAAAP4AAgAAAP4AAAAAAAAEAAAAAAIABAAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAP8AAQABAAAA/wD/AAEAAAD/AAEAAQAAAP8ABAAAAP8AAAAAAAAA/wAAAAAAAAD/AAAAAAAAAP8AAAAAAQCAAQADgAOAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAYABAAAA/4AAAAGAAAD+gAAAAIAAAP8AAAD/gAAA/4AAAACAAAAAgAOAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAAAABAQABAAOABAAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQECAACAAAAAgAAAAIAAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACABAAAAP+AAAD/gAAA/wAAAACAAAD+gAAAAYAAAP+AAAABAAAAAIAAAAAAAAEBAAEABAADgAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQIAAQAAAACAAAAAgAAA/4AAAP+AAAD/AAAAAIAAAP6AAAABgAAA/4ADgAAA/4AAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAAAgAAAAAAAAQEAAIADgAOAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAgAAgAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAOAAAD+gAAAAIAAAP8AAAD/gAAA/4AAAACAAAAAgAAAAQAAAP+AAAAAAAABAQAAgAOABAAADwAAAQEBAQEBAQEBAQEBAQEBAQIAAIAAAACAAAAAgAAA/4AAAP6AAAD/gAAAAIAAAACABAAAAP8AAAD/AAAA/wAAAP+AAAAAgAAAAQAAAAEAAAAAAAACAIAAgAOAA4AAAwAJAAABAQEBAQEBAQEBAIADAAAA/QAAgAAAAgAAAP8AAAADgAAA/QAAAAKA/gAAAAEAAAABAAAAAAIAgACABAAEAAAbACcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAACAAAAAgAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAAD/gAAAAIAAAACAAAAAgAAA/4AAAAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAA/4D/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAEAAAIABAADAAADAAABAQEBAAAEAAAA/AADAAAA/wAAAAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQEAAAQAAAD/gAAA/4AAAP+AAAD/gAAA/gAEAAAA/gAAAP+AAAD/gAAA/4AAAP+AAAAAAAABAAACAAIABAAAAwAAAQEBAQAAAgAAAP4ABAAAAP4AAAAAAAACAQAAgAOAA4AAFwAbAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAYABgAAAAIAAAP8AAAAAgAAAAIAAAP8AAAD/gAAA/wAAAACAAAAAgAAA/wAAAACAAIAAAACAAAADgAAA/wAAAP+AAAD/gAAA/4AAAP+AAAAAgAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgP+AAAAAgAADAAAAAAQABAAACwAnADMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAGAAAD/gAAA/4AAAP+AAAD/gAAAAIACgAEAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgACAAIAAAP+AAAD+gAAAAIAAAACAAAAAgAQAAAD/gAAA/4AAAP+AAAD/gAAAAYAAAACAAAD/AAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAIAAAACAAAAAgAAA/oAAAP6AAAD/gAAAAIAAAACAAAAAgAAAAAAAAgCAAIADgAQAAA8AHwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAEAAAABAAAAAIAAAP+AAAD/AAAA/wAAAP+AAAAAgAAAAQAAAAEAAAAAgAAA/4AAAP8AAAD/AAAA/4AAAACABAAAAP+AAAAAgAAA/wAAAP+AAAAAgAAA/4AAAAEAAAD+gAAA/4AAAACAAAD/AAAA/4AAAACAAAD/gAAAAQAAAAABAAAAAAQAA4AACwAAAQEBAQEBAQEBAQEBAQACAAAAAIAAAACAAAD8AAAAAIAAAACAA4AAAP+AAAD/gAAA/YAAAAKAAAAAgAAAAAAAAQAAAAACAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEAAACAAAAAgAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAQAAAD/gAAA/4AAAP+AAAD/AAAA/4AAAP+AAAD/gAAAAAAAAQIAAAAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEDgACAAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAQAAAD8AAAAAIAAAACAAAAAgAAAAQAAAACAAAAAgAAAAAAAAQCAAIAEAAQAABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQIAAIAAAACAAAAAgAAAAIAAAP+AAAD/AAAA/4AAAP8AAAD/gAAAAIAAAACAAAAAgAQAAAD/gAAA/4AAAP+AAAD/gAAA/oAAAAEAAAD/AAAAAYAAAACAAAAAgAAAAIAAAAAAACAAAAAABAAEAAADAAcACwAPABMAFwAbAB8AIwAnACsALwAzADcAOwA/AEMARwBLAE8AUwBXAFsAXwBjAGcAawBvAHMAdwB7AH8AAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAAAgAAA/4ABAACAAAD/gAEAAIAAAP+AAQAAgAAA/4D9gACAAAD/gAEAAIAAAP+AAQAAgAAA/4ABAACAAAD/gPyAAIAAAP+AAQAAgAAA/4ABAACAAAD/gAEAAIAAAP+A/YAAgAAA/4ABAACAAAD/gAEAAIAAAP+AAQAAgAAA/4D8gACAAAD/gAEAAIAAAP+AAQAAgAAA/4ABAACAAAD/gP2AAIAAAP+AAQAAgAAA/4ABAACAAAD/gAEAAIAAAP+A/IAAgAAA/4ABAACAAAD/gAEAAIAAAP+AAQAAgAAA/4D9gACAAAD/gAEAAIAAAP+AAQAAgAAA/4ABAACAAAD/gAQAAAD/gAAAAIAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAIAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAIAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAIAAAP+AAAAAAQAAAAAEAAQAAAsAAAEBAQEBAQEBAQEBAQAABAAAAP6AAAD/AAAA/4AAAP+AAAD/gAQAAAD8AAAAAIAAAACAAAAAgAAAAQAAAAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQEAAAQAAAD/gAAA/4AAAP+AAAD/AAAA/oAEAAAA/oAAAP8AAAD/gAAA/4AAAP+AAAAAAAABAAABgAKABAAADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP+ABAAAAP+AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAACAAAAAAAABAAAAAAKABAAADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP+ABAAAAP+AAAD/gAAA/4AAAP2AAAACAAAAAIAAAACAAAAAAAABAYAAAAQAAoAABQAAAQEBAQEBAYACgAAA/oAAAP8AAoAAAP8AAAD+gAAAAAEAAAAABAAEAAAJAAABAQEBAQEBAQEBAAACgAAAAIAAAACAAAAAgAAA/AAEAAAA/wAAAP8AAAD/AAAA/wAAAAACAAAAAAQABAAAGwAfAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQGAAQAAAACAAAAAgAAAAIAAAP+AAAD/gAAA/4AAAP8AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAAAAAEAAAAEAAAA/4AAAP+AAAD/gAAA/wAAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAAEAAAAAgAAAAIAAAP8A/wAAAAEAAAEBgAGABAAEAAAFAAABAQEBAQEBgAEAAAABgAAA/YAEAAAA/oAAAP8AAAAAAQAAAAACgAKAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAEAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAKAAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAAAAAQGAAAAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEDAAEAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAQAAAD/AAAA/4AAAP+AAAD+AAAAAoAAAACAAAAAgAAAAAAAAQGAAAAEAAKAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAEAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/gAKAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAAAAAQGAAYAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEDAAEAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAQAAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAAAAAQAAAAAEAAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAEAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQAAAAAEAAQAAB8AAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAABAAAAAIAAAAEAAAAAgAAAAQAAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAP+AAAD/gAQAAAD/gAAA/4AAAACAAAAAgAAA/wAAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAAEAAAAAgAAAAQAAAACAAAAAAAABAAABgAQABAAADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAgAAAP2AAAD/gAAA/4AAAP+ABAAAAP+AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAACAAAAAAAABAAABgAQAAoAAAwAAAQEBAQAABAAAAPwAAoAAAP8AAAAAAAABAYAAAAKABAAAAwAAAQEBAQGAAQAAAP8ABAAAAPwAAAAAAAABAYAAAAQABAAAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAwABAAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACABAAAAP8AAAD/gAAA/wAAAP+AAAD/AAAAAIAAAACAAAAAgAAAAQAAAACAAAAAgAAAAAAAAQAAAAAEAAKAAA8AAAEBAQEBAQEBAQEBAQEBAQEAAAKAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD+AAKAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAAAAAQAAAYAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEDAAEAAAD/gAAA/4AAAP+AAAD9gAAAAgAAAACAAAAAgAQAAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAAAAAQAAAgAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEAAAQAAAD/gAAA/4AAAP+AAAD/AAAA/4AAAP+AAAD/gAQAAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAAAAAQAAAYACgAKAAAMAAAEBAQEAAAKAAAD9gAKAAAD/AAAAAAAAAQGAAAACgAKAAAMAAAEBAQEBgAEAAAD/AAKAAAD9gAAAAAAAAQAAAYAEAAQAABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAABAAAAAIAAAAEAAAD/gAAA/4AAAP+AAAD/AAAA/4AAAP+AAAD/gAQAAAD/gAAA/4AAAACAAAAAgAAA/wAAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAAAAAAEAAAAABAAEAAAJAAABAQEBAQEBAQEBAYACgAAA/AAAAACAAAAAgAAAAIAEAAAA/AAAAAEAAAABAAAAAQAAAAABAAAAAAQABAAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEDAAEAAAD/gAAA/4AAAP+AAAD/AAAA/oAAAAEAAAABAAAAAIAAAACABAAAAP6AAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAQAAAAAAAAEAAAAABAAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAQAAAAEAAAD+gAAA/wAAAP+AAAD/gAAA/4AEAAAA/wAAAP8AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAACAAAABAAAAAAAAAQAAAAAEAAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEDAAEAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAQAAAD/AAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQAAAAACgAQAABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAIAAAP+AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAP+AAAD/gAQAAAD/gAAA/4AAAP+AAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAABAAAAAIAAAAAAAAEAAAAABAAEAAAfAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAP8AAAD/gAAA/wAAAP+AAAD/AAAAAIAAAACAAAD/gAAA/4AEAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/wAAAACAAAAAgAAA/4AAAP+AAAABAAAAAIAAAAEAAAAAgAAAAAAAAQAAAAACgAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAEAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAQAAAD9gAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAAAAAQGAAAAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAEAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/gAQAAAD+AAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAAAAAQAAAAAEAAKAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAKAAAD+AAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAKAAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAAAAAQGAAYACgAQAAAMAAAEBAQEBgAEAAAD/AAQAAAD9gAAAAAAAAQGAAYAEAAKAAAMAAAEBAQEBgAKAAAD9gAKAAAD/AAAAAAAAAQAAAAAEAAQAAB8AAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAwABAAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/gAAA/wAAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAQAAAD/AAAA/4AAAP8AAAD/gAAA/wAAAACAAAAAgAAA/4AAAP+AAAABAAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAABAAAAAAQABAAAIwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAABAAAAAIAAAAEAAAAAgAAAAQAAAP+AAAD/gAAAAIAAAACAAAD/AAAA/4AAAP8AAAD/gAAA/wAAAACAAAAAgAAA/4AAAP+ABAAAAP+AAAD/gAAAAIAAAACAAAD/AAAA/4AAAP8AAAD/gAAA/wAAAACAAAAAgAAA/4AAAP+AAAABAAAAAIAAAAEAAAAAgAAAAAAAAQGAAYACgAKAAAMAAAEBAQEBgAEAAAD/AAKAAAD/AAAAAAAAAQAAAAAEAAKAABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQGAAQAAAACAAAAAgAAAAIAAAP8AAAD/gAAA/wAAAP+AAAD/AAAAAIAAAACAAAAAgAKAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAD/gAAA/4AAAAEAAAAAgAAAAIAAAAAAAAEAAAGAAoAEAAAFAAABAQEBAQEBgAEAAAD9gAAAAYAEAAAA/YAAAAEAAAAAAQAAAAACgAKAAAUAAAEBAQEBAQAAAoAAAP8AAAD+gAKAAAD9gAAAAYAAAAABAAAAAAQABAAAHwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAEAAAAAgAAAAQAAAACAAAABAAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+ABAAAAP+AAAD/gAAAAIAAAACAAAD/AAAA/4AAAP8AAAD/gAAA/wAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQEBgAEAAAABgAAA/oAAAP8AAAD+gAAAAYAEAAAA/oAAAP8AAAD+gAAAAYAAAAEAAAAAAAABAAAAAAQAAoAABwAAAQEBAQEBAQEAAAQAAAD+gAAA/wAAAP6AAoAAAP8AAAD+gAAAAYAAAAAAAAEBgAAABAAEAAAHAAABAQEBAQEBAQGAAQAAAAGAAAD+gAAA/wAEAAAA/oAAAP8AAAD+gAAAAAAAAQAAAAACgAQAAAcAAAEBAQEBAQEBAYABAAAA/wAAAP6AAAABgAQAAAD8AAAAAYAAAAEAAAAAAAABAAABgAQABAAABwAAAQEBAQEBAQEBgAEAAAABgAAA/AAAAAGABAAAAP6AAAD/AAAAAQAAAAAAAAQBAAEAAwADAAADAAcACwAPAAABAQEBAQEBAQEBAQEBAQEBAYABAAAA/wD/gACAAAD/gAGAAIAAAP+A/wABAAAA/wADAAAA/4AAAAAAAAD/AAAAAQAAAP8AAAAAAAAA/4AAAAACAIAAgAOAA4AACwAPAAABAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP+AAAD+AAAA/4AAAACAAIAAAAEAAAADgAAA/4AAAP4AAAD/gAAAAIAAAAIAAAD/gP8AAAABAAACAAAAAAQABAAAEwAfAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAAAgAAA/4AAAP+AAAD+AAAA/4AAAP+AAAAAgAAAAIAAgAAA/4AAAACAAAABAAAAAIAAAP+AAAAEAAAA/4AAAP+AAAD+AAAA/4AAAP+AAAAAgAAAAIAAAAIAAAAAgAAA/4D/gAAA/wAAAP+AAAAAgAAAAQAAAACAABAAAAAABAAEAAADAAcACwAPABMAFwAbAB8AIwAnACsALwAzADcAOwA/AAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAYAAgAAA/4ACAACAAAD/gP2AAIAAAP+AAgAAgAAA/4D9gACAAAD/gAIAAIAAAP+A/YAAgAAA/4ACAACAAAD/gP+AAIAAAP+AAgAAgAAA/4D9gACAAAD/gAIAAIAAAP+A/YAAgAAA/4ACAACAAAD/gP2AAIAAAP+AAgAAgAAA/4AEAAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAAAQAAAAAAQABAAAAwAHAAsADwATABcAGwAfACMAJwArAC8AMwA3ADsAPwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQAAAIAAAP+AAgAAgAAA/4D+gACAAAD/gAIAAIAAAP+A/oAAgAAA/4ACAACAAAD/gP6AAIAAAP+AAgAAgAAA/4D8gACAAAD/gAIAAIAAAP+A/oAAgAAA/4ACAACAAAD/gP6AAIAAAP+AAgAAgAAA/4D+gACAAAD/gAIAAIAAAP+ABAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAAwCAAIADgAQAABcAGwAfAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQIAAIAAAAEAAAD/AAAAAIAAAP+AAAABAAAA/wAAAP+AAAD/AAAA/4AAAACAAAABAP+AAAAAgAAA/4AAAACAAAAEAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAYAAAACAAAD/gP+AAAAAgP8A/4AAAACAAAAAAQCAAIADgAOAAA8AAAEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/4AAAP+AAAD/AAAA/4AAAP+AAAAAgAOAAAD/gAAA/wAAAP+AAAD/AAAAAQAAAACAAAABAAAAAAAAAgCAAIADgAOAAAMACQAAAQEBAQEBAQEBAQCAAwAAAP0AAYAAAP8AAAACAAAAA4AAAP0AAAACgP8AAAD/AAAAAgAAAAABAIAAgAOAA4AAAwAAAQEBAQCAAwAAAP0AA4AAAP0AAAAAAAACAIAAgAOAA4AAAwALAAABAQEBAQEBAQEBAQEAgAMAAAD9AACAAAACAAAA/4AAAP8AAAADgAAA/QAAAAKA/gAAAAIAAAD/AAAAAQAAAQAAAAAEAAQAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAACAAAD/gAAA/4AAAP4AAAD/gAAA/4AAAACAAAAAgAQAAAD/gAAA/4AAAP4AAAD/gAAA/4AAAACAAAAAgAAAAgAAAACAAAAAAAABAQABAAMAAwAACwAAAQEBAQEBAQEBAQEBAYABAAAAAIAAAP+AAAD/AAAA/4AAAACAAwAAAP+AAAD/AAAA/4AAAACAAAABAAAAAAAAAQCAAQAEAAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAACAAAAAgAAAAQAAAP+AAAD/gAAAAIAAAP8AAAD/gAAA/wAAAACAAAD/gAAA/4AAAAEAAAAAgAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAAAgAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAABgCAAIAEAAQAAAMABwALAA8AEwAXAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAOAAAD8gAEAAAAAgAAAAIAAAACAAAD+AAAAAIAAAAGAAAAAgAAA/gAAAAGAAAAEAAAA/IAAAAMA/wAAAAEAAAD/AAAAAQD+gP+AAAAAgAAA/4AAAACA/4D/gAAAAIAABgCAAIAEAAQAAAMABwALAA8AEwAXAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAOAAAD8gAEAAAAAgAAAAIAAAACAAAD+gAAAAYAAAP4AAAAAgAAAAYAAAACAAAAEAAAA/IAAAAMA/wAAAAEAAAD/AAAAAQD+gP+AAAAAgP+A/4AAAACAAAD/gAAAAIAABgCAAIAEAAQAABMAFwAbAB8AIwAnAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAgAAgAAAAIAAAAEAAAD/AAAA/4AAAP+AAAD/gAAA/wAAAAEAAAAAgAAAAAAAgAAA/oAAgAAA/4ACAACAAAD/gP4AAIAAAP+AAgAAgAAA/4AEAAAA/wAAAP+AAAD/gAAA/4AAAP8AAAABAAAAAIAAAACAAAAAgAAA/4D/gAAAAIABAAAA/4AAAACAAAD/gAAA/oAAAP+AAAAAgAAA/4AAAAACAQAAgAOABAAAFwAbAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAYABgAAAAIAAAP+AAAD/gAAAAIAAAP+AAAD/gAAA/4AAAACAAAD/gAAAAQAAAP8A/4AAgAAA/4AEAAAA/4AAAP8AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAIAAAAEAAAAAAAAA/wAAAAACAIAAgAQABAAAFwAbAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAYACgAAA/4AAAP+AAAD/gAAAAIAAAP+AAAD+gAAAAQAAAP8AAAABAAAAAIAAAP8A/wAAgAAA/4AEAAAA/gAAAAEAAAD/gAAA/4AAAP8AAAD/gAAAAIAAAAEAAAAAgAAAAIAAAACAAAD+gAAA/wAAAAABAIAAgAQABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQIAAIAAAACAAAAAgAAAAIAAAP8AAAD/gAAAAIAAAP6AAAAAgAAA/4AAAP8AAAAAgAAAAIAAAACABAAAAP+AAAD/gAAA/4AAAP8AAAAAgAAA/wAAAP+AAAAAgAAAAQAAAP+AAAABAAAAAIAAAACAAAAAAAABAIAAgAQABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQGAAYAAAP+AAAAAgAAAAQAAAP8AAAD/gAAAAIAAAP6AAAAAgAAA/4AAAP8AAAABAAAAAIAAAP+ABAAAAP8AAAD/gAAAAIAAAP6AAAAAgAAA/wAAAP+AAAAAgAAAAQAAAP+AAAABgAAA/4AAAACAAAAAAAABAIAAgAQABAAAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQABAAAAAIAAAAEAAAAAgAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACABAAAAP+AAAAAgAAA/4AAAP6AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAABgAAAAAAAAQCAAIAEAAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAACAAAAAgAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQEAAIADgAQAAAsAAAEBAQEBAQEBAQEBAQIAAYAAAP8AAAD/gAAA/wAAAACAAAAAgAQAAAD/AAAA/gAAAP+AAAABAAAAAIAAAAAAAAEAgACABAAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQGAAoAAAP+AAAD/AAAAAIAAAACAAAD+gAAA/4AAAP8AAAAAgAAAAIAEAAAA/QAAAP+AAAABAAAAAIAAAAEAAAD+AAAA/4AAAAEAAAAAgAAAAAAAAAAYASYAAQAAAAAAAAAIAAAAAQAAAAAAAQAIAAgAAQAAAAAAAgAHABAAAQAAAAAAAwAIABcAAQAAAAAABAAQAB8AAQAAAAAABQALAC8AAQAAAAAABgAIADoAAQAAAAAACQAJAEIAAQAAAAAACgA6AEsAAQAAAAAADQARAIUAAQAAAAAADgAyAJYAAQAAAAAAEwAMAMgAAwABBAkAAAAQANQAAwABBAkAAQAQAOQAAwABBAkAAgAOAPQAAwABBAkAAwAQAQIAAwABBAkABAAgARIAAwABBAkABQAWATIAAwABBAkABgAQAUgAAwABBAkACQASAVgAAwABBAkACgB0AWoAAwABBAkADQAiAd4AAwABBAkADgBkAgAAAwABBAkAEwAYAmQoYykgMjAyMlVyc2FGb250UmVndWxhclVyc2FGb250VXJzYUZvbnQgUmVndWxhclZlcnNpb24gMS4wVXJzYUZvbnRVcnNhRnJhbmtBbiBvcGVuIGxpY2VuY2UgZ2VuZXJhbCBwdXJwb3NlIHRleHRtb2RlIGZvbnQgYnkgVXJzYUZyYW5rQ0MwIDEuMCBVbml2ZXJzYWxodHRwczovL2NyZWF0aXZlY29tbW9ucy5vcmcvcHVibGljZG9tYWluL3plcm8vMS4wL0hlbGxvIFdvcmxkIQAoAGMAKQAgADIAMAAyADIAVQByAHMAYQBGAG8AbgB0AFIAZQBnAHUAbABhAHIAVQByAHMAYQBGAG8AbgB0AFUAcgBzAGEARgBvAG4AdAAgAFIAZQBnAHUAbABhAHIAVgBlAHIAcwBpAG8AbgAgADEALgAwAFUAcgBzAGEARgBvAG4AdABVAHIAcwBhAEYAcgBhAG4AawBBAG4AIABvAHAAZQBuACAAbABpAGMAZQBuAGMAZQAgAGcAZQBuAGUAcgBhAGwAIABwAHUAcgBwAG8AcwBlACAAdABlAHgAdABtAG8AZABlACAAZgBvAG4AdAAgAGIAeQAgAFUAcgBzAGEARgByAGEAbgBrAEMAQwAwACAAMQAuADAAIABVAG4AaQB2AGUAcgBzAGEAbABoAHQAdABwAHMAOgAvAC8AYwByAGUAYQB0AGkAdgBlAGMAbwBtAG0AbwBuAHMALgBvAHIAZwAvAHAAdQBiAGwAaQBjAGQAbwBtAGEAaQBuAC8AegBlAHIAbwAvADEALgAwAC8ASABlAGwAbABvACAAVwBvAHIAbABkACEAAAADAAAAAAAAAGYAMwAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==\r
+typeof module < "u" && module.exports ? module.exports = E : typeof window < "u" && (window.Typr = E);
+const Z = `data:font/truetype;charset=utf-8;base64,AAEAAAAKAIAAAwAgT1MvMs+QEyQAAAEoAAAAYGNtYXAg7yVJAAAFjAAACSBnbHlmuHLTdAAAErQAAGi0aGVhZFvXdUwAAACsAAAANmhoZWELAQUCAAAA5AAAACRobXR4BACDgAAAAYgAAAQEbG9jYQAy54AAAA6sAAAECG1heHABIgCCAAABCAAAACBuYW1lVs/OSgAAe2gAAAOicG9zdABpADQAAH8MAAAAIAABAAAAAQAAzOWHqV8PPPUAAAQAAAAAAHxiGCcAAAAAfGIYJwAAAAAEAAQAAAAACAACAAEAAAAAAAEAAAQAAAAAAAQAAAAAAAcAAAEAAAAAAAAAAAAAAAAAAAEBAAEAAAEBAIAAIAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgQAAZAABQAEAgACAAAAAAACAAIAAAACAAAzAMwAAAAABAAAAAAAAACAAACLAABw4wAAAAAAAAAAWUFMLgBAACAmawQAAAAAAAQAAAAAAAFRAAAAAAMABAAAAAAgAAAEAAAABAAAAAQAAAAEAAGABAABAAQAAIAEAACABAAAgAQAAIAEAAGABAABAAQAAQAEAACABAABAAQAAIAEAACABAABAAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAABAAQAAIAEAAEABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAABAAQAAIAEAAEABAAAgAQAAIAEAAEABAAAgAQAAIAEAACABAAAgAQAAIAEAAEABAAAgAQAAIAEAAGABAAAgAQAAIAEAAGABAAAgAQAAIAEAACABAAAgAQAAIAEAAEABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAABgAQAAQAEAACABAAAAAQAAgAEAACABAAAgAQAAIAEAACABAACAAQAAAAEAAIABAABgAQAAgAEAACABAAAgAQAAAAEAACABAAAAAQAAAAEAAAABAAAAAQAAAAEAAIABAADAAQAAAAEAAAABAAAgAQAAYAEAAAABAAAAAQAAIAEAAAA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AIAAAACA/YAAgAAAAIAAAP8AAoABAAAA/4AAAP+A/4AAgAAAAIAAAP8AA4AAAP8AAAAAgAAAAIAAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAP+AAAD/gAAAAAAAAP8AAAAAgAAAAAAAAP+AAAD/gAAAAAAAAwCAAIAEAAQAABcAHQAjAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/4AAAACAAAAAgAAA/4AAAACAAAD9AAAA/4AAAACAAAD/gAAAAIAAgAAAAIAAAACAAAD/AAAAAQAAAP+AAAAEAAAA/4AAAP8AAAD/gAAAAIAAAP8AAAD/gAAA/4AAAACAAAABAAAAAIAAAAEAAAAAAP+AAAD/gAAAAQD+gP8AAAAAgAAAAIAAAAABAYACgAKABAAAAwAAAQEBAQGAAQAAAP8ABAAAAP6AAAAAAAABAQAAgAMABAAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQECAAEAAAD/gAAA/4AAAACAAAAAgAAA/wAAAP+AAAD/gAAAAIAAAACABAAAAP+AAAD/gAAA/oAAAP+AAAD/gAAAAIAAAACAAAABgAAAAIAAAAAAAAEBAACAAwAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEAAQAAAACAAAAAgAAA/4AAAP+AAAD/AAAAAIAAAACAAAD/gAAA/4AEAAAA/4AAAP+AAAD+gAAA/4AAAP+AAAAAgAAAAIAAAAGAAAAAgAAAAAAABQCAAYADgAQAAAMABwATABcAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAIAAAP+AAYAAgAAA/4D/AAEAAAABAAAA/wAAAP8AAAD/AAAAAQD/gACAAAD/gAGAAIAAAP+ABAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/gAAAAIAAAP+AAAAAAAABAQAAgAOAAwAACwAAAQEBAQEBAQEBAQEBAgAAgAAAAQAAAP8AAAD/gAAA/wAAAAEAAwAAAP8AAAD/gAAA/wAAAAEAAAAAgAAAAAAAAQCAAAACAAGAAAcAAAEBAQEBAQEBAQABAAAA/4AAAP8AAAAAgAGAAAD/AAAA/4AAAACAAAAAAAABAIABgAOAAgAAAwAAAQEBAQCAAwAAAP0AAgAAAP+AAAAAAAABAQAAgAIAAYAAAwAAAQEBAQEAAQAAAP8AAYAAAP8AAAAAAAABAIAAgAQAA4AAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAwABAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAA4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAwCAAIADgAQAAAsAEQAXAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/4AAAP4AAAD/gAAAAIAAgAAAAIAAAACAAAD/gAAA/4AAAAEAAAAEAAAA/4AAAP2AAAD/gAAAAIAAAAKAAAAAAP8AAAAAgAAAAID/AP+AAAD/AAAAAYAAAAABAIAAgAOABAAADQAAAQEBAQEBAQEBAQEBAQEBgAEAAAABAAAA/QAAAAEAAAD/AAAAAIAAAACABAAAAP0AAAD/gAAAAIAAAAGAAAAAgAAAAIAAAAABAIAAgAOABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAD/gAAA/4AAAP+AAAABgAAA/QAAAACAAAAAgAAAAIAAAACAAAD/AAAA/wAAAACABAAAAP+AAAD/AAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAABAAAA/wAAAAEAAAAAAAABAIAAgAOABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAD/gAAAAIAAAP+AAAD+AAAA/4AAAAEAAAABAAAA/wAAAAEAAAD/AAAA/wAAAACABAAAAP+AAAD/AAAA/4AAAP8AAAD/gAAAAIAAAACAAAD/gAAAAQAAAACAAAABAAAA/4AAAACAAAAAAAABAIAAgAOABAAAEQAAAQEBAQEBAQEBAQEBAQEBAQEBAYABAAAA/4AAAP+AAAABAAAAAQAAAP8AAAD+AAAAAIAAAACABAAAAP+AAAD/gAAA/wAAAAEAAAD9gAAAAQAAAAGAAAAAgAAAAAEAgACAA4AEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQCAAwAAAP4AAAABgAAAAIAAAP+AAAD+AAAA/4AAAAEAAAABAAAA/gAEAAAA/4AAAP8AAAD/gAAA/wAAAP+AAAAAgAAAAIAAAP+AAAABAAAAAAAAAgCAAIADgAQAABMAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP8AAAD/AAAAAYAAAACAAAD/gAAA/gAAAP+AAAAAgACAAAABAAAABAAAAP+AAAD/gAAAAIAAAP8AAAD/gAAA/wAAAP+AAAAAgAAAAoAAAP6A/wAAAAEAAAEAgACAA4AEAAAPAAABAQEBAQEBAQEBAQEBAQEBAIADAAAA/4AAAP+AAAD/AAAAAIAAAACAAAD+gAAA/4AEAAAA/oAAAP+AAAD+gAAAAYAAAACAAAABAAAA/4AAAAAAAAMAgACAA4AEAAATABcAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAD/gAAAAIAAAP+AAAD+AAAA/4AAAACAAAD/gAAAAIAAgAAAAQAAAP8AAAABAAAABAAAAP+AAAD/AAAA/4AAAP8AAAD/gAAAAIAAAAEAAAAAgAAAAQAAAAAA/wAAAAEA/oD/AAAAAQAAAAACAIAAgAOABAAACwAPAAABAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP8AAAD+gAAA/4AAAACAAIAAAAEAAAAEAAAA/4AAAP0AAAABAAAAAIAAAAGAAAAAAP6AAAABgAACAQABAAIAA4AAAwAHAAABAQEBAQEBAQEAAQAAAP8AAAABAAAA/wADgAAA/wAAAP+AAAD/AAAAAAIAgACAAgADgAADAAsAAAEBAQEBAQEBAQEBAQEAAQAAAP8AAAABAAAA/4AAAP8AAAAAgAOAAAD/AAAA/4AAAP8AAAD/gAAAAIAAAAABAQAAgAOABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQKAAQAAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACABAAAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAACAIABgAOAAwAAAwAHAAABAQEBAQEBAQCAAwAAAP0AAAADAAAA/QADAAAA/4AAAP+AAAD/gAAAAAEAgACAAwAEAAAbAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAIABAAAAAIAAAACAAAAAgAAA/4AAAP+AAAD/gAAA/wAAAACAAAAAgAAAAIAAAP+AAAD/gAAA/4AEAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAAAAAAIAgACAA4AEAAATABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAD/gAAA/4AAAP8AAAAAgAAAAIAAAP8AAAD/AAAAAIAAgAEAAAD/AAQAAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAA/4AAAACAAAD+AAAA/wAAAAACAIAAgAOABAAAEQAVAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP6AAAAAgAAA/wAAAAGAAAD+AAAA/4AAAACAAgAAgAAA/4AEAAAA/4AAAP6AAAABAAAAAIAAAP2AAAD/gAAAAIAAAAKAAAD+AAAA/4AAAAAAAAIAgACAA4AEAAAPABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAYABAAAAAIAAAACAAAD/AAAA/wAAAP8AAAAAgAAAAIAAAAAAAQAAAAQAAAD/gAAA/4AAAP2AAAABAAAA/wAAAAKAAAAAgAAA/4D/AAAAAQAAAwCAAIADgAQAAAsADwATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQCAAoAAAACAAAD/gAAAAIAAAP+AAAD9gAEAAAABAAAA/wAAAAEAAAAEAAAA/4AAAP8AAAD/gAAA/wAAAP+AAAADAP8AAAABAP6A/wAAAAEAAAAAAQCAAIADgAQAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP8AAAD/AAAAAQAAAAEAAAD/gAAA/gAAAP+AAAAAgAQAAAD/gAAA/4AAAACAAAD9gAAAAIAAAP+AAAD/gAAAAIAAAAKAAAAAAAACAIAAgAOABAAACwATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQCAAgAAAACAAAAAgAAA/4AAAP+AAAD+AAEAAAAAgAAAAIAAAP+AAAAEAAAA/4AAAP+AAAD+gAAA/4AAAP+AAAADAP2AAAAAgAAAAYAAAACAAAEAgACAA4AEAAAXAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/wAAAP8AAAABAAAA/wAAAAEAAAABAAAA/4AAAP4AAAD/gAAAAIAEAAAA/4AAAP+AAAAAgAAA/wAAAP+AAAD/AAAAAIAAAP+AAAD/gAAAAIAAAAKAAAAAAAABAIAAgAOABAAACQAAAQEBAQEBAQEBAQCAAwAAAP4AAAABAAAA/wAAAP8ABAAAAP+AAAD/AAAA/4AAAP6AAAAAAQCAAIADgAQAABUAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/wAAAP8AAAABAAAA/4AAAAGAAAD/gAAA/gAAAP+AAAAAgAQAAAD/gAAA/4AAAACAAAD9gAAAAQAAAACAAAD+gAAA/4AAAACAAAACgAAAAAEAgACAA4AEAAALAAABAQEBAQEBAQEBAQEAgAEAAAABAAAAAQAAAP8AAAD/AAAA/wAEAAAA/gAAAAIAAAD8gAAAAQAAAP8AAAAAAAABAIAAgAOABAAACwAAAQEBAQEBAQEBAQEBAIADAAAA/wAAAAEAAAD9AAAAAQAAAP8ABAAAAP+AAAD9gAAA/4AAAACAAAACgAAAAAAAAQCAAIAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEBAAMAAAD/gAAA/4AAAP4AAAD/gAAAAQAAAAEAAAD+gAQAAAD/gAAA/YAAAP+AAAAAgAAAAQAAAP8AAAACgAAAAAAAAQCAAIADgAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAEAAAAAgAAAAIAAAAEAAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/AAQAAAD/AAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAD/AAAAAAAAAQCAAIADgAQAAAUAAAEBAQEBAQCAAQAAAAIAAAD9AAQAAAD9AAAA/4AAAAABAIAAgAQABAAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAEAAAAAgAAAAIAAAACAAAABAAAA/wAAAP+AAAD/gAAA/4AAAP8ABAAAAP+AAAD/gAAAAIAAAACAAAD8gAAAAgAAAP+AAAAAgAAA/gAAAAAAAAEAgACABAAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQCAAQAAAACAAAAAgAAAAIAAAAEAAAD/AAAA/4AAAP+AAAD/gAAA/wAEAAAA/4AAAP+AAAD/gAAAAYAAAPyAAAABAAAAAIAAAACAAAD+AAAAAAAAAgCAAIADgAQAAAsADwAAAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAD/gAAA/gAAAP+AAAAAgACAAAABAAAABAAAAP+AAAD9gAAA/4AAAACAAAACgAAAAAD9gAAAAoAAAgCAAIADgAQAAAkADQAAAQEBAQEBAQEBAQEBAQEAgAKAAAAAgAAA/4AAAP6AAAD/AAEAAAABAAAABAAAAP+AAAD+gAAA/4AAAP8AAAADAP6AAAABgAAAAAIAgACABAAEAAAPABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAAAgAAA/4AAAP+AAAD+AAAA/4AAAACAAIAAAAEAAAD/gAAAAIAAAAQAAAD/gAAA/gAAAP8AAAAAgAAA/4AAAACAAAACgAAAAAD9gAAAAIAAAACAAAABgAACAIAAgAOABAAAEwAXAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAKAAAAAgAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP8AAQAAAAEAAAAEAAAA/4AAAP8AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAD/AAAAAwD/AAAAAQAAAQCAAIADgAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/wAAAP8AAAABgAAAAIAAAP+AAAD+AAAA/4AAAAEAAAABAAAA/oAAAP+AAAAAgAQAAAD/gAAA/4AAAACAAAD/AAAA/4AAAP8AAAD/gAAAAIAAAACAAAD/gAAAAQAAAACAAAABAAAAAAAAAQCAAIADgAQAAAcAAAEBAQEBAQEBAIADAAAA/wAAAP8AAAD/AAQAAAD/gAAA/QAAAAMAAAAAAAABAIAAgAOABAAACwAAAQEBAQEBAQEBAQEBAIABAAAAAQAAAAEAAAD/gAAA/gAAAP+ABAAAAP0AAAADAAAA/QAAAP+AAAAAgAAAAAAAAQCAAIADgAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEAgAEAAAABAAAAAQAAAP+AAAD/gAAA/wAAAP+AAAD/gAQAAAD+AAAAAgAAAP4AAAD/AAAA/4AAAACAAAABAAAAAAAAAQCAAIAEAAQAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAIABAAAAAIAAAACAAAAAgAAAAQAAAP8AAAD/gAAA/4AAAP+AAAD/AAQAAAD+AAAAAIAAAP+AAAACAAAA/IAAAACAAAAAgAAA/4AAAP+AAAAAAAABAIAAgAOABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQCAAQAAAAEAAAABAAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/AAAA/wAAAACAAAAAgAAA/4AAAP+ABAAAAP8AAAABAAAA/wAAAP+AAAD/gAAA/4AAAP8AAAABAAAA/wAAAAEAAAAAgAAAAIAAAACAAAAAAAABAIAAgAOABAAADwAAAQEBAQEBAQEBAQEBAQEBAQCAAQAAAAEAAAABAAAA/4AAAP+AAAD/AAAA/4AAAP+ABAAAAP6AAAABgAAA/oAAAP+AAAD+gAAAAYAAAACAAAAAAAABAIAAgAOABAAAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAIADAAAA/4AAAP+AAAD/gAAA/4AAAAIAAAD9AAAAAIAAAACAAAAAgAAAAIAAAP4ABAAAAP8AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAAEAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQEAAIADAAQAAAcAAAEBAQEBAQEBAQACAAAA/wAAAAEAAAD+AAQAAAD/gAAA/YAAAP+AAAAAAAABAIAAgAQAA4AAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAIABAAAAAIAAAACAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/gAAA/4AAAP+AA4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQEAAIADAAQAAAcAAAEBAQEBAQEBAQACAAAA/gAAAAEAAAD/AAQAAAD8gAAAAIAAAAKAAAAAAAABAIACAAQABAAAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAgAAgAAAAIAAAACAAAAAgAAA/wAAAP+AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAACABAAAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAP+AAAD/gAAAAIAAAACAAAAAgAAAAAAAAQCAAIADgAEAAAMAAAEBAQEAgAMAAAD9AAEAAAD/gAAAAAAAAQEAAoACgAQAAAkAAAEBAQEBAQEBAQEBAAEAAAAAgAAA/4AAAP+AAAD/gAQAAAD/gAAA/wAAAACAAAAAgAAAAAEAgACAA4ADAAAPAAABAQEBAQEBAQEBAQEBAQEBAQACgAAA/4AAAP+AAAD/AAAAAQAAAP6AAAD/gAAAAIADAAAA/YAAAACAAAABgAAA/oAAAP+AAAAAgAAAAYAAAAAAAAIAgACAA4AEAAAJAA0AAAEBAQEBAQEBAQEBAQEBAIABAAAAAYAAAACAAAD/gAAA/YABAAAAAQAAAAQAAAD/AAAA/4AAAP6AAAD/gAAAAgD+gAAAAYAAAAABAIAAgAOAAwAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/wAAAP8AAAABAAAAAQAAAP+AAAD+AAAA/4AAAACAAwAAAP+AAAD/gAAAAIAAAP6AAAAAgAAA/4AAAP+AAAAAgAAAAYAAAAAAAAIAgACAA4AEAAAJAA0AAAEBAQEBAQEBAQEBAQEBAoABAAAA/YAAAP+AAAAAgAAAAYD/AAAAAQAAAAQAAAD8gAAAAIAAAAGAAAAAgAAA/4D+gAAAAYAAAAACAIAAgAOAAwAADQARAAABAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/gAAAAGAAAD+AAAA/4AAAACAAIAAAAEAAAADAAAA/4AAAP8AAAD/gAAA/4AAAACAAAABgAAAAAD/gAAAAIAAAAABAQAAgAOAA4AACwAAAQEBAQEBAQEBAQEBAYACAAAA/oAAAAEAAAD/AAAA/wAAAACAA4AAAP+AAAD/AAAA/4AAAP8AAAACgAAAAAAAAgCAAIADgAOAAA8AEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/4AAAP4AAAABgAAA/oAAAP+AAAAAgACAAAABAAAAA4AAAP+AAAD+AAAA/4AAAACAAAAAgAAAAIAAAAEAAAAAAP8AAAABAAABAIAAgAOABAAACwAAAQEBAQEBAQEBAQEBAIABAAAAAYAAAACAAAD/AAAA/wAAAP8ABAAAAP8AAAD/gAAA/gAAAAIAAAD+AAAAAAAAAgGAAIACgAQAAAMABwAAAQEBAQEBAQEBgAEAAAD/AAAAAQAAAP8ABAAAAP+AAAD/gAAA/YAAAAACAIAAgAOABAAAAwAPAAABAQEBAQEBAQEBAQEBAQEBAoABAAAA/wAAAAEAAAD/gAAA/gAAAP+AAAABAAAAAQAEAAAA/4AAAP+AAAD+AAAA/4AAAACAAAABAAAA/wAAAAABAIAAgAOAA4AAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAEAAAAAgAAAAQAAAP+AAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP8AA4AAAP8AAAAAgAAA/4AAAP8AAAD/gAAA/4AAAACAAAAAgAAA/wAAAAAAAAEBgACAAwAEAAAHAAABAQEBAQEBAQGAAQAAAACAAAD/AAAA/4AEAAAA/QAAAP+AAAAAgAAAAAAAAQCAAIAEAAMAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQABAAAAAIAAAAEAAAAAgAAA/wAAAP+AAAD/gAAA/4AAAP8AAAAAgAMAAAD/gAAAAIAAAP+AAAD+AAAAAYAAAP+AAAAAgAAA/oAAAAIAAAAAAAABAIAAgAOAAwAADwAAAQEBAQEBAQEBAQEBAQEBAQCAAQAAAACAAAABAAAAAIAAAP8AAAD/gAAA/4AAAP8AAwAAAP+AAAAAgAAA/4AAAP4AAAABgAAA/4AAAP8AAAAAAAACAIAAgAOAAwAACwAPAAABAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP+AAAD+AAAA/4AAAACAAIAAAAEAAAADAAAA/4AAAP6AAAD/gAAAAIAAAAGAAAAAAP6AAAABgAACAIAAgAOAAwAACQANAAABAQEBAQEBAQEBAQEBAQCAAoAAAACAAAD/gAAA/oAAAP8AAQAAAAEAAAADAAAA/4AAAP+AAAD/gAAA/wAAAAIA/4AAAACAAAAAAgCAAIAEAAMAAA0AEQAAAQEBAQEBAQEBAQEBAQEBAQEBAQACgAAAAIAAAP+AAAD/AAAA/oAAAP+AAAAAgACAAAABAAAAAwAAAP6AAAD/gAAA/4AAAAEAAAAAgAAAAIAAAAAA/4AAAACAAAAAAQEAAIADgAMAAAkAAAEBAQEBAQEBAQEBAAIAAAAAgAAA/wAAAP+AAAD/AAMAAAD/gAAA/wAAAAEAAAD+AAAAAAEAgACABAADAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEAAoAAAP6AAAABgAAAAIAAAP+AAAD9AAAAAgAAAP6AAAD/gAAAAIADAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAAAgAAAAAAAAQCAAIADgAOAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQABAAAAAQAAAP8AAAAAgAAAAQAAAP+AAAD+gAAA/4AAAP+AAAAAgAOAAAD/gAAA/4AAAP6AAAAAgAAA/4AAAP+AAAAAgAAAAYAAAACAAAAAAAABAIAAgAOAAwAADwAAAQEBAQEBAQEBAQEBAQEBAQCAAQAAAACAAAAAgAAAAQAAAP+AAAD/gAAA/oAAAP+AAwAAAP4AAAAAgAAAAYAAAP2AAAAAgAAA/4AAAACAAAAAAAABAIAAgAOAAwAADwAAAQEBAQEBAQEBAQEBAQEBAQCAAQAAAAEAAAABAAAA/4AAAP+AAAD/AAAA/4AAAP+AAwAAAP6AAAABgAAA/oAAAP+AAAD/gAAAAIAAAACAAAAAAAABAIAAgAQAAwAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAEAAAAAgAAAAIAAAACAAAABAAAA/4AAAP8AAAD/gAAA/wAAAP+AAwAAAP6AAAAAgAAA/4AAAAGAAAD+AAAA/4AAAACAAAD/gAAAAIAAAAAAAAEAgACAA4ADAAAbAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAIABAAAAAQAAAAEAAAD/gAAA/4AAAACAAAAAgAAA/wAAAP8AAAD/AAAAAIAAAACAAAD/gAAA/4ADAAAA/4AAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAD/gAAAAIAAAACAAAAAgAAAAIAAAAAAAAEAgACAA4ADAAAPAAABAQEBAQEBAQEBAQEBAQEBAIABAAAAAQAAAAEAAAD/gAAA/gAAAAGAAAD+gAAA/4ADAAAA/wAAAAEAAAD+AAAA/4AAAACAAAAAgAAAAIAAAAAAAAEAgACAA4ADAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQCAAwAAAP+AAAD/gAAA/4AAAAGAAAD9AAAAAIAAAACAAAAAgAAA/oADAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAAAgAAAAAAAAQCAAIADAAQAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAYABgAAA/wAAAP+AAAAAgAAAAQAAAP6AAAD/gAAA/4AAAACAAAAAgAQAAAD/gAAA/wAAAP+AAAD/AAAA/4AAAACAAAABAAAAAIAAAAEAAAAAAAABAYAAgAKABAAAAwAAAQEBAQGAAQAAAP8ABAAAAPyAAAAAAAABAQAAgAOABAAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAGAAAAAgAAAAIAAAP+AAAD/gAAA/oAAAAEAAAAAgAAA/4AAAP8ABAAAAP+AAAD/AAAA/4AAAP8AAAD/gAAAAIAAAAEAAAAAgAAAAQAAAAAAAAEAgAGAA4ADAAAPAAABAQEBAQEBAQEBAQEBAQEBAQABAAAAAQAAAACAAAD/gAAA/wAAAP8AAAD/gAAAAIADAAAA/4AAAACAAAD/AAAA/4AAAACAAAD/gAAAAQAAAAAAAAEAAAAABAAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQAAAYAAAAEAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/AAAA/wAEAAAA/4AAAP+AAAD/gAAA/wAAAP6AAAABAAAAAQAAAACAAAAAgAAAAAAAAQIAAAAEAAQAAAMAAAEBAQECAAIAAAD+AAQAAAD8AAAAAAAAAgCAAIADgAQAABcAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQGAAYAAAP8AAAABAAAA/4AAAP+AAAABgAAA/QAAAACAAAAAgAAA/wAAAACAAAAAgAGAAIAAAP+ABAAAAP+AAAD/AAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAABAAAAAAAAAP+AAAAAAQCAAIADgAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAEAAAABAAAAAQAAAP+AAAAAgAAA/wAAAAEAAAD/AAAA/wAAAP8AAAABAAAA/wAAAACAAAD/gAQAAAD+gAAAAYAAAP8AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAABACAAIAEAAQAABcAGwAfACMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAoAAAP4AAAABgAAAAIAAAACAAAD/gAAA/YAAAAIAAAD+gAAA/4AAAP+AAAAAgAEAAAAAgAAAAQAAgAAA/4D9AACAAAD/gAQAAAD/gAAA/4AAAP+AAAD/gAAA/wAAAP+AAAAAgAAAAIAAAACAAAAAgAAAAQAAAP8A/4AAAACAAQAAAP+AAAD+gAAA/4AAAAAEAIAAgAQAA4AAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQCAAIAAAP+AAQAAgAAA/4ABAACAAAD/gAEAAIAAAP+AA4AAAP0AAAADAAAA/QAAAAMAAAD9AAAAAwAAAP0AAAAAAQIAAAAEAAQAAAkAAAEBAQEBAQEBAQEDgACAAAD+AAAAAIAAAACAAAAAgAQAAAD8AAAAAQAAAAEAAAABAAAAAAgAAAAABAAEAAADAAcACwAPABMAFwAbAB8AAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAABAAAA/wACAAEAAAD/AP8AAQAAAP8AAgABAAAA/wD9AAEAAAD/AAIAAQAAAP8A/wABAAAA/wACAAEAAAD/AAQAAAD/AAAAAQAAAP8AAAAAAAAA/wAAAAEAAAD/AAAAAAAAAP8AAAABAAAA/wAAAAAAAAD/AAAAAQAAAP8AAAAAAQIAAAADAAQAAAMAAAEBAQECAAEAAAD/AAQAAAD8AAAAAAAAAgGAAIACgAQAAAMABwAAAQEBAQEBAQEBgAEAAAD/AAAAAQAAAP8ABAAAAP6AAAD/gAAA/oAAAAABAgAAAAQAAgAAAwAAAQEBAQIAAgAAAP4AAgAAAP4AAAAAAAAEAIAAAAQABAAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQCAAIAAAP+AAQAAgAAA/4ABAACAAAD/gAEAAIAAAP+ABAAAAPwAAAAEAAAA/AAAAAQAAAD8AAAABAAAAPwAAAAAAQCAAIADgAOAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAoABAAAA/oAAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAAEAAAD/gAOAAAD+AAAA/wAAAACAAAAAgAAAAIAAAACAAAAAgAAA/wAAAAEAAAAAAAABAAAAAAQABAAACwAAAQEBAQEBAQEBAQEBAAAEAAAA/gAAAP+AAAD/gAAA/4AAAP+ABAAAAPwAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQCAAIAEAAOAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAOAAAD/gAAAAIAAAP8AAAABAAAA/oAAAAGAAAD9AAAAAIAAAP+AAAABAAAA/wAAAAGAAAD+gAAAAAAAAQAAAAACAAQAAAkAAAEBAQEBAQEBAQEAAACAAAAAgAAAAIAAAACAAAD+AAQAAAD/AAAA/wAAAP8AAAD/AAAAAAEAAAAABAAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQKAAYAAAP8AAAD/AAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAQAEAAAA/wAAAP+AAAD/gAAA/wAAAP8AAAABgAAAAQAAAACAAAAAgAAAAAAAAQAAAAAEAAIAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAEAAAAAgAAAAIAAAACAAAD8AAAAAIAAAACAAAAAgAIAAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAAAAAgAAAAAEAAQAAAMABwAAAQEBAQEBAQEAAAIAAAD+AAIAAgAAAP4ABAAAAP4AAAAAAAAA/gAAAAAEAAACAAQABAAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAP8AAgABAAAA/wD/AAEAAAD/AAIAAQAAAP8ABAAAAP8AAAABAAAA/wAAAAAAAAD/AAAAAQAAAP8AAAAABAIAAAAEAAQAAAMABwALAA8AAAEBAQEBAQEBAQEBAQEBAQECAAEAAAD/AAEAAQAAAP8A/wABAAAA/wABAAEAAAD/AAQAAAD/AAAAAAAAAP8AAAAAAAAA/wAAAAAAAAD/AAAAAAEDAAAABAAEAAADAAABAQEBAwABAAAA/wAEAAAA/AAAAAAAAAEAAAAABAAEAAAFAAABAQEBAQEAAAQAAAD9AAAA/wAEAAAA/wAAAP0AAAAAAQAAAAABAAQAAAMAAAEBAQEAAAEAAAD/AAQAAAD8AAAAAAAAAwCAAIADAAOAAAMABwALAAABAQEBAQEBAQEBAQEAgACAAAD/gAEAAIAAAP+AAQAAgAAA/4ADgAAA/QAAAAMAAAD9AAAAAwAAAP0AAAAAAAABAYABgAQABAAACwAAAQEBAQEBAQEBAQEBAYABAAAAAIAAAAEAAAD+gAAA/4AAAP+ABAAAAP8AAAD/gAAA/wAAAACAAAAAgAAAAAAAAQAAAYACgAQAAAsAAAEBAQEBAQEBAQEBAQGAAQAAAP+AAAD/gAAA/oAAAAEAAAAAgAQAAAD+gAAA/4AAAP+AAAABAAAAAIAAAAAAAAEAAAAABAAEAAAJAAABAQEBAQEBAQEBAwABAAAA/AAAAAEAAAABAAAAAQAEAAAA/AAAAAKAAAAAgAAAAIAAAAABAIAAgAMABAAACwAAAQEBAQEBAQEBAQEBAgABAAAA/4AAAP6AAAD/gAAAAIAAAAEABAAAAP0AAAD/gAAAAIAAAAEAAAAAgAAAAAAAAQAAAAAEAAQAAAUAAAEBAQEBAQAAAQAAAAMAAAD8AAQAAAD9AAAA/wAAAAACAIAAgAMAAoAACwAPAAABAQEBAQEBAQEBAQEBAQEBAQABgAAAAIAAAP+AAAD+gAAAAQAAAP8A/4AAgAAA/4ACgAAA/4AAAP8AAAD/gAAAAIAAAAEAAAAAAAAA/wAAAAACAIAAgAMABAAACwAPAAABAQEBAQEBAQEBAQEBAQEBAgABAAAA/4AAAP6AAAABAAAA/wAAAAEA/oAAgAAA/4AEAAAA/QAAAP+AAAAAgAAAAQAAAACAAAD/gAAA/wAAAAABAIAAgAQABAAADQAAAQEBAQEBAQEBAQEBAQECAAIAAAD/AAAA/4AAAP6AAAD/gAAAAIAAAAEABAAAAP+AAAD9gAAA/4AAAACAAAABAAAAAIAAAAACAAAAAAQABAAAAwAHAAABAQEBAQEBAQAABAAAAPwAAQAAAAIAAAAEAAAA/AAAAAMA/gAAAAIAAAEAgACABAAEAAARAAABAQEBAQEBAQEBAQEBAQEBAQECAAIAAAD/AAAAAQAAAP8AAAD/gAAA/oAAAP+AAAAAgAAAAQAEAAAA/4AAAP+AAAD/gAAA/oAAAP+AAAAAgAAAAQAAAACAAAAAAQAAAAACgAKAAAsAAAEBAQEBAQEBAQEBAQAAAYAAAACAAAAAgAAA/wAAAP+AAAD/AAKAAAD/gAAA/4AAAP6AAAABAAAAAIAAAAAAAAEAAAAABAAEAAAFAAABAQEBAQEAAAQAAAD/AAAA/QAEAAAA/AAAAAMAAAAAAQCAAIAEAAQAABUAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAAIAAAD/AAAAAQAAAP8AAAABAAAA/wAAAP+AAAD+gAAA/4AAAACAAAABAAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAAEAAAAAgAAAAAEBgAAABAACgAALAAABAQEBAQEBAQEBAQECgAGAAAD/AAAA/4AAAP8AAAAAgAAAAIACgAAA/wAAAP+AAAD/AAAAAYAAAACAAAAAAAABAAAAAAQABAAAEQAAAQEBAQEBAQEBAQEBAQEBAQEBAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAPwABAAAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAAEAAAAABAABAAADAAABAQEBAAAEAAAA/AABAAAA/wAAAAAAAAEAAAAABAAEAAARAAABAQEBAQEBAQEBAQEBAQEBAQEDgACAAAD8AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAEAAAA/AAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAQAAAgAEAAQAAAMAAAEBAQEAAAQAAAD8AAQAAAD+AAAAAAAAAgCAAIACAAOAAAMABwAAAQEBAQEBAQEAgACAAAD/gAEAAIAAAP+AA4AAAP0AAAADAAAA/QAAAAAEAIAAgAQABAAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQCAA4AAAPyAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAABAAAAPyAAAADAP+AAAAAgP8A/4AAAACA/wD/gAAAAIAAAQAAAAAEAAQAAAUAAAEBAQEBAQMAAQAAAPwAAAADAAQAAAD8AAAAAQAAAAACAIAAgAQABAAAAwAHAAABAQEBAQEBAQCAA4AAAPyAAYAAAACAAAAEAAAA/IAAAAIA/4AAAACAAAMAgACABAAEAAADAAcACwAAAQEBAQEBAQEBAQEBAIADgAAA/IAAgAAAAIAAAAGAAAAAgAAABAAAAPyAAAADAP+AAAAAgP4A/4AAAACAAAAABAAAAIAEAAQAAAMABwALAA8AAAEBAQEBAQEBAQEBAQEBAQEAAAQAAAD8AAAABAAAAPwAAAAEAAAA/AAAAAQAAAD8AAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAAYAgACABAAEAAADAAcACwAPABMAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAIADgAAA/IAAgAAAAIAAAAGAAAAAgAAA/oAAAACAAAD+gAAAAIAAAAGAAAAAgAAABAAAAPyAAAADAP+AAAAAgAAA/4AAAACA/wD/gAAAAID/AP+AAAAAgAAA/4AAAACAAAEAgACAAQADgAADAAABAQEBAIAAgAAA/4ADgAAA/QAAAAAAAAUAgACABAAEAAADAAcACwAPABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAIADgAAA/IAAgAAAAIAAAAGAAAAAgAAA/YAAAACAAAABgAAAAIAAAAQAAAD8gAAAAwD/gAAAAIAAAP+AAAAAgP4A/4AAAACAAAD/gAAAAIAAAAABAAADAAQABAAAAwAAAQEBAQAABAAAAPwABAAAAP8AAAAAAAAHAIAAgAQABAAAAwAHAAsADwATABcAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQCAA4AAAPyAAIAAAACAAAABgAAAAIAAAP2AAAAAgAAAAYAAAACAAAD9gAAAAIAAAAGAAAAAgAAABAAAAPyAAAADAP+AAAAAgAAA/4AAAACA/wD/gAAAAIAAAP+AAAAAgP8A/4AAAACAAAD/gAAAAIAAAAAEAAAAAAQAAgAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAP8AAgABAAAA/wD/AAEAAAD/AAIAAQAAAP8AAgAAAP8AAAABAAAA/wAAAAAAAAD/AAAAAQAAAP8AAAAAAQAAAAAEAAQAAAkAAAEBAQEBAQEBAQEAAAEAAAABAAAAAQAAAAEAAAD8AAQAAAD/gAAA/4AAAP+AAAD9gAAAAAEBAAAAAgAEAAADAAABAQEBAQABAAAA/wAEAAAA/AAAAAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQECgAGAAAD8AAAAAIAAAACAAAAAgAAAAQAEAAAA/AAAAAGAAAABAAAAAIAAAACAAAAAAAABAAABAAQAAgAAAwAAAQEBAQAABAAAAPwAAgAAAP8AAAAAAAABAAAAAAQABAAACwAAAQEBAQEBAQEBAQEBAgACAAAA/AAAAACAAAAAgAAAAIAAAACABAAAAPwAAAACAAAAAIAAAACAAAAAgAAAAAAAAQAAAAAEAAIAAAkAAAEBAQEBAQEBAQEDAAEAAAD8AAAAAQAAAAEAAAABAAIAAAD+AAAAAIAAAACAAAAAgAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQEAAAIAAAAAgAAAAIAAAACAAAAAgAAA/AAEAAAA/4AAAP+AAAD/gAAA/4AAAP4AAAAAAAADAAAAAAQABAAAGwAnADMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAEAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAIAAYAAAACAAAD/gAAA/4AAAP+AAAD/gP4AAIAAAACAAAAAgAAAAIAAAP6AAAD/gAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAQAAAP+AAAD+gAAAAIAAAACAAAAAgAAA/oAAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAAAAAQAAAAAEAAIAAAkAAAEBAQEBAQEBAQEAAAEAAAABAAAAAQAAAAEAAAD8AAIAAAD/gAAA/4AAAP+AAAD/gAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQEAAAGAAAABAAAAAIAAAACAAAAAgAAA/AAEAAAA/4AAAP+AAAD/gAAA/wAAAP6AAAAAAAAEAAAAgAQABAAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQCAAYAAAP6AAgABgAAA/oD9gAGAAAD+gAIAAYAAAP6ABAAAAP6AAAABgAAA/oAAAP+AAAD+gAAAAYAAAP6AAAAAAQIAAgAEAAQAAAMAAAEBAQECAAIAAAD+AAQAAAD+AAAAAAAABACAAIAEAAQAAAMABwAjACcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAEAAAD/AAGAAQAAAP8A/gAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4ABgACAAAD/gAQAAAD/gAAAAIAAAP+AAAAAAAAA/wAAAP+AAAD/gAAAAIAAAACAAAABAAAA/oAAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAAGAAAD/gAAAAAQAAAAABAAEAAADAAcACwAPAAABAQEBAQEBAQEBAQEBAQEBAAAAgAAA/4ADgACAAAD/gPyAAIAAAP+AA4AAgAAA/4AEAAAA/4AAAACAAAD/gAAA/QAAAP+AAAAAgAAA/4AAAAABAAAAAAIAAgAAAwAAAQEBAQAAAgAAAP4AAgAAAP4AAAAAAAAEAAAAAAIABAAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAP8AAQABAAAA/wD/AAEAAAD/AAEAAQAAAP8ABAAAAP8AAAAAAAAA/wAAAAAAAAD/AAAAAAAAAP8AAAAAAQCAAQADgAOAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAYABAAAA/4AAAAGAAAD+gAAAAIAAAP8AAAD/gAAA/4AAAACAAAAAgAOAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAAAABAQABAAOABAAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQECAACAAAAAgAAAAIAAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACABAAAAP+AAAD/gAAA/wAAAACAAAD+gAAAAYAAAP+AAAABAAAAAIAAAAAAAAEBAAEABAADgAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQIAAQAAAACAAAAAgAAA/4AAAP+AAAD/AAAAAIAAAP6AAAABgAAA/4ADgAAA/4AAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAAAgAAAAAAAAQEAAIADgAOAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAgAAgAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAOAAAD+gAAAAIAAAP8AAAD/gAAA/4AAAACAAAAAgAAAAQAAAP+AAAAAAAABAQAAgAOABAAADwAAAQEBAQEBAQEBAQEBAQEBAQIAAIAAAACAAAAAgAAA/4AAAP6AAAD/gAAAAIAAAACABAAAAP8AAAD/AAAA/wAAAP+AAAAAgAAAAQAAAAEAAAAAAAACAIAAgAOAA4AAAwAJAAABAQEBAQEBAQEBAIADAAAA/QAAgAAAAgAAAP8AAAADgAAA/QAAAAKA/gAAAAEAAAABAAAAAAIAgACABAAEAAAbACcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAACAAAAAgAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAAD/gAAAAIAAAACAAAAAgAAA/4AAAAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAA/4D/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAEAAAIABAADAAADAAABAQEBAAAEAAAA/AADAAAA/wAAAAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQEAAAQAAAD/gAAA/4AAAP+AAAD/gAAA/gAEAAAA/gAAAP+AAAD/gAAA/4AAAP+AAAAAAAABAAACAAIABAAAAwAAAQEBAQAAAgAAAP4ABAAAAP4AAAAAAAACAQAAgAOAA4AAFwAbAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAYABgAAAAIAAAP8AAAAAgAAAAIAAAP8AAAD/gAAA/wAAAACAAAAAgAAA/wAAAACAAIAAAACAAAADgAAA/wAAAP+AAAD/gAAA/4AAAP+AAAAAgAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgP+AAAAAgAADAAAAAAQABAAACwAnADMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAGAAAD/gAAA/4AAAP+AAAD/gAAAAIACgAEAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgACAAIAAAP+AAAD+gAAAAIAAAACAAAAAgAQAAAD/gAAA/4AAAP+AAAD/gAAAAYAAAACAAAD/AAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAIAAAACAAAAAgAAA/oAAAP6AAAD/gAAAAIAAAACAAAAAgAAAAAAAAgCAAIADgAQAAA8AHwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAEAAAABAAAAAIAAAP+AAAD/AAAA/wAAAP+AAAAAgAAAAQAAAAEAAAAAgAAA/4AAAP8AAAD/AAAA/4AAAACABAAAAP+AAAAAgAAA/wAAAP+AAAAAgAAA/4AAAAEAAAD+gAAA/4AAAACAAAD/AAAA/4AAAACAAAD/gAAAAQAAAAABAAAAAAQAA4AACwAAAQEBAQEBAQEBAQEBAQACAAAAAIAAAACAAAD8AAAAAIAAAACAA4AAAP+AAAD/gAAA/YAAAAKAAAAAgAAAAAAAAQAAAAACAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEAAACAAAAAgAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAQAAAD/gAAA/4AAAP+AAAD/AAAA/4AAAP+AAAD/gAAAAAAAAQIAAAAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEDgACAAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAQAAAD8AAAAAIAAAACAAAAAgAAAAQAAAACAAAAAgAAAAAAAAQCAAIAEAAQAABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQIAAIAAAACAAAAAgAAAAIAAAP+AAAD/AAAA/4AAAP8AAAD/gAAAAIAAAACAAAAAgAQAAAD/gAAA/4AAAP+AAAD/gAAA/oAAAAEAAAD/AAAAAYAAAACAAAAAgAAAAIAAAAAAACAAAAAABAAEAAADAAcACwAPABMAFwAbAB8AIwAnACsALwAzADcAOwA/AEMARwBLAE8AUwBXAFsAXwBjAGcAawBvAHMAdwB7AH8AAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAAAgAAA/4ABAACAAAD/gAEAAIAAAP+AAQAAgAAA/4D9gACAAAD/gAEAAIAAAP+AAQAAgAAA/4ABAACAAAD/gPyAAIAAAP+AAQAAgAAA/4ABAACAAAD/gAEAAIAAAP+A/YAAgAAA/4ABAACAAAD/gAEAAIAAAP+AAQAAgAAA/4D8gACAAAD/gAEAAIAAAP+AAQAAgAAA/4ABAACAAAD/gP2AAIAAAP+AAQAAgAAA/4ABAACAAAD/gAEAAIAAAP+A/IAAgAAA/4ABAACAAAD/gAEAAIAAAP+AAQAAgAAA/4D9gACAAAD/gAEAAIAAAP+AAQAAgAAA/4ABAACAAAD/gAQAAAD/gAAAAIAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAIAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAIAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAIAAAP+AAAAAAQAAAAAEAAQAAAsAAAEBAQEBAQEBAQEBAQAABAAAAP6AAAD/AAAA/4AAAP+AAAD/gAQAAAD8AAAAAIAAAACAAAAAgAAAAQAAAAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQEAAAQAAAD/gAAA/4AAAP+AAAD/AAAA/oAEAAAA/oAAAP8AAAD/gAAA/4AAAP+AAAAAAAABAAABgAKABAAADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP+ABAAAAP+AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAACAAAAAAAABAAAAAAKABAAADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP+ABAAAAP+AAAD/gAAA/4AAAP2AAAACAAAAAIAAAACAAAAAAAABAYAAAAQAAoAABQAAAQEBAQEBAYACgAAA/oAAAP8AAoAAAP8AAAD+gAAAAAEAAAAABAAEAAAJAAABAQEBAQEBAQEBAAACgAAAAIAAAACAAAAAgAAA/AAEAAAA/wAAAP8AAAD/AAAA/wAAAAACAAAAAAQABAAAGwAfAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQGAAQAAAACAAAAAgAAAAIAAAP+AAAD/gAAA/4AAAP8AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAAAAAEAAAAEAAAA/4AAAP+AAAD/gAAA/wAAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAAEAAAAAgAAAAIAAAP8A/wAAAAEAAAEBgAGABAAEAAAFAAABAQEBAQEBgAEAAAABgAAA/YAEAAAA/oAAAP8AAAAAAQAAAAACgAKAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAEAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAKAAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAAAAAQGAAAAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEDAAEAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAQAAAD/AAAA/4AAAP+AAAD+AAAAAoAAAACAAAAAgAAAAAAAAQGAAAAEAAKAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAEAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/gAKAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAAAAAQGAAYAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEDAAEAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAQAAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAAAAAQAAAAAEAAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAEAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQAAAAAEAAQAAB8AAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAABAAAAAIAAAAEAAAAAgAAAAQAAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAP+AAAD/gAQAAAD/gAAA/4AAAACAAAAAgAAA/wAAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAAEAAAAAgAAAAQAAAACAAAAAAAABAAABgAQABAAADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAgAAAP2AAAD/gAAA/4AAAP+ABAAAAP+AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAACAAAAAAAABAAABgAQAAoAAAwAAAQEBAQAABAAAAPwAAoAAAP8AAAAAAAABAYAAAAKABAAAAwAAAQEBAQGAAQAAAP8ABAAAAPwAAAAAAAABAYAAAAQABAAAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAwABAAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACABAAAAP8AAAD/gAAA/wAAAP+AAAD/AAAAAIAAAACAAAAAgAAAAQAAAACAAAAAgAAAAAAAAQAAAAAEAAKAAA8AAAEBAQEBAQEBAQEBAQEBAQEAAAKAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD+AAKAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAAAAAQAAAYAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEDAAEAAAD/gAAA/4AAAP+AAAD9gAAAAgAAAACAAAAAgAQAAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAAAAAQAAAgAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEAAAQAAAD/gAAA/4AAAP+AAAD/AAAA/4AAAP+AAAD/gAQAAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAAAAAQAAAYACgAKAAAMAAAEBAQEAAAKAAAD9gAKAAAD/AAAAAAAAAQGAAAACgAKAAAMAAAEBAQEBgAEAAAD/AAKAAAD9gAAAAAAAAQAAAYAEAAQAABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAABAAAAAIAAAAEAAAD/gAAA/4AAAP+AAAD/AAAA/4AAAP+AAAD/gAQAAAD/gAAA/4AAAACAAAAAgAAA/wAAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAAAAAAEAAAAABAAEAAAJAAABAQEBAQEBAQEBAYACgAAA/AAAAACAAAAAgAAAAIAEAAAA/AAAAAEAAAABAAAAAQAAAAABAAAAAAQABAAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEDAAEAAAD/gAAA/4AAAP+AAAD/AAAA/oAAAAEAAAABAAAAAIAAAACABAAAAP6AAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAQAAAAAAAAEAAAAABAAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAQAAAAEAAAD+gAAA/wAAAP+AAAD/gAAA/4AEAAAA/wAAAP8AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAACAAAABAAAAAAAAAQAAAAAEAAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEDAAEAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAQAAAD/AAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQAAAAACgAQAABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAIAAAP+AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAP+AAAD/gAQAAAD/gAAA/4AAAP+AAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAABAAAAAIAAAAAAAAEAAAAABAAEAAAfAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAP8AAAD/gAAA/wAAAP+AAAD/AAAAAIAAAACAAAD/gAAA/4AEAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/wAAAACAAAAAgAAA/4AAAP+AAAABAAAAAIAAAAEAAAAAgAAAAAAAAQAAAAACgAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAEAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAQAAAD9gAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAAAAAQGAAAAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAEAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/gAQAAAD+AAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAAAAAQAAAAAEAAKAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAKAAAD+AAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAKAAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAAAAAQGAAYACgAQAAAMAAAEBAQEBgAEAAAD/AAQAAAD9gAAAAAAAAQGAAYAEAAKAAAMAAAEBAQEBgAKAAAD9gAKAAAD/AAAAAAAAAQAAAAAEAAQAAB8AAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAwABAAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/gAAA/wAAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAQAAAD/AAAA/4AAAP8AAAD/gAAA/wAAAACAAAAAgAAA/4AAAP+AAAABAAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAABAAAAAAQABAAAIwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAABAAAAAIAAAAEAAAAAgAAAAQAAAP+AAAD/gAAAAIAAAACAAAD/AAAA/4AAAP8AAAD/gAAA/wAAAACAAAAAgAAA/4AAAP+ABAAAAP+AAAD/gAAAAIAAAACAAAD/AAAA/4AAAP8AAAD/gAAA/wAAAACAAAAAgAAA/4AAAP+AAAABAAAAAIAAAAEAAAAAgAAAAAAAAQGAAYACgAKAAAMAAAEBAQEBgAEAAAD/AAKAAAD/AAAAAAAAAQAAAAAEAAKAABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQGAAQAAAACAAAAAgAAAAIAAAP8AAAD/gAAA/wAAAP+AAAD/AAAAAIAAAACAAAAAgAKAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAD/gAAA/4AAAAEAAAAAgAAAAIAAAAAAAAEAAAGAAoAEAAAFAAABAQEBAQEBgAEAAAD9gAAAAYAEAAAA/YAAAAEAAAAAAQAAAAACgAKAAAUAAAEBAQEBAQAAAoAAAP8AAAD+gAKAAAD9gAAAAYAAAAABAAAAAAQABAAAHwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAEAAAAAgAAAAQAAAACAAAABAAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+ABAAAAP+AAAD/gAAAAIAAAACAAAD/AAAA/4AAAP8AAAD/gAAA/wAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQEBgAEAAAABgAAA/oAAAP8AAAD+gAAAAYAEAAAA/oAAAP8AAAD+gAAAAYAAAAEAAAAAAAABAAAAAAQAAoAABwAAAQEBAQEBAQEAAAQAAAD+gAAA/wAAAP6AAoAAAP8AAAD+gAAAAYAAAAAAAAEBgAAABAAEAAAHAAABAQEBAQEBAQGAAQAAAAGAAAD+gAAA/wAEAAAA/oAAAP8AAAD+gAAAAAAAAQAAAAACgAQAAAcAAAEBAQEBAQEBAYABAAAA/wAAAP6AAAABgAQAAAD8AAAAAYAAAAEAAAAAAAABAAABgAQABAAABwAAAQEBAQEBAQEBgAEAAAABgAAA/AAAAAGABAAAAP6AAAD/AAAAAQAAAAAAAAQBAAEAAwADAAADAAcACwAPAAABAQEBAQEBAQEBAQEBAQEBAYABAAAA/wD/gACAAAD/gAGAAIAAAP+A/wABAAAA/wADAAAA/4AAAAAAAAD/AAAAAQAAAP8AAAAAAAAA/4AAAAACAIAAgAOAA4AACwAPAAABAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP+AAAD+AAAA/4AAAACAAIAAAAEAAAADgAAA/4AAAP4AAAD/gAAAAIAAAAIAAAD/gP8AAAABAAACAAAAAAQABAAAEwAfAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAAAgAAA/4AAAP+AAAD+AAAA/4AAAP+AAAAAgAAAAIAAgAAA/4AAAACAAAABAAAAAIAAAP+AAAAEAAAA/4AAAP+AAAD+AAAA/4AAAP+AAAAAgAAAAIAAAAIAAAAAgAAA/4D/gAAA/wAAAP+AAAAAgAAAAQAAAACAABAAAAAABAAEAAADAAcACwAPABMAFwAbAB8AIwAnACsALwAzADcAOwA/AAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAYAAgAAA/4ACAACAAAD/gP2AAIAAAP+AAgAAgAAA/4D9gACAAAD/gAIAAIAAAP+A/YAAgAAA/4ACAACAAAD/gP+AAIAAAP+AAgAAgAAA/4D9gACAAAD/gAIAAIAAAP+A/YAAgAAA/4ACAACAAAD/gP2AAIAAAP+AAgAAgAAA/4AEAAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAAAQAAAAAAQABAAAAwAHAAsADwATABcAGwAfACMAJwArAC8AMwA3ADsAPwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQAAAIAAAP+AAgAAgAAA/4D+gACAAAD/gAIAAIAAAP+A/oAAgAAA/4ACAACAAAD/gP6AAIAAAP+AAgAAgAAA/4D8gACAAAD/gAIAAIAAAP+A/oAAgAAA/4ACAACAAAD/gP6AAIAAAP+AAgAAgAAA/4D+gACAAAD/gAIAAIAAAP+ABAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAAwCAAIADgAQAABcAGwAfAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQIAAIAAAAEAAAD/AAAAAIAAAP+AAAABAAAA/wAAAP+AAAD/AAAA/4AAAACAAAABAP+AAAAAgAAA/4AAAACAAAAEAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAYAAAACAAAD/gP+AAAAAgP8A/4AAAACAAAAAAQCAAIADgAOAAA8AAAEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/4AAAP+AAAD/AAAA/4AAAP+AAAAAgAOAAAD/gAAA/wAAAP+AAAD/AAAAAQAAAACAAAABAAAAAAAAAgCAAIADgAOAAAMACQAAAQEBAQEBAQEBAQCAAwAAAP0AAYAAAP8AAAACAAAAA4AAAP0AAAACgP8AAAD/AAAAAgAAAAABAIAAgAOAA4AAAwAAAQEBAQCAAwAAAP0AA4AAAP0AAAAAAAACAIAAgAOAA4AAAwALAAABAQEBAQEBAQEBAQEAgAMAAAD9AACAAAACAAAA/4AAAP8AAAADgAAA/QAAAAKA/gAAAAIAAAD/AAAAAQAAAQAAAAAEAAQAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAACAAAD/gAAA/4AAAP4AAAD/gAAA/4AAAACAAAAAgAQAAAD/gAAA/4AAAP4AAAD/gAAA/4AAAACAAAAAgAAAAgAAAACAAAAAAAABAQABAAMAAwAACwAAAQEBAQEBAQEBAQEBAYABAAAAAIAAAP+AAAD/AAAA/4AAAACAAwAAAP+AAAD/AAAA/4AAAACAAAABAAAAAAAAAQCAAQAEAAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAACAAAAAgAAAAQAAAP+AAAD/gAAAAIAAAP8AAAD/gAAA/wAAAACAAAD/gAAA/4AAAAEAAAAAgAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAAAgAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAABgCAAIAEAAQAAAMABwALAA8AEwAXAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAOAAAD8gAEAAAAAgAAAAIAAAACAAAD+AAAAAIAAAAGAAAAAgAAA/gAAAAGAAAAEAAAA/IAAAAMA/wAAAAEAAAD/AAAAAQD+gP+AAAAAgAAA/4AAAACA/4D/gAAAAIAABgCAAIAEAAQAAAMABwALAA8AEwAXAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAOAAAD8gAEAAAAAgAAAAIAAAACAAAD+gAAAAYAAAP4AAAAAgAAAAYAAAACAAAAEAAAA/IAAAAMA/wAAAAEAAAD/AAAAAQD+gP+AAAAAgP+A/4AAAACAAAD/gAAAAIAABgCAAIAEAAQAABMAFwAbAB8AIwAnAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAgAAgAAAAIAAAAEAAAD/AAAA/4AAAP+AAAD/gAAA/wAAAAEAAAAAgAAAAAAAgAAA/oAAgAAA/4ACAACAAAD/gP4AAIAAAP+AAgAAgAAA/4AEAAAA/wAAAP+AAAD/gAAA/4AAAP8AAAABAAAAAIAAAACAAAAAgAAA/4D/gAAAAIABAAAA/4AAAACAAAD/gAAA/oAAAP+AAAAAgAAA/4AAAAACAQAAgAOABAAAFwAbAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAYABgAAAAIAAAP+AAAD/gAAAAIAAAP+AAAD/gAAA/4AAAACAAAD/gAAAAQAAAP8A/4AAgAAA/4AEAAAA/4AAAP8AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAIAAAAEAAAAAAAAA/wAAAAACAIAAgAQABAAAFwAbAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAYACgAAA/4AAAP+AAAD/gAAAAIAAAP+AAAD+gAAAAQAAAP8AAAABAAAAAIAAAP8A/wAAgAAA/4AEAAAA/gAAAAEAAAD/gAAA/4AAAP8AAAD/gAAAAIAAAAEAAAAAgAAAAIAAAACAAAD+gAAA/wAAAAABAIAAgAQABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQIAAIAAAACAAAAAgAAAAIAAAP8AAAD/gAAAAIAAAP6AAAAAgAAA/4AAAP8AAAAAgAAAAIAAAACABAAAAP+AAAD/gAAA/4AAAP8AAAAAgAAA/wAAAP+AAAAAgAAAAQAAAP+AAAABAAAAAIAAAACAAAAAAAABAIAAgAQABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQGAAYAAAP+AAAAAgAAAAQAAAP8AAAD/gAAAAIAAAP6AAAAAgAAA/4AAAP8AAAABAAAAAIAAAP+ABAAAAP8AAAD/gAAAAIAAAP6AAAAAgAAA/wAAAP+AAAAAgAAAAQAAAP+AAAABgAAA/4AAAACAAAAAAAABAIAAgAQABAAAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQABAAAAAIAAAAEAAAAAgAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACABAAAAP+AAAAAgAAA/4AAAP6AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAABgAAAAAAAAQCAAIAEAAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAACAAAAAgAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQEAAIADgAQAAAsAAAEBAQEBAQEBAQEBAQIAAYAAAP8AAAD/gAAA/wAAAACAAAAAgAQAAAD/AAAA/gAAAP+AAAABAAAAAIAAAAAAAAEAgACABAAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQGAAoAAAP+AAAD/AAAAAIAAAACAAAD+gAAA/4AAAP8AAAAAgAAAAIAEAAAA/QAAAP+AAAABAAAAAIAAAAEAAAD+AAAA/4AAAAEAAAAAgAAAAAAAAAAYASYAAQAAAAAAAAAIAAAAAQAAAAAAAQAIAAgAAQAAAAAAAgAHABAAAQAAAAAAAwAIABcAAQAAAAAABAAQAB8AAQAAAAAABQALAC8AAQAAAAAABgAIADoAAQAAAAAACQAJAEIAAQAAAAAACgA6AEsAAQAAAAAADQARAIUAAQAAAAAADgAyAJYAAQAAAAAAEwAMAMgAAwABBAkAAAAQANQAAwABBAkAAQAQAOQAAwABBAkAAgAOAPQAAwABBAkAAwAQAQIAAwABBAkABAAgARIAAwABBAkABQAWATIAAwABBAkABgAQAUgAAwABBAkACQASAVgAAwABBAkACgB0AWoAAwABBAkADQAiAd4AAwABBAkADgBkAgAAAwABBAkAEwAYAmQoYykgMjAyMlVyc2FGb250UmVndWxhclVyc2FGb250VXJzYUZvbnQgUmVndWxhclZlcnNpb24gMS4wVXJzYUZvbnRVcnNhRnJhbmtBbiBvcGVuIGxpY2VuY2UgZ2VuZXJhbCBwdXJwb3NlIHRleHRtb2RlIGZvbnQgYnkgVXJzYUZyYW5rQ0MwIDEuMCBVbml2ZXJzYWxodHRwczovL2NyZWF0aXZlY29tbW9ucy5vcmcvcHVibGljZG9tYWluL3plcm8vMS4wL0hlbGxvIFdvcmxkIQAoAGMAKQAgADIAMAAyADIAVQByAHMAYQBGAG8AbgB0AFIAZQBnAHUAbABhAHIAVQByAHMAYQBGAG8AbgB0AFUAcgBzAGEARgBvAG4AdAAgAFIAZQBnAHUAbABhAHIAVgBlAHIAcwBpAG8AbgAgADEALgAwAFUAcgBzAGEARgBvAG4AdABVAHIAcwBhAEYAcgBhAG4AawBBAG4AIABvAHAAZQBuACAAbABpAGMAZQBuAGMAZQAgAGcAZQBuAGUAcgBhAGwAIABwAHUAcgBwAG8AcwBlACAAdABlAHgAdABtAG8AZABlACAAZgBvAG4AdAAgAGIAeQAgAFUAcgBzAGEARgByAGEAbgBrAEMAQwAwACAAMQAuADAAIABVAG4AaQB2AGUAcgBzAGEAbABoAHQAdABwAHMAOgAvAC8AYwByAGUAYQB0AGkAdgBlAGMAbwBtAG0AbwBuAHMALgBvAHIAZwAvAHAAdQBiAGwAaQBjAGQAbwBtAGEAaQBuAC8AegBlAHIAbwAvADEALgAwAC8ASABlAGwAbABvACAAVwBvAHIAbABkACEAAAADAAAAAAAAAGYAMwAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==\r
 `;
-class uA {
+class q {
   /**
    * Extracts all available characters from a font's cmap tables.
    * @param font The parsed font object from Typr
    * @returns Array of unique character strings
    */
   extractCharacters(A) {
-    var e;
-    const r = [];
-    return (e = A == null ? void 0 : A.cmap) != null && e.tables ? (A.cmap.tables.forEach((t) => {
-      if (t.format === 4) {
-        const n = this._extractCharactersFromFormat4Table(t);
-        r.push(...n);
-      } else if (t.format === 12) {
-        const n = this._extractCharactersFromFormat12Table(t);
-        r.push(...n);
+    var t;
+    const e = [];
+    return (t = A == null ? void 0 : A.cmap) != null && t.tables ? (A.cmap.tables.forEach((r) => {
+      if (r.format === 4) {
+        const i = this._extractCharactersFromFormat4Table(r);
+        e.push(...i);
+      } else if (r.format === 12) {
+        const i = this._extractCharactersFromFormat12Table(r);
+        e.push(...i);
       }
-    }), [...new Set(r)]) : [];
+    }), [...new Set(e)]) : [];
   }
   /**
    * Extracts characters from a Format 4 cmap table (Basic Multilingual Plane).
@@ -1893,20 +800,20 @@ class uA {
    * @returns Array of character strings
    */
   _extractCharactersFromFormat4Table(A) {
-    const r = [];
+    const e = [];
     if (!A.startCount || !A.endCount || !A.idRangeOffset || !A.idDelta)
-      return r;
-    for (let e = 0; e < A.startCount.length; e++) {
-      const t = A.startCount[e], n = A.endCount[e];
-      if (!(t === 65535 && n === 65535)) {
-        for (let a = t; a <= n; a++)
-          if (this._calculateGlyphIndexFormat4(A, a, e) > 0) {
+      return e;
+    for (let t = 0; t < A.startCount.length; t++) {
+      const r = A.startCount[t], i = A.endCount[t];
+      if (!(r === 65535 && i === 65535)) {
+        for (let a = r; a <= i; a++)
+          if (this._calculateGlyphIndexFormat4(A, a, t) > 0) {
             const B = String.fromCodePoint(a);
-            r.push(B);
+            e.push(B);
           }
       }
     }
-    return r;
+    return e;
   }
   /**
    * Extracts characters from a Format 12 cmap table (Extended Unicode ranges).
@@ -1914,18 +821,18 @@ class uA {
    * @returns Array of character strings
    */
   _extractCharactersFromFormat12Table(A) {
-    const r = [];
+    const e = [];
     if (!A.groups)
-      return r;
-    for (let e = 0; e < A.groups.length; e += 3) {
-      const t = A.groups[e], n = A.groups[e + 1], a = A.groups[e + 2];
-      for (let s = t; s <= n; s++)
-        if (a + (s - t) > 0) {
+      return e;
+    for (let t = 0; t < A.groups.length; t += 3) {
+      const r = A.groups[t], i = A.groups[t + 1], a = A.groups[t + 2];
+      for (let s = r; s <= i; s++)
+        if (a + (s - r) > 0) {
           const g = String.fromCodePoint(s);
-          r.push(g);
+          e.push(g);
         }
     }
-    return r;
+    return e;
   }
   /**
    * Calculates the glyph index for a character in a Format 4 cmap table.
@@ -1934,15 +841,15 @@ class uA {
    * @param rangeIndex The index of the character range
    * @returns The glyph index, or 0 if not found
    */
-  _calculateGlyphIndexFormat4(A, r, e) {
-    if (A.idRangeOffset[e] === 0)
-      return r + A.idDelta[e] & 65535;
+  _calculateGlyphIndexFormat4(A, e, t) {
+    if (A.idRangeOffset[t] === 0)
+      return e + A.idDelta[t] & 65535;
     {
-      const t = A.idRangeOffset[e] / 2 + (r - A.startCount[e]) - (A.startCount.length - e);
-      if (t >= 0 && A.glyphIdArray && t < A.glyphIdArray.length) {
-        const n = A.glyphIdArray[t];
-        if (n !== 0)
-          return n + A.idDelta[e] & 65535;
+      const r = A.idRangeOffset[t] / 2 + (e - A.startCount[t]) - (A.startCount.length - t);
+      if (r >= 0 && A.glyphIdArray && r < A.glyphIdArray.length) {
+        const i = A.glyphIdArray[r];
+        if (i !== 0)
+          return i + A.idDelta[t] & 65535;
       }
     }
     return 0;
@@ -1953,7 +860,7 @@ class uA {
    * @returns Filtered array of character strings
    */
   filterProblematicCharacters(A) {
-    return A.filter((r) => this._isValidCharacter(r));
+    return A.filter((e) => this._isValidCharacter(e));
   }
   /**
    * Checks if a character is valid for rendering.
@@ -1961,19 +868,19 @@ class uA {
    * @returns True if the character is valid, false otherwise
    */
   _isValidCharacter(A) {
-    const r = A.codePointAt(0) || 0;
-    return !(r >= 0 && r <= 31 && r !== 9 && r !== 10 && r !== 13 || r >= 127 && r <= 159);
+    const e = A.codePointAt(0) || 0;
+    return !(e >= 0 && e <= 31 && e !== 9 && e !== 10 && e !== 13 || e >= 127 && e <= 159);
   }
 }
-class CA {
+class AA {
   /**
    * Creates a new TextureAtlasCreation instance.
    * @param renderer The WebGL renderer instance
    */
   constructor(A) {
-    E(this, "_textureCanvas");
-    E(this, "_textureContext");
-    E(this, "_renderer");
+    o(this, "_textureCanvas");
+    o(this, "_textureContext");
+    o(this, "_renderer");
     this._renderer = A, this._textureCanvas = document.createElement("canvas"), this._textureContext = this._textureCanvas.getContext("2d", { willReadFrequently: !0, alpha: !1 });
   }
   /**
@@ -1984,12 +891,12 @@ class CA {
    * @param fontFamilyName Font family name to use
    * @returns Object containing framebuffer, columns, and rows
    */
-  createTextureAtlas(A, r, e, t) {
-    const n = A.length, a = Math.ceil(Math.sqrt(n)), s = Math.ceil(n / a), B = r.width * a, g = r.height * s;
-    this._setupCanvas(B, g, e, t), this._renderCharactersToCanvas(A, r, a, e), this._applyBlackWhiteThreshold();
-    const o = this._renderer.createFramebuffer(B, g, { filter: "nearest" });
-    return o.update(this._textureCanvas), {
-      framebuffer: o,
+  createTextureAtlas(A, e, t, r) {
+    const i = A.length, a = Math.ceil(Math.sqrt(i)), s = Math.ceil(i / a), B = e.width * a, g = e.height * s;
+    this._setupCanvas(B, g, t, r), this._renderCharactersToCanvas(A, e, a, t), this._applyBlackWhiteThreshold();
+    const Q = this._renderer.createFramebuffer(B, g, { filter: "nearest" });
+    return Q.update(this._textureCanvas), {
+      framebuffer: Q,
       columns: a,
       rows: s
     };
@@ -2003,8 +910,8 @@ class CA {
    * @param logicalWidth Logical width for scaling context
    * @param logicalHeight Logical height for scaling context
    */
-  _setupCanvas(A, r, e, t) {
-    this._textureCanvas.width = A, this._textureCanvas.height = r, this._textureCanvas.style.width = A + "px", this._textureCanvas.style.height = A + "px", this._textureContext.imageSmoothingEnabled = !1, this._textureCanvas.style.imageRendering = "pixelated", this._textureContext.fillStyle = "black", this._textureContext.fillRect(0, 0, A, r), this._textureContext.font = `${e}px ${t}`, this._textureContext.textBaseline = "top", this._textureContext.textAlign = "left", this._textureContext.fillStyle = "white";
+  _setupCanvas(A, e, t, r) {
+    this._textureCanvas.width = A, this._textureCanvas.height = e, this._textureCanvas.style.width = A + "px", this._textureCanvas.style.height = A + "px", this._textureContext.imageSmoothingEnabled = !1, this._textureCanvas.style.imageRendering = "pixelated", this._textureContext.fillStyle = "black", this._textureContext.fillRect(0, 0, A, e), this._textureContext.font = `${t}px ${r}`, this._textureContext.textBaseline = "top", this._textureContext.textAlign = "left", this._textureContext.fillStyle = "white";
   }
   /**
    * Renders all characters to the canvas in a grid layout.
@@ -2013,10 +920,10 @@ class CA {
    * @param textureColumns Number of columns in the texture
    * @param fontSize Font size
    */
-  _renderCharactersToCanvas(A, r, e, t) {
-    for (let n = 0; n < A.length; n++) {
-      const a = n % e, s = Math.floor(n / e), B = a * r.width + r.width * 0.5, g = s * r.height + r.height * 0.5, o = Math.round(B - r.width * 0.5), u = Math.round(g - t * 0.5);
-      this._textureContext.fillText(A[n].character, o, u);
+  _renderCharactersToCanvas(A, e, t, r) {
+    for (let i = 0; i < A.length; i++) {
+      const a = i % t, s = Math.floor(i / t), B = a * e.width + e.width * 0.5, g = s * e.height + e.height * 0.5, Q = Math.round(B - e.width * 0.5), l = Math.round(g - r * 0.5);
+      this._textureContext.fillText(A[i].character, Q, l);
     }
   }
   /**
@@ -2026,21 +933,21 @@ class CA {
    * @param threshold Threshold value (0-255) for black/white conversion
    */
   _applyBlackWhiteThreshold(A = 128) {
-    const r = this._textureContext.getImageData(0, 0, this._textureCanvas.width, this._textureCanvas.height), e = r.data;
-    for (let t = 0; t < e.length; t += 4) {
-      const n = 0.299 * e[t] + 0.587 * e[t + 1] + 0.114 * e[t + 2], a = A + 32, s = n > a ? 255 : 0;
-      e[t] = s, e[t + 1] = s, e[t + 2] = s;
+    const e = this._textureContext.getImageData(0, 0, this._textureCanvas.width, this._textureCanvas.height), t = e.data;
+    for (let r = 0; r < t.length; r += 4) {
+      const i = 0.299 * t[r] + 0.587 * t[r + 1] + 0.114 * t[r + 2], a = A + 32, s = i > a ? 255 : 0;
+      t[r] = s, t[r + 1] = s, t[r + 2] = s;
     }
-    this._textureContext.putImageData(r, 0, 0);
+    this._textureContext.putImageData(e, 0, 0);
   }
 }
-class dA {
+class eA {
   /**
    * Creates a new MetricsCalculation instance.
    */
   constructor() {
-    E(this, "_tempCanvas");
-    E(this, "_tempContext");
+    o(this, "_tempCanvas");
+    o(this, "_tempContext");
     this._tempCanvas = document.createElement("canvas"), this._tempContext = this._tempCanvas.getContext("2d");
   }
   /**
@@ -2051,37 +958,37 @@ class dA {
    * @param fontFace FontFace object (optional, for validation)
    * @returns Object containing width and height dimensions
    */
-  calculateMaxGlyphDimensions(A, r, e) {
-    this._tempContext.font = `${r}px ${e}`;
-    let t = 0, n = 0;
+  calculateMaxGlyphDimensions(A, e, t) {
+    this._tempContext.font = `${e}px ${t}`;
+    let r = 0, i = 0;
     for (const a of A) {
       const s = this._tempContext.measureText(a), B = s.width, g = s.actualBoundingBoxAscent + s.actualBoundingBoxDescent;
-      B > 0 && (t = Math.max(t, B), n = Math.max(n, g));
+      B > 0 && (r = Math.max(r, B), i = Math.max(i, g));
     }
     return {
-      width: Math.ceil(t),
-      height: Math.ceil(n)
+      width: Math.ceil(r),
+      height: Math.ceil(i)
     };
   }
 }
-class DA {
+class tA {
   /**
    * Creates TextmodeCharacter objects with unique color assignments.
    * @param characters Array of character strings
    * @param font The parsed font object from Typr
    * @returns Array of TextmodeCharacter objects with colors
    */
-  createCharacterObjects(A, r) {
-    return A.map((e, t) => {
-      const n = e.codePointAt(0) || 0, a = this._generateCharacterColor(t);
+  createCharacterObjects(A, e) {
+    return A.map((t, r) => {
+      const i = t.codePointAt(0) || 0, a = this._generateCharacterColor(r);
       let s = 0;
-      if (r.hmtx && r.hmtx.aWidth) {
-        const B = this._getGlyphIndex(r, n);
-        B > 0 && r.hmtx.aWidth[B] !== void 0 && (s = r.hmtx.aWidth[B]);
+      if (e.hmtx && e.hmtx.aWidth) {
+        const B = this._getGlyphIndex(e, i);
+        B > 0 && e.hmtx.aWidth[B] !== void 0 && (s = e.hmtx.aWidth[B]);
       }
       return {
-        character: e,
-        unicode: n,
+        character: t,
+        unicode: i,
         color: a,
         advanceWidth: s
       };
@@ -2094,21 +1001,21 @@ class DA {
    * @param codePoint The Unicode code point to look up
    * @returns The glyph index, or 0 if not found
    */
-  _getGlyphIndex(A, r) {
-    const e = A.cmap;
-    if (!e || !e.tables) return 0;
-    for (const t of e.tables)
-      if (t.format === 4) {
-        for (let n = 0; n < t.startCount.length; n++)
-          if (r >= t.startCount[n] && r <= t.endCount[n]) {
-            if (t.idRangeOffset[n] === 0)
-              return r + t.idDelta[n] & 65535;
+  _getGlyphIndex(A, e) {
+    const t = A.cmap;
+    if (!t || !t.tables) return 0;
+    for (const r of t.tables)
+      if (r.format === 4) {
+        for (let i = 0; i < r.startCount.length; i++)
+          if (e >= r.startCount[i] && e <= r.endCount[i]) {
+            if (r.idRangeOffset[i] === 0)
+              return e + r.idDelta[i] & 65535;
             {
-              const a = t.idRangeOffset[n] / 2 + (r - t.startCount[n]) - (t.startCount.length - n);
-              if (a >= 0 && a < t.glyphIdArray.length) {
-                const s = t.glyphIdArray[a];
+              const a = r.idRangeOffset[i] / 2 + (e - r.startCount[i]) - (r.startCount.length - i);
+              if (a >= 0 && a < r.glyphIdArray.length) {
+                const s = r.glyphIdArray[a];
                 if (s !== 0)
-                  return s + t.idDelta[n] & 65535;
+                  return s + r.idDelta[i] & 65535;
               }
             }
           }
@@ -2121,8 +1028,8 @@ class DA {
    * @returns RGB color as a tuple [r, g, b]
    */
   _generateCharacterColor(A) {
-    const r = A % 256, e = Math.floor(A / 256) % 256, t = Math.floor(A / 65536) % 256;
-    return [r, e, t];
+    const e = A % 256, t = Math.floor(A / 256) % 256, r = Math.floor(A / 65536) % 256;
+    return [e, t, r];
   }
   /**
    * Gets the color for a specific character.
@@ -2130,15 +1037,15 @@ class DA {
    * @param characters Array of TextmodeCharacter objects
    * @returns RGB color as a tuple [r, g, b], or [0, 0, 0] if not found
    */
-  getCharacterColor(A, r) {
-    if (!F.validate(
+  getCharacterColor(A, e) {
+    if (!C.validate(
       typeof A == "string" && A.length === 1,
       "Character must be a single character string.",
       { method: "getCharacterColor", providedValue: A }
     ))
       return [0, 0, 0];
-    const e = r.find((t) => t.character === A);
-    return e ? e.color : [0, 0, 0];
+    const t = e.find((r) => r.character === A);
+    return t ? t.color : [0, 0, 0];
   }
   /**
    * Gets colors for multiple characters.
@@ -2146,37 +1053,37 @@ class DA {
    * @param characters Array of TextmodeCharacter objects
    * @returns Array of RGB colors for each character
    */
-  getCharacterColors(A, r) {
-    return F.validate(
+  getCharacterColors(A, e) {
+    return C.validate(
       typeof A == "string" && A.length > 0,
       "Characters must be a string with at least one character.",
       { method: "getCharacterColors", providedValue: A }
-    ) ? A.split("").map((e) => this.getCharacterColor(e, r) || [0, 0, 0]) : [[0, 0, 0]];
+    ) ? A.split("").map((t) => this.getCharacterColor(t, e) || [0, 0, 0]) : [[0, 0, 0]];
   }
 }
-class PA {
+class rA {
   /**
    * Creates a new TextmodeFont instance.
    * @param renderer Renderer instance for texture creation
    * @param fontSize Font size to use for the texture atlas
    * @ignore
    */
-  constructor(A, r = 16) {
-    E(this, "_font");
-    E(this, "_characters", []);
-    E(this, "_fontFramebuffer");
-    E(this, "_fontSize", 16);
-    E(this, "_textureColumns", 0);
-    E(this, "_textureRows", 0);
-    E(this, "_maxGlyphDimensions", { width: 0, height: 0 });
-    E(this, "_fontFace");
-    E(this, "_fontFamilyName", "UrsaFont");
+  constructor(A, e = 16) {
+    o(this, "_font");
+    o(this, "_characters", []);
+    o(this, "_fontFramebuffer");
+    o(this, "_fontSize", 16);
+    o(this, "_textureColumns", 0);
+    o(this, "_textureRows", 0);
+    o(this, "_maxGlyphDimensions", { width: 0, height: 0 });
+    o(this, "_fontFace");
+    o(this, "_fontFamilyName", "UrsaFont");
     // Component classes
-    E(this, "_characterExtractor");
-    E(this, "_textureAtlas");
-    E(this, "_metricsCalculator");
-    E(this, "_characterColorMapper");
-    this._fontSize = r, this._characterExtractor = new uA(), this._textureAtlas = new CA(A), this._metricsCalculator = new dA(), this._characterColorMapper = new DA();
+    o(this, "_characterExtractor");
+    o(this, "_textureAtlas");
+    o(this, "_metricsCalculator");
+    o(this, "_characterColorMapper");
+    this._fontSize = e, this._characterExtractor = new q(), this._textureAtlas = new AA(A), this._metricsCalculator = new eA(), this._characterColorMapper = new tA();
   }
   /**
    * Initializes the font manager by loading the font and creating the texture atlas.
@@ -2184,8 +1091,8 @@ class PA {
    * @ignore
    */
   async initialize() {
-    const r = await (await fetch(cA)).arrayBuffer();
-    await this._loadFontFace(r), this._font = Q.parse(r)[0], await this._initializeFont();
+    const e = await (await fetch(Z)).arrayBuffer();
+    await this._loadFontFace(e), this._font = E.parse(e)[0], await this._initializeFont();
   }
   /**
    * Sets the font size for rendering.
@@ -2195,54 +1102,7 @@ class PA {
   setFontSize(A) {
     if (A === void 0) return this._fontSize;
     this._fontSize = A, this._maxGlyphDimensions = this._metricsCalculator.calculateMaxGlyphDimensions(
-      this._characters.map((e) => e.character),
-      this._fontSize,
-      this._fontFamilyName
-    );
-    const r = this._textureAtlas.createTextureAtlas(
-      this._characters,
-      this._maxGlyphDimensions,
-      this._fontSize,
-      this._fontFamilyName
-    );
-    this._fontFramebuffer = r.framebuffer, this._textureColumns = r.columns, this._textureRows = r.rows;
-  }
-  /**
-   * Loads a new font from a file path.
-   * @param fontPath Path to the .otf or .ttf font file
-   * @returns Promise that resolves when font loading is complete
-   * @ignore
-   */
-  async loadFont(A) {
-    try {
-      const r = await fetch(A);
-      if (!r.ok)
-        throw new T(`Failed to load font file: ${r.status} ${r.statusText}`);
-      const e = await r.arrayBuffer();
-      await this._loadFontFace(e);
-      const t = Q.parse(e);
-      if (!t || t.length === 0)
-        throw new Error("Failed to parse font file");
-      this._font = t[0], await this._initializeFont();
-    } catch (r) {
-      throw new T(`Failed to load font: ${r instanceof Error ? r.message : "Unknown error"}`, r);
-    }
-  }
-  /**
-   * Loads a FontFace from a font buffer.
-   * @param fontBuffer ArrayBuffer containing font data
-   */
-  async _loadFontFace(A) {
-    const r = Date.now();
-    this._fontFamilyName = this._fontFamilyName === "UrsaFont" ? "UrsaFont" : `CustomFont_${r}`, this._fontFace = new FontFace(this._fontFamilyName, A), await this._fontFace.load(), document.fonts.add(this._fontFace);
-  }
-  /**
-   * Initializes all font-dependent properties using the component classes.
-   */
-  async _initializeFont() {
-    const A = this._characterExtractor.extractCharacters(this._font), r = this._characterExtractor.filterProblematicCharacters(A);
-    this._characters = this._characterColorMapper.createCharacterObjects(r, this._font), this._maxGlyphDimensions = this._metricsCalculator.calculateMaxGlyphDimensions(
-      r,
+      this._characters.map((t) => t.character),
       this._fontSize,
       this._fontFamilyName
     );
@@ -2253,6 +1113,53 @@ class PA {
       this._fontFamilyName
     );
     this._fontFramebuffer = e.framebuffer, this._textureColumns = e.columns, this._textureRows = e.rows;
+  }
+  /**
+   * Loads a new font from a file path.
+   * @param fontPath Path to the .otf or .ttf font file
+   * @returns Promise that resolves when font loading is complete
+   * @ignore
+   */
+  async loadFont(A) {
+    try {
+      const e = await fetch(A);
+      if (!e.ok)
+        throw new f(`Failed to load font file: ${e.status} ${e.statusText}`);
+      const t = await e.arrayBuffer();
+      await this._loadFontFace(t);
+      const r = E.parse(t);
+      if (!r || r.length === 0)
+        throw new Error("Failed to parse font file");
+      this._font = r[0], await this._initializeFont();
+    } catch (e) {
+      throw new f(`Failed to load font: ${e instanceof Error ? e.message : "Unknown error"}`, e);
+    }
+  }
+  /**
+   * Loads a FontFace from a font buffer.
+   * @param fontBuffer ArrayBuffer containing font data
+   */
+  async _loadFontFace(A) {
+    const e = Date.now();
+    this._fontFamilyName = this._fontFamilyName === "UrsaFont" ? "UrsaFont" : `CustomFont_${e}`, this._fontFace = new FontFace(this._fontFamilyName, A), await this._fontFace.load(), document.fonts.add(this._fontFace);
+  }
+  /**
+   * Initializes all font-dependent properties using the component classes.
+   */
+  async _initializeFont() {
+    const A = this._characterExtractor.extractCharacters(this._font), e = this._characterExtractor.filterProblematicCharacters(A);
+    this._characters = this._characterColorMapper.createCharacterObjects(e, this._font), this._maxGlyphDimensions = this._metricsCalculator.calculateMaxGlyphDimensions(
+      e,
+      this._fontSize,
+      this._fontFamilyName
+    );
+    const t = this._textureAtlas.createTextureAtlas(
+      this._characters,
+      this._maxGlyphDimensions,
+      this._fontSize,
+      this._fontFamilyName
+    );
+    this._fontFramebuffer = t.framebuffer, this._textureColumns = t.columns, this._textureRows = t.rows;
   }
   /**
    * Get the color associated with a character.
@@ -2278,9 +1185,9 @@ class PA {
    */
   hasAllCharacters(A) {
     if (typeof A != "string" || A.length === 0) return !1;
-    const r = new Set(this._characters.map((e) => e.character));
-    for (const e of A)
-      if (!r.has(e)) return !1;
+    const e = new Set(this._characters.map((t) => t.character));
+    for (const t of A)
+      if (!e.has(t)) return !1;
     return !0;
   }
   /** 
@@ -2310,8 +1217,12 @@ class PA {
   get fontSize() {
     return this._fontSize;
   }
+  /** Returns the Typr.js font object. @ignore */
+  get font() {
+    return this._font;
+  }
 }
-class mA {
+class iA {
   /**
    * Create a new grid instance.
    * @param canvas The canvas element used to determine the grid dimensions.
@@ -2319,28 +1230,28 @@ class mA {
    * @param cellHeight The height of each cell in the grid.
    * @ignore
    */
-  constructor(A, r, e) {
+  constructor(A, e, t) {
     /** The number of columns in the grid. */
-    E(this, "_cols");
+    o(this, "_cols");
     /** The number of rows in the grid. */
-    E(this, "_rows");
+    o(this, "_rows");
     /** The total width of the grid in pixels. */
-    E(this, "_width");
+    o(this, "_width");
     /** The total height of the grid in pixels. */
-    E(this, "_height");
+    o(this, "_height");
     /** The offset to the outer canvas on the x-axis when centering the grid. */
-    E(this, "_offsetX");
+    o(this, "_offsetX");
     /** The offset to the outer canvas on the y-axis when centering the grid. */
-    E(this, "_offsetY");
+    o(this, "_offsetY");
     /** Whether the grid dimensions are fixed, or responsive based on the canvas dimensions. */
-    E(this, "_fixedDimensions", !1);
+    o(this, "_fixedDimensions", !1);
     /** The canvas element used to determine the grid dimensions. */
-    E(this, "_canvas");
+    o(this, "_canvas");
     /** The width of each cell in the grid. */
-    E(this, "_cellWidth");
+    o(this, "_cellWidth");
     /** The height of each cell in the grid. */
-    E(this, "_cellHeight");
-    this._canvas = A, this._cellWidth = r, this._cellHeight = e, this.reset();
+    o(this, "_cellHeight");
+    this._canvas = A, this._cellWidth = e, this._cellHeight = t, this.reset();
   }
   /**
    * Reset the grid to the default number of columns and rows based on the current canvas dimensions, and the grid cell dimensions.
@@ -2348,8 +1259,8 @@ class mA {
    */
   reset() {
     if (!this._fixedDimensions) {
-      const A = this._canvas.getBoundingClientRect(), r = Math.round(A.width), e = Math.round(A.height);
-      [this._cols, this._rows] = [Math.floor(r / this._cellWidth), Math.floor(e / this._cellHeight)];
+      const A = this._canvas.getBoundingClientRect(), e = Math.round(A.width), t = Math.round(A.height);
+      [this._cols, this._rows] = [Math.floor(e / this._cellWidth), Math.floor(t / this._cellHeight)];
     }
     this._resizeGrid();
   }
@@ -2357,8 +1268,8 @@ class mA {
    * Reset the total grid width & height, and the offset to the outer canvas.
    */
   _resizeGrid() {
-    const A = this._canvas.getBoundingClientRect(), r = Math.round(A.width), e = Math.round(A.height);
-    this._width = this._cols * this._cellWidth, this._height = this._rows * this._cellHeight, this._offsetX = Math.floor((r - this._width) / 2), this._offsetY = Math.floor((e - this._height) / 2);
+    const A = this._canvas.getBoundingClientRect(), e = Math.round(A.width), t = Math.round(A.height);
+    this._width = this._cols * this._cellWidth, this._height = this._rows * this._cellHeight, this._offsetX = Math.floor((e - this._width) / 2), this._offsetY = Math.floor((t - this._height) / 2);
   }
   /**
    * Re-assign the grid cell dimensions and `reset()` the grid.
@@ -2366,8 +1277,8 @@ class mA {
    * @param newCellHeight The new cell height.
    * @ignore
    */
-  resizeCellPixelDimensions(A, r) {
-    [this._cellWidth, this._cellHeight] = [A, r], this.reset();
+  resizeCellPixelDimensions(A, e) {
+    [this._cellWidth, this._cellHeight] = [A, e], this.reset();
   }
   /**
    * Re-assign the grid dimensions and resize the grid. 
@@ -2377,8 +1288,8 @@ class mA {
    * @param newRows The new number of rows.
    * @ignore
    */
-  resizeGridDimensions(A, r) {
-    this._fixedDimensions = !0, [this._cols, this._rows] = [A, r], this._resizeGrid();
+  resizeGridDimensions(A, e) {
+    this._fixedDimensions = !0, [this._cols, this._rows] = [A, e], this._resizeGrid();
   }
   /**
    * Make the grid dimensions flexible again, and `reset()` the grid.
@@ -2439,38 +1350,38 @@ class mA {
     return this._offsetY;
   }
 }
-class IA {
+class aA {
   constructor(A) {
-    E(this, "webglCanvas");
-    E(this, "captureCanvas");
+    o(this, "webglCanvas");
+    o(this, "captureCanvas");
     this.captureCanvas = A, this.webglCanvas = this.createOverlayCanvas();
   }
   generateUniqueCanvasId() {
-    let A = 0, r = `textmodeCanvas${A}`;
-    for (; document.getElementById(r); )
-      A++, r = `textmodeCanvas${A}`;
-    return r;
+    let A = 0, e = `textmodeCanvas${A}`;
+    for (; document.getElementById(e); )
+      A++, e = `textmodeCanvas${A}`;
+    return e;
   }
   createOverlayCanvas() {
     var s;
-    const A = document.createElement("canvas"), r = this.captureCanvas.getBoundingClientRect(), e = Math.round(r.width), t = Math.round(r.height);
-    A.width = e, A.height = t, A.className = "textmodeCanvas", A.id = this.generateUniqueCanvasId(), A.style.position = "absolute", A.style.pointerEvents = "none";
-    const n = window.getComputedStyle(this.captureCanvas);
-    let a = parseInt(n.zIndex || "0", 10);
-    return isNaN(a) && (a = 0), A.style.zIndex = (a + 1).toString(), A.style.width = e + "px", A.style.height = t + "px", this.positionOverlayCanvas(A), (s = this.captureCanvas.parentNode) == null || s.insertBefore(A, this.captureCanvas.nextSibling), A;
+    const A = document.createElement("canvas"), e = this.captureCanvas.getBoundingClientRect(), t = Math.round(e.width), r = Math.round(e.height);
+    A.width = t, A.height = r, A.className = "textmodeCanvas", A.id = this.generateUniqueCanvasId(), A.style.position = "absolute", A.style.pointerEvents = "none";
+    const i = window.getComputedStyle(this.captureCanvas);
+    let a = parseInt(i.zIndex || "0", 10);
+    return isNaN(a) && (a = 0), A.style.zIndex = (a + 1).toString(), A.style.width = t + "px", A.style.height = r + "px", this.positionOverlayCanvas(A), (s = this.captureCanvas.parentNode) == null || s.insertBefore(A, this.captureCanvas.nextSibling), A;
   }
   positionOverlayCanvas(A) {
-    const r = this.captureCanvas.getBoundingClientRect();
-    let e = this.captureCanvas.offsetParent;
-    if (e && e !== document.body) {
-      const t = e.getBoundingClientRect();
-      A.style.top = r.top - t.top + "px", A.style.left = r.left - t.left + "px";
+    const e = this.captureCanvas.getBoundingClientRect();
+    let t = this.captureCanvas.offsetParent;
+    if (t && t !== document.body) {
+      const r = t.getBoundingClientRect();
+      A.style.top = e.top - r.top + "px", A.style.left = e.left - r.left + "px";
     } else
-      A.style.top = r.top + window.scrollY + "px", A.style.left = r.left + window.scrollX + "px";
+      A.style.top = e.top + window.scrollY + "px", A.style.left = e.left + window.scrollX + "px";
   }
   resize() {
-    const A = this.captureCanvas.getBoundingClientRect(), r = Math.round(A.width), e = Math.round(A.height);
-    this.webglCanvas.width = r, this.webglCanvas.height = e, this.webglCanvas.style.width = r + "px", this.webglCanvas.style.height = e + "px", this.positionOverlayCanvas(this.webglCanvas);
+    const A = this.captureCanvas.getBoundingClientRect(), e = Math.round(A.width), t = Math.round(A.height);
+    this.webglCanvas.width = e, this.webglCanvas.height = t, this.webglCanvas.style.width = e + "px", this.webglCanvas.style.height = t + "px", this.positionOverlayCanvas(this.webglCanvas);
   }
   /**
    * Get the WebGL context for the overlay canvas
@@ -2484,10 +1395,10 @@ class IA {
       depth: !1,
       stencil: !1,
       powerPreference: "high-performance"
-    }, r = this.webglCanvas.getContext("webgl2", A) || this.webglCanvas.getContext("webgl", A);
-    if (!r)
-      throw new T("WebGL context could not be created. Ensure your browser supports WebGL.");
-    return r;
+    }, e = this.webglCanvas.getContext("webgl2", A) || this.webglCanvas.getContext("webgl", A);
+    if (!e)
+      throw new f("WebGL context could not be created. Ensure your browser supports WebGL.");
+    return e;
   }
   // Getters
   get canvas() {
@@ -2500,7 +1411,7 @@ class IA {
     return this.webglCanvas.height;
   }
 }
-class k {
+class b {
   /**
    * Creates a new TextmodeConverter instance.
    * @param renderer Renderer instance for texture creation
@@ -2509,17 +1420,17 @@ class k {
    * @param options Additional options for the converter
    * @ignore
    */
-  constructor(A, r, e, t = {}) {
-    E(this, "renderer");
-    E(this, "fontManager");
-    E(this, "grid");
-    E(this, "_characterFramebuffer");
-    E(this, "_primaryColorFramebuffer");
-    E(this, "_secondaryColorFramebuffer");
-    E(this, "_rotationFramebuffer");
-    E(this, "_transformFramebuffer");
-    E(this, "options");
-    this.renderer = A, this.fontManager = r, this.grid = e, this.options = t, this._characterFramebuffer = this.renderer.createFramebuffer(this.grid.cols, this.grid.rows), this._primaryColorFramebuffer = this.renderer.createFramebuffer(this.grid.cols, this.grid.rows), this._secondaryColorFramebuffer = this.renderer.createFramebuffer(this.grid.cols, this.grid.rows), this._rotationFramebuffer = this.renderer.createFramebuffer(this.grid.cols, this.grid.rows), this._transformFramebuffer = this.renderer.createFramebuffer(this.grid.cols, this.grid.rows);
+  constructor(A, e, t, r = {}) {
+    o(this, "renderer");
+    o(this, "fontManager");
+    o(this, "grid");
+    o(this, "_characterFramebuffer");
+    o(this, "_primaryColorFramebuffer");
+    o(this, "_secondaryColorFramebuffer");
+    o(this, "_rotationFramebuffer");
+    o(this, "_transformFramebuffer");
+    o(this, "_options");
+    this.renderer = A, this.fontManager = e, this.grid = t, this._options = r, this._characterFramebuffer = this.renderer.createFramebuffer(this.grid.cols, this.grid.rows), this._primaryColorFramebuffer = this.renderer.createFramebuffer(this.grid.cols, this.grid.rows), this._secondaryColorFramebuffer = this.renderer.createFramebuffer(this.grid.cols, this.grid.rows), this._rotationFramebuffer = this.renderer.createFramebuffer(this.grid.cols, this.grid.rows), this._transformFramebuffer = this.renderer.createFramebuffer(this.grid.cols, this.grid.rows);
   }
   /**
    * Resizes all internal framebuffers to match the grid dimensions.
@@ -2527,6 +1438,25 @@ class k {
    */
   resize() {
     this._characterFramebuffer.resize(this.grid.cols, this.grid.rows), this._primaryColorFramebuffer.resize(this.grid.cols, this.grid.rows), this._secondaryColorFramebuffer.resize(this.grid.cols, this.grid.rows), this._rotationFramebuffer.resize(this.grid.cols, this.grid.rows), this._transformFramebuffer.resize(this.grid.cols, this.grid.rows);
+  }
+  /**
+   * Enables or disables the converter.
+   * @param enabled Whether to enable or disable the converter.
+   */
+  enabled(A) {
+    this._options.enabled = A;
+  }
+  /**
+   * Enables the converter.
+   */
+  enable() {
+    this.enabled(!0);
+  }
+  /**
+   * Disables the converter.
+   */
+  disable() {
+    this.enabled(!1);
   }
   /** Returns the framebuffer containing character data. */
   get characterFramebuffer() {
@@ -2548,35 +1478,39 @@ class k {
   get transformFramebuffer() {
     return this._transformFramebuffer;
   }
+  /** Returns the renderer used by this converter. */
+  get options() {
+    return this._options;
+  }
 }
-class vA {
+class nA {
   /**
    * Create a new color palette instance.
    * @param renderer The renderer instance.
    * @param colors The RGB colors to store as [r, g, b] arrays where values are 0-255.
    */
-  constructor(A, r) {
+  constructor(A, e) {
     /** The framebuffer used to store the color palette. */
-    E(this, "_framebuffer");
-    E(this, "_renderer");
-    E(this, "_colors");
-    this._renderer = A, this._colors = r;
-    const e = Math.max(this._colors.length, 1);
-    this._framebuffer = this._renderer.createFramebuffer(e, 1), this._updateFramebuffer();
+    o(this, "_framebuffer");
+    o(this, "_renderer");
+    o(this, "_colors");
+    this._renderer = A, this._colors = e;
+    const t = Math.max(this._colors.length, 1);
+    this._framebuffer = this._renderer.createFramebuffer(t, 1), this._updateFramebuffer();
   }
   /**
    * Update the framebuffer with the currently selected colors.
    */
   _updateFramebuffer() {
     if (!this._framebuffer) return;
-    const A = Math.max(this._colors.length, 1), r = 1;
-    this._framebuffer.width !== A && this._framebuffer.resize(A, r);
-    const e = new Uint8Array(A * r * 4);
-    for (let t = 0; t < A; t++) {
-      const n = t < this._colors.length ? this._colors[t] : [0, 0, 0], a = t * 4;
-      e[a] = n[0], e[a + 1] = n[1], e[a + 2] = n[2], e[a + 3] = 255;
+    const A = Math.max(this._colors.length, 1), e = 1;
+    this._framebuffer.width !== A && this._framebuffer.resize(A, e);
+    const t = new Uint8Array(A * e * 4);
+    for (let r = 0; r < A; r++) {
+      const i = r < this._colors.length ? this._colors[r] : [0, 0, 0], a = r * 4;
+      t[a] = i[0], t[a + 1] = i[1], t[a + 2] = i[2], t[a + 3] = 255;
     }
-    this._framebuffer.updatePixels(e, A, r);
+    this._framebuffer.updatePixels(t, A, e);
   }
   /**
    * Sets the colors of the palette and updates the framebuffer.
@@ -2604,22 +1538,22 @@ class vA {
     return this._framebuffer.texture;
   }
 }
-class tA extends k {
-  constructor(r, e, t, n = {}) {
-    super(r, e, t, n);
-    E(this, "palette");
-    this.palette = new vA(this.renderer, this.fontManager.getCharacterColors(" .:-=+*%@#"));
+class M extends b {
+  constructor(e, t, r, i = {}) {
+    super(e, t, r, i);
+    o(this, "palette");
+    this.palette = new nA(this.renderer, this.fontManager.getCharacterColors(" .:-=+*%@#"));
   }
   /**
    * Sets the characters used for mapping.
    * @param characters The characters to use for mapping, usually ordered from darkest to brightest.
    */
-  characters(r) {
-    F.validate(
-      this.fontManager.hasAllCharacters(r),
+  characters(e) {
+    C.validate(
+      this.fontManager.hasAllCharacters(e),
       "One or more characters do not exist in the current font.",
-      { method: "characters", providedValue: r }
-    ) && (this.options.characters = r, this.palette.setColors(this.fontManager.getCharacterColors(r)));
+      { method: "characters", providedValue: e }
+    ) && (this._options.characters = e, this.palette.setColors(this.fontManager.getCharacterColors(e)));
   }
   /**
    * Sets the color of the characters affected by the converter.
@@ -2629,12 +1563,12 @@ class tA extends k {
    * @param b Blue component (0-255).
    * @param a Alpha component (0-255).
    */
-  characterColor(r, e = r, t = r, n = 255) {
-    F.validate(
-      [r, e, t, n].every((a) => a >= 0 && a <= 255),
+  characterColor(e, t = e, r = e, i = 255) {
+    C.validate(
+      [e, t, r, i].every((a) => a >= 0 && a <= 255),
       "Character color values must be between 0 and 255",
-      { method: "characterColor", providedValues: { r, g: e, b: t, a: n } }
-    ) && (this.options.characterColor = [r, e, t, n]);
+      { method: "characterColor", providedValues: { r: e, g: t, b: r, a: i } }
+    ) && (this._options.characterColor = [e, t, r, i]);
   }
   /**
    * Sets the character color mode.
@@ -2642,12 +1576,12 @@ class tA extends k {
    * - `'fixed'`: Uses a fixed color set by `characterColor()`.
    * @param mode The color mode to use for characters.
    */
-  characterColorMode(r) {
-    F.validate(
-      ["sampled", "fixed"].includes(r),
+  characterColorMode(e) {
+    C.validate(
+      ["sampled", "fixed"].includes(e),
       "Invalid character color mode. Must be 'sampled' or 'fixed'.",
-      { method: "characterColorMode", providedValue: r }
-    ) && (this.options.characterColorMode = r);
+      { method: "characterColorMode", providedValue: e }
+    ) && (this._options.characterColorMode = e);
   }
   /**
    * Sets the cell color for all cells affected by the converter.
@@ -2657,12 +1591,12 @@ class tA extends k {
    * @param b Blue component (0-255).
    * @param a Alpha component (0-255).
    */
-  cellColor(r, e = r, t = r, n = 255) {
-    F.validate(
-      [r, e, t, n].every((a) => a >= 0 && a <= 255),
+  cellColor(e, t = e, r = e, i = 255) {
+    C.validate(
+      [e, t, r, i].every((a) => a >= 0 && a <= 255),
       "Cell color values must be between 0 and 255",
-      { method: "cellColor", providedValues: { r, g: e, b: t, a: n } }
-    ) && (this.options.cellColor = [r, e, t, n]);
+      { method: "cellColor", providedValues: { r: e, g: t, b: r, a: i } }
+    ) && (this._options.cellColor = [e, t, r, i]);
   }
   /**
    * Sets the cell color mode.
@@ -2670,64 +1604,64 @@ class tA extends k {
    * - `'fixed'`: Uses a fixed color set via {@link cellColor}.
    * @param mode The color mode to use for background cells.
    */
-  cellColorMode(r) {
-    F.validate(
-      ["sampled", "fixed"].includes(r),
+  cellColorMode(e) {
+    C.validate(
+      ["sampled", "fixed"].includes(e),
       "Invalid cell color mode. Must be 'sampled' or 'fixed'.",
-      { method: "cellColorMode", providedValue: r }
-    ) && (this.options.cellColorMode = r);
+      { method: "cellColorMode", providedValue: e }
+    ) && (this._options.cellColorMode = e);
   }
   /**
    * Swaps the character and cell color.
    * @param invert If `true`, the character color becomes the cell color and vice versa.
    */
-  invert(r) {
-    F.validate(
-      typeof r == "boolean" || typeof r == "number" && Number.isInteger(r),
+  invert(e) {
+    C.validate(
+      typeof e == "boolean" || typeof e == "number" && Number.isInteger(e),
       "Invert must be a boolean value or an integer (0 for false, any other number for true).",
-      { method: "invert", providedValue: r }
-    ) && (this.options.invert = !!r);
+      { method: "invert", providedValue: e }
+    ) && (this._options.invert = !!e);
   }
   /**
    * Sets the rotation angle for the characters.
    * @param angle The rotation angle in degrees.
    */
-  rotation(r) {
-    if (!F.validate(
-      typeof r == "number",
+  rotation(e) {
+    if (!C.validate(
+      typeof e == "number",
       "Rotation angle must be a number.",
-      { method: "rotation", providedValue: r }
+      { method: "rotation", providedValue: e }
     ))
       return;
-    r = r % 360, r < 0 && (r += 360);
-    const e = r * 255 / 360, t = Math.floor(e) / 255, n = Math.round(e - t);
-    this.options.rotation = [t, n, 0, 1];
+    e = e % 360, e < 0 && (e += 360);
+    const t = e * 255 / 360, r = Math.floor(t) / 255, i = Math.round(t - r);
+    this._options.rotation = [r, i, 0, 1];
   }
   /**
    * Flips the characters horizontally.
    * @param flip If `true`, characters are flipped horizontally. If `false`, no flip is applied.
    */
-  flipHorizontally(r) {
-    F.validate(
-      typeof r == "boolean" || typeof r == "number" && Number.isInteger(r),
+  flipHorizontally(e) {
+    C.validate(
+      typeof e == "boolean" || typeof e == "number" && Number.isInteger(e),
       "Flip horizontally must be a boolean value or an integer (0 for false, any other number for true).",
-      { method: "flipHorizontally", providedValue: r }
-    ) && (this.options.flipHorizontally = !!r);
+      { method: "flipHorizontally", providedValue: e }
+    ) && (this._options.flipHorizontally = !!e);
   }
   /**
    * Flips the characters vertically.
    * @param flip If `true`, characters are flipped vertically. If `false`, no flip is applied.
    */
-  flipVertically(r) {
-    F.validate(
-      typeof r == "boolean" || typeof r == "number" && Number.isInteger(r),
+  flipVertically(e) {
+    C.validate(
+      typeof e == "boolean" || typeof e == "number" && Number.isInteger(e),
       "Flip vertically must be a boolean value or an integer (0 for false, any other number for true).",
-      { method: "flipVertically", providedValue: r }
-    ) && (this.options.flipVertically = !!r);
+      { method: "flipVertically", providedValue: e }
+    ) && (this._options.flipVertically = !!e);
   }
 }
-var wA = "precision lowp float;uniform sampler2D u_sketchTexture;uniform vec2 u_gridCellDimensions;uniform vec2 u_brightnessRange;varying vec2 v_uv;void main(){vec2 cellCenter=(floor(v_uv*u_gridCellDimensions)+vec2(0.5))/u_gridCellDimensions;vec4 color=texture2D(u_sketchTexture,cellCenter);float brightness=dot(color.rgb,vec3(0.299,0.587,0.114));float brightnessValue=brightness*255.0;if(brightnessValue>=u_brightnessRange.x&&brightnessValue<=u_brightnessRange.y){gl_FragColor=color;}else{gl_FragColor=vec4(0.0);}}", pA = "precision lowp float;uniform sampler2D u_sampleTexture;uniform vec4 u_fillColor;uniform bool u_useFixedColor;varying vec2 v_uv;void main(){vec4 sampleColor=texture2D(u_sampleTexture,v_uv);if(sampleColor.a>0.0){if(u_useFixedColor){gl_FragColor=u_fillColor;}else{gl_FragColor=sampleColor;}}else{gl_FragColor=vec4(0.0);}}", _A = "precision lowp float;uniform sampler2D u_sampleTexture;uniform bool u_invert;uniform bool u_flipHorizontally;uniform bool u_flipVertically;varying vec2 v_uv;void main(){vec4 sampleColor=texture2D(u_sampleTexture,v_uv);if(sampleColor.a>0.0){float invertValue=u_invert ? 1.0 : 0.0;float flipHValue=u_flipHorizontally ? 1.0 : 0.0;float flipVValue=u_flipVertically ? 1.0 : 0.0;gl_FragColor=vec4(invertValue,flipHValue,flipVValue,1.0);}else{gl_FragColor=vec4(0.0);}}", fA = "precision lowp float;uniform sampler2D u_sampleTexture;uniform vec4 u_rotation;varying vec2 v_uv;void main(){vec4 sampleColor=texture2D(u_sampleTexture,v_uv);if(sampleColor.a>0.0){gl_FragColor=u_rotation;}else{gl_FragColor=vec4(0.0);}}", xA = "precision lowp float;uniform sampler2D u_colorSampleFramebuffer;uniform sampler2D u_charPaletteTexture;uniform vec2 u_charPaletteSize;uniform vec2 u_brightnessRange;varying vec2 v_uv;void main(){vec4 color=texture2D(u_colorSampleFramebuffer,v_uv);if(color.a==0.0){gl_FragColor=vec4(0.0);return;}float brightness=dot(color.rgb,vec3(0.299,0.587,0.114))*255.0;vec2 range=u_brightnessRange;if(brightness<range.x||brightness>range.y){gl_FragColor=vec4(0.0);return;}float t=(brightness-range.x)/(range.y-range.x);float idx=clamp(floor(t*u_charPaletteSize.x),0.0,u_charPaletteSize.x-1.0);vec3 charColor=texture2D(u_charPaletteTexture,vec2((idx+0.5)/u_charPaletteSize.x,0.0)).rgb;gl_FragColor=vec4(charColor,1.0);}";
-const FA = {
+var sA = "precision lowp float;uniform sampler2D u_sketchTexture;uniform vec2 u_gridCellDimensions;uniform vec2 u_brightnessRange;varying vec2 v_uv;void main(){vec2 cellCenter=(floor(v_uv*u_gridCellDimensions)+vec2(0.5))/u_gridCellDimensions;vec4 color=texture2D(u_sketchTexture,cellCenter);float brightness=dot(color.rgb,vec3(0.299,0.587,0.114));float brightnessValue=brightness*255.0;if(brightnessValue>=u_brightnessRange.x&&brightnessValue<=u_brightnessRange.y){gl_FragColor=color;}else{gl_FragColor=vec4(0.0);}}", oA = "precision lowp float;uniform sampler2D u_sampleTexture;uniform vec4 u_fillColor;uniform bool u_useFixedColor;varying vec2 v_uv;void main(){vec4 sampleColor=texture2D(u_sampleTexture,v_uv);if(sampleColor.a>0.0){if(u_useFixedColor){gl_FragColor=u_fillColor;}else{gl_FragColor=sampleColor;}}else{gl_FragColor=vec4(0.0);}}", BA = "precision lowp float;uniform sampler2D u_sampleTexture;uniform bool u_invert;uniform bool u_flipHorizontally;uniform bool u_flipVertically;varying vec2 v_uv;void main(){vec4 sampleColor=texture2D(u_sampleTexture,v_uv);if(sampleColor.a>0.0){float invertValue=u_invert ? 1.0 : 0.0;float flipHValue=u_flipHorizontally ? 1.0 : 0.0;float flipVValue=u_flipVertically ? 1.0 : 0.0;gl_FragColor=vec4(invertValue,flipHValue,flipVValue,1.0);}else{gl_FragColor=vec4(0.0);}}", gA = "precision lowp float;uniform sampler2D u_sampleTexture;uniform vec4 u_rotation;varying vec2 v_uv;void main(){vec4 sampleColor=texture2D(u_sampleTexture,v_uv);if(sampleColor.a>0.0){gl_FragColor=u_rotation;}else{gl_FragColor=vec4(0.0);}}", EA = "precision lowp float;uniform sampler2D u_colorSampleFramebuffer;uniform sampler2D u_charPaletteTexture;uniform vec2 u_charPaletteSize;uniform vec2 u_brightnessRange;varying vec2 v_uv;void main(){vec4 color=texture2D(u_colorSampleFramebuffer,v_uv);if(color.a==0.0){gl_FragColor=vec4(0.0);return;}float brightness=dot(color.rgb,vec3(0.299,0.587,0.114))*255.0;vec2 range=u_brightnessRange;if(brightness<range.x||brightness>range.y){gl_FragColor=vec4(0.0);return;}float t=(brightness-range.x)/(range.y-range.x);float idx=clamp(floor(t*u_charPaletteSize.x),0.0,u_charPaletteSize.x-1.0);vec3 charColor=texture2D(u_charPaletteTexture,vec2((idx+0.5)/u_charPaletteSize.x,0.0)).rgb;gl_FragColor=vec4(charColor,1.0);}";
+const QA = {
   /** Enable/disable the renderer */
   enabled: !0,
   /** Characters used for brightness mapping (from darkest to brightest) */
@@ -2751,7 +1685,7 @@ const FA = {
   /** Range of brightness values to map to ASCII characters */
   brightnessRange: [0, 255]
 };
-class eA extends tA {
+class G extends M {
   /**
    * Creates a new TextmodeBrightnessConverter instance.
    * @param renderer Renderer instance for texture creation
@@ -2759,18 +1693,18 @@ class eA extends tA {
    * @param grid Grid manager for layout and positioning
    * @ignore
    */
-  constructor(r, e, t) {
-    super(r, e, t, { ...FA });
-    E(this, "sampleShader");
-    E(this, "colorFillShader");
-    E(this, "charMappingShader");
-    E(this, "transformFillShader");
-    E(this, "rotationFillShader");
-    E(this, "sampleFramebuffer");
-    this.sampleShader = new R(r.context, O, wA), this.colorFillShader = new R(r.context, O, pA), this.transformFillShader = new R(r.context, O, _A), this.rotationFillShader = new R(r.context, O, fA), this.charMappingShader = new R(r.context, O, xA), this.sampleFramebuffer = this.renderer.createFramebuffer(this.grid.cols, this.grid.rows);
+  constructor(e, t, r) {
+    super(e, t, r, { ...QA });
+    o(this, "sampleShader");
+    o(this, "colorFillShader");
+    o(this, "charMappingShader");
+    o(this, "transformFillShader");
+    o(this, "rotationFillShader");
+    o(this, "sampleFramebuffer");
+    this.sampleShader = new w(e.context, p, sA), this.colorFillShader = new w(e.context, p, oA), this.transformFillShader = new w(e.context, p, BA), this.rotationFillShader = new w(e.context, p, gA), this.charMappingShader = new w(e.context, p, EA), this.sampleFramebuffer = this.renderer.createFramebuffer(this.grid.cols, this.grid.rows);
   }
-  convert(r) {
-    this.sampleFramebuffer.begin(), this.renderer.clear(), this.renderer.shader(this.sampleShader), this.renderer.setUniform("u_sketchTexture", r), this.renderer.setUniform("u_gridCellDimensions", [this.grid.cols, this.grid.rows]), this.renderer.setUniform("u_brightnessRange", this.options.brightnessRange), this.renderer.rect(0, 0, this.grid.cols, this.grid.rows), this.sampleFramebuffer.end(), this._primaryColorFramebuffer.begin(), this.renderer.clear(), this.renderer.shader(this.colorFillShader), this.renderer.setUniform("u_sampleTexture", this.sampleFramebuffer.texture), this.renderer.setUniform("u_fillColor", this.options.characterColor), this.renderer.setUniform("u_useFixedColor", this.options.characterColorMode === "fixed"), this.renderer.rect(0, 0, this.grid.cols, this.grid.rows), this._primaryColorFramebuffer.end(), this._secondaryColorFramebuffer.begin(), this.renderer.clear(), this.renderer.shader(this.colorFillShader), this.renderer.setUniform("u_sampleTexture", this.sampleFramebuffer.texture), this.renderer.setUniform("u_fillColor", this.options.cellColor), this.renderer.setUniform("u_useFixedColor", this.options.cellColorMode === "fixed"), this.renderer.rect(0, 0, this.grid.cols, this.grid.rows), this._secondaryColorFramebuffer.end(), this._transformFramebuffer.begin(), this.renderer.clear(), this.renderer.shader(this.transformFillShader), this.renderer.setUniform("u_sampleTexture", this.sampleFramebuffer.texture), this.renderer.setUniform("u_invert", this.options.invert), this.renderer.setUniform("u_flipHorizontally", this.options.flipHorizontally), this.renderer.setUniform("u_flipVertically", this.options.flipVertically), this.renderer.rect(0, 0, this.grid.cols, this.grid.rows), this._transformFramebuffer.end(), this._rotationFramebuffer.begin(), this.renderer.clear(), this.renderer.shader(this.rotationFillShader), this.renderer.setUniform("u_sampleTexture", this.sampleFramebuffer.texture), this.renderer.setUniform("u_rotation", this.options.rotation), this.renderer.rect(0, 0, this.grid.cols, this.grid.rows), this._rotationFramebuffer.end(), this._characterFramebuffer.begin(), this.renderer.clear(0, 0, 0, 0), this.renderer.shader(this.charMappingShader), this.renderer.setUniform("u_colorSampleFramebuffer", this.sampleFramebuffer.texture), this.renderer.setUniform("u_charPaletteTexture", this.palette.texture), this.renderer.setUniform("u_charPaletteSize", [this.palette.colors.length, 1]), this.renderer.setUniform("u_brightnessRange", this.options.brightnessRange), this.renderer.rect(0, 0, this.grid.cols, this.grid.rows), this._characterFramebuffer.end();
+  convert(e) {
+    this.sampleFramebuffer.begin(), this.renderer.clear(), this.renderer.shader(this.sampleShader), this.renderer.setUniform("u_sketchTexture", e), this.renderer.setUniform("u_gridCellDimensions", [this.grid.cols, this.grid.rows]), this.renderer.setUniform("u_brightnessRange", this._options.brightnessRange), this.renderer.rect(0, 0, this.grid.cols, this.grid.rows), this.sampleFramebuffer.end(), this._primaryColorFramebuffer.begin(), this.renderer.clear(), this.renderer.shader(this.colorFillShader), this.renderer.setUniform("u_sampleTexture", this.sampleFramebuffer.texture), this.renderer.setUniform("u_fillColor", this._options.characterColor), this.renderer.setUniform("u_useFixedColor", this._options.characterColorMode === "fixed"), this.renderer.rect(0, 0, this.grid.cols, this.grid.rows), this._primaryColorFramebuffer.end(), this._secondaryColorFramebuffer.begin(), this.renderer.clear(), this.renderer.shader(this.colorFillShader), this.renderer.setUniform("u_sampleTexture", this.sampleFramebuffer.texture), this.renderer.setUniform("u_fillColor", this._options.cellColor), this.renderer.setUniform("u_useFixedColor", this._options.cellColorMode === "fixed"), this.renderer.rect(0, 0, this.grid.cols, this.grid.rows), this._secondaryColorFramebuffer.end(), this._transformFramebuffer.begin(), this.renderer.clear(), this.renderer.shader(this.transformFillShader), this.renderer.setUniform("u_sampleTexture", this.sampleFramebuffer.texture), this.renderer.setUniform("u_invert", this._options.invert), this.renderer.setUniform("u_flipHorizontally", this._options.flipHorizontally), this.renderer.setUniform("u_flipVertically", this._options.flipVertically), this.renderer.rect(0, 0, this.grid.cols, this.grid.rows), this._transformFramebuffer.end(), this._rotationFramebuffer.begin(), this.renderer.clear(), this.renderer.shader(this.rotationFillShader), this.renderer.setUniform("u_sampleTexture", this.sampleFramebuffer.texture), this.renderer.setUniform("u_rotation", this._options.rotation), this.renderer.rect(0, 0, this.grid.cols, this.grid.rows), this._rotationFramebuffer.end(), this._characterFramebuffer.begin(), this.renderer.clear(0, 0, 0, 0), this.renderer.shader(this.charMappingShader), this.renderer.setUniform("u_colorSampleFramebuffer", this.sampleFramebuffer.texture), this.renderer.setUniform("u_charPaletteTexture", this.palette.texture), this.renderer.setUniform("u_charPaletteSize", [this.palette.colors.length, 1]), this.renderer.setUniform("u_brightnessRange", this._options.brightnessRange), this.renderer.rect(0, 0, this.grid.cols, this.grid.rows), this._characterFramebuffer.end();
   }
   resize() {
     super.resize(), this.sampleFramebuffer.resize(this.grid.cols, this.grid.rows);
@@ -2782,22 +1716,22 @@ class eA extends tA {
    * 
    * @param range Array of two numbers `[min, max]`, where `min` is darkest and `max` is brightest.
    */
-  brightnessRange(r) {
-    F.validate(
-      Array.isArray(r) && r.length === 2 && r.every((e) => typeof e == "number" && e >= 0 && e <= 255),
+  brightnessRange(e) {
+    C.validate(
+      Array.isArray(e) && e.length === 2 && e.every((t) => typeof t == "number" && t >= 0 && t <= 255),
       "Brightness range must be an array of two numbers between 0 and 255.",
-      { method: "brightnessRange", providedValue: r }
-    ) && (this.options.brightnessRange = r);
+      { method: "brightnessRange", providedValue: e }
+    ) && (this._options.brightnessRange = e);
   }
 }
-const OA = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const xA = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  TextmodeBrightnessConverter: eA,
-  TextmodeConverter: k,
-  TextmodeFeatureConverter: tA
+  TextmodeBrightnessConverter: G,
+  TextmodeConverter: b,
+  TextmodeFeatureConverter: M
 }, Symbol.toStringTag, { value: "Module" }));
-var UA = "precision mediump float;uniform sampler2D u_characterTexture;uniform vec2 u_charsetDimensions;uniform sampler2D u_primaryColorTexture;uniform sampler2D u_secondaryColorTexture;uniform sampler2D u_transformTexture;uniform sampler2D u_asciiCharacterTexture;uniform sampler2D u_rotationTexture;uniform sampler2D u_captureTexture;uniform vec2 u_captureDimensions;uniform int u_backgroundMode;uniform vec2 u_gridCellDimensions;uniform vec2 u_gridPixelDimensions;mat2 rotate2D(float angle){float s=sin(angle);float c=cos(angle);return mat2(c,-s,s,c);}void main(){vec2 adjustedCoord=gl_FragCoord.xy/u_gridPixelDimensions;vec2 gridCoord=adjustedCoord*u_gridCellDimensions;vec2 cellCoord=floor(gridCoord);vec2 charIndexTexCoord=(cellCoord+0.5)/u_gridCellDimensions;vec4 primaryColor=texture2D(u_primaryColorTexture,charIndexTexCoord);vec4 secondaryColor=texture2D(u_secondaryColorTexture,charIndexTexCoord);vec4 transformColor=texture2D(u_transformTexture,charIndexTexCoord);bool isInverted=transformColor.r>0.5;bool flipHorizontal=transformColor.g>0.5;bool flipVertical=transformColor.b>0.5;vec4 encodedIndexVec=texture2D(u_asciiCharacterTexture,charIndexTexCoord);if(encodedIndexVec.a<0.01){gl_FragColor=(u_backgroundMode==0)? vec4(0.0):texture2D(u_captureTexture,gl_FragCoord.xy/u_captureDimensions);return;}int charIndex=int(encodedIndexVec.r*255.0+0.5)+int(encodedIndexVec.g*255.0+0.5)*256;int charCol=int(mod(float(charIndex),u_charsetDimensions.x));int charRow=charIndex/int(u_charsetDimensions.x);vec2 charCoord=vec2(charCol,charRow)/u_charsetDimensions;vec4 rotationColor=texture2D(u_rotationTexture,charIndexTexCoord);float scaledAngle=rotationColor.r*255.0+rotationColor.g;float rotationAngle=(scaledAngle*360.0/255.0)*0.017453292;vec2 fractionalPart=fract(gridCoord)-0.5;if(flipHorizontal)fractionalPart.x=-fractionalPart.x;if(flipVertical)fractionalPart.y=-fractionalPart.y;fractionalPart=rotate2D(rotationAngle)*fractionalPart+0.5;vec2 cellSize=1.0/u_charsetDimensions;vec2 texCoord=charCoord+fractionalPart*cellSize;vec2 cellMax=charCoord+cellSize;if(any(lessThan(texCoord,charCoord))||any(greaterThan(texCoord,cellMax))){gl_FragColor=isInverted ? primaryColor : secondaryColor;return;}vec4 charTexel=texture2D(u_characterTexture,texCoord);if(isInverted)charTexel.rgb=1.0-charTexel.rgb;gl_FragColor=mix(secondaryColor,primaryColor,charTexel);}";
-class bA {
+var lA = "precision mediump float;uniform sampler2D u_characterTexture;uniform vec2 u_charsetDimensions;uniform sampler2D u_primaryColorTexture;uniform sampler2D u_secondaryColorTexture;uniform sampler2D u_transformTexture;uniform sampler2D u_asciiCharacterTexture;uniform sampler2D u_rotationTexture;uniform sampler2D u_captureTexture;uniform vec2 u_captureDimensions;uniform int u_backgroundMode;uniform vec2 u_gridCellDimensions;uniform vec2 u_gridPixelDimensions;mat2 rotate2D(float angle){float s=sin(angle);float c=cos(angle);return mat2(c,-s,s,c);}void main(){vec2 adjustedCoord=gl_FragCoord.xy/u_gridPixelDimensions;vec2 gridCoord=adjustedCoord*u_gridCellDimensions;vec2 cellCoord=floor(gridCoord);vec2 charIndexTexCoord=(cellCoord+0.5)/u_gridCellDimensions;vec4 primaryColor=texture2D(u_primaryColorTexture,charIndexTexCoord);vec4 secondaryColor=texture2D(u_secondaryColorTexture,charIndexTexCoord);vec4 transformColor=texture2D(u_transformTexture,charIndexTexCoord);bool isInverted=transformColor.r>0.5;bool flipHorizontal=transformColor.g>0.5;bool flipVertical=transformColor.b>0.5;vec4 encodedIndexVec=texture2D(u_asciiCharacterTexture,charIndexTexCoord);if(encodedIndexVec.a<0.01){gl_FragColor=(u_backgroundMode==0)? vec4(0.0):texture2D(u_captureTexture,gl_FragCoord.xy/u_captureDimensions);return;}int charIndex=int(encodedIndexVec.r*255.0+0.5)+int(encodedIndexVec.g*255.0+0.5)*256;int charCol=int(mod(float(charIndex),u_charsetDimensions.x));int charRow=charIndex/int(u_charsetDimensions.x);vec2 charCoord=vec2(charCol,charRow)/u_charsetDimensions;vec4 rotationColor=texture2D(u_rotationTexture,charIndexTexCoord);float scaledAngle=rotationColor.r*255.0+rotationColor.g;float rotationAngle=(scaledAngle*360.0/255.0)*0.017453292;vec2 fractionalPart=fract(gridCoord)-0.5;if(flipHorizontal)fractionalPart.x=-fractionalPart.x;if(flipVertical)fractionalPart.y=-fractionalPart.y;fractionalPart=rotate2D(rotationAngle)*fractionalPart+0.5;vec2 cellSize=1.0/u_charsetDimensions;vec2 texCoord=charCoord+fractionalPart*cellSize;vec2 cellMax=charCoord+cellSize;if(any(lessThan(texCoord,charCoord))||any(greaterThan(texCoord,cellMax))){gl_FragColor=isInverted ? primaryColor : secondaryColor;return;}vec4 charTexel=texture2D(u_characterTexture,texCoord);if(isInverted)charTexel.rgb=1.0-charTexel.rgb;gl_FragColor=mix(secondaryColor,primaryColor,charTexel);}";
+class hA {
   /**
    * Creates an instance of TextmodeConversionPipeline.
    * @param renderer The renderer to use for the pipeline.
@@ -2805,22 +1739,22 @@ class bA {
    * @param grid The textmode grid to use.
    * @ignore
    */
-  constructor(A, r, e) {
-    E(this, "renderer");
-    E(this, "font");
-    E(this, "grid");
-    E(this, "converters");
-    E(this, "_resultFramebuffer");
-    E(this, "_asciiShader");
-    E(this, "_characterFramebuffer");
-    E(this, "_primaryColorFramebuffer");
-    E(this, "_secondaryColorFramebuffer");
-    E(this, "_rotationFramebuffer");
-    E(this, "_transformFramebuffer");
-    this.renderer = A, this.font = r, this.grid = e, this._asciiShader = this.renderer.createShader(O, UA), this.converters = [
-      { name: "brightness", converter: new eA(A, r, e) },
-      { name: "custom", converter: new k(A, r, e) }
-    ], this._characterFramebuffer = this.renderer.createFramebuffer(e.cols, e.rows), this._primaryColorFramebuffer = this.renderer.createFramebuffer(e.cols, e.rows), this._secondaryColorFramebuffer = this.renderer.createFramebuffer(e.cols, e.rows), this._rotationFramebuffer = this.renderer.createFramebuffer(e.cols, e.rows), this._transformFramebuffer = this.renderer.createFramebuffer(e.cols, e.rows), this._resultFramebuffer = this.renderer.createFramebuffer(this.grid.width, this.grid.height);
+  constructor(A, e, t) {
+    o(this, "renderer");
+    o(this, "font");
+    o(this, "grid");
+    o(this, "converters");
+    o(this, "_resultFramebuffer");
+    o(this, "_asciiShader");
+    o(this, "_characterFramebuffer");
+    o(this, "_primaryColorFramebuffer");
+    o(this, "_secondaryColorFramebuffer");
+    o(this, "_rotationFramebuffer");
+    o(this, "_transformFramebuffer");
+    this.renderer = A, this.font = e, this.grid = t, this._asciiShader = this.renderer.createShader(p, lA), this.converters = [
+      { name: "brightness", converter: new G(A, e, t) },
+      { name: "custom", converter: new b(A, e, t) }
+    ], this._characterFramebuffer = this.renderer.createFramebuffer(t.cols, t.rows), this._primaryColorFramebuffer = this.renderer.createFramebuffer(t.cols, t.rows), this._secondaryColorFramebuffer = this.renderer.createFramebuffer(t.cols, t.rows), this._rotationFramebuffer = this.renderer.createFramebuffer(t.cols, t.rows), this._transformFramebuffer = this.renderer.createFramebuffer(t.cols, t.rows), this._resultFramebuffer = this.renderer.createFramebuffer(this.grid.width, this.grid.height);
   }
   /**
    * Performs the conversion process by applying all converters in the pipeline.
@@ -2828,17 +1762,19 @@ class bA {
    * @ignore
    */
   render(A) {
-    for (const e of this.converters) {
-      const t = e.converter;
-      t instanceof tA && t.convert(A);
+    for (const t of this.converters) {
+      const r = t.converter;
+      r.options.enabled && r instanceof M && r.convert(A);
     }
-    const r = (e, t) => {
-      e.begin(), this.renderer.clear();
-      for (const n of this.converters)
-        this.renderer.image(t(n.converter), 0, 0);
-      e.end();
+    const e = (t, r) => {
+      t.begin(), this.renderer.clear();
+      for (const i of this.converters) {
+        const a = i.converter;
+        a.options.enabled && this.renderer.image(r(a), 0, 0);
+      }
+      t.end();
     };
-    r(this._characterFramebuffer, (e) => e.characterFramebuffer), r(this._primaryColorFramebuffer, (e) => e.primaryColorFramebuffer), r(this._secondaryColorFramebuffer, (e) => e.secondaryColorFramebuffer), r(this._rotationFramebuffer, (e) => e.rotationFramebuffer), r(this._transformFramebuffer, (e) => e.transformFramebuffer), this._resultFramebuffer.begin(), this.renderer.clear(), this.renderer.shader(this._asciiShader), this.renderer.setUniform("u_characterTexture", this.font.fontFramebuffer), this.renderer.setUniform("u_charsetDimensions", [this.font.textureColumns, this.font.textureRows]), this.renderer.setUniform("u_asciiCharacterTexture", this._characterFramebuffer.texture), this.renderer.setUniform("u_primaryColorTexture", this._primaryColorFramebuffer.texture), this.renderer.setUniform("u_secondaryColorTexture", this._secondaryColorFramebuffer.texture), this.renderer.setUniform("u_transformTexture", this._transformFramebuffer.texture), this.renderer.setUniform("u_rotationTexture", this._rotationFramebuffer.texture), this.renderer.setUniform("u_captureTexture", A.texture), this.renderer.setUniform("u_backgroundMode", !1), this.renderer.setUniform("u_captureDimensions", [A.width, A.height]), this.renderer.setUniform("u_gridCellDimensions", [this.grid.cols, this.grid.rows]), this.renderer.setUniform("u_gridPixelDimensions", [this.grid.width, this.grid.height]), this.renderer.rect(0, 0, this._resultFramebuffer.width, this._resultFramebuffer.height), this._resultFramebuffer.end();
+    e(this._characterFramebuffer, (t) => t.characterFramebuffer), e(this._primaryColorFramebuffer, (t) => t.primaryColorFramebuffer), e(this._secondaryColorFramebuffer, (t) => t.secondaryColorFramebuffer), e(this._rotationFramebuffer, (t) => t.rotationFramebuffer), e(this._transformFramebuffer, (t) => t.transformFramebuffer), this._resultFramebuffer.begin(), this.renderer.clear(), this.renderer.shader(this._asciiShader), this.renderer.setUniform("u_characterTexture", this.font.fontFramebuffer), this.renderer.setUniform("u_charsetDimensions", [this.font.textureColumns, this.font.textureRows]), this.renderer.setUniform("u_asciiCharacterTexture", this._characterFramebuffer.texture), this.renderer.setUniform("u_primaryColorTexture", this._primaryColorFramebuffer.texture), this.renderer.setUniform("u_secondaryColorTexture", this._secondaryColorFramebuffer.texture), this.renderer.setUniform("u_transformTexture", this._transformFramebuffer.texture), this.renderer.setUniform("u_rotationTexture", this._rotationFramebuffer.texture), this.renderer.setUniform("u_captureTexture", A.texture), this.renderer.setUniform("u_backgroundMode", !1), this.renderer.setUniform("u_captureDimensions", [A.width, A.height]), this.renderer.setUniform("u_gridCellDimensions", [this.grid.cols, this.grid.rows]), this.renderer.setUniform("u_gridPixelDimensions", [this.grid.width, this.grid.height]), this.renderer.rect(0, 0, this._resultFramebuffer.width, this._resultFramebuffer.height), this._resultFramebuffer.end();
   }
   /**
    * Retrieves a converter by name. Useful for accessing the pre-defined converters in the pipeline.
@@ -2846,19 +1782,19 @@ class bA {
    * @returns The requested {@link TextmodeConverter} instance or `void` if not found.
    */
   get(A) {
-    if (!F.validate(
+    if (!C.validate(
       typeof A == "string" && A.length > 0,
       "Converter name must be a non-empty string.",
       { method: "converter", providedValue: A }
     ))
       return;
-    const r = this.converters.find((t) => t.name === A), e = r == null ? void 0 : r.converter;
-    if (F.validate(
-      e instanceof k,
+    const e = this.converters.find((r) => r.name === A), t = e == null ? void 0 : e.converter;
+    if (C.validate(
+      t instanceof b,
       `Converter "${A}" is not a valid TextmodeConverter.`,
-      { method: "converter", providedValue: A, converterInstance: e }
+      { method: "converter", providedValue: A, converterInstance: t }
     ))
-      return e;
+      return t;
   }
   /**
    * Adds a new converter to the pipeline.
@@ -2866,19 +1802,19 @@ class bA {
    * @param type The type of converter to add. Can be either "brightness" or "custom".
    * @returns The newly created {@link TextmodeConverter} instance or `void` if the addition failed.
    */
-  add(A, r) {
-    if (!F.validate(
+  add(A, e) {
+    if (!C.validate(
       typeof A == "string" && A.length > 0,
       "Converter name must be a non-empty string.",
       { method: "add", providedValue: A }
-    ) || !F.validate(
-      r === "brightness" || r === "custom",
-      `Converter type must be either "brightness" or "custom". Provided: ${r}`,
-      { method: "add", providedValue: r }
+    ) || !C.validate(
+      e === "brightness" || e === "custom",
+      `Converter type must be either "brightness" or "custom". Provided: ${e}`,
+      { method: "add", providedValue: e }
     ))
       return;
-    let e;
-    return r === "brightness" ? e = new eA(this.renderer, this.font, this.grid) : e = new k(this.renderer, this.font, this.grid), this.converters.push({ name: A, converter: e }), e;
+    let t;
+    return e === "brightness" ? t = new G(this.renderer, this.font, this.grid) : t = new b(this.renderer, this.font, this.grid), this.converters.push({ name: A, converter: t }), t;
   }
   /**
   * Removes a converter from the pipeline by name or instance.
@@ -2886,28 +1822,28 @@ class bA {
   * @returns `true` if the converter was successfully removed, `false` otherwise.
   */
   remove(A) {
-    if (!F.validate(
-      typeof A == "string" || A instanceof k,
+    if (!C.validate(
+      typeof A == "string" || A instanceof b,
       "Parameter must be either a string (converter name) or a TextmodeConverter instance.",
       { method: "remove", providedValue: A }
     ))
       return !1;
-    let r = -1;
+    let e = -1;
     if (typeof A == "string") {
-      if (!F.validate(
+      if (!C.validate(
         A.length > 0,
         "Converter name must be a non-empty string.",
         { method: "remove", providedValue: A }
       ))
         return !1;
-      r = this.converters.findIndex((e) => e.name === A);
+      e = this.converters.findIndex((t) => t.name === A);
     } else
-      r = this.converters.findIndex((e) => e.converter === A);
-    return F.validate(
-      r !== -1,
+      e = this.converters.findIndex((t) => t.converter === A);
+    return C.validate(
+      e !== -1,
       typeof A == "string" ? `Converter with name "${A}" not found in pipeline.` : "Converter instance not found in pipeline.",
       { method: "remove", providedValue: A, convertersCount: this.converters.length }
-    ) ? (this.converters.splice(r, 1), !0) : !1;
+    ) ? (this.converters.splice(e, 1), !0) : !1;
   }
   /**
    * Returns the framebuffer containing the textmode conversion result.
@@ -2923,6 +1859,9 @@ class bA {
     this._resultFramebuffer.resize(this.grid.width, this.grid.height), this._characterFramebuffer.resize(this.grid.cols, this.grid.rows), this._primaryColorFramebuffer.resize(this.grid.cols, this.grid.rows), this._secondaryColorFramebuffer.resize(this.grid.cols, this.grid.rows), this._rotationFramebuffer.resize(this.grid.cols, this.grid.rows), this._transformFramebuffer.resize(this.grid.cols, this.grid.rows);
     for (const A of this.converters)
       A.converter.resize();
+  }
+  hasEnabledConverters() {
+    return this.converters.some((A) => A.converter.options.enabled);
   }
   /** Returns the character framebuffer containing the combined result of all converters. @ignore */
   get characterFramebuffer() {
@@ -2945,63 +1884,126 @@ class bA {
     return this._transformFramebuffer;
   }
 }
-class yA {
+class U {
   /**
-   * Extracts pixel data from all framebuffers needed for SVG export
+   * Extracts pixel data from all framebuffers needed for export
    * @param pipeline The conversion pipeline containing framebuffers
    * @returns Object containing all pixel data arrays
    */
   extractFramebufferData(A) {
-    const r = A.get("brightness"), e = r == null ? void 0 : r.characterFramebuffer, t = r == null ? void 0 : r.primaryColorFramebuffer, n = r == null ? void 0 : r.secondaryColorFramebuffer, a = r == null ? void 0 : r.transformFramebuffer, s = r == null ? void 0 : r.rotationFramebuffer;
-    return e == null || e.loadPixels(), t == null || t.loadPixels(), n == null || n.loadPixels(), a == null || a.loadPixels(), s == null || s.loadPixels(), {
-      characterPixels: (e == null ? void 0 : e.pixels) || new Uint8Array(0),
-      primaryColorPixels: (t == null ? void 0 : t.pixels) || new Uint8Array(0),
-      secondaryColorPixels: (n == null ? void 0 : n.pixels) || new Uint8Array(0),
+    const e = A.get("brightness"), t = e == null ? void 0 : e.characterFramebuffer, r = e == null ? void 0 : e.primaryColorFramebuffer, i = e == null ? void 0 : e.secondaryColorFramebuffer, a = e == null ? void 0 : e.transformFramebuffer, s = e == null ? void 0 : e.rotationFramebuffer;
+    return t == null || t.loadPixels(), r == null || r.loadPixels(), i == null || i.loadPixels(), a == null || a.loadPixels(), s == null || s.loadPixels(), {
+      characterPixels: (t == null ? void 0 : t.pixels) || new Uint8Array(0),
+      primaryColorPixels: (r == null ? void 0 : r.pixels) || new Uint8Array(0),
+      secondaryColorPixels: (i == null ? void 0 : i.pixels) || new Uint8Array(0),
       transformPixels: (a == null ? void 0 : a.pixels) || new Uint8Array(0),
       rotationPixels: (s == null ? void 0 : s.pixels) || new Uint8Array(0)
     };
   }
   /**
-   * Extracts grid information from the grid object
-   * @param grid The textmode grid object
-   * @returns Grid information object
+   * Gets character index from character framebuffer pixels
+   * @param characterPixels Character framebuffer pixel data
+   * @param pixelIndex Index in the pixel array (already multiplied by 4 for RGBA)
+   * @param charactersLength Total number of available characters
+   * @returns Character index
    */
-  extractGridInfo(A) {
-    return {
-      cols: A.cols,
-      rows: A.rows,
-      width: A.width,
-      height: A.height,
-      cellWidth: A.cellWidth,
-      cellHeight: A.cellHeight
-    };
-  }
-  /**
-   * Extracts font information from the font object
-   * @param font The textmode font object
-   * @returns Font information object
-   */
-  extractFontInfo(A) {
-    return {
-      fontSize: A.fontSize,
-      fontData: A._font,
-      characters: A.characters
-    };
+  getCharacterIndex(A, e) {
+    const t = A[e], r = A[e + 1];
+    return t + (r << 8);
   }
   /**
    * Converts raw pixel data to RGBA color object
    * @param pixels Pixel data array
    * @param index Pixel index (already multiplied by 4 for RGBA)
-   * @returns RGBA color object
+   * @returns RGBA color object with r, g, b, a properties
    */
-  pixelsToRGBA(A, r) {
+  pixelsToRGBA(A, e) {
     return {
-      r: A[r],
-      g: A[r + 1],
-      b: A[r + 2],
-      a: A[r + 3]
+      r: A[e],
+      g: A[e + 1],
+      b: A[e + 2],
+      a: A[e + 3]
     };
   }
+}
+class S {
+  /**
+   * Creates a downloadable blob from content
+   * @param content The content to include in the blob
+   * @param mimeType The MIME type for the blob
+   * @returns Blob object containing the content
+   */
+  createBlob(A, e) {
+    return new Blob([A], { type: e });
+  }
+  /**
+   * Creates a data URL from content
+   * @param content The content to convert
+   * @param mimeType The MIME type for the blob
+   * @returns Data URL string
+   */
+  createDataURL(A, e) {
+    const t = this.createBlob(A, e);
+    return URL.createObjectURL(t);
+  }
+  /**
+   * Downloads content as a file
+   * @param content The content to download
+   * @param filename The filename (with extension)
+   * @param mimeType The MIME type for the content
+   */
+  downloadFile(A, e, t) {
+    try {
+      const r = this.createBlob(A, t), i = URL.createObjectURL(r), a = document.createElement("a");
+      a.href = i, a.download = e, a.style.display = "none", a.rel = "noopener", document.body.appendChild(a), a.click(), document.body.removeChild(a), URL.revokeObjectURL(i);
+    } catch (r) {
+      throw console.error("Failed to download file:", r), new Error(`File download failed: ${r instanceof Error ? r.message : "Unknown error"}`);
+    }
+  }
+  /**
+   * Generates a timestamp string for filenames
+   * @returns Formatted timestamp string
+   */
+  generateTimestamp() {
+    return (/* @__PURE__ */ new Date()).toISOString().slice(0, 19).replace(/:/g, "-");
+  }
+  /**
+   * Generates a date-time string for filenames (alternative format)
+   * @returns Formatted date and time string
+   */
+  generateDateTimeString() {
+    const A = /* @__PURE__ */ new Date(), e = A.toISOString().split("T")[0], t = A.toTimeString().split(" ")[0].replace(/:/g, "-");
+    return { date: e, time: t };
+  }
+  /**
+   * Validates and sanitizes filename for safety and compatibility
+   * @param filename The filename to validate
+   * @returns Sanitized filename
+   */
+  sanitizeFilename(A) {
+    return A.replace(/[<>:"/\\|?*]/g, "_").replace(/\s+/g, "_").replace(/_{2,}/g, "_").replace(/^_+|_+$/g, "").substring(0, 255);
+  }
+  /**
+   * Ensures filename has the correct extension
+   * @param filename The filename to check
+   * @param expectedExtension The expected file extension (with dot)
+   * @returns Filename with correct extension
+   */
+  ensureFileExtension(A, e) {
+    return A.toLowerCase().endsWith(e.toLowerCase()) ? A : A + e;
+  }
+  /**
+   * Generates a default filename with prefix and timestamp
+   * @param prefix The prefix for the filename
+   * @param extension The file extension (with dot)
+   * @returns Generated filename
+   */
+  generateDefaultFilename(A, e) {
+    const t = this.generateTimestamp();
+    return `${A}-${t}${e}`;
+  }
+}
+class cA extends U {
   /**
    * Extracts transform data from transform pixels
    * @param transformPixels Transform framebuffer pixels
@@ -3009,13 +2011,13 @@ class yA {
    * @param pixelIndex Pixel index in the array
    * @returns Transform data object
    */
-  extractTransformData(A, r, e) {
-    const t = A[e], n = A[e + 1], a = A[e + 2], s = t === 255, B = n === 255, g = a === 255, o = r[e], u = r[e + 1], h = o + u / 255, c = Math.round(h * 360 / 255 * 100) / 100;
+  extractTransformData(A, e, t) {
+    const r = A[t], i = A[t + 1], a = A[t + 2], s = r === 255, B = i === 255, g = a === 255, Q = e[t], l = e[t + 1], h = Q + l / 255, u = Math.round(h * 360 / 255 * 100) / 100;
     return {
       isInverted: s,
       flipHorizontal: B,
       flipVertical: g,
-      rotation: c
+      rotation: u
     };
   }
   /**
@@ -3025,90 +2027,74 @@ class yA {
    * @param gridInfo Grid information
    * @returns Position data object
    */
-  calculateCellPosition(A, r, e) {
+  calculateCellPosition(A, e, t) {
     return {
       x: A,
-      y: r,
-      cellX: A * e.cellWidth,
-      cellY: r * e.cellHeight
+      y: e,
+      cellX: A * t.cellWidth,
+      cellY: e * t.cellHeight
     };
   }
   /**
    * Processes all grid cells and extracts SVG cell data
    * @param framebufferData Raw pixel data from framebuffers
-   * @param gridInfo Grid information
-   * @param fontInfo Font information
+   * @param grid Grid information
+   * @param font Font information
    * @returns Array of SVG cell data objects
    */
-  extractSVGCellData(A, r, e) {
+  extractSVGCellData(A, e) {
     const t = [];
-    let n = 0;
-    for (let a = 0; a < r.rows; a++)
-      for (let s = 0; s < r.cols; s++) {
-        const B = n * 4, g = A.characterPixels[B], o = A.characterPixels[B + 1];
-        let u = g + (o << 8);
-        u >= e.characters.length && (u = e.characters.length - 1);
-        let h = this.pixelsToRGBA(A.primaryColorPixels, B), c = this.pixelsToRGBA(A.secondaryColorPixels, B);
-        const D = this.extractTransformData(
+    let r = 0;
+    for (let i = 0; i < e.rows; i++)
+      for (let a = 0; a < e.cols; a++) {
+        const s = r * 4, B = this.getCharacterIndex(
+          A.characterPixels,
+          s
+        );
+        let g = this.pixelsToRGBA(A.primaryColorPixels, s), Q = this.pixelsToRGBA(A.secondaryColorPixels, s);
+        const l = this.extractTransformData(
           A.transformPixels,
           A.rotationPixels,
-          B
+          s
         );
-        if (D.isInverted) {
-          const C = h;
-          h = c, c = C;
+        if (l.isInverted) {
+          const u = g;
+          g = Q, Q = u;
         }
-        const l = this.calculateCellPosition(s, a, r);
+        const h = this.calculateCellPosition(a, i, e);
         t.push({
-          charIndex: u,
-          primaryColor: h,
-          secondaryColor: c,
-          transform: D,
-          position: l
-        }), n++;
+          charIndex: B,
+          primaryColor: g,
+          secondaryColor: Q,
+          transform: l,
+          position: h
+        }), r++;
       }
     return t;
   }
-  /**
-   * Validates that all required data is present for SVG generation
-   * @param framebufferData Framebuffer data
-   * @param gridInfo Grid information
-   * @param fontInfo Font information
-   * @returns True if all data is valid, false otherwise
-   */
-  validateExportData(A, r, e) {
-    if (!A.characterPixels || A.characterPixels.length === 0)
-      return console.error("Character pixels data is missing or empty"), !1;
-    if (r.cols <= 0 || r.rows <= 0)
-      return console.error("Invalid grid dimensions"), !1;
-    if (!e.fontData || !e.characters || e.characters.length === 0)
-      return console.error("Font data or characters are missing"), !1;
-    const t = r.cols * r.rows * 4;
-    return A.characterPixels.length !== t ? (console.error("Pixel data length does not match grid dimensions"), !1) : !0;
-  }
 }
-class SA {
+class uA {
   /**
    * Gets the glyph index for a given Unicode code point in a Typr.js font
    * @param fontData The Typr.js font data
    * @param codePoint The Unicode code point to look up
    * @returns The glyph index, or 0 if not found
    */
-  getGlyphIndex(A, r) {
-    const e = A.cmap;
-    if (!e || !e.tables) return 0;
-    for (const t of e.tables)
-      if (t.format === 4) {
-        for (let n = 0; n < t.startCount.length; n++)
-          if (r >= t.startCount[n] && r <= t.endCount[n]) {
-            if (t.idRangeOffset[n] === 0)
-              return r + t.idDelta[n] & 65535;
+  getGlyphIndex(A, e) {
+    const t = A.cmap;
+    if (!t || !t.tables) return 0;
+    for (const r of t.tables)
+      if (r.format === 4) {
+        for (let i = 0; i < r.startCount.length; i++)
+          if (e >= r.startCount[i] && e <= r.endCount[i]) {
+            if (r.idRangeOffset[i] === 0)
+              return e + r.idDelta[i] & 65535;
             {
-              const a = t.idRangeOffset[n] / 2 + (r - t.startCount[n]) - (t.startCount.length - n);
-              if (a >= 0 && a < t.glyphIdArray.length) {
-                const s = t.glyphIdArray[a];
+              const a = r.idRangeOffset[i] / 2 + (e - r.startCount[i]) - (r.startCount.length - i);
+              if (a >= 0 && a < r.glyphIdArray.length) {
+                const s = r.glyphIdArray[a];
                 if (s !== 0)
-                  return s + t.idDelta[n] & 65535;
+                  return s + r.idDelta[i] & 65535;
               }
             }
           }
@@ -3134,18 +2120,18 @@ class SA {
    * @param fontSize Font size
    * @returns Path object with bounding box and SVG methods
    */
-  createGlyphPath(A, r, e, t, n) {
-    if (!r || !r.xs || r.xs.length === 0)
+  createGlyphPath(A, e, t, r, i) {
+    if (!e || !e.xs || e.xs.length === 0)
       return this.createEmptyPath();
-    const a = n / A.head.unitsPerEm;
+    const a = i / A.head.unitsPerEm;
     return {
       getBoundingBox: () => ({
-        x1: e + r.xMin * a,
-        y1: t + -r.yMax * a,
-        x2: e + r.xMax * a,
-        y2: t + -r.yMin * a
+        x1: t + e.xMin * a,
+        y1: r + -e.yMax * a,
+        x2: t + e.xMax * a,
+        y2: r + -e.yMin * a
       }),
-      toSVG: () => this.glyphToSVGPath(r, e, t, a)
+      toSVG: () => this.glyphToSVGPath(e, t, r, a)
     };
   }
   /**
@@ -3156,36 +2142,36 @@ class SA {
    * @param scale Scale factor
    * @returns SVG path data string
    */
-  glyphToSVGPath(A, r, e, t) {
+  glyphToSVGPath(A, e, t, r) {
     if (!A || !A.xs) return "";
-    const { xs: n, ys: a, endPts: s, flags: B } = A;
-    if (!n || !a || !s || !B) return "";
-    let g = "", o = 0;
-    for (let u = 0; u < s.length; u++) {
-      const h = s[u];
-      if (!(h < o)) {
-        if (h >= o) {
-          const c = r + n[o] * t, D = e - a[o] * t;
-          g += `M${c.toFixed(2)},${D.toFixed(2)}`;
-          let l = o + 1;
-          for (; l <= h; )
-            if ((B[l] & 1) !== 0) {
-              const P = r + n[l] * t, m = e - a[l] * t;
-              g += `L${P.toFixed(2)},${m.toFixed(2)}`, l++;
+    const { xs: i, ys: a, endPts: s, flags: B } = A;
+    if (!i || !a || !s || !B) return "";
+    let g = "", Q = 0;
+    for (let l = 0; l < s.length; l++) {
+      const h = s[l];
+      if (!(h < Q)) {
+        if (h >= Q) {
+          const u = e + i[Q] * r, d = t - a[Q] * r;
+          g += `M${u.toFixed(2)},${d.toFixed(2)}`;
+          let c = Q + 1;
+          for (; c <= h; )
+            if ((B[c] & 1) !== 0) {
+              const I = e + i[c] * r, P = t - a[c] * r;
+              g += `L${I.toFixed(2)},${P.toFixed(2)}`, c++;
             } else {
-              const P = r + n[l] * t, m = e - a[l] * t;
-              let I = l + 1 > h ? o : l + 1;
-              if ((B[I] & 1) !== 0) {
-                const p = r + n[I] * t, w = e - a[I] * t;
-                g += `Q${P.toFixed(2)},${m.toFixed(2)} ${p.toFixed(2)},${w.toFixed(2)}`, l = I + 1;
+              const I = e + i[c] * r, P = t - a[c] * r;
+              let m = c + 1 > h ? Q : c + 1;
+              if ((B[m] & 1) !== 0) {
+                const _ = e + i[m] * r, x = t - a[m] * r;
+                g += `Q${I.toFixed(2)},${P.toFixed(2)} ${_.toFixed(2)},${x.toFixed(2)}`, c = m + 1;
               } else {
-                const p = r + n[I] * t, w = e - a[I] * t, d = (P + p) / 2, f = (m + w) / 2;
-                g += `Q${P.toFixed(2)},${m.toFixed(2)} ${d.toFixed(2)},${f.toFixed(2)}`, l = I;
+                const _ = e + i[m] * r, x = t - a[m] * r, L = (I + _) / 2, $ = (P + x) / 2;
+                g += `Q${I.toFixed(2)},${P.toFixed(2)} ${L.toFixed(2)},${$.toFixed(2)}`, c = m;
               }
             }
           g += "Z";
         }
-        o = h + 1;
+        Q = h + 1;
       }
     }
     return g;
@@ -3199,18 +2185,18 @@ class SA {
    * @param fontSize Font size
    * @returns Path object with SVG generation methods
    */
-  generateCharacterPath(A, r, e, t, n) {
+  generateCharacterPath(A, e, t, r, i) {
     try {
-      const a = A.codePointAt(0) || 0, s = this.getGlyphIndex(r, a);
+      const a = A.codePointAt(0) || 0, s = this.getGlyphIndex(e, a);
       if (s === 0)
         return this.createEmptyPath();
       let B = null;
       try {
-        r.glyf && r.glyf[s] !== null ? B = r.glyf[s] : Q && Q.T && Q.T.glyf && Q.T.glyf._parseGlyf && (B = Q.T.glyf._parseGlyf(r, s), r.glyf && B && (r.glyf[s] = B));
+        e.glyf && e.glyf[s] !== null ? B = e.glyf[s] : E && E.T && E.T.glyf && E.T.glyf._parseGlyf && (B = E.T.glyf._parseGlyf(e, s), e.glyf && B && (e.glyf[s] = B));
       } catch (g) {
         console.warn(`Failed to parse glyph ${s}:`, g);
       }
-      return B ? this.createGlyphPath(r, B, e, t, n) : this.createEmptyPath();
+      return B ? this.createGlyphPath(e, B, t, r, i) : this.createEmptyPath();
     } catch (a) {
       return console.warn(`Failed to generate path for character "${A}":`, a), this.createEmptyPath();
     }
@@ -3227,19 +2213,19 @@ class SA {
    * @param advanceWidth Character advance width
    * @returns SVG path data string or null if generation fails
    */
-  generatePositionedCharacterPath(A, r, e, t, n, a, s, B) {
+  generatePositionedCharacterPath(A, e, t, r, i, a, s, B) {
     try {
-      const g = s / r.head.unitsPerEm, o = B * g, u = e + (n - o) / 2, h = t + (a + s * 0.7) / 2;
-      return this.generateCharacterPath(A, r, u, h, s).toSVG() || null;
+      const g = s / e.head.unitsPerEm, Q = B * g, l = t + (i - Q) / 2, h = r + (a + s * 0.7) / 2;
+      return this.generateCharacterPath(A, e, l, h, s).toSVG() || null;
     } catch (g) {
       return console.warn(`Failed to generate positioned character path for "${A}":`, g), null;
     }
   }
 }
-class TA {
+class CA {
   constructor() {
-    E(this, "pathGenerator");
-    this.pathGenerator = new SA();
+    o(this, "pathGenerator");
+    this.pathGenerator = new uA();
   }
   /**
    * Generates the SVG header with metadata
@@ -3269,12 +2255,12 @@ class TA {
    * @param options SVG generation options
    * @returns Background rectangle SVG string or empty string
    */
-  generateBackground(A, r) {
-    if (!r.includeBackgroundRectangles)
+  generateBackground(A, e) {
+    if (!e.includeBackgroundRectangles)
       return "";
-    const e = r.backgroundColor, t = `rgba(${e[0]},${e[1]},${e[2]},${e[3] / 255})`;
+    const t = e.backgroundColor, r = `rgba(${t[0]},${t[1]},${t[2]},${t[3] / 255})`;
     return `
-<rect width="${A.width}" height="${A.height}" fill="${t}" />`;
+<rect width="${A.width}" height="${A.height}" fill="${r}" />`;
   }
   /**
    * Converts RGBA object to CSS color string
@@ -3290,13 +2276,13 @@ class TA {
    * @param gridInfo Grid information for center calculations
    * @returns Transform attribute string or empty string
    */
-  generateTransformAttribute(A, r) {
-    const { transform: e, position: t } = A, n = t.cellX + r.cellWidth / 2, a = t.cellY + r.cellHeight / 2, s = [];
-    if (e.flipHorizontal || e.flipVertical) {
-      const B = e.flipHorizontal ? -1 : 1, g = e.flipVertical ? -1 : 1;
-      s.push(`translate(${n} ${a})`), s.push(`scale(${B} ${g})`), s.push(`translate(${-n} ${-a})`);
+  generateTransformAttribute(A, e) {
+    const { transform: t, position: r } = A, i = r.cellX + e.cellWidth / 2, a = r.cellY + e.cellHeight / 2, s = [];
+    if (t.flipHorizontal || t.flipVertical) {
+      const B = t.flipHorizontal ? -1 : 1, g = t.flipVertical ? -1 : 1;
+      s.push(`translate(${i} ${a})`), s.push(`scale(${B} ${g})`), s.push(`translate(${-i} ${-a})`);
     }
-    return e.rotation && s.push(`rotate(${e.rotation} ${n} ${a})`), s.length ? ` transform="${s.join(" ")}"` : "";
+    return t.rotation && s.push(`rotate(${t.rotation} ${i} ${a})`), s.length ? ` transform="${s.join(" ")}"` : "";
   }
   /**
    * Generates background rectangle for a cell
@@ -3305,13 +2291,13 @@ class TA {
    * @param options SVG generation options
    * @returns Background rectangle SVG string or empty string
    */
-  generateCellBackground(A, r, e) {
-    if (!e.includeBackgroundRectangles || A.secondaryColor.a === 0)
+  generateCellBackground(A, e, t) {
+    if (!t.includeBackgroundRectangles || A.secondaryColor.a === 0)
       return "";
-    const { position: t } = A, n = this.rgbaToColorString(A.secondaryColor);
-    return e.drawMode === "stroke" ? `
-  <rect x="${t.cellX}" y="${t.cellY}" width="${r.cellWidth}" height="${r.cellHeight}" stroke="${n}" fill="none" stroke-width="${e.strokeWidth}" />` : `
-  <rect x="${t.cellX}" y="${t.cellY}" width="${r.cellWidth}" height="${r.cellHeight}" fill="${n}" />`;
+    const { position: r } = A, i = this.rgbaToColorString(A.secondaryColor);
+    return t.drawMode === "stroke" ? `
+  <rect x="${r.cellX}" y="${r.cellY}" width="${e.cellWidth}" height="${e.cellHeight}" stroke="${i}" fill="none" stroke-width="${t.strokeWidth}" />` : `
+  <rect x="${r.cellX}" y="${r.cellY}" width="${e.cellWidth}" height="${e.cellHeight}" fill="${i}" />`;
   }
   /**
    * Generates character path element for a cell
@@ -3321,25 +2307,25 @@ class TA {
    * @param options SVG generation options
    * @returns Character path SVG string
    */
-  generateCharacterPath(A, r, e, t) {
-    const n = e.characters[A.charIndex];
-    if (!n)
+  generateCharacterPath(A, e, t, r) {
+    const i = t.characters[A.charIndex];
+    if (!i)
       return "";
     const a = this.pathGenerator.generatePositionedCharacterPath(
-      n.character,
-      e.fontData,
+      i.character,
+      t.font,
       A.position.cellX,
       A.position.cellY,
-      r.cellWidth,
-      r.cellHeight,
-      e.fontSize,
-      n.advanceWidth
+      e.cellWidth,
+      e.cellHeight,
+      t.fontSize,
+      i.advanceWidth
     );
     if (!a)
       return "";
     const s = this.rgbaToColorString(A.primaryColor);
-    return t.drawMode === "stroke" ? `
-    <path id="${`path-${A.charIndex}-${A.position.cellX}-${A.position.cellY}`.replace(/\./g, "-")}" d="${a}" stroke="${s}" stroke-width="${t.strokeWidth}" fill="none" />` : `
+    return r.drawMode === "stroke" ? `
+    <path id="${`path-${A.charIndex}-${A.position.cellX}-${A.position.cellY}`.replace(/\./g, "-")}" d="${a}" stroke="${s}" stroke-width="${r.strokeWidth}" fill="none" />` : `
     <path d="${a}" fill="${s}" />`;
   }
   /**
@@ -3350,29 +2336,29 @@ class TA {
    * @param options SVG generation options
    * @returns Complete cell SVG content
    */
-  generateCellContent(A, r, e, t) {
-    let n = "";
-    n += this.generateCellBackground(A, r, t);
-    const a = this.generateTransformAttribute(A, r), s = this.generateCharacterPath(A, r, e, t);
-    return s && (a ? (n += `
-  <g${a}>`, n += s, n += `
-  </g>`) : n += s), n;
+  generateCellContent(A, e, t, r) {
+    let i = "";
+    i += this.generateCellBackground(A, e, r);
+    const a = this.generateTransformAttribute(A, e), s = this.generateCharacterPath(A, e, t, r);
+    return s && (a ? (i += `
+  <g${a}>`, i += s, i += `
+  </g>`) : i += s), i;
   }
   /**
    * Generates the complete SVG content from cell data
    * @param cellDataArray Array of cell data
-   * @param gridInfo Grid information
+   * @param grid Grid information
    * @param fontInfo Font information
    * @param options SVG generation options
    * @returns Complete SVG string
    */
-  generateSVGContent(A, r, e, t) {
-    let n = this.generateSVGHeader(r);
-    n += this.generateBackground(r, t), n += `
+  generateSVGContent(A, e, t, r) {
+    let i = this.generateSVGHeader(e);
+    i += this.generateBackground(e, r), i += `
 <g id="ascii-cells">`;
     for (const a of A)
-      n += this.generateCellContent(a, r, e, t);
-    return n += this.generateSVGFooter(), n;
+      i += this.generateCellContent(a, e, t, r);
+    return i += this.generateSVGFooter(), i;
   }
   /**
    * Optimizes SVG content by removing empty elements and unnecessary whitespace
@@ -3384,14 +2370,14 @@ class TA {
 `).replace(/[ \t]+$/gm, "");
   }
 }
-class GA {
+class dA extends S {
   /**
    * Generates a default filename for SVG export
    * @param prefix Optional prefix for the filename
    * @returns Generated filename without extension
    */
   generateDefaultFilename(A = "textmode_output") {
-    const r = /* @__PURE__ */ new Date(), e = r.toISOString().split("T")[0], t = r.toTimeString().split(" ")[0].replace(/:/g, "-");
+    const { date: e, time: t } = this.generateDateTimeString();
     return `${A}_${e}_${t}`;
   }
   /**
@@ -3400,7 +2386,7 @@ class GA {
    * @returns Sanitized filename
    */
   sanitizeFilename(A) {
-    return A.replace(/[<>:"/\\|?*]/g, "_").replace(/\s+/g, "_").replace(/_{2,}/g, "_").replace(/^_+|_+$/g, "").substring(0, 255);
+    return super.sanitizeFilename(A);
   }
   /**
    * Creates a downloadable blob from SVG content
@@ -3408,9 +2394,7 @@ class GA {
    * @returns Blob object containing the SVG data
    */
   createSVGBlob(A) {
-    return new Blob([A], {
-      type: "image/svg+xml;charset=utf-8"
-    });
+    return this.createBlob(A, "image/svg+xml;charset=utf-8");
   }
   /**
    * Creates a data URL from SVG content
@@ -3418,20 +2402,19 @@ class GA {
    * @returns Data URL string
    */
   createDataURL(A) {
-    const r = this.createSVGBlob(A);
-    return URL.createObjectURL(r);
+    return super.createDataURL(A, "image/svg+xml;charset=utf-8");
   }
   /**
    * Downloads SVG content as a file
    * @param svgContent The SVG content to download
    * @param filename The filename (without extension)
    */
-  downloadSVG(A, r) {
+  downloadSVG(A, e) {
     try {
-      const e = this.sanitizeFilename(r), t = this.createSVGBlob(A), n = URL.createObjectURL(t), a = document.createElement("a");
-      a.href = n, a.download = `${e}.svg`, a.style.display = "none", a.rel = "noopener", document.body.appendChild(a), a.click(), document.body.removeChild(a), URL.revokeObjectURL(n);
-    } catch (e) {
-      throw console.error("Failed to download SVG file:", e), new Error(`SVG download failed: ${e instanceof Error ? e.message : "Unknown error"}`);
+      const t = this.sanitizeFilename(e), r = this.ensureFileExtension(t, ".svg");
+      this.downloadFile(A, r, "image/svg+xml;charset=utf-8");
+    } catch (t) {
+      throw console.error("Failed to download SVG file:", t), new Error(`SVG download failed: ${t instanceof Error ? t.message : "Unknown error"}`);
     }
   }
   /**
@@ -3439,43 +2422,17 @@ class GA {
    * @param svgContent The SVG content to save
    * @param filename Optional filename (will generate if not provided)
    */
-  saveSVG(A, r) {
-    const e = r || this.generateDefaultFilename();
-    this.downloadSVG(A, e);
-  }
-  /**
-   * Gets the size of the SVG content in bytes
-   * @param svgContent The SVG content string
-   * @returns Size in bytes
-   */
-  getSVGSize(A) {
-    return new Blob([A]).size;
-  }
-  /**
-   * Formats file size in human-readable format
-   * @param bytes Size in bytes
-   * @returns Formatted size string
-   */
-  formatFileSize(A) {
-    if (A === 0) return "0 Bytes";
-    const r = 1024, e = ["Bytes", "KB", "MB", "GB"], t = Math.floor(Math.log(A) / Math.log(r));
-    return parseFloat((A / Math.pow(r, t)).toFixed(2)) + " " + e[t];
-  }
-  /**
-   * Validates SVG content before saving
-   * @param svgContent The SVG content to validate
-   * @returns True if valid, false otherwise
-   */
-  validateSVGContent(A) {
-    return !A || typeof A != "string" ? (console.error("SVG content is empty or not a string"), !1) : !A.includes("<svg") || !A.includes("</svg>") ? (console.error("SVG content does not contain valid SVG tags"), !1) : (A.startsWith("<?xml") || console.warn("SVG content missing XML declaration"), !0);
+  saveSVG(A, e) {
+    const t = e || this.generateDefaultFilename();
+    this.downloadSVG(A, t);
   }
 }
-class MA {
+class V {
   constructor() {
-    E(this, "dataExtractor");
-    E(this, "contentGenerator");
-    E(this, "fileHandler");
-    this.dataExtractor = new yA(), this.contentGenerator = new TA(), this.fileHandler = new GA();
+    o(this, "dataExtractor");
+    o(this, "contentGenerator");
+    o(this, "fileHandler");
+    this.dataExtractor = new cA(), this.contentGenerator = new CA(), this.fileHandler = new dA();
   }
   /**
    * Applies default values to SVG export options
@@ -3496,62 +2453,428 @@ class MA {
    * @param options Export options (excluding filename)
    * @returns SVG content as string
    */
-  generateSVG(A, r = {}) {
-    const e = this.applyDefaultOptions(r), t = this.dataExtractor.extractFramebufferData(A.pipeline), n = this.dataExtractor.extractGridInfo(A.grid), a = this.dataExtractor.extractFontInfo(A.font);
-    if (!this.dataExtractor.validateExportData(t, n, a))
-      throw new Error("Invalid data extracted from textmodifier");
-    const s = this.dataExtractor.extractSVGCellData(
-      t,
-      n,
-      a
-    ), B = this.contentGenerator.generateSVGContent(
-      s,
-      n,
-      a,
-      e
+  generateSVG(A, e = {}) {
+    const t = this.applyDefaultOptions(e), r = this.dataExtractor.extractFramebufferData(A.pipeline), i = this.dataExtractor.extractSVGCellData(
+      r,
+      A.grid
+    ), a = this.contentGenerator.generateSVGContent(
+      i,
+      A.grid,
+      A.font,
+      t
     );
-    return this.contentGenerator.optimizeSVGContent(B);
+    return this.contentGenerator.optimizeSVGContent(a);
   }
   /**
    * Exports SVG content to a downloadable file
    * @param textmodifier The textmodifier instance containing rendering data
    * @param options Export options including filename
    */
-  saveSVG(A, r = {}) {
+  saveSVG(A, e = {}) {
     try {
-      const e = this.generateSVG(A, r);
-      if (!this.fileHandler.validateSVGContent(e))
-        throw new Error("Generated SVG content is invalid");
-      const t = r.filename || this.fileHandler.generateDefaultFilename();
-      this.fileHandler.saveSVG(e, t);
-    } catch (e) {
-      throw console.error("Failed to save SVG:", e), new Error(`SVG save failed: ${e instanceof Error ? e.message : "Unknown error"}`);
+      const t = this.generateSVG(A, e), r = e.filename || this.fileHandler.generateDefaultFilename();
+      this.fileHandler.saveSVG(t, r);
+    } catch (t) {
+      throw console.error("Failed to save SVG:", t), new Error(`SVG save failed: ${t instanceof Error ? t.message : "Unknown error"}`);
     }
   }
 }
-class iA {
-  constructor(A, r = {}) {
+class DA extends U {
+  /**
+   * Extracts character data for TXT generation
+   * @param framebufferData Framebuffer pixel data
+   * @param grid Grid information
+   * @param font Font information
+   * @param emptyCharacter Character to use for empty cells
+   * @returns 2D array of characters (rows x columns)
+   */
+  extractCharacterGrid(A, e, t, r = " ") {
+    var s;
+    const i = [];
+    let a = 0;
+    for (let B = 0; B < e.rows; B++) {
+      const g = [];
+      for (let Q = 0; Q < e.cols; Q++) {
+        const l = a * 4, h = this.getCharacterIndex(
+          A.characterPixels,
+          l
+        ), u = ((s = t.characters[h]) == null ? void 0 : s.character) || r;
+        g.push(u), a++;
+      }
+      i.push(g);
+    }
+    return i;
+  }
+}
+class fA {
+  /**
+   * Generates TXT content from a 2D character array
+   * @param characterGrid 2D array of characters (rows x columns)
+   * @param options Generation options
+   * @returns TXT content as string
+   */
+  generateTXTContent(A, e) {
+    const t = [];
+    for (const i of A) {
+      let a = i.join("");
+      e.preserveTrailingSpaces || (a = a.replace(/\s+$/, "")), t.push(a);
+    }
+    const r = e.lineEnding === "crlf" ? `\r
+` : `
+`;
+    return t.join(r);
+  }
+}
+class mA extends S {
+  /**
+   * Saves TXT content as a downloadable file
+   * @param content The TXT content to save
+   * @param filename The filename to use for the download
+   */
+  saveTXT(A, e) {
+    try {
+      const t = this.ensureValidFilename(e);
+      this.downloadFile(A, t, "text/plain;charset=utf-8");
+    } catch (t) {
+      throw console.error("Failed to save TXT file:", t), new Error(`TXT file save failed: ${t instanceof Error ? t.message : "Unknown error"}`);
+    }
+  }
+  /**
+   * Generates a default filename for TXT export
+   * @returns Default filename with timestamp
+   */
+  generateDefaultFilename() {
+    return super.generateDefaultFilename("textmode-export", ".txt");
+  }
+  /**
+   * Ensures filename has proper extension and is valid
+   * @param filename The filename to validate and fix
+   * @returns Valid filename with .txt extension
+   */
+  ensureValidFilename(A) {
+    let e = this.sanitizeFilename(A);
+    return e = this.ensureFileExtension(e, ".txt"), e === ".txt" || e.length <= 4 ? this.generateDefaultFilename() : e;
+  }
+}
+class z {
+  constructor() {
+    o(this, "dataExtractor");
+    o(this, "contentGenerator");
+    o(this, "fileHandler");
+    this.dataExtractor = new DA(), this.contentGenerator = new fA(), this.fileHandler = new mA();
+  }
+  /**
+   * Applies default values to TXT export options
+   * @param options User-provided options
+   * @returns Complete options with defaults applied
+   */
+  applyDefaultOptions(A) {
+    return {
+      preserveTrailingSpaces: A.preserveTrailingSpaces ?? !1,
+      lineEnding: A.lineEnding ?? "lf",
+      emptyCharacter: A.emptyCharacter ?? " "
+    };
+  }
+  /**
+   * Generates TXT content from textmode rendering data without saving to file
+   * @param textmodifier The textmodifier instance containing rendering data
+   * @param options Export options (excluding filename)
+   * @returns TXT content as string
+   */
+  generateTXT(A, e = {}) {
+    const t = this.applyDefaultOptions(e), r = this.dataExtractor.extractFramebufferData(A.pipeline), i = this.dataExtractor.extractCharacterGrid(
+      r,
+      A.grid,
+      A.font,
+      t.emptyCharacter
+    );
+    return this.contentGenerator.generateTXTContent(
+      i,
+      t
+    );
+  }
+  /**
+   * Exports TXT content to a downloadable file
+   * @param textmodifier The textmodifier instance containing rendering data
+   * @param options Export options including filename
+   */
+  saveTXT(A, e = {}) {
+    try {
+      const t = this.generateTXT(A, e), r = e.filename || this.fileHandler.generateDefaultFilename();
+      this.fileHandler.saveTXT(t, r);
+    } catch (t) {
+      throw console.error("Failed to save TXT:", t), new Error(`TXT save failed: ${t instanceof Error ? t.message : "Unknown error"}`);
+    }
+  }
+}
+class PA extends U {
+  /**
+   * Captures the current state of the textmode canvas as image data
+   * @param textmodeCanvas The TextmodeCanvas instance to capture from
+   * @param scale Scale factor for the output image
+   * @param backgroundColor Background color for formats that don't support transparency
+   * @returns Canvas element containing the captured image data
+   */
+  captureCanvasData(A, e = 1, t = "transparent") {
+    const r = A.canvas;
+    if (e === 1 && t === "transparent")
+      return r;
+    const i = document.createElement("canvas"), a = i.getContext("2d");
+    if (!a)
+      throw new Error("Failed to get 2D rendering context for image capture");
+    const s = Math.round(r.width * e), B = Math.round(r.height * e);
+    return i.width = s, i.height = B, t !== "transparent" && (a.fillStyle = t, a.fillRect(0, 0, s, B)), a.imageSmoothingEnabled = !1, a.drawImage(
+      r,
+      0,
+      0,
+      r.width,
+      r.height,
+      0,
+      0,
+      s,
+      B
+    ), i;
+  }
+}
+class IA {
+  /**
+   * Generates image data from canvas
+   * @param canvas The canvas containing the image data
+   * @param options Generation options with format, quality, etc.
+   * @returns Data URL string containing the image data
+   */
+  generateImageData(A, e) {
+    const t = this.getMimeType(e.format);
+    return e.format === "png" ? A.toDataURL(t) : A.toDataURL(t, e.quality);
+  }
+  /**
+   * Generates image blob from canvas
+   * @param canvas The canvas containing the image data
+   * @param options Generation options with format, quality, etc.
+   * @returns Promise that resolves to a Blob containing the image data
+   */
+  async generateImageBlob(A, e) {
+    return new Promise((t, r) => {
+      const i = this.getMimeType(e.format), a = (s) => {
+        s ? t(s) : r(new Error(`Failed to generate ${e.format.toUpperCase()} blob`));
+      };
+      e.format === "png" ? A.toBlob(a, i) : A.toBlob(a, i, e.quality);
+    });
+  }
+  /**
+   * Gets the MIME type for a given image format
+   * @param format The image format
+   * @returns The corresponding MIME type
+   */
+  getMimeType(A) {
+    switch (A) {
+      case "png":
+        return "image/png";
+      case "jpg":
+        return "image/jpeg";
+      case "webp":
+        return "image/webp";
+      default:
+        throw new Error(`Unsupported image format: ${A}`);
+    }
+  }
+}
+const H = {
+  png: "image/png",
+  jpg: "image/jpeg",
+  webp: "image/webp"
+}, y = {
+  png: ".png",
+  jpg: ".jpg",
+  webp: ".webp"
+};
+class wA extends S {
+  /**
+   * Saves image content as a downloadable file
+   * @param content The image content (data URL or blob)
+   * @param filename The filename (without extension)
+   * @param format The image format
+   */
+  saveImage(A, e, t) {
+    try {
+      const r = this.sanitizeFilename(e), i = y[t], a = this.ensureFileExtension(r, i);
+      typeof A == "string" ? this.saveImageFromDataURL(A, a) : this.saveImageFromBlob(A, a);
+    } catch (r) {
+      throw console.error(`Failed to save ${t.toUpperCase()} image:`, r), new Error(`Image save failed: ${r instanceof Error ? r.message : "Unknown error"}`);
+    }
+  }
+  /**
+   * Saves image from data URL
+   * @param dataURL The data URL containing image data
+   * @param filename The complete filename with extension
+   */
+  saveImageFromDataURL(A, e) {
+    const t = document.createElement("a");
+    t.href = A, t.download = e, t.style.display = "none", t.rel = "noopener", document.body.appendChild(t), t.click(), document.body.removeChild(t);
+  }
+  /**
+   * Saves image from blob
+   * @param blob The blob containing image data
+   * @param filename The complete filename with extension
+   */
+  saveImageFromBlob(A, e) {
+    const t = URL.createObjectURL(A);
+    try {
+      const r = document.createElement("a");
+      r.href = t, r.download = e, r.style.display = "none", r.rel = "noopener", document.body.appendChild(r), r.click(), document.body.removeChild(r);
+    } finally {
+      URL.revokeObjectURL(t);
+    }
+  }
+  /**
+   * Generates a default filename for image export
+   * @param format The image format for the file extension
+   * @returns Generated filename with timestamp
+   */
+  generateDefaultImageFilename(A = "png") {
+    const e = y[A];
+    return super.generateDefaultFilename("textmode-export", e);
+  }
+  /**
+   * Validates if the browser supports saving files in the specified format
+   * @param format The image format to validate
+   * @returns True if the format is supported for saving
+   */
+  validateSaveSupport(A) {
+    return A in H && A in y;
+  }
+  /**
+   * Gets the MIME type for the specified image format
+   * @param format The image format
+   * @returns The MIME type string
+   */
+  getMimeType(A) {
+    return H[A];
+  }
+  /**
+   * Gets the file extension for the specified image format
+   * @param format The image format
+   * @returns The file extension (including the dot)
+   */
+  getFileExtension(A) {
+    return y[A];
+  }
+}
+class pA {
+  constructor() {
+    o(this, "dataExtractor");
+    o(this, "contentGenerator");
+    o(this, "fileHandler");
+    this.dataExtractor = new PA(), this.contentGenerator = new IA(), this.fileHandler = new wA();
+  }
+  /**
+   * Applies default values to image export options
+   * @param options User-provided options
+   * @returns Complete options with defaults applied
+   */
+  applyDefaultOptions(A) {
+    return {
+      format: A.format ?? "png",
+      quality: A.quality ?? 1,
+      scale: A.scale ?? 1,
+      backgroundColor: A.backgroundColor ?? "transparent"
+    };
+  }
+  /**
+   * Validates export options and browser support
+   * @param options The options to validate
+   * @throws Error if options are invalid or format is not supported
+   */
+  validateOptions(A) {
+    if (console.log("Validating image export options:", A), !this.fileHandler.validateSaveSupport(A.format))
+      throw new Error(`Saving '${A.format}' files is not supported`);
+    if (A.quality < 0 || A.quality > 1)
+      throw new Error("Image quality must be between 0.0 and 1.0");
+    if (A.scale <= 0)
+      throw new Error("Scale factor must be greater than 0");
+    A.scale > 10 && console.warn("Large scale factors may result in very large files and slow performance"), A.format === "jpg" && A.backgroundColor === "transparent" && (A.backgroundColor = "black");
+  }
+  /**
+   * Generates image data from textmode rendering without saving to file
+   * @param textmodifier The textmodifier instance containing the canvas
+   * @param options Export options (excluding filename)
+   * @returns Data URL string containing the image data
+   */
+  generateImage(A, e = {}) {
+    const t = this.applyDefaultOptions(e);
+    if (this.validateOptions(t), t.scale === 1 && t.backgroundColor === "transparent") {
+      const a = A.textmodeCanvas.canvas;
+      return this.contentGenerator.generateImageData(a, t);
+    }
+    const r = this.dataExtractor.captureCanvasData(
+      A.textmodeCanvas,
+      t.scale,
+      t.backgroundColor
+    );
+    return this.contentGenerator.generateImageData(
+      r,
+      t
+    );
+  }
+  /**
+   * Generates image blob from textmode rendering without saving to file
+   * @param textmodifier The textmodifier instance containing the canvas
+   * @param options Export options (excluding filename)
+   * @returns Promise that resolves to a Blob containing the image data
+   */
+  async generateImageBlob(A, e = {}) {
+    const t = this.applyDefaultOptions(e);
+    if (this.validateOptions(t), t.scale === 1 && t.backgroundColor === "transparent") {
+      const a = A.textmodeCanvas.canvas;
+      return await this.contentGenerator.generateImageBlob(a, t);
+    }
+    const r = this.dataExtractor.captureCanvasData(
+      A.textmodeCanvas,
+      t.scale,
+      t.backgroundColor
+    );
+    return await this.contentGenerator.generateImageBlob(
+      r,
+      t
+    );
+  }
+  /**
+   * Exports image to a downloadable file
+   * @param textmodifier The textmodifier instance containing the canvas
+   * @param options Export options including filename
+   */
+  async saveImage(A, e = {}) {
+    try {
+      const t = await this.generateImageBlob(A, e), r = e.format ?? "png", i = e.filename || this.fileHandler.generateDefaultImageFilename(r);
+      this.fileHandler.saveImage(t, i, r);
+    } catch (t) {
+      throw console.error("Failed to save image:", t), new Error(`Image save failed: ${t instanceof Error ? t.message : "Unknown error"}`);
+    }
+  }
+}
+class R {
+  constructor(A, e = {}) {
     /** The canvas element to capture content from */
-    E(this, "captureCanvas");
+    o(this, "captureCanvas");
     /** Our WebGL overlay canvas manager */
-    E(this, "textmodeCanvas");
+    o(this, "textmodeCanvas");
     /** Core WebGL renderer */
-    E(this, "renderer");
-    E(this, "canvasFramebuffer");
-    E(this, "_font");
-    E(this, "_grid");
-    E(this, "resizeObserver");
+    o(this, "renderer");
+    o(this, "canvasFramebuffer");
+    o(this, "_font");
+    o(this, "_grid");
+    o(this, "resizeObserver");
     // Auto-rendering properties
-    E(this, "_mode");
-    E(this, "_frameRateLimit");
-    E(this, "animationFrameId", null);
-    E(this, "lastFrameTime", 0);
-    E(this, "frameInterval");
-    E(this, "_frameRate", 0);
-    E(this, "lastRenderTime", 0);
-    E(this, "_frameCount", 0);
-    E(this, "_pipeline");
-    this.captureCanvas = A, this.textmodeCanvas = new IA(A), this._mode = r.renderMode ?? "auto", this._frameRateLimit = r.frameRate ?? 120, this.frameInterval = 1e3 / this._frameRateLimit, this.renderer = new lA(this.textmodeCanvas.getWebGLContext()), this.canvasFramebuffer = this.renderer.createFramebuffer(this.textmodeCanvas.width, this.textmodeCanvas.height), this._font = new PA(this.renderer, r.fontSize ?? 16);
+    o(this, "_mode");
+    o(this, "_frameRateLimit");
+    o(this, "animationFrameId", null);
+    o(this, "lastFrameTime", 0);
+    o(this, "frameInterval");
+    o(this, "_frameRate", 0);
+    o(this, "lastRenderTime", 0);
+    o(this, "_frameCount", 0);
+    o(this, "_pipeline");
+    this.captureCanvas = A, this.textmodeCanvas = new aA(A), this._mode = e.renderMode ?? "auto", this._frameRateLimit = e.frameRate ?? 120, this.frameInterval = 1e3 / this._frameRateLimit, this.renderer = new j(this.textmodeCanvas.getWebGLContext()), this.canvasFramebuffer = this.renderer.createFramebuffer(this.textmodeCanvas.width, this.textmodeCanvas.height), this._font = new rA(this.renderer, e.fontSize ?? 16);
   }
   /**
    * Static factory method for creating and initializing a Textmodifier instance.
@@ -3559,16 +2882,99 @@ class iA {
    * @param opts Optional configuration options for the `Textmodifier` instance.
    * @ignore
    */
-  static async create(A, r = {}) {
-    const e = new iA(A, r);
-    await e._font.initialize();
-    const t = e._font.maxGlyphDimensions;
-    return e._grid = new mA(e.captureCanvas, t.width, t.height), e._pipeline = new bA(e.renderer, e._font, e._grid), e.setupEventListeners(), e.startAutoRendering(), e;
+  static async create(A, e = {}) {
+    const t = new R(A, e);
+    await t._font.initialize();
+    const r = t._font.maxGlyphDimensions;
+    return t._grid = new iA(t.captureCanvas, r.width, r.height), t._pipeline = new hA(t.renderer, t._font, t._grid), t.setupEventListeners(), t.startAutoRendering(), t;
   }
   setupEventListeners() {
     window.addEventListener("resize", this.resize.bind(this)), window.ResizeObserver && (this.resizeObserver = new ResizeObserver(() => {
       this.resize();
     }), this.resizeObserver.observe(this.captureCanvas));
+  }
+  /**
+   * Generate the current textmode rendering as a text string.
+   * @param options Options for TXT generation (excluding filename)
+   * @returns TXT content as a string
+   * 
+   * @example
+   * ```javascript
+   * // Fetch a canvas element to apply textmode rendering to
+   * const canvas = document.querySelector('canvas#myCanvas');
+   * 
+   * // Create a Textmodifier instance
+   * const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
+   *
+   * // Render a single frame
+   * textmodifier.render();
+   * 
+   * // Get the current rendering as a text string
+   * const textString = textmodifier.toString({
+   *   preserveTrailingSpaces: false,
+   *   lineEnding: 'lf'
+   * });
+   * 
+   * // Print to console or use otherwise
+   * console.log(textString);
+   * ```
+   */
+  toString(A = {}) {
+    return new z().generateTXT(this, A);
+  }
+  /**
+   * Export the current textmode rendering to a TXT file.
+   * @param options Options for TXT export
+   * 
+   * @example
+   * ```javascript
+   * // Fetch a canvas element to apply textmode rendering to
+   * const canvas = document.querySelector('canvas#myCanvas');
+   * 
+   * // Create a Textmodifier instance
+   * const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
+   *
+   * // Render a single frame
+   * textmodifier.render();
+   * 
+   * // Export the current rendering to a TXT file
+   * textmodifier.saveStrings({
+   *   filename: 'my_textmode_rendering',
+   *   preserveTrailingSpaces: false
+   * });
+   * ```
+   */
+  saveStrings(A = {}) {
+    new z().saveTXT(this, A);
+  }
+  /**
+   * Generate the current textmode rendering as an SVG string.
+   * @param options Options for SVG generation (excluding filename)
+   * @returns SVG content as a string
+   * 
+   * @example
+   * ```javascript
+   * // Fetch a canvas element to apply textmode rendering to
+   * const canvas = document.querySelector('canvas#myCanvas');
+   * 
+   * // Create a Textmodifier instance
+   * const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
+   *
+   * // Render a single frame
+   * textmodifier.render();
+   * 
+   * // Get the current rendering as an SVG string
+   * const svgString = textmodifier.toSVG({
+   *   includeBackgroundRectangles: true,
+   *   drawMode: 'fill'
+   * });
+   * 
+   * // Print to console or use otherwise
+   * console.log(svgString);
+   * ```
+   */
+  toSVG(A = {}) {
+    return new V().generateSVG(this, A);
   }
   /**
    * Export the current textmode rendering to an SVG file.
@@ -3592,7 +2998,42 @@ class iA {
    * ```
    */
   saveSVG(A = {}) {
-    new MA().saveSVG(this, A);
+    new V().saveSVG(this, A);
+  }
+  /**
+   * Export the current textmode rendering to an image file.
+   * @param filename The filename (without extension) to save the image as
+   * @param format The image format ('png', 'jpg', or 'webp')
+   * @param options Additional options for image export
+   * 
+   * @example
+   * ```javascript
+   * // Fetch a canvas element to apply textmode rendering to
+   * const canvas = document.querySelector('canvas#myCanvas');
+   * 
+   * // Create a Textmodifier instance
+   * const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
+   *
+   * // Render a single frame
+   * textmodifier.render();
+   * 
+   * // Export the current rendering to a PNG file
+   * textmodifier.saveCanvas('my_textmode_rendering', 'png');
+   * 
+   * // Export with custom options
+   * textmodifier.saveCanvas('my_textmode_rendering', 'jpg', {
+   *   quality: 0.8,
+   *   scale: 2.0,
+   *   backgroundColor: 'white'
+   * });
+   * ```
+   */
+  async saveCanvas(A, e, t = {}) {
+    await new pA().saveImage(this, {
+      ...t,
+      filename: A,
+      format: e
+    });
   }
   /**
    * Update the font used for rendering.
@@ -3615,8 +3056,8 @@ class iA {
    */
   async loadFont(A) {
     return this._font.loadFont(A).then(() => {
-      const r = this._font.maxGlyphDimensions;
-      this._grid.resizeCellPixelDimensions(r.width, r.height), this._pipeline.resize();
+      const e = this._font.maxGlyphDimensions;
+      this._grid.resizeCellPixelDimensions(e.width, e.height), this._pipeline.resize();
     });
   }
   /**
@@ -3658,7 +3099,7 @@ class iA {
    * ```
    */
   render() {
-    this.measureFrameRate(), this._frameCount++, this.canvasFramebuffer.update(this.captureCanvas), this._pipeline.render(this.canvasFramebuffer), this.renderer.background(0, 0, 0, 1), this.renderer.image(this._pipeline.texture, this._grid.offsetX, this._grid.offsetY, this._pipeline.texture.width, this._pipeline.texture.height), this.renderer.reset();
+    this.measureFrameRate(), this._frameCount++, this.canvasFramebuffer.update(this.captureCanvas), this._pipeline.render(this.canvasFramebuffer), this._pipeline.hasEnabledConverters() ? (this.renderer.background(0, 0, 0, 1), this.renderer.image(this._pipeline.texture, this._grid.offsetX, this._grid.offsetY, this._pipeline.texture.width, this._pipeline.texture.height)) : this.renderer.clear(), this.renderer.reset();
   }
   resize() {
     this.textmodeCanvas.resize(), this.canvasFramebuffer.resize(this.textmodeCanvas.width, this.textmodeCanvas.height), this._grid.resize(), this._pipeline.resize(), this.renderer.resetViewport(), this._mode !== "manual" && this.render();
@@ -3668,8 +3109,8 @@ class iA {
    */
   startAutoRendering() {
     if (this._mode !== "auto") return;
-    const A = (r) => {
-      r - this.lastFrameTime >= this.frameInterval && (this.render(), this.lastFrameTime = r), this.animationFrameId = requestAnimationFrame(A);
+    const A = (e) => {
+      e - this.lastFrameTime >= this.frameInterval && (this.render(), this.lastFrameTime = e), this.animationFrameId = requestAnimationFrame(A);
     };
     this.animationFrameId = requestAnimationFrame(A);
   }
@@ -3679,8 +3120,8 @@ class iA {
   measureFrameRate() {
     const A = performance.now();
     if (this.lastRenderTime > 0) {
-      const r = A - this.lastRenderTime;
-      this._frameRate = 1e3 / r;
+      const e = A - this.lastRenderTime;
+      this._frameRate = 1e3 / e;
     }
     this.lastRenderTime = A;
   }
@@ -3810,7 +3251,7 @@ class iA {
     return this._frameCount;
   }
 }
-class nA {
+class Y {
   /**
    * Create a {@link Textmodifier} instance to apply textmode rendering to a given canvas.
    * @param canvas The HTML canvas element to capture content from.
@@ -3826,8 +3267,8 @@ class nA {
    * const textmodifier = await textmode.create(canvas);
    * ```
    */
-  static async create(A, r = {}) {
-    return iA.create(A, r);
+  static async create(A, e = {}) {
+    return R.create(A, e);
   }
   /**
    * Set the global error handling level for the library. This applies to all `Textmodifier` instances.
@@ -3840,7 +3281,7 @@ class nA {
    * ```
    */
   static setErrorLevel(A) {
-    F.setGlobalLevel(A);
+    C.setGlobalLevel(A);
   }
   /**
    * Returns the current version of the `textmode.js` library.
@@ -3857,17 +3298,20 @@ class nA {
     throw new Error("Textmode is a static class and cannot be instantiated.");
   }
 }
-const YA = nA.create, VA = nA.setErrorLevel, zA = nA.version;
+const vA = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null
+}, Symbol.toStringTag, { value: "Module" })), bA = Y.create, FA = Y.setErrorLevel, yA = Y.version;
 export {
-  IA as TextmodeCanvas,
-  bA as TextmodeConversionPipeline,
-  OA as TextmodeConverters,
-  gA as TextmodeErrorLevel,
-  PA as TextmodeFont,
-  mA as TextmodeGrid,
-  iA as Textmodifier,
-  YA as create,
-  VA as setErrorLevel,
-  nA as textmode,
-  zA as version
+  vA as ExportOptions,
+  aA as TextmodeCanvas,
+  hA as TextmodeConversionPipeline,
+  xA as TextmodeConverters,
+  X as TextmodeErrorLevel,
+  rA as TextmodeFont,
+  iA as TextmodeGrid,
+  R as Textmodifier,
+  bA as create,
+  FA as setErrorLevel,
+  Y as textmode,
+  yA as version
 };
