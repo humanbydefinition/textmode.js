@@ -1,10 +1,10 @@
-[**textmode.js v0.1.1**](../../../README.md)
+[**textmode.js v0.1.2**](../../../README.md)
 
 ***
 
-[textmode.js](../../../README.md) / ExportOptions
+[textmode.js](../../../README.md) / export
 
-# ExportOptions
+# export
 
 All types related to export options for different formats.
 

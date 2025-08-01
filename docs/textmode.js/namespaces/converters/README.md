@@ -1,10 +1,10 @@
-[**textmode.js v0.1.1**](../../../README.md)
+[**textmode.js v0.1.2**](../../../README.md)
 
 ***
 
-[textmode.js](../../../README.md) / TextmodeConverters
+[textmode.js](../../../README.md) / converters
 
-# TextmodeConverters
+# converters
 
 Contains all converters that can be added to a rendering pipeline to shape the textmode output.
 
