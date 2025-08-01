@@ -193,6 +193,94 @@ canvas {
   display: block;
 }
 
+/* Video-specific enhancements */
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.video-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.video-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.control-btn {
+  background: var(--bg-color);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+}
+
+.control-btn:hover {
+  border-color: var(--text-primary);
+  background: var(--hover-color);
+}
+
+.control-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.status-display {
+  margin: 1rem 0;
+  padding: 0.8rem;
+  border: 1px solid var(--border-color);
+  background: var(--hover-color);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-family: inherit;
+}
+
+.info-section {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  background: var(--hover-color);
+}
+
+.info-section h3 {
+  margin: 0 0 1rem 0;
+  color: var(--text-primary);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: normal;
+}
+
+.info-section p {
+  margin: 0.5rem 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.info-section ul, .info-section ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.info-section li {
+  margin: 0.3rem 0;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 1rem 0.5rem;
