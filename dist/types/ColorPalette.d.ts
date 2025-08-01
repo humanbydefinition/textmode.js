@@ -1,5 +1,5 @@
 import { Framebuffer } from './rendering/webgl/Framebuffer';
-import type { Renderer } from './rendering/webgl/Renderer';
+import type { GLRenderer } from './rendering/webgl/Renderer';
 /**
  * A 1D color palette stored in a framebuffer that is used to pass colors to shaders.
  *
@@ -17,7 +17,7 @@ export declare class ColorPalette {
      * @param renderer The renderer instance.
      * @param colors The RGB colors to store as [r, g, b] arrays where values are 0-255.
      */
-    constructor(renderer: Renderer, colors: [number, number, number][]);
+    constructor(renderer: GLRenderer, colors: [number, number, number][]);
     /**
      * Update the framebuffer with the currently selected colors.
      */

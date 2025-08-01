@@ -60,30 +60,39 @@ export interface FramebufferData {
  */
 export type SVGExportOptions = {
     /**
-     * The filename to save the SVG file as. If not provided, a default filename is used.
+     * The filename to save the SVG file as.
+     *
+     * If not provided, a default filename is used.
      */
     filename?: string;
     /**
      * Whether to include cell background rectangles in the SVG output.
-     * When false, only the character paths are included, creating a more compact SVG.
+     *
+     * When `false`, only the character paths are included, creating a more compact SVG.
+     *
      * Default is `true`.
      */
     includeBackgroundRectangles?: boolean;
     /**
-     * The drawing mode for ASCII characters (`'fill'` or `'stroke'`).
+     * The drawing mode for ASCII characters.
+     *
      * When set to `'fill'`, characters are rendered as filled shapes.
+     *
      * When set to `'stroke'`, characters are rendered as outlines.
+     *
      * Default is `'fill'`.
      */
     drawMode?: 'fill' | 'stroke';
     /**
      * The stroke width to use when drawMode is set to `'stroke'`.
+     *
      * Default is `1.0`.
      */
     strokeWidth?: number;
     /**
-     * Background color for the SVG as RGBA array [r, g, b, a].
-     * Default is transparent black [0, 0, 0, 0].
+     * Background color for the SVG as RGBA array `[r, g, b, a]`.
+     *
+     * Default is transparent black `[0, 0, 0, 0]`.
      */
     backgroundColor?: [number, number, number, number];
 };

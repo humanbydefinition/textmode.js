@@ -1,4 +1,4 @@
-import type { Renderer } from '../../rendering/webgl/Renderer.ts';
+import type { GLRenderer } from '../../rendering/webgl/Renderer.ts';
 import type { Framebuffer } from '../../rendering/webgl/Framebuffer.ts';
 import type { TextmodeCharacter, TyprFont } from './types.ts';
 /**
@@ -27,13 +27,14 @@ export declare class TextmodeFont {
      * @param fontSize Font size to use for the texture atlas
      * @ignore
      */
-    constructor(renderer: Renderer, fontSize?: number);
+    constructor(renderer: GLRenderer, fontSize?: number);
     /**
      * Initializes the font manager by loading the font and creating the texture atlas.
+     * @param fontSource Optional URL to load a custom font. If not provided, uses embedded font (full builds only).
      * @returns Promise that resolves when initialization is complete
      * @ignore
      */
-    initialize(): Promise<void>;
+    initialize(fontSource?: string): Promise<void>;
     /**
      * Sets the font size for rendering.
      * @param size The font size to set. If undefined, returns the current font size.

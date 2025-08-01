@@ -1,6 +1,6 @@
 import { ColorPalette } from "../../ColorPalette";
 import type { TextmodeFont } from "../font";
-import type { Renderer } from "../../rendering/webgl/Renderer";
+import type { GLRenderer } from "../../rendering/webgl/Renderer";
 import type { TextmodeGrid } from "../Grid";
 import { TextmodeConverter } from "./Converter";
 import type { Framebuffer } from "../../rendering/webgl/Framebuffer";
@@ -9,7 +9,7 @@ import type { Framebuffer } from "../../rendering/webgl/Framebuffer";
  */
 export declare abstract class TextmodeFeatureConverter extends TextmodeConverter {
     protected palette: ColorPalette;
-    protected constructor(renderer: Renderer, fontManager: TextmodeFont, grid: TextmodeGrid, options?: any);
+    protected constructor(renderer: GLRenderer, fontManager: TextmodeFont, grid: TextmodeGrid, options?: any);
     /**
      * Converts the source framebuffer to the target format.
      * @param sourceFramebuffer The source framebuffer to convert.

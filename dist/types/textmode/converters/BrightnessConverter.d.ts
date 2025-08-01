@@ -1,4 +1,4 @@
-import { Renderer } from "../../rendering/webgl/Renderer";
+import { GLRenderer } from "../../rendering/webgl/Renderer";
 import { Framebuffer } from "../../rendering/webgl/Framebuffer";
 import { TextmodeFont } from "../font";
 import { TextmodeGrid } from "../Grid";
@@ -44,7 +44,7 @@ export declare class TextmodeBrightnessConverter extends TextmodeFeatureConverte
      * @param grid Grid manager for layout and positioning
      * @ignore
      */
-    constructor(renderer: Renderer, fontManager: TextmodeFont, grid: TextmodeGrid);
+    constructor(renderer: GLRenderer, fontManager: TextmodeFont, grid: TextmodeGrid);
     convert(framebuffer: Framebuffer): void;
     resize(): void;
     /**

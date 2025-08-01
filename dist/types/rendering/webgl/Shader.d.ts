@@ -19,6 +19,10 @@ export declare class Shader {
      * Set a single uniform value with automatic texture unit management
      */
     setUniform(name: string, value: any): void;
+    /**
+     * Get uniform info to determine the correct WebGL type
+     */
+    private getUniformInfo;
     private getNextTextureUnit;
     /**
      * Reset texture unit counter (useful when starting a new frame)

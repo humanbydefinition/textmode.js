@@ -1,5 +1,5 @@
 import type { TextmodeCharacter, GlyphDimensions } from './types.ts';
-import type { Renderer } from '../../rendering/webgl/Renderer.ts';
+import type { GLRenderer } from '../../rendering/webgl/Renderer.ts';
 import type { Framebuffer } from '../../rendering/webgl/Framebuffer.ts';
 /**
  * Handles creation of texture atlases for font rendering.
@@ -13,7 +13,7 @@ export declare class TextureAtlasCreation {
      * Creates a new TextureAtlasCreation instance.
      * @param renderer The WebGL renderer instance
      */
-    constructor(renderer: Renderer);
+    constructor(renderer: GLRenderer);
     /**
      * Creates a texture atlas from the given characters.
      * @param characters Array of TextmodeCharacter objects

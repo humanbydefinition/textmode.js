@@ -10,7 +10,7 @@ export declare enum BlendMode {
 /**
  * Core WebGL renderer that manages the WebGL context and provides high-level rendering operations
  */
-export declare class Renderer {
+export declare class GLRenderer {
     private gl;
     private imageShader;
     private solidColorShader;
@@ -24,9 +24,11 @@ export declare class Renderer {
      */
     shader(shader: Shader): void;
     /**
-     * Set fill color for subsequent shape drawing (p5.js-like API)
-     * This only stores the color state and sets the fill mode.
-     * No WebGL operations should happen here.
+     * Sets the fill color for subsequent rendering operations
+     * @param r Red component (0-255)
+     * @param g Green component (0-255, optional)
+     * @param b Blue component (0-255, optional)
+     * @param a Alpha component (0-255, optional)
      */
     fill(r: number, g?: number, b?: number, a?: number): void;
     /**

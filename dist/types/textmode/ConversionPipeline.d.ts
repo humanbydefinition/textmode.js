@@ -1,5 +1,5 @@
 import type { Framebuffer } from "../rendering/webgl/Framebuffer";
-import type { Renderer } from "../rendering/webgl/Renderer";
+import type { GLRenderer } from "../rendering/webgl/Renderer";
 import { TextmodeConverter } from "./converters";
 import type { TextmodeFont } from "./font";
 import type { TextmodeGrid } from "./Grid";
@@ -29,7 +29,7 @@ export declare class TextmodeConversionPipeline {
      * @param grid The textmode grid to use.
      * @ignore
      */
-    constructor(renderer: Renderer, font: TextmodeFont, grid: TextmodeGrid);
+    constructor(renderer: GLRenderer, font: TextmodeFont, grid: TextmodeGrid);
     /**
      * Performs the conversion process by applying all converters in the pipeline.
      * @param sourceFramebuffer The source framebuffer to convert.
@@ -37,9 +37,9 @@ export declare class TextmodeConversionPipeline {
      */
     render(sourceFramebuffer: Framebuffer): void;
     /**
-     * Retrieves a converter by name. Useful for accessing the pre-defined converters in the pipeline.
+     * Get a specific converter by name.
      * @param name The name of the converter to retrieve.
-     * @returns The requested {@link TextmodeConverter} instance or `void` if not found.
+     * @returns The requested `TextmodeConverter` instance.
      */
     get(name: string): TextmodeConverter | void;
     /**
@@ -64,7 +64,19 @@ export declare class TextmodeConversionPipeline {
      * @ignore
      */
     resize(): void;
+    /**
+     * Checks if any converter in the pipeline is enabled.
+     * @returns `true` if any converter is enabled, `false` otherwise.
+     */
     hasEnabledConverters(): boolean;
+    /**
+     * Disables all converters in the pipeline.
+     */
+    disable(): void;
+    /**
+     * Enables all converters in the pipeline.
+     */
+    enable(): void;
     /** Returns the character framebuffer containing the combined result of all converters. @ignore */
     get characterFramebuffer(): Framebuffer;
     /** Returns the primary color framebuffer containing the combined result of all converters. @ignore */

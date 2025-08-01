@@ -5,6 +5,10 @@ export interface FramebufferOptions {
     type?: 'unsigned_byte' | 'float';
 }
 /**
+ * Supported media sources for framebuffer textures
+ */
+export type MediaSource = HTMLCanvasElement | HTMLVideoElement;
+/**
  * Wrapper for WebGL framebuffer with automatic texture creation.
  * Can also be used as a standalone texture (without render target functionality).
  */
@@ -21,9 +25,9 @@ export declare class Framebuffer {
     private updateTextureSize;
     private attachTexture;
     /**
-     * Update the framebuffer texture with canvas content
+     * Update the framebuffer texture with canvas or video content
      */
-    update(canvas: HTMLCanvasElement): void;
+    update(source: MediaSource): void;
     /**
      * Update the framebuffer texture with pixel data
      */

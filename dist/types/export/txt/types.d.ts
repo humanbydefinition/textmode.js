@@ -6,22 +6,27 @@
  */
 export type TXTExportOptions = {
     /**
-     * The filename to save the TXT file as. If not provided, a default filename is used.
+     * The filename to save the TXT file as.
+     *
+     * If not provided, a default filename is used.
      */
     filename?: string;
     /**
      * Whether to preserve trailing spaces on each line.
-     * When false, trailing spaces are trimmed from each line.
+     *
+     * When `false`, trailing spaces are trimmed from each line.
+     *
      * Default is `false`.
      */
     preserveTrailingSpaces?: boolean;
     /**
-     * The line ending format to use (`'lf'` for Unix/Linux, `'crlf'` for Windows).
+     * The line ending format to use *(`'lf'` for Unix/Linux, `'crlf'` for Windows)*.
+     *
      * Default is `'lf'`.
      */
     lineEnding?: 'lf' | 'crlf';
     /**
-     * Character to use for empty cells (when no character is rendered).
+     * Character to use for empty cells *(when no character is rendered)*.
      * Default is a space `' '`.
      */
     emptyCharacter?: string;

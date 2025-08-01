@@ -1,9 +1,9 @@
-var k = Object.defineProperty;
-var N = (n, A, e) => A in n ? k(n, A, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[A] = e;
+var $ = Object.defineProperty;
+var N = (n, A, e) => A in n ? $(n, A, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[A] = e;
 var o = (n, A, e) => N(n, typeof A != "symbol" ? A + "" : A, e);
-class f extends Error {
+class D extends Error {
   constructor(e, t, r = {}) {
-    const i = f.createFormattedMessage(e, r);
+    const i = D.createFormattedMessage(e, r);
     super(i);
     o(this, "originalError");
     o(this, "context");
@@ -19,7 +19,7 @@ class f extends Error {
 
 📋 Context:`;
       for (const [i, a] of Object.entries(t)) {
-        const s = f.formatValue(a);
+        const s = D.formatValue(a);
         r += `
   - ${i}: ${s}`;
       }
@@ -38,16 +38,16 @@ class f extends Error {
     if (typeof e == "string") return `"${e}"`;
     if (typeof e == "number" || typeof e == "boolean") return String(e);
     if (Array.isArray(e))
-      return e.length === 0 ? "[]" : e.length <= 5 ? `[${e.map((t) => f.formatValue(t)).join(", ")}]` : `[${e.slice(0, 3).map((t) => f.formatValue(t)).join(", ")}, ... +${e.length - 3} more]`;
+      return e.length === 0 ? "[]" : e.length <= 5 ? `[${e.map((t) => D.formatValue(t)).join(", ")}]` : `[${e.slice(0, 3).map((t) => D.formatValue(t)).join(", ")}, ... +${e.length - 3} more]`;
     if (typeof e == "object") {
       const t = Object.keys(e);
-      return t.length === 0 ? "{}" : t.length <= 3 ? `{ ${t.map((a) => `${a}: ${f.formatValue(e[a])}`).join(", ")} }` : `{ ${t.slice(0, 2).map((i) => `${i}: ${f.formatValue(e[i])}`).join(", ")}, ... +${t.length - 2} more }`;
+      return t.length === 0 ? "{}" : t.length <= 3 ? `{ ${t.map((a) => `${a}: ${D.formatValue(e[a])}`).join(", ")} }` : `{ ${t.slice(0, 2).map((i) => `${i}: ${D.formatValue(e[i])}`).join(", ")}, ... +${t.length - 2} more }`;
     }
     return String(e);
   }
 }
 var X = /* @__PURE__ */ ((n) => (n[n.SILENT = 0] = "SILENT", n[n.WARNING = 1] = "WARNING", n[n.ERROR = 2] = "ERROR", n[n.THROW = 3] = "THROW", n))(X || {});
-const v = class v {
+const x = class x {
   constructor() {
     o(this, "_options", {
       globalLevel: 3
@@ -55,7 +55,7 @@ const v = class v {
     });
   }
   static getInstance() {
-    return v._instance || (v._instance = new v()), v._instance;
+    return x._instance || (x._instance = new x()), x._instance;
   }
   /**
    * Handle an error based on the configured settings
@@ -71,15 +71,15 @@ const v = class v {
         return console.group(
           `%c${r} Oops! (╯°□°)╯︵ Something went wrong in your code.`,
           "color: #f44336; font-weight: bold; background: #ffebee; padding: 2px 6px; border-radius: 3px;"
-        ), console.warn(f.createFormattedMessage(A, e)), console.groupEnd(), !1;
+        ), console.warn(D.createFormattedMessage(A, e)), console.groupEnd(), !1;
       case 2:
         return console.group(
           `%c${r} Oops! (╯°□°)╯︵ Something went wrong in your code.`,
           "color: #f44336; font-weight: bold; background: #ffebee; padding: 2px 6px; border-radius: 3px;"
-        ), console.error(f.createFormattedMessage(A, e)), console.groupEnd(), !1;
+        ), console.error(D.createFormattedMessage(A, e)), console.groupEnd(), !1;
       case 3:
       default:
-        const i = new f(A, t, e);
+        const i = new D(A, t, e);
         throw console.group(
           `%c${r} Oops! (╯°□°)╯︵ Something went wrong in your code.`,
           "color: #d32f2f; font-weight: bold; background: #ffcdd2; padding: 2px 6px; border-radius: 3px;"
@@ -103,9 +103,9 @@ const v = class v {
     this._options.globalLevel = A;
   }
 };
-o(v, "_instance", null);
-let T = v;
-const C = T.getInstance();
+o(x, "_instance", null);
+let G = x;
+const u = G.getInstance();
 class W {
   constructor(A, e, t = e, r = {}) {
     o(this, "gl");
@@ -139,11 +139,11 @@ class W {
     A.bindFramebuffer(A.FRAMEBUFFER, this._framebuffer), A.framebufferTexture2D(A.FRAMEBUFFER, A.COLOR_ATTACHMENT0, A.TEXTURE_2D, this._texture, 0), A.bindFramebuffer(A.FRAMEBUFFER, null);
   }
   /**
-   * Update the framebuffer texture with canvas content
+   * Update the framebuffer texture with canvas or video content
    */
   update(A) {
     const { gl: e } = this;
-    e.bindTexture(e.TEXTURE_2D, this._texture), e.texImage2D(e.TEXTURE_2D, 0, e.RGBA, e.RGBA, e.UNSIGNED_BYTE, A), e.bindTexture(e.TEXTURE_2D, null);
+    A instanceof HTMLVideoElement && A.readyState < 2 || (e.bindTexture(e.TEXTURE_2D, this._texture), e.texImage2D(e.TEXTURE_2D, 0, e.RGBA, e.RGBA, e.UNSIGNED_BYTE, A), e.bindTexture(e.TEXTURE_2D, null));
   }
   /**
    * Update the framebuffer texture with pixel data
@@ -232,11 +232,11 @@ class O {
     this.gl = A;
     const s = a.textured ?? !0;
     this.renderMode = s ? "textured" : "solid", this.bytesPerVertex = s ? 16 : 8;
-    const B = A.getParameter(A.VIEWPORT), g = B[2], Q = B[3], l = A.getParameter(A.FRAMEBUFFER_BINDING) !== null, h = e / g * 2 - 1, u = (e + r) / g * 2 - 1;
-    let d, c;
-    l ? (d = t / Q * 2 - 1, c = (t + i) / Q * 2 - 1) : (d = 1 - t / Q * 2, c = 1 - (t + i) / Q * 2);
-    const D = this.generateVertices(h, d, u, c, s);
-    this.vertexBuffer = A.createBuffer(), A.bindBuffer(A.ARRAY_BUFFER, this.vertexBuffer), A.bufferData(A.ARRAY_BUFFER, D, A.STATIC_DRAW);
+    const B = A.getParameter(A.VIEWPORT), g = B[2], E = B[3], l = A.getParameter(A.FRAMEBUFFER_BINDING) !== null, h = e / g * 2 - 1, d = (e + r) / g * 2 - 1;
+    let C, c;
+    l ? (C = t / E * 2 - 1, c = (t + i) / E * 2 - 1) : (C = 1 - t / E * 2, c = 1 - (t + i) / E * 2);
+    const f = this.generateVertices(h, C, d, c, s);
+    this.vertexBuffer = A.createBuffer(), A.bindBuffer(A.ARRAY_BUFFER, this.vertexBuffer), A.bufferData(A.ARRAY_BUFFER, f, A.STATIC_DRAW);
   }
   /**
    * Generate vertex data for the rectangle
@@ -362,32 +362,61 @@ class w {
       console.warn(`Uniform '${A}' not found in shader`);
       return;
     }
+    const r = this.getUniformInfo(A);
     if (typeof e == "number")
-      this.gl.uniform1f(t, e);
+      r && r.type === this.gl.INT ? this.gl.uniform1i(t, Math.floor(e)) : this.gl.uniform1f(t, e);
     else if (typeof e == "boolean")
       this.gl.uniform1i(t, e ? 1 : 0);
     else if (Array.isArray(e))
-      switch (e.length) {
-        case 2:
-          this.gl.uniform2f(t, e[0], e[1]);
-          break;
-        case 3:
-          this.gl.uniform3f(t, e[0], e[1], e[2]);
-          break;
-        case 4:
-          this.gl.uniform4f(t, e[0], e[1], e[2], e[3]);
-          break;
-        default:
-          console.warn(`Unsupported array length ${e.length} for uniform '${A}'`);
-      }
+      if (r && (r.type === this.gl.INT_VEC2 || r.type === this.gl.INT_VEC3 || r.type === this.gl.INT_VEC4)) {
+        const i = e.map((a) => Math.floor(a));
+        switch (i.length) {
+          case 2:
+            this.gl.uniform2iv(t, i);
+            break;
+          case 3:
+            this.gl.uniform3iv(t, i);
+            break;
+          case 4:
+            this.gl.uniform4iv(t, i);
+            break;
+          default:
+            console.warn(`Unsupported array length ${i.length} for uniform '${A}'`);
+        }
+      } else
+        switch (e.length) {
+          case 2:
+            this.gl.uniform2f(t, e[0], e[1]);
+            break;
+          case 3:
+            this.gl.uniform3f(t, e[0], e[1], e[2]);
+            break;
+          case 4:
+            this.gl.uniform4f(t, e[0], e[1], e[2], e[3]);
+            break;
+          default:
+            console.warn(`Unsupported array length ${e.length} for uniform '${A}'`);
+        }
     else if (e instanceof WebGLTexture) {
-      const r = this.getNextTextureUnit();
-      this.gl.uniform1i(t, r), this.gl.activeTexture(this.gl.TEXTURE0 + r), this.gl.bindTexture(this.gl.TEXTURE_2D, e);
+      const i = this.getNextTextureUnit();
+      this.gl.uniform1i(t, i), this.gl.activeTexture(this.gl.TEXTURE0 + i), this.gl.bindTexture(this.gl.TEXTURE_2D, e);
     } else if (e && typeof e == "object" && "texture" in e) {
-      const r = this.getNextTextureUnit();
-      this.gl.uniform1i(t, r), this.gl.activeTexture(this.gl.TEXTURE0 + r), this.gl.bindTexture(this.gl.TEXTURE_2D, e.texture);
+      const i = this.getNextTextureUnit();
+      this.gl.uniform1i(t, i), this.gl.activeTexture(this.gl.TEXTURE0 + i), this.gl.bindTexture(this.gl.TEXTURE_2D, e.texture);
     } else
       console.warn(`Unsupported uniform type for '${A}':`, typeof e);
+  }
+  /**
+   * Get uniform info to determine the correct WebGL type
+   */
+  getUniformInfo(A) {
+    const e = this.gl.getProgramParameter(this.program, this.gl.ACTIVE_UNIFORMS);
+    for (let t = 0; t < e; t++) {
+      const r = this.gl.getActiveUniform(this.program, t);
+      if (r && r.name === A)
+        return r;
+    }
+    return null;
   }
   getNextTextureUnit() {
     return this.textureUnitCounter++;
@@ -419,9 +448,11 @@ class j {
     this.currentShader = A, A.use();
   }
   /**
-   * Set fill color for subsequent shape drawing (p5.js-like API)
-   * This only stores the color state and sets the fill mode.
-   * No WebGL operations should happen here.
+   * Sets the fill color for subsequent rendering operations
+   * @param r Red component (0-255)
+   * @param g Green component (0-255, optional)
+   * @param b Blue component (0-255, optional)
+   * @param a Alpha component (0-255, optional)
    */
   fill(A, e, t, r) {
     if (this.fillMode = !0, e === void 0 && t === void 0 && r === void 0) {
@@ -472,8 +503,8 @@ class j {
   /**
    * Fill the current framebuffer with a solid color (p5.js-like API)
    */
-  background(A, e = A, t = A, r = 1) {
-    this.clear(A / 255, e / 255, t / 255, r);
+  background(A, e = A, t = A, r = 255) {
+    this.clear(A / 255, e / 255, t / 255, r / 255);
   }
   /**
    * Clear the current framebuffer
@@ -518,23 +549,23 @@ class j {
     ), this.shader(this.imageShader), this.setUniform("u_texture", A.texture), this.rect(e, t, r ?? A.width, i ?? A.height), this.setBlendMode(a);
   }
 }
-var E = {};
-E.parse = function(n) {
-  var A = E.B, e = function(h, u, d, c) {
-    var D = E.T, I = {
-      cmap: D.cmap,
-      head: D.head,
-      hhea: D.hhea,
-      maxp: D.maxp,
-      hmtx: D.hmtx,
-      loca: D.loca,
-      glyf: D.glyf
-    }, P = { _data: h, _index: u, _offset: d };
+var Q = {};
+Q.parse = function(n) {
+  var A = Q.B, e = function(h, d, C, c) {
+    var f = Q.T, I = {
+      cmap: f.cmap,
+      head: f.head,
+      hhea: f.hhea,
+      maxp: f.maxp,
+      hmtx: f.hmtx,
+      loca: f.loca,
+      glyf: f.glyf
+    }, P = { _data: h, _index: d, _offset: C };
     for (var m in I) {
-      var F = E.findTable(h, m, d);
+      var F = Q.findTable(h, m, C);
       if (F) {
-        var _ = F[0], x = c[_];
-        x == null && (x = I[m].parseTab(h, _, F[1], P)), P[m] = c[_] = x;
+        var _ = F[0], v = c[_];
+        v == null && (v = I[m].parseTab(h, _, F[1], P)), P[m] = c[_] = v;
       }
     }
     return P;
@@ -545,16 +576,16 @@ E.parse = function(n) {
     var s = A.readUint(t, a);
     a += 4;
     for (var B = [], g = 0; g < s; g++) {
-      var Q = A.readUint(t, a);
-      a += 4, B.push(e(t, g, Q, r));
+      var E = A.readUint(t, a);
+      a += 4, B.push(e(t, g, E, r));
     }
     return B;
   }
   var l = e(t, 0, 0, r);
   return [l];
 };
-E.findTable = function(n, A, e) {
-  for (var t = E.B, r = t.readUshort(n, e + 4), i = e + 12, a = 0; a < r; a++) {
+Q.findTable = function(n, A, e) {
+  for (var t = Q.B, r = t.readUshort(n, e + 4), i = e + 12, a = 0; a < r; a++) {
     var s = t.readASCII(n, i, 4);
     t.readUint(n, i + 4);
     var B = t.readUint(n, i + 8), g = t.readUint(n, i + 12);
@@ -563,41 +594,41 @@ E.findTable = function(n, A, e) {
   }
   return null;
 };
-E.T = {};
-E.B = {
+Q.T = {};
+Q.B = {
   readFixed: function(n, A) {
     return (n[A] << 8 | n[A + 1]) + (n[A + 2] << 8 | n[A + 3]) / (256 * 256 + 4);
   },
   readF2dot14: function(n, A) {
-    var e = E.B.readShort(n, A);
+    var e = Q.B.readShort(n, A);
     return e / 16384;
   },
   readInt: function(n, A) {
-    var e = E.B.t.uint8;
-    return e[0] = n[A + 3], e[1] = n[A + 2], e[2] = n[A + 1], e[3] = n[A], E.B.t.int32[0];
+    var e = Q.B.t.uint8;
+    return e[0] = n[A + 3], e[1] = n[A + 2], e[2] = n[A + 1], e[3] = n[A], Q.B.t.int32[0];
   },
   readInt8: function(n, A) {
-    var e = E.B.t.uint8;
-    return e[0] = n[A], E.B.t.int8[0];
+    var e = Q.B.t.uint8;
+    return e[0] = n[A], Q.B.t.int8[0];
   },
   readShort: function(n, A) {
-    var e = E.B.t.uint16;
-    return e[0] = n[A] << 8 | n[A + 1], E.B.t.int16[0];
+    var e = Q.B.t.uint16;
+    return e[0] = n[A] << 8 | n[A + 1], Q.B.t.int16[0];
   },
   readUshort: function(n, A) {
     return n[A] << 8 | n[A + 1];
   },
   readUshorts: function(n, A, e) {
     for (var t = [], r = 0; r < e; r++)
-      t.push(E.B.readUshort(n, A + r * 2));
+      t.push(Q.B.readUshort(n, A + r * 2));
     return t;
   },
   readUint: function(n, A) {
-    var e = E.B.t.uint8;
-    return e[3] = n[A], e[2] = n[A + 1], e[1] = n[A + 2], e[0] = n[A + 3], E.B.t.uint32[0];
+    var e = Q.B.t.uint8;
+    return e[3] = n[A], e[2] = n[A + 1], e[1] = n[A + 2], e[0] = n[A + 3], Q.B.t.uint32[0];
   },
   readUint64: function(n, A) {
-    return E.B.readUint(n, A) * 4294967296 + E.B.readUint(n, A + 4);
+    return Q.B.readUint(n, A) * 4294967296 + Q.B.readUint(n, A + 4);
   },
   readASCII: function(n, A, e) {
     for (var t = "", r = 0; r < e; r++) t += String.fromCharCode(n[A + r]);
@@ -620,35 +651,35 @@ E.B = {
     };
   }()
 };
-E.T.cmap = {
+Q.T.cmap = {
   parseTab: function(n, A, e) {
     var t = { tables: [], ids: {}, off: A };
     n = new Uint8Array(n.buffer, A, e), A = 0;
-    var r = E.B, i = r.readUshort, a = E.T.cmap;
+    var r = Q.B, i = r.readUshort, a = Q.T.cmap;
     i(n, A), A += 2;
     var s = i(n, A);
     A += 2;
     for (var B = [], g = 0; g < s; g++) {
-      var Q = i(n, A);
+      var E = i(n, A);
       A += 2;
       var l = i(n, A);
       A += 2;
       var h = r.readUint(n, A);
       A += 4;
-      var u = "p" + Q + "e" + l, d = B.indexOf(h);
-      if (d == -1) {
-        d = t.tables.length;
+      var d = "p" + E + "e" + l, C = B.indexOf(h);
+      if (C == -1) {
+        C = t.tables.length;
         var c = {};
         B.push(h);
-        var D = c.format = i(n, h);
-        D == 4 ? c = a.parse4(n, h, c) : D == 12 && (c = a.parse12(n, h, c)), t.tables.push(c);
+        var f = c.format = i(n, h);
+        f == 4 ? c = a.parse4(n, h, c) : f == 12 && (c = a.parse12(n, h, c)), t.tables.push(c);
       }
-      t.ids[u] != null && console.log("multiple tables for one platform+encoding: " + u), t.ids[u] = d;
+      t.ids[d] != null && console.log("multiple tables for one platform+encoding: " + d), t.ids[d] = C;
     }
     return t;
   },
   parse4: function(n, A, e) {
-    var t = E.B, r = t.readUshort, i = t.readUshorts, a = A;
+    var t = Q.B, r = t.readUshort, i = t.readUshorts, a = A;
     A += 2;
     var s = r(n, A);
     A += 2, r(n, A), A += 2;
@@ -656,12 +687,12 @@ E.T.cmap = {
     A += 2;
     var g = B >>> 1;
     e.searchRange = r(n, A), A += 2, e.entrySelector = r(n, A), A += 2, e.rangeShift = r(n, A), A += 2, e.endCount = i(n, A, g), A += g * 2, A += 2, e.startCount = i(n, A, g), A += g * 2, e.idDelta = [];
-    for (var Q = 0; Q < g; Q++)
+    for (var E = 0; E < g; E++)
       e.idDelta.push(t.readShort(n, A)), A += 2;
     return e.idRangeOffset = i(n, A, g), A += g * 2, e.glyphIdArray = i(n, A, a + s - A >> 1), e;
   },
   parse12: function(n, A, e) {
-    var t = E.B, r = t.readUint;
+    var t = Q.B, r = t.readUint;
     A += 4, r(n, A), A += 4, r(n, A), A += 4;
     var i = r(n, A) * 3;
     A += 4;
@@ -670,15 +701,15 @@ E.T.cmap = {
     return e;
   }
 };
-E.T.head = {
+Q.T.head = {
   parseTab: function(n, A, e) {
-    var t = E.B, r = {};
+    var t = Q.B, r = {};
     return t.readFixed(n, A), A += 4, r.fontRevision = t.readFixed(n, A), A += 4, t.readUint(n, A), A += 4, t.readUint(n, A), A += 4, r.flags = t.readUshort(n, A), A += 2, r.unitsPerEm = t.readUshort(n, A), A += 2, r.created = t.readUint64(n, A), A += 8, r.modified = t.readUint64(n, A), A += 8, r.xMin = t.readShort(n, A), A += 2, r.yMin = t.readShort(n, A), A += 2, r.xMax = t.readShort(n, A), A += 2, r.yMax = t.readShort(n, A), A += 2, r.macStyle = t.readUshort(n, A), A += 2, r.lowestRecPPEM = t.readUshort(n, A), A += 2, r.fontDirectionHint = t.readShort(n, A), A += 2, r.indexToLocFormat = t.readShort(n, A), A += 2, r.glyphDataFormat = t.readShort(n, A), A += 2, r;
   }
 };
-E.T.hhea = {
+Q.T.hhea = {
   parseTab: function(n, A, e) {
-    var t = E.B, r = {};
+    var t = Q.B, r = {};
     t.readFixed(n, A), A += 4;
     for (var i = [
       "ascender",
@@ -704,38 +735,38 @@ E.T.hhea = {
     return r;
   }
 };
-E.T.hmtx = {
+Q.T.hmtx = {
   parseTab: function(n, A, e, t) {
-    for (var r = E.B, i = [], a = [], s = t.maxp.numGlyphs, B = t.hhea.numberOfHMetrics, g = 0, Q = 0, l = 0; l < B; )
-      g = r.readUshort(n, A + (l << 2)), Q = r.readShort(n, A + (l << 2) + 2), i.push(g), a.push(Q), l++;
+    for (var r = Q.B, i = [], a = [], s = t.maxp.numGlyphs, B = t.hhea.numberOfHMetrics, g = 0, E = 0, l = 0; l < B; )
+      g = r.readUshort(n, A + (l << 2)), E = r.readShort(n, A + (l << 2) + 2), i.push(g), a.push(E), l++;
     for (; l < s; )
-      i.push(g), a.push(Q), l++;
+      i.push(g), a.push(E), l++;
     return { aWidth: i, lsBearing: a };
   }
 };
-E.T.maxp = {
+Q.T.maxp = {
   parseTab: function(n, A, e) {
-    var t = E.B, r = t.readUshort, i = {};
+    var t = Q.B, r = t.readUshort, i = {};
     return t.readUint(n, A), A += 4, i.numGlyphs = r(n, A), A += 2, i;
   }
 };
-E.T.loca = {
+Q.T.loca = {
   parseTab: function(n, A, e, t) {
-    var r = E.B, i = [], a = t.head.indexToLocFormat, s = t.maxp.numGlyphs + 1;
+    var r = Q.B, i = [], a = t.head.indexToLocFormat, s = t.maxp.numGlyphs + 1;
     if (a == 0) for (var B = 0; B < s; B++) i.push(r.readUshort(n, A + (B << 1)) << 1);
     if (a == 1) for (var B = 0; B < s; B++) i.push(r.readUint(n, A + (B << 2)));
     return i;
   }
 };
-E.T.glyf = {
+Q.T.glyf = {
   parseTab: function(n, A, e, t) {
     for (var r = [], i = t.maxp.numGlyphs, a = 0; a < i; a++) r.push(null);
     return r;
   },
   _parseGlyf: function(n, A) {
-    var e = E.B, t = n._data, r = n.loca;
+    var e = Q.B, t = n._data, r = n.loca;
     if (r[A] == r[A + 1]) return null;
-    var i = E.findTable(t, "glyf", n._offset)[0] + r[A], a = {};
+    var i = Q.findTable(t, "glyf", n._offset)[0] + r[A], a = {};
     if (a.noc = e.readShort(t, i), i += 2, a.xMin = e.readShort(t, i), i += 2, a.yMin = e.readShort(t, i), i += 2, a.xMax = e.readShort(t, i), i += 2, a.yMax = e.readShort(t, i), i += 2, a.xMin >= a.xMax || a.yMin >= a.yMax) return null;
     if (a.noc > 0) {
       a.endPts = [];
@@ -747,32 +778,32 @@ E.T.glyf = {
       var g = a.endPts[a.noc - 1] + 1;
       a.flags = [];
       for (var s = 0; s < g; s++) {
-        var Q = t[i];
-        if (i++, a.flags.push(Q), Q & 8) {
+        var E = t[i];
+        if (i++, a.flags.push(E), E & 8) {
           var l = t[i];
           i++;
           for (var h = 0; h < l; h++)
-            a.flags.push(Q), s++;
+            a.flags.push(E), s++;
         }
       }
       a.xs = [];
       for (var s = 0; s < g; s++) {
-        var u = (a.flags[s] & 2) != 0, d = (a.flags[s] & 16) != 0;
-        u ? (a.xs.push(d ? t[i] : -t[i]), i++) : d ? a.xs.push(0) : (a.xs.push(e.readShort(t, i)), i += 2);
+        var d = (a.flags[s] & 2) != 0, C = (a.flags[s] & 16) != 0;
+        d ? (a.xs.push(C ? t[i] : -t[i]), i++) : C ? a.xs.push(0) : (a.xs.push(e.readShort(t, i)), i += 2);
       }
       a.ys = [];
       for (var s = 0; s < g; s++) {
-        var u = (a.flags[s] & 4) != 0, d = (a.flags[s] & 32) != 0;
-        u ? (a.ys.push(d ? t[i] : -t[i]), i++) : d ? a.ys.push(0) : (a.ys.push(e.readShort(t, i)), i += 2);
+        var d = (a.flags[s] & 4) != 0, C = (a.flags[s] & 32) != 0;
+        d ? (a.ys.push(C ? t[i] : -t[i]), i++) : C ? a.ys.push(0) : (a.ys.push(e.readShort(t, i)), i += 2);
       }
-      for (var c = 0, D = 0, s = 0; s < g; s++)
-        c += a.xs[s], D += a.ys[s], a.xs[s] = c, a.ys[s] = D;
+      for (var c = 0, f = 0, s = 0; s < g; s++)
+        c += a.xs[s], f += a.ys[s], a.xs[s] = c, a.ys[s] = f;
     } else
       a.parts = [];
     return a;
   }
 };
-typeof module < "u" && module.exports ? module.exports = E : typeof window < "u" && (window.Typr = E);
+typeof module < "u" && module.exports ? module.exports = Q : typeof window < "u" && (window.Typr = Q);
 const Z = `data:font/truetype;charset=utf-8;base64,AAEAAAAKAIAAAwAgT1MvMs+QEyQAAAEoAAAAYGNtYXAg7yVJAAAFjAAACSBnbHlmuHLTdAAAErQAAGi0aGVhZFvXdUwAAACsAAAANmhoZWELAQUCAAAA5AAAACRobXR4BACDgAAAAYgAAAQEbG9jYQAy54AAAA6sAAAECG1heHABIgCCAAABCAAAACBuYW1lVs/OSgAAe2gAAAOicG9zdABpADQAAH8MAAAAIAABAAAAAQAAzOWHqV8PPPUAAAQAAAAAAHxiGCcAAAAAfGIYJwAAAAAEAAQAAAAACAACAAEAAAAAAAEAAAQAAAAAAAQAAAAAAAcAAAEAAAAAAAAAAAAAAAAAAAEBAAEAAAEBAIAAIAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgQAAZAABQAEAgACAAAAAAACAAIAAAACAAAzAMwAAAAABAAAAAAAAACAAACLAABw4wAAAAAAAAAAWUFMLgBAACAmawQAAAAAAAQAAAAAAAFRAAAAAAMABAAAAAAgAAAEAAAABAAAAAQAAAAEAAGABAABAAQAAIAEAACABAAAgAQAAIAEAAGABAABAAQAAQAEAACABAABAAQAAIAEAACABAABAAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAABAAQAAIAEAAEABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAABAAQAAIAEAAEABAAAgAQAAIAEAAEABAAAgAQAAIAEAACABAAAgAQAAIAEAAEABAAAgAQAAIAEAAGABAAAgAQAAIAEAAGABAAAgAQAAIAEAACABAAAgAQAAIAEAAEABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAAAgAQAAIAEAACABAABgAQAAQAEAACABAAAAAQAAgAEAACABAAAgAQAAIAEAACABAACAAQAAAAEAAIABAABgAQAAgAEAACABAAAgAQAAAAEAACABAAAAAQAAAAEAAAABAAAAAQAAAAEAAIABAADAAQAAAAEAAAABAAAgAQAAYAEAAAABAAAAAQAAIAEAAAA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AIAAAACA/YAAgAAAAIAAAP8AAoABAAAA/4AAAP+A/4AAgAAAAIAAAP8AA4AAAP8AAAAAgAAAAIAAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAP+AAAD/gAAAAAAAAP8AAAAAgAAAAAAAAP+AAAD/gAAAAAAAAwCAAIAEAAQAABcAHQAjAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/4AAAACAAAAAgAAA/4AAAACAAAD9AAAA/4AAAACAAAD/gAAAAIAAgAAAAIAAAACAAAD/AAAAAQAAAP+AAAAEAAAA/4AAAP8AAAD/gAAAAIAAAP8AAAD/gAAA/4AAAACAAAABAAAAAIAAAAEAAAAAAP+AAAD/gAAAAQD+gP8AAAAAgAAAAIAAAAABAYACgAKABAAAAwAAAQEBAQGAAQAAAP8ABAAAAP6AAAAAAAABAQAAgAMABAAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQECAAEAAAD/gAAA/4AAAACAAAAAgAAA/wAAAP+AAAD/gAAAAIAAAACABAAAAP+AAAD/gAAA/oAAAP+AAAD/gAAAAIAAAACAAAABgAAAAIAAAAAAAAEBAACAAwAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEAAQAAAACAAAAAgAAA/4AAAP+AAAD/AAAAAIAAAACAAAD/gAAA/4AEAAAA/4AAAP+AAAD+gAAA/4AAAP+AAAAAgAAAAIAAAAGAAAAAgAAAAAAABQCAAYADgAQAAAMABwATABcAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAIAAAP+AAYAAgAAA/4D/AAEAAAABAAAA/wAAAP8AAAD/AAAAAQD/gACAAAD/gAGAAIAAAP+ABAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/gAAAAIAAAP+AAAAAAAABAQAAgAOAAwAACwAAAQEBAQEBAQEBAQEBAgAAgAAAAQAAAP8AAAD/gAAA/wAAAAEAAwAAAP8AAAD/gAAA/wAAAAEAAAAAgAAAAAAAAQCAAAACAAGAAAcAAAEBAQEBAQEBAQABAAAA/4AAAP8AAAAAgAGAAAD/AAAA/4AAAACAAAAAAAABAIABgAOAAgAAAwAAAQEBAQCAAwAAAP0AAgAAAP+AAAAAAAABAQAAgAIAAYAAAwAAAQEBAQEAAQAAAP8AAYAAAP8AAAAAAAABAIAAgAQAA4AAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAwABAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAA4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAwCAAIADgAQAAAsAEQAXAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/4AAAP4AAAD/gAAAAIAAgAAAAIAAAACAAAD/gAAA/4AAAAEAAAAEAAAA/4AAAP2AAAD/gAAAAIAAAAKAAAAAAP8AAAAAgAAAAID/AP+AAAD/AAAAAYAAAAABAIAAgAOABAAADQAAAQEBAQEBAQEBAQEBAQEBgAEAAAABAAAA/QAAAAEAAAD/AAAAAIAAAACABAAAAP0AAAD/gAAAAIAAAAGAAAAAgAAAAIAAAAABAIAAgAOABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAD/gAAA/4AAAP+AAAABgAAA/QAAAACAAAAAgAAAAIAAAACAAAD/AAAA/wAAAACABAAAAP+AAAD/AAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAABAAAA/wAAAAEAAAAAAAABAIAAgAOABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAD/gAAAAIAAAP+AAAD+AAAA/4AAAAEAAAABAAAA/wAAAAEAAAD/AAAA/wAAAACABAAAAP+AAAD/AAAA/4AAAP8AAAD/gAAAAIAAAACAAAD/gAAAAQAAAACAAAABAAAA/4AAAACAAAAAAAABAIAAgAOABAAAEQAAAQEBAQEBAQEBAQEBAQEBAQEBAYABAAAA/4AAAP+AAAABAAAAAQAAAP8AAAD+AAAAAIAAAACABAAAAP+AAAD/gAAA/wAAAAEAAAD9gAAAAQAAAAGAAAAAgAAAAAEAgACAA4AEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQCAAwAAAP4AAAABgAAAAIAAAP+AAAD+AAAA/4AAAAEAAAABAAAA/gAEAAAA/4AAAP8AAAD/gAAA/wAAAP+AAAAAgAAAAIAAAP+AAAABAAAAAAAAAgCAAIADgAQAABMAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP8AAAD/AAAAAYAAAACAAAD/gAAA/gAAAP+AAAAAgACAAAABAAAABAAAAP+AAAD/gAAAAIAAAP8AAAD/gAAA/wAAAP+AAAAAgAAAAoAAAP6A/wAAAAEAAAEAgACAA4AEAAAPAAABAQEBAQEBAQEBAQEBAQEBAIADAAAA/4AAAP+AAAD/AAAAAIAAAACAAAD+gAAA/4AEAAAA/oAAAP+AAAD+gAAAAYAAAACAAAABAAAA/4AAAAAAAAMAgACAA4AEAAATABcAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAD/gAAAAIAAAP+AAAD+AAAA/4AAAACAAAD/gAAAAIAAgAAAAQAAAP8AAAABAAAABAAAAP+AAAD/AAAA/4AAAP8AAAD/gAAAAIAAAAEAAAAAgAAAAQAAAAAA/wAAAAEA/oD/AAAAAQAAAAACAIAAgAOABAAACwAPAAABAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP8AAAD+gAAA/4AAAACAAIAAAAEAAAAEAAAA/4AAAP0AAAABAAAAAIAAAAGAAAAAAP6AAAABgAACAQABAAIAA4AAAwAHAAABAQEBAQEBAQEAAQAAAP8AAAABAAAA/wADgAAA/wAAAP+AAAD/AAAAAAIAgACAAgADgAADAAsAAAEBAQEBAQEBAQEBAQEAAQAAAP8AAAABAAAA/4AAAP8AAAAAgAOAAAD/AAAA/4AAAP8AAAD/gAAAAIAAAAABAQAAgAOABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQKAAQAAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACABAAAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAACAIABgAOAAwAAAwAHAAABAQEBAQEBAQCAAwAAAP0AAAADAAAA/QADAAAA/4AAAP+AAAD/gAAAAAEAgACAAwAEAAAbAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAIABAAAAAIAAAACAAAAAgAAA/4AAAP+AAAD/gAAA/wAAAACAAAAAgAAAAIAAAP+AAAD/gAAA/4AEAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAAAAAAIAgACAA4AEAAATABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAD/gAAA/4AAAP8AAAAAgAAAAIAAAP8AAAD/AAAAAIAAgAEAAAD/AAQAAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAA/4AAAACAAAD+AAAA/wAAAAACAIAAgAOABAAAEQAVAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP6AAAAAgAAA/wAAAAGAAAD+AAAA/4AAAACAAgAAgAAA/4AEAAAA/4AAAP6AAAABAAAAAIAAAP2AAAD/gAAAAIAAAAKAAAD+AAAA/4AAAAAAAAIAgACAA4AEAAAPABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAYABAAAAAIAAAACAAAD/AAAA/wAAAP8AAAAAgAAAAIAAAAAAAQAAAAQAAAD/gAAA/4AAAP2AAAABAAAA/wAAAAKAAAAAgAAA/4D/AAAAAQAAAwCAAIADgAQAAAsADwATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQCAAoAAAACAAAD/gAAAAIAAAP+AAAD9gAEAAAABAAAA/wAAAAEAAAAEAAAA/4AAAP8AAAD/gAAA/wAAAP+AAAADAP8AAAABAP6A/wAAAAEAAAAAAQCAAIADgAQAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP8AAAD/AAAAAQAAAAEAAAD/gAAA/gAAAP+AAAAAgAQAAAD/gAAA/4AAAACAAAD9gAAAAIAAAP+AAAD/gAAAAIAAAAKAAAAAAAACAIAAgAOABAAACwATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQCAAgAAAACAAAAAgAAA/4AAAP+AAAD+AAEAAAAAgAAAAIAAAP+AAAAEAAAA/4AAAP+AAAD+gAAA/4AAAP+AAAADAP2AAAAAgAAAAYAAAACAAAEAgACAA4AEAAAXAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/wAAAP8AAAABAAAA/wAAAAEAAAABAAAA/4AAAP4AAAD/gAAAAIAEAAAA/4AAAP+AAAAAgAAA/wAAAP+AAAD/AAAAAIAAAP+AAAD/gAAAAIAAAAKAAAAAAAABAIAAgAOABAAACQAAAQEBAQEBAQEBAQCAAwAAAP4AAAABAAAA/wAAAP8ABAAAAP+AAAD/AAAA/4AAAP6AAAAAAQCAAIADgAQAABUAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/wAAAP8AAAABAAAA/4AAAAGAAAD/gAAA/gAAAP+AAAAAgAQAAAD/gAAA/4AAAACAAAD9gAAAAQAAAACAAAD+gAAA/4AAAACAAAACgAAAAAEAgACAA4AEAAALAAABAQEBAQEBAQEBAQEAgAEAAAABAAAAAQAAAP8AAAD/AAAA/wAEAAAA/gAAAAIAAAD8gAAAAQAAAP8AAAAAAAABAIAAgAOABAAACwAAAQEBAQEBAQEBAQEBAIADAAAA/wAAAAEAAAD9AAAAAQAAAP8ABAAAAP+AAAD9gAAA/4AAAACAAAACgAAAAAAAAQCAAIAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEBAAMAAAD/gAAA/4AAAP4AAAD/gAAAAQAAAAEAAAD+gAQAAAD/gAAA/YAAAP+AAAAAgAAAAQAAAP8AAAACgAAAAAAAAQCAAIADgAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAEAAAAAgAAAAIAAAAEAAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/AAQAAAD/AAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAD/AAAAAAAAAQCAAIADgAQAAAUAAAEBAQEBAQCAAQAAAAIAAAD9AAQAAAD9AAAA/4AAAAABAIAAgAQABAAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAEAAAAAgAAAAIAAAACAAAABAAAA/wAAAP+AAAD/gAAA/4AAAP8ABAAAAP+AAAD/gAAAAIAAAACAAAD8gAAAAgAAAP+AAAAAgAAA/gAAAAAAAAEAgACABAAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQCAAQAAAACAAAAAgAAAAIAAAAEAAAD/AAAA/4AAAP+AAAD/gAAA/wAEAAAA/4AAAP+AAAD/gAAAAYAAAPyAAAABAAAAAIAAAACAAAD+AAAAAAAAAgCAAIADgAQAAAsADwAAAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAD/gAAA/gAAAP+AAAAAgACAAAABAAAABAAAAP+AAAD9gAAA/4AAAACAAAACgAAAAAD9gAAAAoAAAgCAAIADgAQAAAkADQAAAQEBAQEBAQEBAQEBAQEAgAKAAAAAgAAA/4AAAP6AAAD/AAEAAAABAAAABAAAAP+AAAD+gAAA/4AAAP8AAAADAP6AAAABgAAAAAIAgACABAAEAAAPABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAAAgAAA/4AAAP+AAAD+AAAA/4AAAACAAIAAAAEAAAD/gAAAAIAAAAQAAAD/gAAA/gAAAP8AAAAAgAAA/4AAAACAAAACgAAAAAD9gAAAAIAAAACAAAABgAACAIAAgAOABAAAEwAXAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAKAAAAAgAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP8AAQAAAAEAAAAEAAAA/4AAAP8AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAD/AAAAAwD/AAAAAQAAAQCAAIADgAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/wAAAP8AAAABgAAAAIAAAP+AAAD+AAAA/4AAAAEAAAABAAAA/oAAAP+AAAAAgAQAAAD/gAAA/4AAAACAAAD/AAAA/4AAAP8AAAD/gAAAAIAAAACAAAD/gAAAAQAAAACAAAABAAAAAAAAAQCAAIADgAQAAAcAAAEBAQEBAQEBAIADAAAA/wAAAP8AAAD/AAQAAAD/gAAA/QAAAAMAAAAAAAABAIAAgAOABAAACwAAAQEBAQEBAQEBAQEBAIABAAAAAQAAAAEAAAD/gAAA/gAAAP+ABAAAAP0AAAADAAAA/QAAAP+AAAAAgAAAAAAAAQCAAIADgAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEAgAEAAAABAAAAAQAAAP+AAAD/gAAA/wAAAP+AAAD/gAQAAAD+AAAAAgAAAP4AAAD/AAAA/4AAAACAAAABAAAAAAAAAQCAAIAEAAQAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAIABAAAAAIAAAACAAAAAgAAAAQAAAP8AAAD/gAAA/4AAAP+AAAD/AAQAAAD+AAAAAIAAAP+AAAACAAAA/IAAAACAAAAAgAAA/4AAAP+AAAAAAAABAIAAgAOABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQCAAQAAAAEAAAABAAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/AAAA/wAAAACAAAAAgAAA/4AAAP+ABAAAAP8AAAABAAAA/wAAAP+AAAD/gAAA/4AAAP8AAAABAAAA/wAAAAEAAAAAgAAAAIAAAACAAAAAAAABAIAAgAOABAAADwAAAQEBAQEBAQEBAQEBAQEBAQCAAQAAAAEAAAABAAAA/4AAAP+AAAD/AAAA/4AAAP+ABAAAAP6AAAABgAAA/oAAAP+AAAD+gAAAAYAAAACAAAAAAAABAIAAgAOABAAAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAIADAAAA/4AAAP+AAAD/gAAA/4AAAAIAAAD9AAAAAIAAAACAAAAAgAAAAIAAAP4ABAAAAP8AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAAEAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQEAAIADAAQAAAcAAAEBAQEBAQEBAQACAAAA/wAAAAEAAAD+AAQAAAD/gAAA/YAAAP+AAAAAAAABAIAAgAQAA4AAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAIABAAAAAIAAAACAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/gAAA/4AAAP+AA4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQEAAIADAAQAAAcAAAEBAQEBAQEBAQACAAAA/gAAAAEAAAD/AAQAAAD8gAAAAIAAAAKAAAAAAAABAIACAAQABAAAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAgAAgAAAAIAAAACAAAAAgAAA/wAAAP+AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAACABAAAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAP+AAAD/gAAAAIAAAACAAAAAgAAAAAAAAQCAAIADgAEAAAMAAAEBAQEAgAMAAAD9AAEAAAD/gAAAAAAAAQEAAoACgAQAAAkAAAEBAQEBAQEBAQEBAAEAAAAAgAAA/4AAAP+AAAD/gAQAAAD/gAAA/wAAAACAAAAAgAAAAAEAgACAA4ADAAAPAAABAQEBAQEBAQEBAQEBAQEBAQACgAAA/4AAAP+AAAD/AAAAAQAAAP6AAAD/gAAAAIADAAAA/YAAAACAAAABgAAA/oAAAP+AAAAAgAAAAYAAAAAAAAIAgACAA4AEAAAJAA0AAAEBAQEBAQEBAQEBAQEBAIABAAAAAYAAAACAAAD/gAAA/YABAAAAAQAAAAQAAAD/AAAA/4AAAP6AAAD/gAAAAgD+gAAAAYAAAAABAIAAgAOAAwAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/wAAAP8AAAABAAAAAQAAAP+AAAD+AAAA/4AAAACAAwAAAP+AAAD/gAAAAIAAAP6AAAAAgAAA/4AAAP+AAAAAgAAAAYAAAAAAAAIAgACAA4AEAAAJAA0AAAEBAQEBAQEBAQEBAQEBAoABAAAA/YAAAP+AAAAAgAAAAYD/AAAAAQAAAAQAAAD8gAAAAIAAAAGAAAAAgAAA/4D+gAAAAYAAAAACAIAAgAOAAwAADQARAAABAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/gAAAAGAAAD+AAAA/4AAAACAAIAAAAEAAAADAAAA/4AAAP8AAAD/gAAA/4AAAACAAAABgAAAAAD/gAAAAIAAAAABAQAAgAOAA4AACwAAAQEBAQEBAQEBAQEBAYACAAAA/oAAAAEAAAD/AAAA/wAAAACAA4AAAP+AAAD/AAAA/4AAAP8AAAACgAAAAAAAAgCAAIADgAOAAA8AEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/4AAAP4AAAABgAAA/oAAAP+AAAAAgACAAAABAAAAA4AAAP+AAAD+AAAA/4AAAACAAAAAgAAAAIAAAAEAAAAAAP8AAAABAAABAIAAgAOABAAACwAAAQEBAQEBAQEBAQEBAIABAAAAAYAAAACAAAD/AAAA/wAAAP8ABAAAAP8AAAD/gAAA/gAAAAIAAAD+AAAAAAAAAgGAAIACgAQAAAMABwAAAQEBAQEBAQEBgAEAAAD/AAAAAQAAAP8ABAAAAP+AAAD/gAAA/YAAAAACAIAAgAOABAAAAwAPAAABAQEBAQEBAQEBAQEBAQEBAoABAAAA/wAAAAEAAAD/gAAA/gAAAP+AAAABAAAAAQAEAAAA/4AAAP+AAAD+AAAA/4AAAACAAAABAAAA/wAAAAABAIAAgAOAA4AAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAEAAAAAgAAAAQAAAP+AAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP8AA4AAAP8AAAAAgAAA/4AAAP8AAAD/gAAA/4AAAACAAAAAgAAA/wAAAAAAAAEBgACAAwAEAAAHAAABAQEBAQEBAQGAAQAAAACAAAD/AAAA/4AEAAAA/QAAAP+AAAAAgAAAAAAAAQCAAIAEAAMAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQABAAAAAIAAAAEAAAAAgAAA/wAAAP+AAAD/gAAA/4AAAP8AAAAAgAMAAAD/gAAAAIAAAP+AAAD+AAAAAYAAAP+AAAAAgAAA/oAAAAIAAAAAAAABAIAAgAOAAwAADwAAAQEBAQEBAQEBAQEBAQEBAQCAAQAAAACAAAABAAAAAIAAAP8AAAD/gAAA/4AAAP8AAwAAAP+AAAAAgAAA/4AAAP4AAAABgAAA/4AAAP8AAAAAAAACAIAAgAOAAwAACwAPAAABAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP+AAAD+AAAA/4AAAACAAIAAAAEAAAADAAAA/4AAAP6AAAD/gAAAAIAAAAGAAAAAAP6AAAABgAACAIAAgAOAAwAACQANAAABAQEBAQEBAQEBAQEBAQCAAoAAAACAAAD/gAAA/oAAAP8AAQAAAAEAAAADAAAA/4AAAP+AAAD/gAAA/wAAAAIA/4AAAACAAAAAAgCAAIAEAAMAAA0AEQAAAQEBAQEBAQEBAQEBAQEBAQEBAQACgAAAAIAAAP+AAAD/AAAA/oAAAP+AAAAAgACAAAABAAAAAwAAAP6AAAD/gAAA/4AAAAEAAAAAgAAAAIAAAAAA/4AAAACAAAAAAQEAAIADgAMAAAkAAAEBAQEBAQEBAQEBAAIAAAAAgAAA/wAAAP+AAAD/AAMAAAD/gAAA/wAAAAEAAAD+AAAAAAEAgACABAADAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEAAoAAAP6AAAABgAAAAIAAAP+AAAD9AAAAAgAAAP6AAAD/gAAAAIADAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAAAgAAAAAAAAQCAAIADgAOAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQABAAAAAQAAAP8AAAAAgAAAAQAAAP+AAAD+gAAA/4AAAP+AAAAAgAOAAAD/gAAA/4AAAP6AAAAAgAAA/4AAAP+AAAAAgAAAAYAAAACAAAAAAAABAIAAgAOAAwAADwAAAQEBAQEBAQEBAQEBAQEBAQCAAQAAAACAAAAAgAAAAQAAAP+AAAD/gAAA/oAAAP+AAwAAAP4AAAAAgAAAAYAAAP2AAAAAgAAA/4AAAACAAAAAAAABAIAAgAOAAwAADwAAAQEBAQEBAQEBAQEBAQEBAQCAAQAAAAEAAAABAAAA/4AAAP+AAAD/AAAA/4AAAP+AAwAAAP6AAAABgAAA/oAAAP+AAAD/gAAAAIAAAACAAAAAAAABAIAAgAQAAwAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAEAAAAAgAAAAIAAAACAAAABAAAA/4AAAP8AAAD/gAAA/wAAAP+AAwAAAP6AAAAAgAAA/4AAAAGAAAD+AAAA/4AAAACAAAD/gAAAAIAAAAAAAAEAgACAA4ADAAAbAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAIABAAAAAQAAAAEAAAD/gAAA/4AAAACAAAAAgAAA/wAAAP8AAAD/AAAAAIAAAACAAAD/gAAA/4ADAAAA/4AAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAD/gAAAAIAAAACAAAAAgAAAAIAAAAAAAAEAgACAA4ADAAAPAAABAQEBAQEBAQEBAQEBAQEBAIABAAAAAQAAAAEAAAD/gAAA/gAAAAGAAAD+gAAA/4ADAAAA/wAAAAEAAAD+AAAA/4AAAACAAAAAgAAAAIAAAAAAAAEAgACAA4ADAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQCAAwAAAP+AAAD/gAAA/4AAAAGAAAD9AAAAAIAAAACAAAAAgAAA/oADAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAAAgAAAAAAAAQCAAIADAAQAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAYABgAAA/wAAAP+AAAAAgAAAAQAAAP6AAAD/gAAA/4AAAACAAAAAgAQAAAD/gAAA/wAAAP+AAAD/AAAA/4AAAACAAAABAAAAAIAAAAEAAAAAAAABAYAAgAKABAAAAwAAAQEBAQGAAQAAAP8ABAAAAPyAAAAAAAABAQAAgAOABAAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAGAAAAAgAAAAIAAAP+AAAD/gAAA/oAAAAEAAAAAgAAA/4AAAP8ABAAAAP+AAAD/AAAA/4AAAP8AAAD/gAAAAIAAAAEAAAAAgAAAAQAAAAAAAAEAgAGAA4ADAAAPAAABAQEBAQEBAQEBAQEBAQEBAQABAAAAAQAAAACAAAD/gAAA/wAAAP8AAAD/gAAAAIADAAAA/4AAAACAAAD/AAAA/4AAAACAAAD/gAAAAQAAAAAAAAEAAAAABAAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQAAAYAAAAEAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/AAAA/wAEAAAA/4AAAP+AAAD/gAAA/wAAAP6AAAABAAAAAQAAAACAAAAAgAAAAAAAAQIAAAAEAAQAAAMAAAEBAQECAAIAAAD+AAQAAAD8AAAAAAAAAgCAAIADgAQAABcAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQGAAYAAAP8AAAABAAAA/4AAAP+AAAABgAAA/QAAAACAAAAAgAAA/wAAAACAAAAAgAGAAIAAAP+ABAAAAP+AAAD/AAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAABAAAAAAAAAP+AAAAAAQCAAIADgAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAEAAAABAAAAAQAAAP+AAAAAgAAA/wAAAAEAAAD/AAAA/wAAAP8AAAABAAAA/wAAAACAAAD/gAQAAAD+gAAAAYAAAP8AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAABACAAIAEAAQAABcAGwAfACMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAoAAAP4AAAABgAAAAIAAAACAAAD/gAAA/YAAAAIAAAD+gAAA/4AAAP+AAAAAgAEAAAAAgAAAAQAAgAAA/4D9AACAAAD/gAQAAAD/gAAA/4AAAP+AAAD/gAAA/wAAAP+AAAAAgAAAAIAAAACAAAAAgAAAAQAAAP8A/4AAAACAAQAAAP+AAAD+gAAA/4AAAAAEAIAAgAQAA4AAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQCAAIAAAP+AAQAAgAAA/4ABAACAAAD/gAEAAIAAAP+AA4AAAP0AAAADAAAA/QAAAAMAAAD9AAAAAwAAAP0AAAAAAQIAAAAEAAQAAAkAAAEBAQEBAQEBAQEDgACAAAD+AAAAAIAAAACAAAAAgAQAAAD8AAAAAQAAAAEAAAABAAAAAAgAAAAABAAEAAADAAcACwAPABMAFwAbAB8AAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAABAAAA/wACAAEAAAD/AP8AAQAAAP8AAgABAAAA/wD9AAEAAAD/AAIAAQAAAP8A/wABAAAA/wACAAEAAAD/AAQAAAD/AAAAAQAAAP8AAAAAAAAA/wAAAAEAAAD/AAAAAAAAAP8AAAABAAAA/wAAAAAAAAD/AAAAAQAAAP8AAAAAAQIAAAADAAQAAAMAAAEBAQECAAEAAAD/AAQAAAD8AAAAAAAAAgGAAIACgAQAAAMABwAAAQEBAQEBAQEBgAEAAAD/AAAAAQAAAP8ABAAAAP6AAAD/gAAA/oAAAAABAgAAAAQAAgAAAwAAAQEBAQIAAgAAAP4AAgAAAP4AAAAAAAAEAIAAAAQABAAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQCAAIAAAP+AAQAAgAAA/4ABAACAAAD/gAEAAIAAAP+ABAAAAPwAAAAEAAAA/AAAAAQAAAD8AAAABAAAAPwAAAAAAQCAAIADgAOAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAoABAAAA/oAAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAAEAAAD/gAOAAAD+AAAA/wAAAACAAAAAgAAAAIAAAACAAAAAgAAA/wAAAAEAAAAAAAABAAAAAAQABAAACwAAAQEBAQEBAQEBAQEBAAAEAAAA/gAAAP+AAAD/gAAA/4AAAP+ABAAAAPwAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQCAAIAEAAOAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAOAAAD/gAAAAIAAAP8AAAABAAAA/oAAAAGAAAD9AAAAAIAAAP+AAAABAAAA/wAAAAGAAAD+gAAAAAAAAQAAAAACAAQAAAkAAAEBAQEBAQEBAQEAAACAAAAAgAAAAIAAAACAAAD+AAQAAAD/AAAA/wAAAP8AAAD/AAAAAAEAAAAABAAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQKAAYAAAP8AAAD/AAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAQAEAAAA/wAAAP+AAAD/gAAA/wAAAP8AAAABgAAAAQAAAACAAAAAgAAAAAAAAQAAAAAEAAIAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAEAAAAAgAAAAIAAAACAAAD8AAAAAIAAAACAAAAAgAIAAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAAAAAgAAAAAEAAQAAAMABwAAAQEBAQEBAQEAAAIAAAD+AAIAAgAAAP4ABAAAAP4AAAAAAAAA/gAAAAAEAAACAAQABAAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAP8AAgABAAAA/wD/AAEAAAD/AAIAAQAAAP8ABAAAAP8AAAABAAAA/wAAAAAAAAD/AAAAAQAAAP8AAAAABAIAAAAEAAQAAAMABwALAA8AAAEBAQEBAQEBAQEBAQEBAQECAAEAAAD/AAEAAQAAAP8A/wABAAAA/wABAAEAAAD/AAQAAAD/AAAAAAAAAP8AAAAAAAAA/wAAAAAAAAD/AAAAAAEDAAAABAAEAAADAAABAQEBAwABAAAA/wAEAAAA/AAAAAAAAAEAAAAABAAEAAAFAAABAQEBAQEAAAQAAAD9AAAA/wAEAAAA/wAAAP0AAAAAAQAAAAABAAQAAAMAAAEBAQEAAAEAAAD/AAQAAAD8AAAAAAAAAwCAAIADAAOAAAMABwALAAABAQEBAQEBAQEBAQEAgACAAAD/gAEAAIAAAP+AAQAAgAAA/4ADgAAA/QAAAAMAAAD9AAAAAwAAAP0AAAAAAAABAYABgAQABAAACwAAAQEBAQEBAQEBAQEBAYABAAAAAIAAAAEAAAD+gAAA/4AAAP+ABAAAAP8AAAD/gAAA/wAAAACAAAAAgAAAAAAAAQAAAYACgAQAAAsAAAEBAQEBAQEBAQEBAQGAAQAAAP+AAAD/gAAA/oAAAAEAAAAAgAQAAAD+gAAA/4AAAP+AAAABAAAAAIAAAAAAAAEAAAAABAAEAAAJAAABAQEBAQEBAQEBAwABAAAA/AAAAAEAAAABAAAAAQAEAAAA/AAAAAKAAAAAgAAAAIAAAAABAIAAgAMABAAACwAAAQEBAQEBAQEBAQEBAgABAAAA/4AAAP6AAAD/gAAAAIAAAAEABAAAAP0AAAD/gAAAAIAAAAEAAAAAgAAAAAAAAQAAAAAEAAQAAAUAAAEBAQEBAQAAAQAAAAMAAAD8AAQAAAD9AAAA/wAAAAACAIAAgAMAAoAACwAPAAABAQEBAQEBAQEBAQEBAQEBAQABgAAAAIAAAP+AAAD+gAAAAQAAAP8A/4AAgAAA/4ACgAAA/4AAAP8AAAD/gAAAAIAAAAEAAAAAAAAA/wAAAAACAIAAgAMABAAACwAPAAABAQEBAQEBAQEBAQEBAQEBAgABAAAA/4AAAP6AAAABAAAA/wAAAAEA/oAAgAAA/4AEAAAA/QAAAP+AAAAAgAAAAQAAAACAAAD/gAAA/wAAAAABAIAAgAQABAAADQAAAQEBAQEBAQEBAQEBAQECAAIAAAD/AAAA/4AAAP6AAAD/gAAAAIAAAAEABAAAAP+AAAD9gAAA/4AAAACAAAABAAAAAIAAAAACAAAAAAQABAAAAwAHAAABAQEBAQEBAQAABAAAAPwAAQAAAAIAAAAEAAAA/AAAAAMA/gAAAAIAAAEAgACABAAEAAARAAABAQEBAQEBAQEBAQEBAQEBAQECAAIAAAD/AAAAAQAAAP8AAAD/gAAA/oAAAP+AAAAAgAAAAQAEAAAA/4AAAP+AAAD/gAAA/oAAAP+AAAAAgAAAAQAAAACAAAAAAQAAAAACgAKAAAsAAAEBAQEBAQEBAQEBAQAAAYAAAACAAAAAgAAA/wAAAP+AAAD/AAKAAAD/gAAA/4AAAP6AAAABAAAAAIAAAAAAAAEAAAAABAAEAAAFAAABAQEBAQEAAAQAAAD/AAAA/QAEAAAA/AAAAAMAAAAAAQCAAIAEAAQAABUAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAAIAAAD/AAAAAQAAAP8AAAABAAAA/wAAAP+AAAD+gAAA/4AAAACAAAABAAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAAEAAAAAgAAAAAEBgAAABAACgAALAAABAQEBAQEBAQEBAQECgAGAAAD/AAAA/4AAAP8AAAAAgAAAAIACgAAA/wAAAP+AAAD/AAAAAYAAAACAAAAAAAABAAAAAAQABAAAEQAAAQEBAQEBAQEBAQEBAQEBAQEBAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAPwABAAAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAAEAAAAABAABAAADAAABAQEBAAAEAAAA/AABAAAA/wAAAAAAAAEAAAAABAAEAAARAAABAQEBAQEBAQEBAQEBAQEBAQEDgACAAAD8AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAEAAAA/AAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAQAAAgAEAAQAAAMAAAEBAQEAAAQAAAD8AAQAAAD+AAAAAAAAAgCAAIACAAOAAAMABwAAAQEBAQEBAQEAgACAAAD/gAEAAIAAAP+AA4AAAP0AAAADAAAA/QAAAAAEAIAAgAQABAAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQCAA4AAAPyAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAABAAAAPyAAAADAP+AAAAAgP8A/4AAAACA/wD/gAAAAIAAAQAAAAAEAAQAAAUAAAEBAQEBAQMAAQAAAPwAAAADAAQAAAD8AAAAAQAAAAACAIAAgAQABAAAAwAHAAABAQEBAQEBAQCAA4AAAPyAAYAAAACAAAAEAAAA/IAAAAIA/4AAAACAAAMAgACABAAEAAADAAcACwAAAQEBAQEBAQEBAQEBAIADgAAA/IAAgAAAAIAAAAGAAAAAgAAABAAAAPyAAAADAP+AAAAAgP4A/4AAAACAAAAABAAAAIAEAAQAAAMABwALAA8AAAEBAQEBAQEBAQEBAQEBAQEAAAQAAAD8AAAABAAAAPwAAAAEAAAA/AAAAAQAAAD8AAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAAYAgACABAAEAAADAAcACwAPABMAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAIADgAAA/IAAgAAAAIAAAAGAAAAAgAAA/oAAAACAAAD+gAAAAIAAAAGAAAAAgAAABAAAAPyAAAADAP+AAAAAgAAA/4AAAACA/wD/gAAAAID/AP+AAAAAgAAA/4AAAACAAAEAgACAAQADgAADAAABAQEBAIAAgAAA/4ADgAAA/QAAAAAAAAUAgACABAAEAAADAAcACwAPABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAIADgAAA/IAAgAAAAIAAAAGAAAAAgAAA/YAAAACAAAABgAAAAIAAAAQAAAD8gAAAAwD/gAAAAIAAAP+AAAAAgP4A/4AAAACAAAD/gAAAAIAAAAABAAADAAQABAAAAwAAAQEBAQAABAAAAPwABAAAAP8AAAAAAAAHAIAAgAQABAAAAwAHAAsADwATABcAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQCAA4AAAPyAAIAAAACAAAABgAAAAIAAAP2AAAAAgAAAAYAAAACAAAD9gAAAAIAAAAGAAAAAgAAABAAAAPyAAAADAP+AAAAAgAAA/4AAAACA/wD/gAAAAIAAAP+AAAAAgP8A/4AAAACAAAD/gAAAAIAAAAAEAAAAAAQAAgAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAP8AAgABAAAA/wD/AAEAAAD/AAIAAQAAAP8AAgAAAP8AAAABAAAA/wAAAAAAAAD/AAAAAQAAAP8AAAAAAQAAAAAEAAQAAAkAAAEBAQEBAQEBAQEAAAEAAAABAAAAAQAAAAEAAAD8AAQAAAD/gAAA/4AAAP+AAAD9gAAAAAEBAAAAAgAEAAADAAABAQEBAQABAAAA/wAEAAAA/AAAAAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQECgAGAAAD8AAAAAIAAAACAAAAAgAAAAQAEAAAA/AAAAAGAAAABAAAAAIAAAACAAAAAAAABAAABAAQAAgAAAwAAAQEBAQAABAAAAPwAAgAAAP8AAAAAAAABAAAAAAQABAAACwAAAQEBAQEBAQEBAQEBAgACAAAA/AAAAACAAAAAgAAAAIAAAACABAAAAPwAAAACAAAAAIAAAACAAAAAgAAAAAAAAQAAAAAEAAIAAAkAAAEBAQEBAQEBAQEDAAEAAAD8AAAAAQAAAAEAAAABAAIAAAD+AAAAAIAAAACAAAAAgAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQEAAAIAAAAAgAAAAIAAAACAAAAAgAAA/AAEAAAA/4AAAP+AAAD/gAAA/4AAAP4AAAAAAAADAAAAAAQABAAAGwAnADMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAEAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAIAAYAAAACAAAD/gAAA/4AAAP+AAAD/gP4AAIAAAACAAAAAgAAAAIAAAP6AAAD/gAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAQAAAP+AAAD+gAAAAIAAAACAAAAAgAAA/oAAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAAAAAQAAAAAEAAIAAAkAAAEBAQEBAQEBAQEAAAEAAAABAAAAAQAAAAEAAAD8AAIAAAD/gAAA/4AAAP+AAAD/gAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQEAAAGAAAABAAAAAIAAAACAAAAAgAAA/AAEAAAA/4AAAP+AAAD/gAAA/wAAAP6AAAAAAAAEAAAAgAQABAAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQCAAYAAAP6AAgABgAAA/oD9gAGAAAD+gAIAAYAAAP6ABAAAAP6AAAABgAAA/oAAAP+AAAD+gAAAAYAAAP6AAAAAAQIAAgAEAAQAAAMAAAEBAQECAAIAAAD+AAQAAAD+AAAAAAAABACAAIAEAAQAAAMABwAjACcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAEAAAD/AAGAAQAAAP8A/gAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4ABgACAAAD/gAQAAAD/gAAAAIAAAP+AAAAAAAAA/wAAAP+AAAD/gAAAAIAAAACAAAABAAAA/oAAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAAGAAAD/gAAAAAQAAAAABAAEAAADAAcACwAPAAABAQEBAQEBAQEBAQEBAQEBAAAAgAAA/4ADgACAAAD/gPyAAIAAAP+AA4AAgAAA/4AEAAAA/4AAAACAAAD/gAAA/QAAAP+AAAAAgAAA/4AAAAABAAAAAAIAAgAAAwAAAQEBAQAAAgAAAP4AAgAAAP4AAAAAAAAEAAAAAAIABAAAAwAHAAsADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAP8AAQABAAAA/wD/AAEAAAD/AAEAAQAAAP8ABAAAAP8AAAAAAAAA/wAAAAAAAAD/AAAAAAAAAP8AAAAAAQCAAQADgAOAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAYABAAAA/4AAAAGAAAD+gAAAAIAAAP8AAAD/gAAA/4AAAACAAAAAgAOAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAACAAAAAAAABAQABAAOABAAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQECAACAAAAAgAAAAIAAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACABAAAAP+AAAD/gAAA/wAAAACAAAD+gAAAAYAAAP+AAAABAAAAAIAAAAAAAAEBAAEABAADgAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQIAAQAAAACAAAAAgAAA/4AAAP+AAAD/AAAAAIAAAP6AAAABgAAA/4ADgAAA/4AAAP+AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAAAgAAAAAAAAQEAAIADgAOAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAgAAgAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAOAAAD+gAAAAIAAAP8AAAD/gAAA/4AAAACAAAAAgAAAAQAAAP+AAAAAAAABAQAAgAOABAAADwAAAQEBAQEBAQEBAQEBAQEBAQIAAIAAAACAAAAAgAAA/4AAAP6AAAD/gAAAAIAAAACABAAAAP8AAAD/AAAA/wAAAP+AAAAAgAAAAQAAAAEAAAAAAAACAIAAgAOAA4AAAwAJAAABAQEBAQEBAQEBAIADAAAA/QAAgAAAAgAAAP8AAAADgAAA/QAAAAKA/gAAAAEAAAABAAAAAAIAgACABAAEAAAbACcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAACAAAAAgAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAAD/gAAAAIAAAACAAAAAgAAA/4AAAAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAA/4D/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAEAAAIABAADAAADAAABAQEBAAAEAAAA/AADAAAA/wAAAAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQEAAAQAAAD/gAAA/4AAAP+AAAD/gAAA/gAEAAAA/gAAAP+AAAD/gAAA/4AAAP+AAAAAAAABAAACAAIABAAAAwAAAQEBAQAAAgAAAP4ABAAAAP4AAAAAAAACAQAAgAOAA4AAFwAbAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAYABgAAAAIAAAP8AAAAAgAAAAIAAAP8AAAD/gAAA/wAAAACAAAAAgAAA/wAAAACAAIAAAACAAAADgAAA/wAAAP+AAAD/gAAA/4AAAP+AAAAAgAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgP+AAAAAgAADAAAAAAQABAAACwAnADMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAGAAAD/gAAA/4AAAP+AAAD/gAAAAIACgAEAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgACAAIAAAP+AAAD+gAAAAIAAAACAAAAAgAQAAAD/gAAA/4AAAP+AAAD/gAAAAYAAAACAAAD/AAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAIAAAACAAAAAgAAA/oAAAP6AAAD/gAAAAIAAAACAAAAAgAAAAAAAAgCAAIADgAQAAA8AHwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAEAAAABAAAAAIAAAP+AAAD/AAAA/wAAAP+AAAAAgAAAAQAAAAEAAAAAgAAA/4AAAP8AAAD/AAAA/4AAAACABAAAAP+AAAAAgAAA/wAAAP+AAAAAgAAA/4AAAAEAAAD+gAAA/4AAAACAAAD/AAAA/4AAAACAAAD/gAAAAQAAAAABAAAAAAQAA4AACwAAAQEBAQEBAQEBAQEBAQACAAAAAIAAAACAAAD8AAAAAIAAAACAA4AAAP+AAAD/gAAA/YAAAAKAAAAAgAAAAAAAAQAAAAACAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEAAACAAAAAgAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAQAAAD/gAAA/4AAAP+AAAD/AAAA/4AAAP+AAAD/gAAAAAAAAQIAAAAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEDgACAAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAQAAAD8AAAAAIAAAACAAAAAgAAAAQAAAACAAAAAgAAAAAAAAQCAAIAEAAQAABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQIAAIAAAACAAAAAgAAAAIAAAP+AAAD/AAAA/4AAAP8AAAD/gAAAAIAAAACAAAAAgAQAAAD/gAAA/4AAAP+AAAD/gAAA/oAAAAEAAAD/AAAAAYAAAACAAAAAgAAAAIAAAAAAACAAAAAABAAEAAADAAcACwAPABMAFwAbAB8AIwAnACsALwAzADcAOwA/AEMARwBLAE8AUwBXAFsAXwBjAGcAawBvAHMAdwB7AH8AAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAAAgAAA/4ABAACAAAD/gAEAAIAAAP+AAQAAgAAA/4D9gACAAAD/gAEAAIAAAP+AAQAAgAAA/4ABAACAAAD/gPyAAIAAAP+AAQAAgAAA/4ABAACAAAD/gAEAAIAAAP+A/YAAgAAA/4ABAACAAAD/gAEAAIAAAP+AAQAAgAAA/4D8gACAAAD/gAEAAIAAAP+AAQAAgAAA/4ABAACAAAD/gP2AAIAAAP+AAQAAgAAA/4ABAACAAAD/gAEAAIAAAP+A/IAAgAAA/4ABAACAAAD/gAEAAIAAAP+AAQAAgAAA/4D9gACAAAD/gAEAAIAAAP+AAQAAgAAA/4ABAACAAAD/gAQAAAD/gAAAAIAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAIAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAIAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAACAAAD/gAAAAIAAAP+AAAAAAQAAAAAEAAQAAAsAAAEBAQEBAQEBAQEBAQAABAAAAP6AAAD/AAAA/4AAAP+AAAD/gAQAAAD8AAAAAIAAAACAAAAAgAAAAQAAAAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQEAAAQAAAD/gAAA/4AAAP+AAAD/AAAA/oAEAAAA/oAAAP8AAAD/gAAA/4AAAP+AAAAAAAABAAABgAKABAAADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP+ABAAAAP+AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAACAAAAAAAABAAAAAAKABAAADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP+ABAAAAP+AAAD/gAAA/4AAAP2AAAACAAAAAIAAAACAAAAAAAABAYAAAAQAAoAABQAAAQEBAQEBAYACgAAA/oAAAP8AAoAAAP8AAAD+gAAAAAEAAAAABAAEAAAJAAABAQEBAQEBAQEBAAACgAAAAIAAAACAAAAAgAAA/AAEAAAA/wAAAP8AAAD/AAAA/wAAAAACAAAAAAQABAAAGwAfAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQGAAQAAAACAAAAAgAAAAIAAAP+AAAD/gAAA/4AAAP8AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAAAAAEAAAAEAAAA/4AAAP+AAAD/gAAA/wAAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAAEAAAAAgAAAAIAAAP8A/wAAAAEAAAEBgAGABAAEAAAFAAABAQEBAQEBgAEAAAABgAAA/YAEAAAA/oAAAP8AAAAAAQAAAAACgAKAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAEAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAKAAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAAAAAQGAAAAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEDAAEAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAQAAAD/AAAA/4AAAP+AAAD+AAAAAoAAAACAAAAAgAAAAAAAAQGAAAAEAAKAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAEAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/gAKAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAAAAAQGAAYAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEDAAEAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAQAAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAAAAAQAAAAAEAAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAEAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQAAAAAEAAQAAB8AAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAABAAAAAIAAAAEAAAAAgAAAAQAAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAP+AAAD/gAQAAAD/gAAA/4AAAACAAAAAgAAA/wAAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAAEAAAAAgAAAAQAAAACAAAAAAAABAAABgAQABAAADwAAAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAgAAAP2AAAD/gAAA/4AAAP+ABAAAAP+AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAACAAAAAAAABAAABgAQAAoAAAwAAAQEBAQAABAAAAPwAAoAAAP8AAAAAAAABAYAAAAKABAAAAwAAAQEBAQGAAQAAAP8ABAAAAPwAAAAAAAABAYAAAAQABAAAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAwABAAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACABAAAAP8AAAD/gAAA/wAAAP+AAAD/AAAAAIAAAACAAAAAgAAAAQAAAACAAAAAgAAAAAAAAQAAAAAEAAKAAA8AAAEBAQEBAQEBAQEBAQEBAQEAAAKAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD+AAKAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAAAAAQAAAYAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEDAAEAAAD/gAAA/4AAAP+AAAD9gAAAAgAAAACAAAAAgAQAAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAAAAAQAAAgAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEAAAQAAAD/gAAA/4AAAP+AAAD/AAAA/4AAAP+AAAD/gAQAAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAAAAAQAAAYACgAKAAAMAAAEBAQEAAAKAAAD9gAKAAAD/AAAAAAAAAQGAAAACgAKAAAMAAAEBAQEBgAEAAAD/AAKAAAD9gAAAAAAAAQAAAYAEAAQAABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAABAAAAAIAAAAEAAAD/gAAA/4AAAP+AAAD/AAAA/4AAAP+AAAD/gAQAAAD/gAAA/4AAAACAAAAAgAAA/wAAAP+AAAD/gAAA/4AAAACAAAAAgAAAAIAAAAAAAAEAAAAABAAEAAAJAAABAQEBAQEBAQEBAYACgAAA/AAAAACAAAAAgAAAAIAEAAAA/AAAAAEAAAABAAAAAQAAAAABAAAAAAQABAAAEwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEDAAEAAAD/gAAA/4AAAP+AAAD/AAAA/oAAAAEAAAABAAAAAIAAAACABAAAAP6AAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAQAAAAAAAAEAAAAABAAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAQAAAAEAAAD+gAAA/wAAAP+AAAD/gAAA/4AEAAAA/wAAAP8AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAACAAAABAAAAAAAAAQAAAAAEAAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEDAAEAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAQAAAD/AAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQAAAAACgAQAABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAIAAAP+AAAD/gAAA/4AAAP8AAAAAgAAAAIAAAP+AAAD/gAQAAAD/gAAA/4AAAP+AAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAABAAAAAIAAAAAAAAEAAAAABAAEAAAfAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQAAAQAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAP8AAAD/gAAA/wAAAP+AAAD/AAAAAIAAAACAAAD/gAAA/4AEAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/wAAAACAAAAAgAAA/4AAAP+AAAABAAAAAIAAAAEAAAAAgAAAAAAAAQAAAAACgAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAEAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAQAAAD9gAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAAAAAQGAAAAEAAQAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAEAAAAAgAAAAIAAAACAAAD/AAAA/4AAAP+AAAD/gAQAAAD+AAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAAAAAAAAQAAAAAEAAKAAA8AAAEBAQEBAQEBAQEBAQEBAQEBgAKAAAD+AAAA/4AAAP+AAAD/AAAAAIAAAACAAAAAgAKAAAD/AAAA/4AAAP+AAAD/gAAAAQAAAACAAAAAgAAAAAAAAQGAAYACgAQAAAMAAAEBAQEBgAEAAAD/AAQAAAD9gAAAAAAAAQGAAYAEAAKAAAMAAAEBAQEBgAKAAAD9gAKAAAD/AAAAAAAAAQAAAAAEAAQAAB8AAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAwABAAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/gAAA/wAAAP+AAAD/AAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAQAAAD/AAAA/4AAAP8AAAD/gAAA/wAAAACAAAAAgAAA/4AAAP+AAAABAAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAABAAAAAAQABAAAIwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAABAAAAAIAAAAEAAAAAgAAAAQAAAP+AAAD/gAAAAIAAAACAAAD/AAAA/4AAAP8AAAD/gAAA/wAAAACAAAAAgAAA/4AAAP+ABAAAAP+AAAD/gAAAAIAAAACAAAD/AAAA/4AAAP8AAAD/gAAA/wAAAACAAAAAgAAA/4AAAP+AAAABAAAAAIAAAAEAAAAAgAAAAAAAAQGAAYACgAKAAAMAAAEBAQEBgAEAAAD/AAKAAAD/AAAAAAAAAQAAAAAEAAKAABcAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQGAAQAAAACAAAAAgAAAAIAAAP8AAAD/gAAA/wAAAP+AAAD/AAAAAIAAAACAAAAAgAKAAAD/gAAA/4AAAP+AAAD/AAAAAIAAAACAAAD/gAAA/4AAAAEAAAAAgAAAAIAAAAAAAAEAAAGAAoAEAAAFAAABAQEBAQEBgAEAAAD9gAAAAYAEAAAA/YAAAAEAAAAAAQAAAAACgAKAAAUAAAEBAQEBAQAAAoAAAP8AAAD+gAKAAAD9gAAAAYAAAAABAAAAAAQABAAAHwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAEAAAAAgAAAAQAAAACAAAABAAAA/4AAAP+AAAAAgAAAAIAAAP8AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+ABAAAAP+AAAD/gAAAAIAAAACAAAD/AAAA/4AAAP8AAAD/gAAA/wAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAAAAAAEAAAAABAAEAAALAAABAQEBAQEBAQEBAQEBgAEAAAABgAAA/oAAAP8AAAD+gAAAAYAEAAAA/oAAAP8AAAD+gAAAAYAAAAEAAAAAAAABAAAAAAQAAoAABwAAAQEBAQEBAQEAAAQAAAD+gAAA/wAAAP6AAoAAAP8AAAD+gAAAAYAAAAAAAAEBgAAABAAEAAAHAAABAQEBAQEBAQGAAQAAAAGAAAD+gAAA/wAEAAAA/oAAAP8AAAD+gAAAAAAAAQAAAAACgAQAAAcAAAEBAQEBAQEBAYABAAAA/wAAAP6AAAABgAQAAAD8AAAAAYAAAAEAAAAAAAABAAABgAQABAAABwAAAQEBAQEBAQEBgAEAAAABgAAA/AAAAAGABAAAAP6AAAD/AAAAAQAAAAAAAAQBAAEAAwADAAADAAcACwAPAAABAQEBAQEBAQEBAQEBAQEBAYABAAAA/wD/gACAAAD/gAGAAIAAAP+A/wABAAAA/wADAAAA/4AAAAAAAAD/AAAAAQAAAP8AAAAAAAAA/4AAAAACAIAAgAOAA4AACwAPAAABAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAP+AAAD+AAAA/4AAAACAAIAAAAEAAAADgAAA/4AAAP4AAAD/gAAAAIAAAAIAAAD/gP8AAAABAAACAAAAAAQABAAAEwAfAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAgAAAACAAAAAgAAA/4AAAP+AAAD+AAAA/4AAAP+AAAAAgAAAAIAAgAAA/4AAAACAAAABAAAAAIAAAP+AAAAEAAAA/4AAAP+AAAD+AAAA/4AAAP+AAAAAgAAAAIAAAAIAAAAAgAAA/4D/gAAA/wAAAP+AAAAAgAAAAQAAAACAABAAAAAABAAEAAADAAcACwAPABMAFwAbAB8AIwAnACsALwAzADcAOwA/AAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAYAAgAAA/4ACAACAAAD/gP2AAIAAAP+AAgAAgAAA/4D9gACAAAD/gAIAAIAAAP+A/YAAgAAA/4ACAACAAAD/gP+AAIAAAP+AAgAAgAAA/4D9gACAAAD/gAIAAIAAAP+A/YAAgAAA/4ACAACAAAD/gP2AAIAAAP+AAgAAgAAA/4AEAAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAAAQAAAAAAQABAAAAwAHAAsADwATABcAGwAfACMAJwArAC8AMwA3ADsAPwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQAAAIAAAP+AAgAAgAAA/4D+gACAAAD/gAIAAIAAAP+A/oAAgAAA/4ACAACAAAD/gP6AAIAAAP+AAgAAgAAA/4D8gACAAAD/gAIAAIAAAP+A/oAAgAAA/4ACAACAAAD/gP6AAIAAAP+AAgAAgAAA/4D+gACAAAD/gAIAAIAAAP+ABAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAAAAA/4AAAACAAAD/gAAAAAAAAP+AAAAAgAAA/4AAAAAAAAD/gAAAAIAAAP+AAAAAAwCAAIADgAQAABcAGwAfAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQIAAIAAAAEAAAD/AAAAAIAAAP+AAAABAAAA/wAAAP+AAAD/AAAA/4AAAACAAAABAP+AAAAAgAAA/4AAAACAAAAEAAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACAAAAAgAAAAYAAAACAAAD/gP+AAAAAgP8A/4AAAACAAAAAAQCAAIADgAOAAA8AAAEBAQEBAQEBAQEBAQEBAQEBAAIAAAAAgAAA/4AAAP+AAAD/AAAA/4AAAP+AAAAAgAOAAAD/gAAA/wAAAP+AAAD/AAAAAQAAAACAAAABAAAAAAAAAgCAAIADgAOAAAMACQAAAQEBAQEBAQEBAQCAAwAAAP0AAYAAAP8AAAACAAAAA4AAAP0AAAACgP8AAAD/AAAAAgAAAAABAIAAgAOAA4AAAwAAAQEBAQCAAwAAAP0AA4AAAP0AAAAAAAACAIAAgAOAA4AAAwALAAABAQEBAQEBAQEBAQEAgAMAAAD9AACAAAACAAAA/4AAAP8AAAADgAAA/QAAAAKA/gAAAAIAAAD/AAAAAQAAAQAAAAAEAAQAABMAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQACAAAAAIAAAACAAAD/gAAA/4AAAP4AAAD/gAAA/4AAAACAAAAAgAQAAAD/gAAA/4AAAP4AAAD/gAAA/4AAAACAAAAAgAAAAgAAAACAAAAAAAABAQABAAMAAwAACwAAAQEBAQEBAQEBAQEBAYABAAAAAIAAAP+AAAD/AAAA/4AAAACAAwAAAP+AAAD/AAAA/4AAAACAAAABAAAAAAAAAQCAAQAEAAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAACAAAAAgAAAAQAAAP+AAAD/gAAAAIAAAP8AAAD/gAAA/wAAAACAAAD/gAAA/4AAAAEAAAAAgAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAAAgAAA/4AAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAABgCAAIAEAAQAAAMABwALAA8AEwAXAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAOAAAD8gAEAAAAAgAAAAIAAAACAAAD+AAAAAIAAAAGAAAAAgAAA/gAAAAGAAAAEAAAA/IAAAAMA/wAAAAEAAAD/AAAAAQD+gP+AAAAAgAAA/4AAAACA/4D/gAAAAIAABgCAAIAEAAQAAAMABwALAA8AEwAXAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAOAAAD8gAEAAAAAgAAAAIAAAACAAAD+gAAAAYAAAP4AAAAAgAAAAYAAAACAAAAEAAAA/IAAAAMA/wAAAAEAAAD/AAAAAQD+gP+AAAAAgP+A/4AAAACAAAD/gAAAAIAABgCAAIAEAAQAABMAFwAbAB8AIwAnAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAgAAgAAAAIAAAAEAAAD/AAAA/4AAAP+AAAD/gAAA/wAAAAEAAAAAgAAAAAAAgAAA/oAAgAAA/4ACAACAAAD/gP4AAIAAAP+AAgAAgAAA/4AEAAAA/wAAAP+AAAD/gAAA/4AAAP8AAAABAAAAAIAAAACAAAAAgAAA/4D/gAAAAIABAAAA/4AAAACAAAD/gAAA/oAAAP+AAAAAgAAA/4AAAAACAQAAgAOABAAAFwAbAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAYABgAAAAIAAAP+AAAD/gAAAAIAAAP+AAAD/gAAA/4AAAACAAAD/gAAAAQAAAP8A/4AAgAAA/4AEAAAA/4AAAP8AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAIAAAAEAAAAAAAAA/wAAAAACAIAAgAQABAAAFwAbAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAYACgAAA/4AAAP+AAAD/gAAAAIAAAP+AAAD+gAAAAQAAAP8AAAABAAAAAIAAAP8A/wAAgAAA/4AEAAAA/gAAAAEAAAD/gAAA/4AAAP8AAAD/gAAAAIAAAAEAAAAAgAAAAIAAAACAAAD+gAAA/wAAAAABAIAAgAQABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQIAAIAAAACAAAAAgAAAAIAAAP8AAAD/gAAAAIAAAP6AAAAAgAAA/4AAAP8AAAAAgAAAAIAAAACABAAAAP+AAAD/gAAA/4AAAP8AAAAAgAAA/wAAAP+AAAAAgAAAAQAAAP+AAAABAAAAAIAAAACAAAAAAAABAIAAgAQABAAAGwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQGAAYAAAP+AAAAAgAAAAQAAAP8AAAD/gAAAAIAAAP6AAAAAgAAA/4AAAP8AAAABAAAAAIAAAP+ABAAAAP8AAAD/gAAAAIAAAP6AAAAAgAAA/wAAAP+AAAAAgAAAAQAAAP+AAAABgAAA/4AAAACAAAAAAAABAIAAgAQABAAAFwAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQABAAAAAIAAAAEAAAAAgAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAA/4AAAACABAAAAP+AAAAAgAAA/4AAAP6AAAD/gAAA/4AAAP+AAAAAgAAAAIAAAACAAAABgAAAAAAAAQCAAIAEAAQAABsAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAACAAAAAgAAAAIAAAACAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAQAAAD/gAAA/4AAAP+AAAD/gAAA/4AAAP+AAAD/gAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAQEAAIADgAQAAAsAAAEBAQEBAQEBAQEBAQIAAYAAAP8AAAD/gAAA/wAAAACAAAAAgAQAAAD/AAAA/gAAAP+AAAABAAAAAIAAAAAAAAEAgACABAAEAAATAAABAQEBAQEBAQEBAQEBAQEBAQEBAQGAAoAAAP+AAAD/AAAAAIAAAACAAAD+gAAA/4AAAP8AAAAAgAAAAIAEAAAA/QAAAP+AAAABAAAAAIAAAAEAAAD+AAAA/4AAAAEAAAAAgAAAAAAAAAAYASYAAQAAAAAAAAAIAAAAAQAAAAAAAQAIAAgAAQAAAAAAAgAHABAAAQAAAAAAAwAIABcAAQAAAAAABAAQAB8AAQAAAAAABQALAC8AAQAAAAAABgAIADoAAQAAAAAACQAJAEIAAQAAAAAACgA6AEsAAQAAAAAADQARAIUAAQAAAAAADgAyAJYAAQAAAAAAEwAMAMgAAwABBAkAAAAQANQAAwABBAkAAQAQAOQAAwABBAkAAgAOAPQAAwABBAkAAwAQAQIAAwABBAkABAAgARIAAwABBAkABQAWATIAAwABBAkABgAQAUgAAwABBAkACQASAVgAAwABBAkACgB0AWoAAwABBAkADQAiAd4AAwABBAkADgBkAgAAAwABBAkAEwAYAmQoYykgMjAyMlVyc2FGb250UmVndWxhclVyc2FGb250VXJzYUZvbnQgUmVndWxhclZlcnNpb24gMS4wVXJzYUZvbnRVcnNhRnJhbmtBbiBvcGVuIGxpY2VuY2UgZ2VuZXJhbCBwdXJwb3NlIHRleHRtb2RlIGZvbnQgYnkgVXJzYUZyYW5rQ0MwIDEuMCBVbml2ZXJzYWxodHRwczovL2NyZWF0aXZlY29tbW9ucy5vcmcvcHVibGljZG9tYWluL3plcm8vMS4wL0hlbGxvIFdvcmxkIQAoAGMAKQAgADIAMAAyADIAVQByAHMAYQBGAG8AbgB0AFIAZQBnAHUAbABhAHIAVQByAHMAYQBGAG8AbgB0AFUAcgBzAGEARgBvAG4AdAAgAFIAZQBnAHUAbABhAHIAVgBlAHIAcwBpAG8AbgAgADEALgAwAFUAcgBzAGEARgBvAG4AdABVAHIAcwBhAEYAcgBhAG4AawBBAG4AIABvAHAAZQBuACAAbABpAGMAZQBuAGMAZQAgAGcAZQBuAGUAcgBhAGwAIABwAHUAcgBwAG8AcwBlACAAdABlAHgAdABtAG8AZABlACAAZgBvAG4AdAAgAGIAeQAgAFUAcgBzAGEARgByAGEAbgBrAEMAQwAwACAAMQAuADAAIABVAG4AaQB2AGUAcgBzAGEAbABoAHQAdABwAHMAOgAvAC8AYwByAGUAYQB0AGkAdgBlAGMAbwBtAG0AbwBuAHMALgBvAHIAZwAvAHAAdQBiAGwAaQBjAGQAbwBtAGEAaQBuAC8AegBlAHIAbwAvADEALgAwAC8ASABlAGwAbABvACAAVwBvAHIAbABkACEAAAADAAAAAAAAAGYAMwAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==\r
 `;
 class q {
@@ -894,9 +925,9 @@ class AA {
   createTextureAtlas(A, e, t, r) {
     const i = A.length, a = Math.ceil(Math.sqrt(i)), s = Math.ceil(i / a), B = e.width * a, g = e.height * s;
     this._setupCanvas(B, g, t, r), this._renderCharactersToCanvas(A, e, a, t), this._applyBlackWhiteThreshold();
-    const Q = this._renderer.createFramebuffer(B, g, { filter: "nearest" });
-    return Q.update(this._textureCanvas), {
-      framebuffer: Q,
+    const E = this._renderer.createFramebuffer(B, g, { filter: "nearest" });
+    return E.update(this._textureCanvas), {
+      framebuffer: E,
       columns: a,
       rows: s
     };
@@ -922,8 +953,8 @@ class AA {
    */
   _renderCharactersToCanvas(A, e, t, r) {
     for (let i = 0; i < A.length; i++) {
-      const a = i % t, s = Math.floor(i / t), B = a * e.width + e.width * 0.5, g = s * e.height + e.height * 0.5, Q = Math.round(B - e.width * 0.5), l = Math.round(g - r * 0.5);
-      this._textureContext.fillText(A[i].character, Q, l);
+      const a = i % t, s = Math.floor(i / t), B = a * e.width + e.width * 0.5, g = s * e.height + e.height * 0.5, E = Math.round(B - e.width * 0.5), l = Math.round(g - r * 0.5);
+      this._textureContext.fillText(A[i].character, E, l);
     }
   }
   /**
@@ -1038,7 +1069,7 @@ class tA {
    * @returns RGB color as a tuple [r, g, b], or [0, 0, 0] if not found
    */
   getCharacterColor(A, e) {
-    if (!C.validate(
+    if (!u.validate(
       typeof A == "string" && A.length === 1,
       "Character must be a single character string.",
       { method: "getCharacterColor", providedValue: A }
@@ -1054,7 +1085,7 @@ class tA {
    * @returns Array of RGB colors for each character
    */
   getCharacterColors(A, e) {
-    return C.validate(
+    return u.validate(
       typeof A == "string" && A.length > 0,
       "Characters must be a string with at least one character.",
       { method: "getCharacterColors", providedValue: A }
@@ -1087,12 +1118,20 @@ class rA {
   }
   /**
    * Initializes the font manager by loading the font and creating the texture atlas.
+   * @param fontSource Optional URL to load a custom font. If not provided, uses embedded font (full builds only).
    * @returns Promise that resolves when initialization is complete
    * @ignore
    */
-  async initialize() {
-    const e = await (await fetch(Z)).arrayBuffer();
-    await this._loadFontFace(e), this._font = E.parse(e)[0], await this._initializeFont();
+  async initialize(A) {
+    let e;
+    if (A) {
+      const t = await fetch(A);
+      if (!t.ok)
+        throw new D(`Failed to load font file: ${t.status} ${t.statusText}`);
+      e = await t.arrayBuffer();
+    } else
+      e = await (await fetch(Z)).arrayBuffer();
+    await this._loadFontFace(e), this._font = Q.parse(e)[0], await this._initializeFont();
   }
   /**
    * Sets the font size for rendering.
@@ -1124,15 +1163,15 @@ class rA {
     try {
       const e = await fetch(A);
       if (!e.ok)
-        throw new f(`Failed to load font file: ${e.status} ${e.statusText}`);
+        throw new D(`Failed to load font file: ${e.status} ${e.statusText}`);
       const t = await e.arrayBuffer();
       await this._loadFontFace(t);
-      const r = E.parse(t);
+      const r = Q.parse(t);
       if (!r || r.length === 0)
         throw new Error("Failed to parse font file");
       this._font = r[0], await this._initializeFont();
     } catch (e) {
-      throw new f(`Failed to load font: ${e instanceof Error ? e.message : "Unknown error"}`, e);
+      throw new D(`Failed to load font: ${e instanceof Error ? e.message : "Unknown error"}`, e);
     }
   }
   /**
@@ -1259,8 +1298,9 @@ class iA {
    */
   reset() {
     if (!this._fixedDimensions) {
-      const A = this._canvas.getBoundingClientRect(), e = Math.round(A.width), t = Math.round(A.height);
-      [this._cols, this._rows] = [Math.floor(e / this._cellWidth), Math.floor(t / this._cellHeight)];
+      const A = this._canvas.getBoundingClientRect();
+      let e = Math.round(A.width), t = Math.round(A.height);
+      (e === 0 || t === 0) && (e = this._canvas.width, t = this._canvas.height), [this._cols, this._rows] = [Math.floor(e / this._cellWidth), Math.floor(t / this._cellHeight)];
     }
     this._resizeGrid();
   }
@@ -1268,8 +1308,9 @@ class iA {
    * Reset the total grid width & height, and the offset to the outer canvas.
    */
   _resizeGrid() {
-    const A = this._canvas.getBoundingClientRect(), e = Math.round(A.width), t = Math.round(A.height);
-    this._width = this._cols * this._cellWidth, this._height = this._rows * this._cellHeight, this._offsetX = Math.floor((e - this._width) / 2), this._offsetY = Math.floor((t - this._height) / 2);
+    const A = this._canvas.getBoundingClientRect();
+    let e = Math.round(A.width), t = Math.round(A.height);
+    (e === 0 || t === 0) && (e = this._canvas.width, t = this._canvas.height), this._width = this._cols * this._cellWidth, this._height = this._rows * this._cellHeight, this._offsetX = Math.floor((e - this._width) / 2), this._offsetY = Math.floor((t - this._height) / 2);
   }
   /**
    * Re-assign the grid cell dimensions and `reset()` the grid.
@@ -1351,37 +1392,52 @@ class iA {
   }
 }
 class aA {
-  constructor(A) {
-    o(this, "webglCanvas");
-    o(this, "captureCanvas");
-    this.captureCanvas = A, this.webglCanvas = this.createOverlayCanvas();
+  constructor(A, e = !1, t = {}) {
+    o(this, "_canvas");
+    o(this, "captureSource");
+    o(this, "_isStandalone");
+    this.captureSource = A, this._isStandalone = e, this._canvas = this.createCanvas(t.width, t.height);
   }
-  generateUniqueCanvasId() {
-    let A = 0, e = `textmodeCanvas${A}`;
-    for (; document.getElementById(e); )
-      A++, e = `textmodeCanvas${A}`;
-    return e;
-  }
-  createOverlayCanvas() {
-    var s;
-    const A = document.createElement("canvas"), e = this.captureCanvas.getBoundingClientRect(), t = Math.round(e.width), r = Math.round(e.height);
-    A.width = t, A.height = r, A.className = "textmodeCanvas", A.id = this.generateUniqueCanvasId(), A.style.position = "absolute", A.style.pointerEvents = "none";
-    const i = window.getComputedStyle(this.captureCanvas);
-    let a = parseInt(i.zIndex || "0", 10);
-    return isNaN(a) && (a = 0), A.style.zIndex = (a + 1).toString(), A.style.width = t + "px", A.style.height = r + "px", this.positionOverlayCanvas(A), (s = this.captureCanvas.parentNode) == null || s.insertBefore(A, this.captureCanvas.nextSibling), A;
+  createCanvas(A, e) {
+    var r;
+    const t = document.createElement("canvas");
+    if (t.className = "textmodeCanvas", this._isStandalone)
+      t.width = A || 800, t.height = e || 600, t.style.width = A + "px", t.style.height = e + "px", document.body.appendChild(t);
+    else {
+      const i = this.captureSource.getBoundingClientRect();
+      let a = Math.round(i.width), s = Math.round(i.height);
+      if (this.captureSource instanceof HTMLVideoElement) {
+        const E = this.captureSource;
+        (a === 0 || s === 0) && E.videoWidth > 0 && E.videoHeight > 0 && (a = E.videoWidth, s = E.videoHeight);
+      }
+      t.width = a, t.height = s, t.style.width = a + "px", t.style.height = s + "px", t.style.position = "absolute", t.style.pointerEvents = "none";
+      const B = window.getComputedStyle(this.captureSource);
+      let g = parseInt(B.zIndex || "0", 10);
+      isNaN(g) && (g = 0), t.style.zIndex = (g + 1).toString(), this.positionOverlayCanvas(t), (r = this.captureSource.parentNode) == null || r.insertBefore(t, this.captureSource.nextSibling);
+    }
+    return t;
   }
   positionOverlayCanvas(A) {
-    const e = this.captureCanvas.getBoundingClientRect();
-    let t = this.captureCanvas.offsetParent;
+    const e = this.captureSource.getBoundingClientRect();
+    let t = this.captureSource.offsetParent;
     if (t && t !== document.body) {
       const r = t.getBoundingClientRect();
       A.style.top = e.top - r.top + "px", A.style.left = e.left - r.left + "px";
     } else
       A.style.top = e.top + window.scrollY + "px", A.style.left = e.left + window.scrollX + "px";
   }
-  resize() {
-    const A = this.captureCanvas.getBoundingClientRect(), e = Math.round(A.width), t = Math.round(A.height);
-    this.webglCanvas.width = e, this.webglCanvas.height = t, this.webglCanvas.style.width = e + "px", this.webglCanvas.style.height = t + "px", this.positionOverlayCanvas(this.webglCanvas);
+  resize(A, e) {
+    if (this._isStandalone)
+      this._canvas.width = A ?? this._canvas.width, this._canvas.height = e ?? this._canvas.height, this._canvas.style.width = (A ?? this._canvas.width) + "px", this._canvas.style.height = (e ?? this._canvas.height) + "px";
+    else {
+      const t = this.captureSource.getBoundingClientRect();
+      let r = Math.round(t.width), i = Math.round(t.height);
+      if (this.captureSource instanceof HTMLVideoElement) {
+        const a = this.captureSource;
+        (r === 0 || i === 0) && a.videoWidth > 0 && a.videoHeight > 0 && (r = a.videoWidth, i = a.videoHeight);
+      }
+      this._canvas.width = r, this._canvas.height = i, this._canvas.style.width = r + "px", this._canvas.style.height = i + "px", this.positionOverlayCanvas(this._canvas);
+    }
   }
   /**
    * Get the WebGL context for the overlay canvas
@@ -1395,20 +1451,20 @@ class aA {
       depth: !1,
       stencil: !1,
       powerPreference: "high-performance"
-    }, e = this.webglCanvas.getContext("webgl2", A) || this.webglCanvas.getContext("webgl", A);
+    }, e = this._canvas.getContext("webgl2", A) || this._canvas.getContext("webgl", A);
     if (!e)
-      throw new f("WebGL context could not be created. Ensure your browser supports WebGL.");
+      throw new D("WebGL context could not be created. Ensure your browser supports WebGL.");
     return e;
   }
   // Getters
   get canvas() {
-    return this.webglCanvas;
+    return this._canvas;
   }
   get width() {
-    return this.webglCanvas.width;
+    return this._canvas.width;
   }
   get height() {
-    return this.webglCanvas.height;
+    return this._canvas.height;
   }
 }
 class b {
@@ -1538,7 +1594,7 @@ class nA {
     return this._framebuffer.texture;
   }
 }
-class M extends b {
+class S extends b {
   constructor(e, t, r, i = {}) {
     super(e, t, r, i);
     o(this, "palette");
@@ -1549,7 +1605,7 @@ class M extends b {
    * @param characters The characters to use for mapping, usually ordered from darkest to brightest.
    */
   characters(e) {
-    C.validate(
+    u.validate(
       this.fontManager.hasAllCharacters(e),
       "One or more characters do not exist in the current font.",
       { method: "characters", providedValue: e }
@@ -1564,7 +1620,7 @@ class M extends b {
    * @param a Alpha component (0-255).
    */
   characterColor(e, t = e, r = e, i = 255) {
-    C.validate(
+    u.validate(
       [e, t, r, i].every((a) => a >= 0 && a <= 255),
       "Character color values must be between 0 and 255",
       { method: "characterColor", providedValues: { r: e, g: t, b: r, a: i } }
@@ -1577,7 +1633,7 @@ class M extends b {
    * @param mode The color mode to use for characters.
    */
   characterColorMode(e) {
-    C.validate(
+    u.validate(
       ["sampled", "fixed"].includes(e),
       "Invalid character color mode. Must be 'sampled' or 'fixed'.",
       { method: "characterColorMode", providedValue: e }
@@ -1592,7 +1648,7 @@ class M extends b {
    * @param a Alpha component (0-255).
    */
   cellColor(e, t = e, r = e, i = 255) {
-    C.validate(
+    u.validate(
       [e, t, r, i].every((a) => a >= 0 && a <= 255),
       "Cell color values must be between 0 and 255",
       { method: "cellColor", providedValues: { r: e, g: t, b: r, a: i } }
@@ -1605,7 +1661,7 @@ class M extends b {
    * @param mode The color mode to use for background cells.
    */
   cellColorMode(e) {
-    C.validate(
+    u.validate(
       ["sampled", "fixed"].includes(e),
       "Invalid cell color mode. Must be 'sampled' or 'fixed'.",
       { method: "cellColorMode", providedValue: e }
@@ -1616,7 +1672,7 @@ class M extends b {
    * @param invert If `true`, the character color becomes the cell color and vice versa.
    */
   invert(e) {
-    C.validate(
+    u.validate(
       typeof e == "boolean" || typeof e == "number" && Number.isInteger(e),
       "Invert must be a boolean value or an integer (0 for false, any other number for true).",
       { method: "invert", providedValue: e }
@@ -1627,7 +1683,7 @@ class M extends b {
    * @param angle The rotation angle in degrees.
    */
   rotation(e) {
-    if (!C.validate(
+    if (!u.validate(
       typeof e == "number",
       "Rotation angle must be a number.",
       { method: "rotation", providedValue: e }
@@ -1642,7 +1698,7 @@ class M extends b {
    * @param flip If `true`, characters are flipped horizontally. If `false`, no flip is applied.
    */
   flipHorizontally(e) {
-    C.validate(
+    u.validate(
       typeof e == "boolean" || typeof e == "number" && Number.isInteger(e),
       "Flip horizontally must be a boolean value or an integer (0 for false, any other number for true).",
       { method: "flipHorizontally", providedValue: e }
@@ -1653,7 +1709,7 @@ class M extends b {
    * @param flip If `true`, characters are flipped vertically. If `false`, no flip is applied.
    */
   flipVertically(e) {
-    C.validate(
+    u.validate(
       typeof e == "boolean" || typeof e == "number" && Number.isInteger(e),
       "Flip vertically must be a boolean value or an integer (0 for false, any other number for true).",
       { method: "flipVertically", providedValue: e }
@@ -1685,7 +1741,7 @@ const QA = {
   /** Range of brightness values to map to ASCII characters */
   brightnessRange: [0, 255]
 };
-class G extends M {
+class M extends S {
   /**
    * Creates a new TextmodeBrightnessConverter instance.
    * @param renderer Renderer instance for texture creation
@@ -1717,18 +1773,18 @@ class G extends M {
    * @param range Array of two numbers `[min, max]`, where `min` is darkest and `max` is brightest.
    */
   brightnessRange(e) {
-    C.validate(
+    u.validate(
       Array.isArray(e) && e.length === 2 && e.every((t) => typeof t == "number" && t >= 0 && t <= 255),
       "Brightness range must be an array of two numbers between 0 and 255.",
       { method: "brightnessRange", providedValue: e }
     ) && (this._options.brightnessRange = e);
   }
 }
-const xA = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const vA = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  TextmodeBrightnessConverter: G,
+  TextmodeBrightnessConverter: M,
   TextmodeConverter: b,
-  TextmodeFeatureConverter: M
+  TextmodeFeatureConverter: S
 }, Symbol.toStringTag, { value: "Module" }));
 var lA = "precision mediump float;uniform sampler2D u_characterTexture;uniform vec2 u_charsetDimensions;uniform sampler2D u_primaryColorTexture;uniform sampler2D u_secondaryColorTexture;uniform sampler2D u_transformTexture;uniform sampler2D u_asciiCharacterTexture;uniform sampler2D u_rotationTexture;uniform sampler2D u_captureTexture;uniform vec2 u_captureDimensions;uniform int u_backgroundMode;uniform vec2 u_gridCellDimensions;uniform vec2 u_gridPixelDimensions;mat2 rotate2D(float angle){float s=sin(angle);float c=cos(angle);return mat2(c,-s,s,c);}void main(){vec2 adjustedCoord=gl_FragCoord.xy/u_gridPixelDimensions;vec2 gridCoord=adjustedCoord*u_gridCellDimensions;vec2 cellCoord=floor(gridCoord);vec2 charIndexTexCoord=(cellCoord+0.5)/u_gridCellDimensions;vec4 primaryColor=texture2D(u_primaryColorTexture,charIndexTexCoord);vec4 secondaryColor=texture2D(u_secondaryColorTexture,charIndexTexCoord);vec4 transformColor=texture2D(u_transformTexture,charIndexTexCoord);bool isInverted=transformColor.r>0.5;bool flipHorizontal=transformColor.g>0.5;bool flipVertical=transformColor.b>0.5;vec4 encodedIndexVec=texture2D(u_asciiCharacterTexture,charIndexTexCoord);if(encodedIndexVec.a<0.01){gl_FragColor=(u_backgroundMode==0)? vec4(0.0):texture2D(u_captureTexture,gl_FragCoord.xy/u_captureDimensions);return;}int charIndex=int(encodedIndexVec.r*255.0+0.5)+int(encodedIndexVec.g*255.0+0.5)*256;int charCol=int(mod(float(charIndex),u_charsetDimensions.x));int charRow=charIndex/int(u_charsetDimensions.x);vec2 charCoord=vec2(charCol,charRow)/u_charsetDimensions;vec4 rotationColor=texture2D(u_rotationTexture,charIndexTexCoord);float scaledAngle=rotationColor.r*255.0+rotationColor.g;float rotationAngle=(scaledAngle*360.0/255.0)*0.017453292;vec2 fractionalPart=fract(gridCoord)-0.5;if(flipHorizontal)fractionalPart.x=-fractionalPart.x;if(flipVertical)fractionalPart.y=-fractionalPart.y;fractionalPart=rotate2D(rotationAngle)*fractionalPart+0.5;vec2 cellSize=1.0/u_charsetDimensions;vec2 texCoord=charCoord+fractionalPart*cellSize;vec2 cellMax=charCoord+cellSize;if(any(lessThan(texCoord,charCoord))||any(greaterThan(texCoord,cellMax))){gl_FragColor=isInverted ? primaryColor : secondaryColor;return;}vec4 charTexel=texture2D(u_characterTexture,texCoord);if(isInverted)charTexel.rgb=1.0-charTexel.rgb;gl_FragColor=mix(secondaryColor,primaryColor,charTexel);}";
 class hA {
@@ -1752,7 +1808,7 @@ class hA {
     o(this, "_rotationFramebuffer");
     o(this, "_transformFramebuffer");
     this.renderer = A, this.font = e, this.grid = t, this._asciiShader = this.renderer.createShader(p, lA), this.converters = [
-      { name: "brightness", converter: new G(A, e, t) },
+      { name: "brightness", converter: new M(A, e, t) },
       { name: "custom", converter: new b(A, e, t) }
     ], this._characterFramebuffer = this.renderer.createFramebuffer(t.cols, t.rows), this._primaryColorFramebuffer = this.renderer.createFramebuffer(t.cols, t.rows), this._secondaryColorFramebuffer = this.renderer.createFramebuffer(t.cols, t.rows), this._rotationFramebuffer = this.renderer.createFramebuffer(t.cols, t.rows), this._transformFramebuffer = this.renderer.createFramebuffer(t.cols, t.rows), this._resultFramebuffer = this.renderer.createFramebuffer(this.grid.width, this.grid.height);
   }
@@ -1764,7 +1820,7 @@ class hA {
   render(A) {
     for (const t of this.converters) {
       const r = t.converter;
-      r.options.enabled && r instanceof M && r.convert(A);
+      r.options.enabled && r instanceof S && r.convert(A);
     }
     const e = (t, r) => {
       t.begin(), this.renderer.clear();
@@ -1777,19 +1833,19 @@ class hA {
     e(this._characterFramebuffer, (t) => t.characterFramebuffer), e(this._primaryColorFramebuffer, (t) => t.primaryColorFramebuffer), e(this._secondaryColorFramebuffer, (t) => t.secondaryColorFramebuffer), e(this._rotationFramebuffer, (t) => t.rotationFramebuffer), e(this._transformFramebuffer, (t) => t.transformFramebuffer), this._resultFramebuffer.begin(), this.renderer.clear(), this.renderer.shader(this._asciiShader), this.renderer.setUniform("u_characterTexture", this.font.fontFramebuffer), this.renderer.setUniform("u_charsetDimensions", [this.font.textureColumns, this.font.textureRows]), this.renderer.setUniform("u_asciiCharacterTexture", this._characterFramebuffer.texture), this.renderer.setUniform("u_primaryColorTexture", this._primaryColorFramebuffer.texture), this.renderer.setUniform("u_secondaryColorTexture", this._secondaryColorFramebuffer.texture), this.renderer.setUniform("u_transformTexture", this._transformFramebuffer.texture), this.renderer.setUniform("u_rotationTexture", this._rotationFramebuffer.texture), this.renderer.setUniform("u_captureTexture", A.texture), this.renderer.setUniform("u_backgroundMode", !1), this.renderer.setUniform("u_captureDimensions", [A.width, A.height]), this.renderer.setUniform("u_gridCellDimensions", [this.grid.cols, this.grid.rows]), this.renderer.setUniform("u_gridPixelDimensions", [this.grid.width, this.grid.height]), this.renderer.rect(0, 0, this._resultFramebuffer.width, this._resultFramebuffer.height), this._resultFramebuffer.end();
   }
   /**
-   * Retrieves a converter by name. Useful for accessing the pre-defined converters in the pipeline.
+   * Get a specific converter by name.
    * @param name The name of the converter to retrieve.
-   * @returns The requested {@link TextmodeConverter} instance or `void` if not found.
+   * @returns The requested `TextmodeConverter` instance.
    */
   get(A) {
-    if (!C.validate(
+    if (!u.validate(
       typeof A == "string" && A.length > 0,
       "Converter name must be a non-empty string.",
       { method: "converter", providedValue: A }
     ))
       return;
     const e = this.converters.find((r) => r.name === A), t = e == null ? void 0 : e.converter;
-    if (C.validate(
+    if (u.validate(
       t instanceof b,
       `Converter "${A}" is not a valid TextmodeConverter.`,
       { method: "converter", providedValue: A, converterInstance: t }
@@ -1803,18 +1859,18 @@ class hA {
    * @returns The newly created {@link TextmodeConverter} instance or `void` if the addition failed.
    */
   add(A, e) {
-    if (!C.validate(
+    if (!u.validate(
       typeof A == "string" && A.length > 0,
       "Converter name must be a non-empty string.",
       { method: "add", providedValue: A }
-    ) || !C.validate(
+    ) || !u.validate(
       e === "brightness" || e === "custom",
       `Converter type must be either "brightness" or "custom". Provided: ${e}`,
       { method: "add", providedValue: e }
     ))
       return;
     let t;
-    return e === "brightness" ? t = new G(this.renderer, this.font, this.grid) : t = new b(this.renderer, this.font, this.grid), this.converters.push({ name: A, converter: t }), t;
+    return e === "brightness" ? t = new M(this.renderer, this.font, this.grid) : t = new b(this.renderer, this.font, this.grid), this.converters.push({ name: A, converter: t }), t;
   }
   /**
   * Removes a converter from the pipeline by name or instance.
@@ -1822,7 +1878,7 @@ class hA {
   * @returns `true` if the converter was successfully removed, `false` otherwise.
   */
   remove(A) {
-    if (!C.validate(
+    if (!u.validate(
       typeof A == "string" || A instanceof b,
       "Parameter must be either a string (converter name) or a TextmodeConverter instance.",
       { method: "remove", providedValue: A }
@@ -1830,7 +1886,7 @@ class hA {
       return !1;
     let e = -1;
     if (typeof A == "string") {
-      if (!C.validate(
+      if (!u.validate(
         A.length > 0,
         "Converter name must be a non-empty string.",
         { method: "remove", providedValue: A }
@@ -1839,7 +1895,7 @@ class hA {
       e = this.converters.findIndex((t) => t.name === A);
     } else
       e = this.converters.findIndex((t) => t.converter === A);
-    return C.validate(
+    return u.validate(
       e !== -1,
       typeof A == "string" ? `Converter with name "${A}" not found in pipeline.` : "Converter instance not found in pipeline.",
       { method: "remove", providedValue: A, convertersCount: this.converters.length }
@@ -1860,8 +1916,26 @@ class hA {
     for (const A of this.converters)
       A.converter.resize();
   }
+  /**
+   * Checks if any converter in the pipeline is enabled.
+   * @returns `true` if any converter is enabled, `false` otherwise.
+   */
   hasEnabledConverters() {
     return this.converters.some((A) => A.converter.options.enabled);
+  }
+  /**
+   * Disables all converters in the pipeline.
+   */
+  disable() {
+    for (const A of this.converters)
+      A.converter.disable();
+  }
+  /**
+   * Enables all converters in the pipeline.
+   */
+  enable() {
+    for (const A of this.converters)
+      A.converter.enable();
   }
   /** Returns the character framebuffer containing the combined result of all converters. @ignore */
   get characterFramebuffer() {
@@ -1926,7 +2000,7 @@ class U {
     };
   }
 }
-class S {
+class R {
   /**
    * Creates a downloadable blob from content
    * @param content The content to include in the blob
@@ -2012,12 +2086,12 @@ class cA extends U {
    * @returns Transform data object
    */
   extractTransformData(A, e, t) {
-    const r = A[t], i = A[t + 1], a = A[t + 2], s = r === 255, B = i === 255, g = a === 255, Q = e[t], l = e[t + 1], h = Q + l / 255, u = Math.round(h * 360 / 255 * 100) / 100;
+    const r = A[t], i = A[t + 1], a = A[t + 2], s = r === 255, B = i === 255, g = a === 255, E = e[t], l = e[t + 1], h = E + l / 255, d = Math.round(h * 360 / 255 * 100) / 100;
     return {
       isInverted: s,
       flipHorizontal: B,
       flipVertical: g,
-      rotation: u
+      rotation: d
     };
   }
   /**
@@ -2051,21 +2125,21 @@ class cA extends U {
           A.characterPixels,
           s
         );
-        let g = this.pixelsToRGBA(A.primaryColorPixels, s), Q = this.pixelsToRGBA(A.secondaryColorPixels, s);
+        let g = this.pixelsToRGBA(A.primaryColorPixels, s), E = this.pixelsToRGBA(A.secondaryColorPixels, s);
         const l = this.extractTransformData(
           A.transformPixels,
           A.rotationPixels,
           s
         );
         if (l.isInverted) {
-          const u = g;
-          g = Q, Q = u;
+          const d = g;
+          g = E, E = d;
         }
         const h = this.calculateCellPosition(a, i, e);
         t.push({
           charIndex: B,
           primaryColor: g,
-          secondaryColor: Q,
+          secondaryColor: E,
           transform: l,
           position: h
         }), r++;
@@ -2146,32 +2220,32 @@ class uA {
     if (!A || !A.xs) return "";
     const { xs: i, ys: a, endPts: s, flags: B } = A;
     if (!i || !a || !s || !B) return "";
-    let g = "", Q = 0;
+    let g = "", E = 0;
     for (let l = 0; l < s.length; l++) {
       const h = s[l];
-      if (!(h < Q)) {
-        if (h >= Q) {
-          const u = e + i[Q] * r, d = t - a[Q] * r;
-          g += `M${u.toFixed(2)},${d.toFixed(2)}`;
-          let c = Q + 1;
+      if (!(h < E)) {
+        if (h >= E) {
+          const d = e + i[E] * r, C = t - a[E] * r;
+          g += `M${d.toFixed(2)},${C.toFixed(2)}`;
+          let c = E + 1;
           for (; c <= h; )
             if ((B[c] & 1) !== 0) {
               const I = e + i[c] * r, P = t - a[c] * r;
               g += `L${I.toFixed(2)},${P.toFixed(2)}`, c++;
             } else {
               const I = e + i[c] * r, P = t - a[c] * r;
-              let m = c + 1 > h ? Q : c + 1;
+              let m = c + 1 > h ? E : c + 1;
               if ((B[m] & 1) !== 0) {
-                const _ = e + i[m] * r, x = t - a[m] * r;
-                g += `Q${I.toFixed(2)},${P.toFixed(2)} ${_.toFixed(2)},${x.toFixed(2)}`, c = m + 1;
+                const _ = e + i[m] * r, v = t - a[m] * r;
+                g += `Q${I.toFixed(2)},${P.toFixed(2)} ${_.toFixed(2)},${v.toFixed(2)}`, c = m + 1;
               } else {
-                const _ = e + i[m] * r, x = t - a[m] * r, L = (I + _) / 2, $ = (P + x) / 2;
-                g += `Q${I.toFixed(2)},${P.toFixed(2)} ${L.toFixed(2)},${$.toFixed(2)}`, c = m;
+                const _ = e + i[m] * r, v = t - a[m] * r, k = (I + _) / 2, L = (P + v) / 2;
+                g += `Q${I.toFixed(2)},${P.toFixed(2)} ${k.toFixed(2)},${L.toFixed(2)}`, c = m;
               }
             }
           g += "Z";
         }
-        Q = h + 1;
+        E = h + 1;
       }
     }
     return g;
@@ -2192,7 +2266,7 @@ class uA {
         return this.createEmptyPath();
       let B = null;
       try {
-        e.glyf && e.glyf[s] !== null ? B = e.glyf[s] : E && E.T && E.T.glyf && E.T.glyf._parseGlyf && (B = E.T.glyf._parseGlyf(e, s), e.glyf && B && (e.glyf[s] = B));
+        e.glyf && e.glyf[s] !== null ? B = e.glyf[s] : Q && Q.T && Q.T.glyf && Q.T.glyf._parseGlyf && (B = Q.T.glyf._parseGlyf(e, s), e.glyf && B && (e.glyf[s] = B));
       } catch (g) {
         console.warn(`Failed to parse glyph ${s}:`, g);
       }
@@ -2215,14 +2289,14 @@ class uA {
    */
   generatePositionedCharacterPath(A, e, t, r, i, a, s, B) {
     try {
-      const g = s / e.head.unitsPerEm, Q = B * g, l = t + (i - Q) / 2, h = r + (a + s * 0.7) / 2;
+      const g = s / e.head.unitsPerEm, E = B * g, l = t + (i - E) / 2, h = r + (a + s * 0.7) / 2;
       return this.generateCharacterPath(A, e, l, h, s).toSVG() || null;
     } catch (g) {
       return console.warn(`Failed to generate positioned character path for "${A}":`, g), null;
     }
   }
 }
-class CA {
+class dA {
   constructor() {
     o(this, "pathGenerator");
     this.pathGenerator = new uA();
@@ -2370,7 +2444,7 @@ class CA {
 `).replace(/[ \t]+$/gm, "");
   }
 }
-class dA extends S {
+class CA extends R {
   /**
    * Generates a default filename for SVG export
    * @param prefix Optional prefix for the filename
@@ -2432,7 +2506,7 @@ class V {
     o(this, "dataExtractor");
     o(this, "contentGenerator");
     o(this, "fileHandler");
-    this.dataExtractor = new cA(), this.contentGenerator = new CA(), this.fileHandler = new dA();
+    this.dataExtractor = new cA(), this.contentGenerator = new dA(), this.fileHandler = new CA();
   }
   /**
    * Applies default values to SVG export options
@@ -2479,7 +2553,7 @@ class V {
     }
   }
 }
-class DA extends U {
+class fA extends U {
   /**
    * Extracts character data for TXT generation
    * @param framebufferData Framebuffer pixel data
@@ -2494,19 +2568,19 @@ class DA extends U {
     let a = 0;
     for (let B = 0; B < e.rows; B++) {
       const g = [];
-      for (let Q = 0; Q < e.cols; Q++) {
+      for (let E = 0; E < e.cols; E++) {
         const l = a * 4, h = this.getCharacterIndex(
           A.characterPixels,
           l
-        ), u = ((s = t.characters[h]) == null ? void 0 : s.character) || r;
-        g.push(u), a++;
+        ), d = ((s = t.characters[h]) == null ? void 0 : s.character) || r;
+        g.push(d), a++;
       }
       i.push(g);
     }
     return i;
   }
 }
-class fA {
+class DA {
   /**
    * Generates TXT content from a 2D character array
    * @param characterGrid 2D array of characters (rows x columns)
@@ -2525,7 +2599,7 @@ class fA {
     return t.join(r);
   }
 }
-class mA extends S {
+class mA extends R {
   /**
    * Saves TXT content as a downloadable file
    * @param content The TXT content to save
@@ -2556,12 +2630,12 @@ class mA extends S {
     return e = this.ensureFileExtension(e, ".txt"), e === ".txt" || e.length <= 4 ? this.generateDefaultFilename() : e;
   }
 }
-class z {
+class H {
   constructor() {
     o(this, "dataExtractor");
     o(this, "contentGenerator");
     o(this, "fileHandler");
-    this.dataExtractor = new DA(), this.contentGenerator = new fA(), this.fileHandler = new mA();
+    this.dataExtractor = new fA(), this.contentGenerator = new DA(), this.fileHandler = new mA();
   }
   /**
    * Applies default values to TXT export options
@@ -2679,7 +2753,7 @@ class IA {
     }
   }
 }
-const H = {
+const z = {
   png: "image/png",
   jpg: "image/jpeg",
   webp: "image/webp"
@@ -2688,7 +2762,7 @@ const H = {
   jpg: ".jpg",
   webp: ".webp"
 };
-class wA extends S {
+class wA extends R {
   /**
    * Saves image content as a downloadable file
    * @param content The image content (data URL or blob)
@@ -2741,7 +2815,7 @@ class wA extends S {
    * @returns True if the format is supported for saving
    */
   validateSaveSupport(A) {
-    return A in H && A in y;
+    return A in z && A in y;
   }
   /**
    * Gets the MIME type for the specified image format
@@ -2749,7 +2823,7 @@ class wA extends S {
    * @returns The MIME type string
    */
   getMimeType(A) {
-    return H[A];
+    return z[A];
   }
   /**
    * Gets the file extension for the specified image format
@@ -2852,15 +2926,15 @@ class pA {
     }
   }
 }
-class R {
-  constructor(A, e = {}) {
-    /** The canvas element to capture content from */
-    o(this, "captureCanvas");
+class T {
+  constructor(A = null, e = {}) {
+    /** The element to capture content from (optional for standalone mode) */
+    o(this, "captureSource");
     /** Our WebGL overlay canvas manager */
     o(this, "textmodeCanvas");
     /** Core WebGL renderer */
-    o(this, "renderer");
-    o(this, "canvasFramebuffer");
+    o(this, "_renderer");
+    o(this, "_canvasFramebuffer");
     o(this, "_font");
     o(this, "_grid");
     o(this, "resizeObserver");
@@ -2873,30 +2947,43 @@ class R {
     o(this, "_frameRate", 0);
     o(this, "lastRenderTime", 0);
     o(this, "_frameCount", 0);
+    // Frame rate measurement smoothing
+    o(this, "frameTimeHistory", []);
+    o(this, "frameTimeHistorySize", 10);
     o(this, "_pipeline");
-    this.captureCanvas = A, this.textmodeCanvas = new aA(A), this._mode = e.renderMode ?? "auto", this._frameRateLimit = e.frameRate ?? 120, this.frameInterval = 1e3 / this._frameRateLimit, this.renderer = new j(this.textmodeCanvas.getWebGLContext()), this.canvasFramebuffer = this.renderer.createFramebuffer(this.textmodeCanvas.width, this.textmodeCanvas.height), this._font = new rA(this.renderer, e.fontSize ?? 16);
+    // Standalone canvas properties
+    o(this, "_standalone", !1);
+    o(this, "_drawCallback", () => {
+    });
+    o(this, "_resizedCallback", () => {
+    });
+    this.captureSource = A, this._standalone = A === null, this._mode = e.renderMode ?? "auto", this._frameRateLimit = e.frameRate ?? 60, this.frameInterval = 1e3 / this._frameRateLimit;
   }
   /**
    * Static factory method for creating and initializing a Textmodifier instance.
-   * @param canvas The HTML canvas element to capture content from.
+   * @param source The HTML canvas or video element to capture content from. Pass `null` for standalone mode.
    * @param opts Optional configuration options for the `Textmodifier` instance.
    * @ignore
    */
-  static async create(A, e = {}) {
-    const t = new R(A, e);
-    await t._font.initialize();
-    const r = t._font.maxGlyphDimensions;
-    return t._grid = new iA(t.captureCanvas, r.width, r.height), t._pipeline = new hA(t.renderer, t._font, t._grid), t.setupEventListeners(), t.startAutoRendering(), t;
+  static async create(A = null, e = {}) {
+    const t = new T(A, e), r = t._standalone ? e : void 0;
+    t.textmodeCanvas = new aA(t.captureSource, t._standalone, r), t._renderer = new j(t.textmodeCanvas.getWebGLContext());
+    let i, a;
+    t._standalone ? (i = e.width || 800, a = e.height || 600) : (i = t.textmodeCanvas.width || 800, a = t.textmodeCanvas.height || 600), t._canvasFramebuffer = t._renderer.createFramebuffer(i, a), t._font = new rA(t._renderer, e.fontSize ?? 16), await t._font.initialize(e.fontSource);
+    const s = t._font.maxGlyphDimensions;
+    return t._grid = new iA(t.textmodeCanvas.canvas, s.width, s.height), t._pipeline = new hA(t._renderer, t._font, t._grid), t.setupEventListeners(), t.startAutoRendering(), t;
   }
   setupEventListeners() {
-    window.addEventListener("resize", this.resize.bind(this)), window.ResizeObserver && (this.resizeObserver = new ResizeObserver(() => {
+    window.addEventListener("resize", () => {
+      this._standalone ? this._resizedCallback() : this.resize();
+    }), window.ResizeObserver && this.captureSource && !this._standalone && (this.resizeObserver = new ResizeObserver(() => {
       this.resize();
-    }), this.resizeObserver.observe(this.captureCanvas));
+    }), this.resizeObserver.observe(this.captureSource));
   }
   /**
    * Generate the current textmode rendering as a text string.
-   * @param options Options for TXT generation (excluding filename)
-   * @returns TXT content as a string
+   * @param options Options for text generation *(excluding filename)*
+   * @returns Textmode grid content as a string.
    * 
    * @example
    * ```javascript
@@ -2917,10 +3004,22 @@ class R {
    * 
    * // Print to console or use otherwise
    * console.log(textString);
+   * 
+   * ////////
+   * 
+   * // Example with video element
+   * const video = document.querySelector('video#myVideo');
+   * const videoTextmodifier = await textmode.create(video);
+   * 
+   * // The textmode overlay will automatically update as the video plays
+   * video.play();
+   * 
+   * // Get current frame as ASCII
+   * const videoFrame = videoTextmodifier.toString();
    * ```
    */
   toString(A = {}) {
-    return new z().generateTXT(this, A);
+    return new H().generateTXT(this, A);
   }
   /**
    * Export the current textmode rendering to a TXT file.
@@ -2945,12 +3044,12 @@ class R {
    * ```
    */
   saveStrings(A = {}) {
-    new z().saveTXT(this, A);
+    new H().saveTXT(this, A);
   }
   /**
    * Generate the current textmode rendering as an SVG string.
-   * @param options Options for SVG generation (excluding filename)
-   * @returns SVG content as a string
+   * @param options Options for SVG generation *(excluding filename)*
+   * @returns SVG content as a string.
    * 
    * @example
    * ```javascript
@@ -3037,7 +3136,7 @@ class R {
   }
   /**
    * Update the font used for rendering.
-   * @param fontUrl The URL of the font to load.
+   * @param fontSource The URL of the font to load.
    * 
    * @example
    * ```javascript
@@ -3048,10 +3147,10 @@ class R {
    * const textmodifier = await textmode.create(canvas);
    * 
    * // Load a custom font from a URL
-   * textmodifier.loadFont('https://example.com/fonts/myfont.ttf');
+   * await textmodifier.loadFont('https://example.com/fonts/myfont.ttf');
    * 
    * // Local font example
-   * // textmodifier.loadFont('./fonts/myfont.ttf'); 
+   * // await textmodifier.loadFont('./fonts/myfont.ttf'); 
    * ```
    */
   async loadFont(A) {
@@ -3099,29 +3198,34 @@ class R {
    * ```
    */
   render() {
-    this.measureFrameRate(), this._frameCount++, this.canvasFramebuffer.update(this.captureCanvas), this._pipeline.render(this.canvasFramebuffer), this._pipeline.hasEnabledConverters() ? (this.renderer.background(0, 0, 0, 1), this.renderer.image(this._pipeline.texture, this._grid.offsetX, this._grid.offsetY, this._pipeline.texture.width, this._pipeline.texture.height)) : this.renderer.clear(), this.renderer.reset();
+    this.measureFrameRate(), this._frameCount++, this._standalone ? (this._canvasFramebuffer.begin(), this._drawCallback(), this._canvasFramebuffer.end()) : this._canvasFramebuffer.update(this.captureSource), this._pipeline.render(this._canvasFramebuffer), this._pipeline.hasEnabledConverters() ? (this._renderer.background(0), this._renderer.image(this._pipeline.texture, this._grid.offsetX, this._grid.offsetY, this._pipeline.texture.width, this._pipeline.texture.height)) : (this._renderer.clear(), this._renderer.image(this._canvasFramebuffer, this._grid.offsetX, this._grid.offsetY, this._canvasFramebuffer.width, this._canvasFramebuffer.height)), this._renderer.reset();
   }
   resize() {
-    this.textmodeCanvas.resize(), this.canvasFramebuffer.resize(this.textmodeCanvas.width, this.textmodeCanvas.height), this._grid.resize(), this._pipeline.resize(), this.renderer.resetViewport(), this._mode !== "manual" && this.render();
+    this.textmodeCanvas.resize(), this._canvasFramebuffer.resize(this.textmodeCanvas.width, this.textmodeCanvas.height), this._grid.resize(), this._pipeline.resize(), this._renderer.resetViewport(), this._mode !== "manual" && this.render();
   }
   /**
    * Start automatic rendering
    */
   startAutoRendering() {
     if (this._mode !== "auto") return;
+    this.lastFrameTime = performance.now();
     const A = (e) => {
-      e - this.lastFrameTime >= this.frameInterval && (this.render(), this.lastFrameTime = e), this.animationFrameId = requestAnimationFrame(A);
+      const t = e - this.lastFrameTime;
+      t >= this.frameInterval && (this.render(), this.lastFrameTime = e - t % this.frameInterval), this.animationFrameId = requestAnimationFrame(A);
     };
     this.animationFrameId = requestAnimationFrame(A);
   }
   /**
    * Update FPS measurement - works for both auto and manual modes
+   * Uses a rolling average for smoother frame rate reporting
    */
   measureFrameRate() {
     const A = performance.now();
     if (this.lastRenderTime > 0) {
       const e = A - this.lastRenderTime;
-      this._frameRate = 1e3 / e;
+      this.frameTimeHistory.push(e), this.frameTimeHistory.length > this.frameTimeHistorySize && this.frameTimeHistory.shift();
+      const t = this.frameTimeHistory.reduce((r, i) => r + i, 0) / this.frameTimeHistory.length;
+      this._frameRate = 1e3 / t;
     }
     this.lastRenderTime = A;
   }
@@ -3174,20 +3278,18 @@ class R {
    * // Create a Textmodifier instance
    * const textmodifier = await textmode.create(canvas);
    * 
-   * // Set the maximum frame rate to 60 FPS
-   * textmodifier.frameRate(60);
+   * // Set the maximum frame rate to 30 FPS
+   * textmodifier.frameRate(30);
    * ```
    */
   frameRate(A) {
     if (A === void 0)
       return this._frameRate;
-    this._frameRateLimit = A, this.frameInterval = 1e3 / A;
+    this._frameRateLimit = A, this.frameInterval = 1e3 / A, this._mode === "auto" && (this.stopAutoRendering(), this.startAutoRendering());
   }
   /**
-   * Get or set the font size used for rendering. 
-   * If called without arguments, returns the current font size.
-   * @param size The font size to set. If undefined, returns the current font size.
-   * @returns `void` if setting the size, or the current font size if called without arguments.
+   * Set the font size used for rendering.
+   * @param size The font size to set.
    * 
    * @example
    * ```javascript
@@ -3202,14 +3304,81 @@ class R {
    * ```
    */
   fontSize(A) {
-    if (A === void 0)
-      return this._font.fontSize;
-    this._font.setFontSize(A), this._grid.resizeCellPixelDimensions(this._font.maxGlyphDimensions.width, this._font.maxGlyphDimensions.height), this._pipeline.resize(), this.renderer.resetViewport();
+    u.validate(
+      typeof A == "number" && A > 0,
+      "Font size must be a positive number greater than 0.",
+      { method: "fontSize", providedValue: A }
+    ) && this._font.fontSize !== A && (this._font.setFontSize(A), this._grid.resizeCellPixelDimensions(this._font.maxGlyphDimensions.width, this._font.maxGlyphDimensions.height), this._pipeline.resize(), this._renderer.resetViewport());
   }
   /**
-   * Get a specific converter by name.
-   * @param name The name of the converter to retrieve.
-   * @returns The requested `TextmodeConverter` instance.
+   * Set a draw callback function that will be executed before each render.
+   * This method is primarily useful for standalone textmodifier instances.
+   * @param callback The function to call before each render
+   * 
+   * @example
+   * ```javascript
+   * // Create a standalone textmodifier instance
+   * const t = await textmode.create({
+   *  width: 800,
+   *  height: 600,
+   * });
+   * 
+   * // Set up draw callback
+   * t.draw(() => {
+   *   // Set background color
+   *   t.background(128);
+   *   
+   *   // Draw some content
+   *   t.fill(255, 0, 0); // Set fill color to red
+   *   t.rect(50, 50, 100, 100);
+   * });
+   * ```
+   */
+  draw(A) {
+    this._drawCallback = A;
+  }
+  /**
+   * Set a callback function that will be called when the window is resized.
+   * @param callback The function to call when the window is resized.
+   * 
+   * @example
+   * ```javascript
+   * // Create a standalone textmodifier instance
+   * const t = await textmode.create({
+   *  width: window.innerWidth,
+   *  height: window.innerHeight,
+   * });
+   * 
+   * // Draw callback to update content
+   * t.draw(() => {
+   *   // Set background color
+   *   t.background(128);
+   * 
+   *   // Draw some content
+   *   t.fill(255, 0, 0); // Set fill color to red
+   *   t.rect(50, 50, 100, 100);
+   * });
+   * 
+   * // Set up window resize callback
+   * t.windowResized(() => {
+   *   // Resize the canvas to match window size
+   *   t.resizeCanvas(window.innerWidth, window.innerHeight);
+   * });
+   * 
+   */
+  windowResized(A) {
+    this._resizedCallback = A;
+  }
+  /**
+   * Resize the `textmode.js` canvas.
+   * @param width The new width of the canvas.
+   * @param height The new height of the canvas.
+   */
+  resizeCanvas(A, e) {
+    this.textmodeCanvas.resize(A, e), this._canvasFramebuffer.resize(this.textmodeCanvas.width, this.textmodeCanvas.height), this._grid.resize(), this._pipeline.resize(), this._renderer.resetViewport(), this._mode !== "manual" && this.render();
+  }
+  /**
+   * @inheritDoc TextmodeConversionPipeline.get
    * 
    * @example
    * ```javascript
@@ -3230,6 +3399,144 @@ class R {
   converter(A) {
     return this._pipeline.get(A);
   }
+  /**
+   * Sets the fill color for subsequent rendering operations
+   * @param r Red component (0-255)
+   * @param g Green component (0-255, optional)
+   * @param b Blue component (0-255, optional)
+   * @param a Alpha component (0-255, optional)
+   * 
+   * @example
+   * ```javascript
+   * const t = await textmode.create({
+   *   width: 800,
+   *   height: 600,
+   * })
+   * 
+   * t.draw(() => {
+   *   // Set the background color to black
+   *   t.background(0);
+   * 
+   *   const centerX = t.width / 2;
+   *   const centerY = t.height / 2;
+   *   const radius = Math.min(t.width, t .height) / 3;
+   *   const speed = 0.02; // Adjust speed of rotation
+   *
+   *   const angle = t.frameCount * speed;
+   *   const x = centerX + Math.cos(angle) * radius - 100;
+   *   const y = centerY + Math.sin(angle) * radius - 50;
+   *
+   *   // Set the fill color to white
+   *   t.fill(255);
+   * 
+   *   // Draw a rectangle with the fill color
+   *   t.rect(x, y, 200, 150);
+   * });
+   * ```
+   */
+  fill(A, e, t, r) {
+    this._renderer.fill(A, e, t, r);
+  }
+  /**
+   * Draw a rectangle with the current shader or fill color.
+   * @param x X-coordinate of the rectangle
+   * @param y Y-coordinate of the rectangle
+   * @param width Width of the rectangle
+   * @param height Height of the rectangle
+   * 
+   * @example
+   * ```javascript
+   * const t = await textmode.create({
+   *   width: 800,
+   *   height: 600,
+   * })
+   * 
+   * t.draw(() => {
+   *   // Set the background color to black
+   *   t.background(0);
+   * 
+   *   const centerX = t.width / 2;
+   *   const centerY = t.height / 2;
+   *   const radius = Math.min(t.width, t .height) / 3;
+   *   const speed = 0.02; // Adjust speed of rotation
+   *
+   *   const angle = t.frameCount * speed;
+   *   const x = centerX + Math.cos(angle) * radius - 100;
+   *   const y = centerY + Math.sin(angle) * radius - 50;
+   *
+   *   // Set the fill color to white
+   *   t.fill(255);
+   * 
+   *   // Draw a rectangle with the fill color
+   *   t.rect(x, y, 200, 150);
+   * });
+   * ```
+   */
+  rect(A, e, t = 1, r = 1) {
+    this._renderer.rect(A, e, t, r);
+  }
+  /**
+   * Set the background color for the canvas.
+   * @param r Red component (0-255)
+   * @param g Green component (0-255, optional)
+   * @param b Blue component (0-255, optional)
+   * @param a Alpha component (0-255, optional)
+   * 
+   * @example
+   * ```javascript
+   * const t = await textmode.create({
+   *   width: 800,
+   *   height: 600,
+   * })
+   * 
+   * t.draw(() => {
+   *   // Set the background color to black
+   *   t.background(0);
+   * 
+   *   const centerX = t.width / 2;
+   *   const centerY = t.height / 2;
+   *   const radius = Math.min(t.width, t .height) / 3;
+   *   const speed = 0.02; // Adjust speed of rotation
+   *
+   *   const angle = t.frameCount * speed;
+   *   const x = centerX + Math.cos(angle) * radius - 100;
+   *   const y = centerY + Math.sin(angle) * radius - 50;
+   *
+   *   // Set the fill color to white
+   *   t.fill(255);
+   * 
+   *   // Draw a rectangle with the fill color
+   *   t.rect(x, y, 200, 150);
+   * });
+   * ```
+   */
+  background(A, e = A, t = A, r = 255) {
+    this._renderer.background(A, e, t, r);
+  }
+  /**
+   * Create a shader program from vertex and fragment source code.
+   * @param vertexSource The GLSL source code for the vertex shader.
+   * @param fragmentSource The GLSL source code for the fragment shader.
+   * @returns The created shader program for use in `textmode.js`.
+   */
+  createShader(A, e) {
+    return this._renderer.createShader(A, e);
+  }
+  /**
+   * Set the current shader for rendering.
+   * @param shader The shader program to use for rendering.
+   */
+  shader(A) {
+    this._renderer.shader(A);
+  }
+  /**
+   * Set a uniform variable for the current shader.
+   * @param name The name of the uniform variable to set.
+   * @param value The value to set for the uniform variable.
+   */
+  setUniform(A, e) {
+    this._renderer.setUniform(A, e);
+  }
   /** Get the current grid object used for rendering. */
   get grid() {
     return this._grid;
@@ -3242,7 +3549,7 @@ class R {
   get mode() {
     return this._mode;
   }
-  /** Get the current textmode conversion pipeline */
+  /** Get the current textmode conversion pipeline. */
   get pipeline() {
     return this._pipeline;
   }
@@ -3250,25 +3557,68 @@ class R {
   get frameCount() {
     return this._frameCount;
   }
+  /** Get the width of the canvas. */
+  get width() {
+    return this.textmodeCanvas.width;
+  }
+  /** Get the height of the canvas. */
+  get height() {
+    return this.textmodeCanvas.height;
+  }
 }
 class Y {
   /**
-   * Create a {@link Textmodifier} instance to apply textmode rendering to a given canvas.
-   * @param canvas The HTML canvas element to capture content from.
-   * @param opts Optional configuration options for the Textmodifier instance.
+   * Create a {@link Textmodifier} instance for textmode rendering.
+   * 
+   * @param sourceOrOptions - Either an HTML canvas/video element for capturing content, or options for standalone mode.
+   * @param opts - Optional configuration options *(only used when first parameter is a canvas/video element)*.
    * @returns A Promise that resolves to a Textmodifier instance.
    * 
    * @example
    * ```javascript
-   * // Fetch a canvas element to apply textmode rendering to
+   * // Create a Textmodifier for an existing canvas
    * const canvas = document.querySelector('canvas#myCanvas');
-   * 
-   * // Create a Textmodifier instance with default options
    * const textmodifier = await textmode.create(canvas);
+   * 
+   * ////////
+   * 
+   * // Create a Textmodifier for a video element
+   * const video = document.querySelector('video#myVideo');
+   * const textmodifier = await textmode.create(video);
+   * 
+   * ////////
+   * 
+   * // Create a standalone Textmodifier
+   * const t = await textmode.create({ width: 800, height: 600 });
+   * 
+   * // Set up a draw loop for standalone usage
+   * t.draw(() => {
+   *   t.background(0);
+   * 
+   *   const centerX = t.width / 2;
+   *   const centerY = t.height / 2;
+   *   const radius = Math.min(t.width, t .height) / 3;
+   *   const speed = 0.02; // Adjust speed of rotation
+   *
+   *   const angle = t.frameCount * speed;
+   *   const x = centerX + Math.cos(angle) * radius - 100;
+   *   const y = centerY + Math.sin(angle) * radius - 50;
+   *
+   *   // Set the fill color to white
+   *   t.fill(255);
+   * 
+   *   // Draw a rectangle with the fill color
+   *   t.rect(x, y, 200, 150);
+   * });
    * ```
    */
   static async create(A, e = {}) {
-    return R.create(A, e);
+    if (A instanceof HTMLCanvasElement || A instanceof HTMLVideoElement)
+      return T.create(A, e);
+    {
+      const t = A || {};
+      return T.create(null, t);
+    }
   }
   /**
    * Set the global error handling level for the library. This applies to all `Textmodifier` instances.
@@ -3281,7 +3631,7 @@ class Y {
    * ```
    */
   static setErrorLevel(A) {
-    C.setGlobalLevel(A);
+    u.setGlobalLevel(A);
   }
   /**
    * Returns the current version of the `textmode.js` library.
@@ -3292,25 +3642,26 @@ class Y {
    * ```
    */
   static get version() {
-    return "0.1.0";
+    return "0.1.2";
   }
   constructor() {
     throw new Error("Textmode is a static class and cannot be instantiated.");
   }
 }
-const vA = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const xA = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null
 }, Symbol.toStringTag, { value: "Module" })), bA = Y.create, FA = Y.setErrorLevel, yA = Y.version;
 export {
-  vA as ExportOptions,
   aA as TextmodeCanvas,
   hA as TextmodeConversionPipeline,
-  xA as TextmodeConverters,
   X as TextmodeErrorLevel,
   rA as TextmodeFont,
   iA as TextmodeGrid,
-  R as Textmodifier,
+  T as Textmodifier,
+  vA as converters,
   bA as create,
+  Y as default,
+  xA as export,
   FA as setErrorLevel,
   Y as textmode,
   yA as version

@@ -1,12 +1,12 @@
 import type { TextmodeFont } from "../font";
 import type { Framebuffer } from "../../rendering/webgl/Framebuffer";
-import type { Renderer } from "../../rendering/webgl/Renderer";
+import type { GLRenderer } from "../../rendering/webgl/Renderer";
 import type { TextmodeGrid } from "../Grid";
 /**
  * Base class for all textmode converters.
  */
 export declare class TextmodeConverter {
-    protected renderer: Renderer;
+    protected renderer: GLRenderer;
     protected fontManager: TextmodeFont;
     protected grid: TextmodeGrid;
     protected _characterFramebuffer: Framebuffer;
@@ -23,7 +23,7 @@ export declare class TextmodeConverter {
      * @param options Additional options for the converter
      * @ignore
      */
-    constructor(renderer: Renderer, fontManager: TextmodeFont, grid: TextmodeGrid, options?: any);
+    constructor(renderer: GLRenderer, fontManager: TextmodeFont, grid: TextmodeGrid, options?: any);
     /**
      * Resizes all internal framebuffers to match the grid dimensions.
      * @ignore

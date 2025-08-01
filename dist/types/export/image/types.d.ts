@@ -11,30 +11,38 @@ export type ImageFormat = 'png' | 'jpg' | 'webp';
 export type ImageExportOptions = {
     /**
      * The filename to save the image file as (without extension).
+     *
      * If not provided, a default filename is used.
      */
     filename?: string;
     /**
-     * The image format to export ('png', 'jpg', or 'webp').
-     * Default is 'png'.
+     * The image format to export (`'png'`, `'jpg'`, or `'webp'`).
+     *
+     * Default is `'png'`.
      */
     format?: ImageFormat;
     /**
-     * Image quality for lossy formats (jpg, webp).
-     * Range: 0.0 to 1.0, where 1.0 is highest quality.
-     * Default is 1.0. Ignored for PNG format.
+     * Image quality for lossy formats (`'jpg'`, `'webp'`).
+     *
+     * Range: `0.0` to `1.0`, where `1.0` is highest quality.
+     *
+     * Default is `1.0`. Ignored for `'png'` format.
      */
     quality?: number;
     /**
      * Scale factor for the output image.
-     * 1.0 = original size, 2.0 = double size, 0.5 = half size.
-     * Default is 1.0.
+     *
+     * `1.0` = original size, `2.0` = double size, `0.5` = half size.
+     *
+     * Default is `1.0`.
      */
     scale?: number;
     /**
-     * Background color for formats that don't support transparency (jpg).
-     * Format: CSS color string or 'transparent' for PNG/WebP.
-     * Default is 'black'.
+     * Background color for formats that don't support transparency (`'jpg'`).
+     *
+     * Format: CSS color string or `'transparent'` for `'png'`/`'webp'`.
+     *
+     * Default is `'black'`.
      */
     backgroundColor?: string;
 };
