@@ -1,9 +1,12 @@
-import type { TextmodeCharacter, TyprFont } from './types.ts';
+import type { TextmodeCharacter } from './types.ts';
+import type { TyprFont } from './typr/types.ts';
 /**
  * Handles color generation and mapping for characters.
  * This class manages the unique RGB color assignment for character identification.
  */
 export declare class CharacterColorMapper {
+    private _fontTableReader;
+    constructor();
     /**
      * Creates TextmodeCharacter objects with unique color assignments.
      * @param characters Array of character strings
@@ -11,14 +14,6 @@ export declare class CharacterColorMapper {
      * @returns Array of TextmodeCharacter objects with colors
      */
     createCharacterObjects(characters: string[], font: TyprFont): TextmodeCharacter[];
-    /**
-     * Gets the glyph index for a given Unicode code point in a Typr.js font
-     * This is a simplified version for advance width lookup only
-     * @param fontData The Typr.js font data
-     * @param codePoint The Unicode code point to look up
-     * @returns The glyph index, or 0 if not found
-     */
-    private _getGlyphIndex;
     /**
      * Generates a unique RGB color for a character based on its index.
      * @param index The index of the character

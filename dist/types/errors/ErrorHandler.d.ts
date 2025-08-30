@@ -46,7 +46,7 @@ export declare class TextmodeErrorHandler {
     private static _instance;
     private _options;
     private constructor();
-    static getInstance(): TextmodeErrorHandler;
+    static $getInstance(): TextmodeErrorHandler;
     /**
      * Handle an error based on the configured settings
      * @returns true if execution should continue, false if error was handled
@@ -59,11 +59,11 @@ export declare class TextmodeErrorHandler {
      * @param context Additional context for debugging
      * @returns true if validation passed, false if validation failed and was handled
      */
-    validate(condition: boolean, message: string, context?: any): boolean;
+    $validate(condition: boolean, message: string, context?: any): boolean;
     /**
      * Set global error level
      */
-    setGlobalLevel(level: TextmodeErrorLevel): void;
+    $setGlobalLevel(level: TextmodeErrorLevel): void;
 }
 /**
  * Singleton instance of the textmode.js error handler.

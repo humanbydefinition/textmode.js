@@ -1,4 +1,4 @@
-[**textmode.js v0.1.2**](../README.md)
+[**textmode.js v0.1.9**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: TextmodeGrid
 
-Defined in: [textmode/Grid.ts:4](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Grid.ts#L4)
+Defined in: [textmode/Grid.ts:4](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Grid.ts#L4)
 
 Manages the grid for the ASCII rendering pipeline of a [Textmodifier](Textmodifier.md) instance.
 
@@ -18,7 +18,7 @@ Manages the grid for the ASCII rendering pipeline of a [Textmodifier](Textmodifi
 
 > **get** **cellHeight**(): `number`
 
-Defined in: [textmode/Grid.ts:161](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Grid.ts#L161)
+Defined in: [textmode/Grid.ts:138](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Grid.ts#L138)
 
 Returns the height of each cell in the grid.
 
@@ -34,7 +34,7 @@ Returns the height of each cell in the grid.
 
 > **get** **cellWidth**(): `number`
 
-Defined in: [textmode/Grid.ts:158](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Grid.ts#L158)
+Defined in: [textmode/Grid.ts:135](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Grid.ts#L135)
 
 Returns the width of each cell in the grid.
 
@@ -50,7 +50,7 @@ Returns the width of each cell in the grid.
 
 > **get** **cols**(): `number`
 
-Defined in: [textmode/Grid.ts:164](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Grid.ts#L164)
+Defined in: [textmode/Grid.ts:141](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Grid.ts#L141)
 
 Returns the number of columns in the grid.
 
@@ -66,7 +66,7 @@ Returns the number of columns in the grid.
 
 > **get** **height**(): `number`
 
-Defined in: [textmode/Grid.ts:173](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Grid.ts#L173)
+Defined in: [textmode/Grid.ts:150](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Grid.ts#L150)
 
 Returns the total height of the grid.
 
@@ -82,7 +82,7 @@ Returns the total height of the grid.
 
 > **get** **offsetX**(): `number`
 
-Defined in: [textmode/Grid.ts:176](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Grid.ts#L176)
+Defined in: [textmode/Grid.ts:153](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Grid.ts#L153)
 
 Returns the offset to the outer canvas borders on the x-axis when centering the grid.
 
@@ -98,7 +98,7 @@ Returns the offset to the outer canvas borders on the x-axis when centering the 
 
 > **get** **offsetY**(): `number`
 
-Defined in: [textmode/Grid.ts:179](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Grid.ts#L179)
+Defined in: [textmode/Grid.ts:156](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Grid.ts#L156)
 
 Returns the offset to the outer canvas borders on the y-axis when centering the grid.
 
@@ -114,7 +114,7 @@ Returns the offset to the outer canvas borders on the y-axis when centering the 
 
 > **get** **rows**(): `number`
 
-Defined in: [textmode/Grid.ts:167](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Grid.ts#L167)
+Defined in: [textmode/Grid.ts:144](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Grid.ts#L144)
 
 Returns the number of rows in the grid.
 
@@ -130,7 +130,7 @@ Returns the number of rows in the grid.
 
 > **get** **width**(): `number`
 
-Defined in: [textmode/Grid.ts:170](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Grid.ts#L170)
+Defined in: [textmode/Grid.ts:147](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Grid.ts#L147)
 
 Returns the total width of the grid.
 

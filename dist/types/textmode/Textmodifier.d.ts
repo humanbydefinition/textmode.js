@@ -1,15 +1,18 @@
+import { GLRenderer } from '../rendering/webgl/Renderer';
 import { TextmodeFont } from './font';
 import { TextmodeGrid } from './Grid';
+import { TextmodeCanvas } from './Canvas';
 import { TextmodeConversionPipeline } from './ConversionPipeline';
-import type { TextmodeConverter } from './converters';
-import { type SVGExportOptions } from '../export/svg';
-import { type TXTExportOptions } from '../export/txt';
-import { type ImageExportOptions } from '../export/image';
-import type { Shader } from '../rendering';
+import { type TextmodifierContext } from './mixins';
+import type { RenderingCapabilities } from './mixins/RenderingMixin';
+import type { ExportCapabilities } from './mixins/ExportMixin';
+import type { FontCapabilities } from './mixins/FontMixin';
+import type { ConversionCapabilities } from './mixins/ConversionMixin';
 /**
- * Supported capture sources for textmode rendering
+ * Supported capture sources for textmode rendering.
+ * @ignore
  */
-export type CaptureSource = HTMLCanvasElement | HTMLVideoElement;
+export type TextmodeCaptureSource = HTMLCanvasElement | HTMLVideoElement;
 /**
  * Options for creating a {@link Textmodifier} instance.
  */
@@ -18,223 +21,83 @@ export type TextmodeOptions = {
     fontSize?: number;
     /**
      * Automatic rendering mode. Defaults to 'auto'.
-     * - 'manual': Requires manual `render()` calls
-     * - 'auto': Automatically renders using requestAnimationFrame
+     * - `'manual'`: Requires manual `render()` calls
+     * - `'auto'`: Automatically renders using [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
      */
     renderMode?: 'manual' | 'auto';
     /** Maximum frames per second for auto rendering. Defaults to 60. */
     frameRate?: number;
-    /** The width of the canvas in standalone mode. Defaults to 800. */
+    /** The width of the canvas in `standalone` mode. Defaults to 800. */
     width?: number;
-    /** The height of the canvas in standalone mode. Defaults to 600. */
+    /** The height of the canvas in `standalone` mode. Defaults to 600. */
     height?: number;
     /**
-     * URL or path to a custom font file (.otf/.ttf).
-     * Required when using minified builds that don't include embedded fonts.
-     * Optional for full builds (will override embedded font if provided).
+     * URL or path to a custom font file *(.otf/.ttf)*.
+     * Required when using minified builds that don't include a default font.
+     * Optional for full builds *(will override embedded font if provided)*.
      */
     fontSource?: string;
 };
 /**
+ * Base class for mixin application
+ */
+declare class TextmodifierCore implements TextmodifierContext {
+    _renderer: GLRenderer;
+    _font: TextmodeFont;
+    _pipeline: TextmodeConversionPipeline;
+    _canvas: TextmodeCanvas;
+    _grid: TextmodeGrid;
+}
+declare const Textmodifier_base: typeof TextmodifierCore;
+/**
  * Manages textmode rendering on a canvas or video element.
  *
- * Each `Textmodifier` instance can be applied to a specific HTML canvas or video element via {@link textmode.create},
- * or created as a standalone instance for independent rendering.
+ * Each `Textmodifier` instance applies a `HTMLCanvasElement` with custom WebGL rendering on top of the original content.
+ *
+ * If the `Textmodifier` instance is created in `standalone` mode without a capture source,
+ * it simply creates a new `HTMLCanvasElement` to draw on using the `textmode.js` drawing API.
  */
-export declare class Textmodifier {
+export declare class Textmodifier extends Textmodifier_base {
     /** The element to capture content from (optional for standalone mode) */
-    private captureSource;
-    /** Our WebGL overlay canvas manager */
-    private textmodeCanvas;
-    /** Core WebGL renderer */
-    private _renderer;
+    private _captureSource;
+    /** Canvas framebuffer for capturing source content */
     private _canvasFramebuffer;
-    private _font;
-    private _grid;
-    private resizeObserver;
+    private _resizeObserver;
     private _mode;
     private _frameRateLimit;
-    private animationFrameId;
-    private lastFrameTime;
-    private frameInterval;
+    private _animationFrameId;
+    private _lastFrameTime;
+    private _frameInterval;
+    private _isLooping;
     private _frameRate;
-    private lastRenderTime;
+    private _lastRenderTime;
     private _frameCount;
-    private frameTimeHistory;
-    private frameTimeHistorySize;
-    private _pipeline;
+    private _frameTimeHistory;
+    private _frameTimeHistorySize;
+    private _isDisposed;
     private _standalone;
     private _drawCallback;
     private _resizedCallback;
-    private constructor();
+    private _windowResizeListener;
+    /**
+     * Creates an instance of Textmodifier.
+     * @param source The HTML canvas or video element to capture content from. Pass `null` for standalone mode.
+     * @param opts Optional configuration options for the Textmodifier instance.
+     * @ignore
+     */
+    constructor(source?: TextmodeCaptureSource | null, opts?: TextmodeOptions);
     /**
      * Static factory method for creating and initializing a Textmodifier instance.
      * @param source The HTML canvas or video element to capture content from. Pass `null` for standalone mode.
      * @param opts Optional configuration options for the `Textmodifier` instance.
      * @ignore
      */
-    static create(source?: CaptureSource | null, opts?: TextmodeOptions): Promise<Textmodifier>;
-    private setupEventListeners;
+    static create(source?: TextmodeCaptureSource | null, opts?: TextmodeOptions): Promise<Textmodifier>;
     /**
-     * Generate the current textmode rendering as a text string.
-     * @param options Options for text generation *(excluding filename)*
-     * @returns Textmode grid content as a string.
-     *
-     * @example
-     * ```javascript
-     * // Fetch a canvas element to apply textmode rendering to
-     * const canvas = document.querySelector('canvas#myCanvas');
-     *
-     * // Create a Textmodifier instance
-     * const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
-     *
-     * // Render a single frame
-     * textmodifier.render();
-     *
-     * // Get the current rendering as a text string
-     * const textString = textmodifier.toString({
-     *   preserveTrailingSpaces: false,
-     *   lineEnding: 'lf'
-     * });
-     *
-     * // Print to console or use otherwise
-     * console.log(textString);
-     *
-     * ////////
-     *
-     * // Example with video element
-     * const video = document.querySelector('video#myVideo');
-     * const videoTextmodifier = await textmode.create(video);
-     *
-     * // The textmode overlay will automatically update as the video plays
-     * video.play();
-     *
-     * // Get current frame as ASCII
-     * const videoFrame = videoTextmodifier.toString();
-     * ```
+     * Setup event listeners for resize handling.
+     * @ignore
      */
-    toString(options?: Omit<TXTExportOptions, 'filename'>): string;
-    /**
-     * Export the current textmode rendering to a TXT file.
-     * @param options Options for TXT export
-     *
-     * @example
-     * ```javascript
-     * // Fetch a canvas element to apply textmode rendering to
-     * const canvas = document.querySelector('canvas#myCanvas');
-     *
-     * // Create a Textmodifier instance
-     * const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
-     *
-     * // Render a single frame
-     * textmodifier.render();
-     *
-     * // Export the current rendering to a TXT file
-     * textmodifier.saveStrings({
-     *   filename: 'my_textmode_rendering',
-     *   preserveTrailingSpaces: false
-     * });
-     * ```
-     */
-    saveStrings(options?: TXTExportOptions): void;
-    /**
-     * Generate the current textmode rendering as an SVG string.
-     * @param options Options for SVG generation *(excluding filename)*
-     * @returns SVG content as a string.
-     *
-     * @example
-     * ```javascript
-     * // Fetch a canvas element to apply textmode rendering to
-     * const canvas = document.querySelector('canvas#myCanvas');
-     *
-     * // Create a Textmodifier instance
-     * const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
-     *
-     * // Render a single frame
-     * textmodifier.render();
-     *
-     * // Get the current rendering as an SVG string
-     * const svgString = textmodifier.toSVG({
-     *   includeBackgroundRectangles: true,
-     *   drawMode: 'fill'
-     * });
-     *
-     * // Print to console or use otherwise
-     * console.log(svgString);
-     * ```
-     */
-    toSVG(options?: Omit<SVGExportOptions, 'filename'>): string;
-    /**
-     * Export the current textmode rendering to an SVG file.
-     * @param options Options for SVG export
-     *
-     * @example
-     * ```javascript
-     * // Fetch a canvas element to apply textmode rendering to
-     * const canvas = document.querySelector('canvas#myCanvas');
-     *
-     * // Create a Textmodifier instance
-     * const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
-     *
-     * // Render a single frame
-     * textmodifier.render();
-     *
-     * // Export the current rendering to an SVG file
-     * textmodifier.saveSVG({
-     *   filename: 'my_textmode_rendering',
-     * });
-     * ```
-     */
-    saveSVG(options?: SVGExportOptions): void;
-    /**
-     * Export the current textmode rendering to an image file.
-     * @param filename The filename (without extension) to save the image as
-     * @param format The image format ('png', 'jpg', or 'webp')
-     * @param options Additional options for image export
-     *
-     * @example
-     * ```javascript
-     * // Fetch a canvas element to apply textmode rendering to
-     * const canvas = document.querySelector('canvas#myCanvas');
-     *
-     * // Create a Textmodifier instance
-     * const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
-     *
-     * // Render a single frame
-     * textmodifier.render();
-     *
-     * // Export the current rendering to a PNG file
-     * textmodifier.saveCanvas('my_textmode_rendering', 'png');
-     *
-     * // Export with custom options
-     * textmodifier.saveCanvas('my_textmode_rendering', 'jpg', {
-     *   quality: 0.8,
-     *   scale: 2.0,
-     *   backgroundColor: 'white'
-     * });
-     * ```
-     */
-    saveCanvas(filename: string, format: 'png' | 'jpg' | 'webp', options?: Omit<ImageExportOptions, 'filename' | 'format'>): Promise<void>;
-    /**
-     * Update the font used for rendering.
-     * @param fontSource The URL of the font to load.
-     *
-     * @example
-     * ```javascript
-     * // Fetch a canvas element to apply textmode rendering to
-     * const canvas = document.querySelector('canvas#myCanvas');
-     *
-     * // Create a Textmodifier instance
-     * const textmodifier = await textmode.create(canvas);
-     *
-     * // Load a custom font from a URL
-     * await textmodifier.loadFont('https://example.com/fonts/myfont.ttf');
-     *
-     * // Local font example
-     * // await textmodifier.loadFont('./fonts/myfont.ttf');
-     * ```
-     */
-    loadFont(fontSource: string): Promise<void>;
+    $setupEventListeners(): void;
     /**
      * Apply textmode rendering to the canvas.
      *
@@ -274,24 +137,22 @@ export declare class Textmodifier {
      * ```
      */
     render(): void;
-    private resize;
+    private _resize;
     /**
      * Start automatic rendering
      */
-    private startAutoRendering;
+    private _startAutoRendering;
     /**
      * Update FPS measurement - works for both auto and manual modes
      * Uses a rolling average for smoother frame rate reporting
      */
-    private measureFrameRate;
+    private _measureFrameRate;
     /**
      * Stop automatic rendering
      */
-    private stopAutoRendering;
+    private _stopAutoRendering;
     /**
      * Update the rendering mode.
-     *
-     * If called without arguments, returns the current mode.
      *
      * - `'manual'`: Requires manual [render](#render) calls
      * - `'auto'`: Automatically renders using [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
@@ -312,7 +173,7 @@ export declare class Textmodifier {
      * // Now you need to call textmodifier.render() manually in your animation loop
      * ```
      */
-    renderMode(mode?: 'manual' | 'auto'): void | 'auto' | 'manual';
+    renderMode(mode: 'manual' | 'auto'): void;
     /**
      * Set the maximum frame rate for auto rendering. If called without arguments, returns the current measured frame rate.
      * @param fps The maximum frames per second for auto rendering.
@@ -331,25 +192,126 @@ export declare class Textmodifier {
      */
     frameRate(fps?: number): number | void;
     /**
-     * Set the font size used for rendering.
-     * @param size The font size to set.
+     * Stop the automatic rendering loop while keeping the render mode as 'auto'.
+     *
+     * This method pauses the render loop without changing the render mode, allowing
+     * it to be resumed later with {@link loop}. This is useful for temporarily pausing
+     * animation while maintaining the ability to restart it.
+     *
+     * **Note:** This only affects rendering when in `'auto'` mode. In `'manual'` mode,
+     * this method has no effect since rendering is already controlled manually.
      *
      * @example
      * ```javascript
-     * // Fetch a canvas element to apply textmode rendering to
-     * const canvas = document.querySelector('canvas#myCanvas');
-     *
-     * // Create a Textmodifier instance
+     * // Create a textmodifier instance in auto mode
      * const textmodifier = await textmode.create(canvas);
      *
-     * // Set the font size to 24
-     * textmodifier.fontSize(24);
+     * // The render loop is running automatically
+     * console.log(textmodifier.isLooping()); // true
+     *
+     * // Stop the automatic rendering loop
+     * textmodifier.noLoop();
+     * console.log(textmodifier.isLooping()); // false
+     *
+     * // Resume the automatic rendering loop
+     * textmodifier.loop();
+     * console.log(textmodifier.isLooping()); // true
      * ```
      */
-    fontSize(size: number): void;
+    noLoop(): void;
+    /**
+     * Resume the automatic rendering loop if it was stopped by {@link noLoop}.
+     *
+     * This method restarts the render loop when in `'auto'` mode. If the render mode
+     * is `'manual'`, the loop state will be set but automatic rendering will not start
+     * until the mode is changed back to `'auto'`.
+     *
+     * @example
+     * ```javascript
+     * // Create a textmodifier instance
+     * const textmodifier = await textmode.create(canvas);
+     *
+     * // Stop the loop
+     * textmodifier.noLoop();
+     *
+     * // Resume the loop
+     * textmodifier.loop();
+     *
+     * // You can also use this pattern for conditional animation
+     * if (someCondition) {
+     *   textmodifier.loop();
+     * } else {
+     *   textmodifier.noLoop();
+     * }
+     * ```
+     */
+    loop(): void;
+    /**
+     * Execute the render function a specified number of times.
+     *
+     * This method is useful when the render loop has been stopped with {@link noLoop}
+     * or when in `'manual'` mode, allowing you to trigger rendering on demand.
+     * Similar to p5.js's `redraw()` function.
+     *
+     * @param n The number of times to execute the render function. Defaults to 1.
+     *
+     * @example
+     * ```javascript
+     * // Create a textmodifier instance
+     * const textmodifier = await textmode.create(canvas, { renderMode: 'manual' });
+     *
+     * // Set up drawing
+     * textmodifier.draw(() => {
+     *   textmodifier.background(0);
+     *   textmodifier.fill(255, 0, 0);
+     *   textmodifier.rect(100, 100, 200, 150);
+     * });
+     *
+     * // Render once manually
+     * textmodifier.redraw();
+     *
+     * // Render 5 times
+     * textmodifier.redraw(5);
+     *
+     * // Also useful when loop is stopped
+     * textmodifier.noLoop();
+     * textmodifier.redraw(3); // Render 3 times despite loop being stopped
+     * ```
+     */
+    redraw(n?: number): void;
+    /**
+     * Check whether the textmodifier is currently running the automatic render loop.
+     *
+     * Returns `true` when both the render mode is `'auto'` AND the loop is active.
+     * Returns `false` when in `'manual'` mode or when {@link noLoop} has been called.
+     *
+     * @returns True if the automatic render loop is currently active, false otherwise.
+     *
+     * @example
+     * ```javascript
+     * const textmodifier = await textmode.create(canvas);
+     *
+     * // Check loop status in different states
+     * console.log(textmodifier.isLooping()); // true (auto mode, looping)
+     *
+     * textmodifier.noLoop();
+     * console.log(textmodifier.isLooping()); // false (auto mode, not looping)
+     *
+     * textmodifier.renderMode('manual');
+     * console.log(textmodifier.isLooping()); // false (manual mode)
+     *
+     * textmodifier.renderMode('auto');
+     * console.log(textmodifier.isLooping()); // false (auto mode, but loop was stopped)
+     *
+     * textmodifier.loop();
+     * console.log(textmodifier.isLooping()); // true (auto mode, looping)
+     * ```
+     */
+    isLooping(): boolean;
     /**
      * Set a draw callback function that will be executed before each render.
-     * This method is primarily useful for standalone textmodifier instances.
+     * This method is primarily useful for standalone textmodifier instances,
+     * but can also be used to draw on top of the captured video or canvas.
      * @param callback The function to call before each render
      *
      * @example
@@ -404,156 +366,34 @@ export declare class Textmodifier {
     windowResized(callback: () => void): void;
     /**
      * Resize the `textmode.js` canvas.
+     *
+     * Can only be used in `standalone` mode since the textmode canvas otherwise automatically adjusts to the video/canvas size.
      * @param width The new width of the canvas.
      * @param height The new height of the canvas.
      */
     resizeCanvas(width: number, height: number): void;
     /**
-     * @inheritDoc TextmodeConversionPipeline.get
+     * Completely destroy this Textmodifier instance and free all associated resources.
+     *
+     * After calling this method, the instance should not be used and will be eligible for garbage collection.
+     *
+     * This method is idempotent and safe to call multiple times.
      *
      * @example
      * ```javascript
-     * // Fetch a canvas element to apply textmode rendering to
-     * const canvas = document.querySelector('canvas#myCanvas');
-     *
-     * // Create a Textmodifier instance
+     * // Create a textmodifier instance
      * const textmodifier = await textmode.create(canvas);
      *
-     * // Get the pre-defined brightness converter from the pipeline
-     * const brightnessConverter = textmodifier.converter('brightness');
+     * // Use it for rendering
+     * textmodifier.render();
      *
-     * // Update properties of the brightness converter
-     * brightnessConverter.invert(true);
-     * brightnessConverter.characters(" .,;:*");
+     * // When done, completely clean up
+     * textmodifier.destroy();
+     *
+     * // Instance is now safely disposed and ready for garbage collection
      * ```
      */
-    converter(name: string): TextmodeConverter | void;
-    /**
-     * Sets the fill color for subsequent rendering operations
-     * @param r Red component (0-255)
-     * @param g Green component (0-255, optional)
-     * @param b Blue component (0-255, optional)
-     * @param a Alpha component (0-255, optional)
-     *
-     * @example
-     * ```javascript
-     * const t = await textmode.create({
-     *   width: 800,
-     *   height: 600,
-     * })
-     *
-     * t.draw(() => {
-     *   // Set the background color to black
-     *   t.background(0);
-     *
-     *   const centerX = t.width / 2;
-     *   const centerY = t.height / 2;
-     *   const radius = Math.min(t.width, t .height) / 3;
-     *   const speed = 0.02; // Adjust speed of rotation
-     *
-     *   const angle = t.frameCount * speed;
-     *   const x = centerX + Math.cos(angle) * radius - 100;
-     *   const y = centerY + Math.sin(angle) * radius - 50;
-     *
-     *   // Set the fill color to white
-     *   t.fill(255);
-     *
-     *   // Draw a rectangle with the fill color
-     *   t.rect(x, y, 200, 150);
-     * });
-     * ```
-     */
-    fill(r: number, g?: number, b?: number, a?: number): void;
-    /**
-     * Draw a rectangle with the current shader or fill color.
-     * @param x X-coordinate of the rectangle
-     * @param y Y-coordinate of the rectangle
-     * @param width Width of the rectangle
-     * @param height Height of the rectangle
-     *
-     * @example
-     * ```javascript
-     * const t = await textmode.create({
-     *   width: 800,
-     *   height: 600,
-     * })
-     *
-     * t.draw(() => {
-     *   // Set the background color to black
-     *   t.background(0);
-     *
-     *   const centerX = t.width / 2;
-     *   const centerY = t.height / 2;
-     *   const radius = Math.min(t.width, t .height) / 3;
-     *   const speed = 0.02; // Adjust speed of rotation
-     *
-     *   const angle = t.frameCount * speed;
-     *   const x = centerX + Math.cos(angle) * radius - 100;
-     *   const y = centerY + Math.sin(angle) * radius - 50;
-     *
-     *   // Set the fill color to white
-     *   t.fill(255);
-     *
-     *   // Draw a rectangle with the fill color
-     *   t.rect(x, y, 200, 150);
-     * });
-     * ```
-     */
-    rect(x: number, y: number, width?: number, height?: number): void;
-    /**
-     * Set the background color for the canvas.
-     * @param r Red component (0-255)
-     * @param g Green component (0-255, optional)
-     * @param b Blue component (0-255, optional)
-     * @param a Alpha component (0-255, optional)
-     *
-     * @example
-     * ```javascript
-     * const t = await textmode.create({
-     *   width: 800,
-     *   height: 600,
-     * })
-     *
-     * t.draw(() => {
-     *   // Set the background color to black
-     *   t.background(0);
-     *
-     *   const centerX = t.width / 2;
-     *   const centerY = t.height / 2;
-     *   const radius = Math.min(t.width, t .height) / 3;
-     *   const speed = 0.02; // Adjust speed of rotation
-     *
-     *   const angle = t.frameCount * speed;
-     *   const x = centerX + Math.cos(angle) * radius - 100;
-     *   const y = centerY + Math.sin(angle) * radius - 50;
-     *
-     *   // Set the fill color to white
-     *   t.fill(255);
-     *
-     *   // Draw a rectangle with the fill color
-     *   t.rect(x, y, 200, 150);
-     * });
-     * ```
-     */
-    background(r: number, g?: number, b?: number, a?: number): void;
-    /**
-     * Create a shader program from vertex and fragment source code.
-     * @param vertexSource The GLSL source code for the vertex shader.
-     * @param fragmentSource The GLSL source code for the fragment shader.
-     * @returns The created shader program for use in `textmode.js`.
-     */
-    createShader(vertexSource: string, fragmentSource: string): Shader;
-    /**
-     * Set the current shader for rendering.
-     * @param shader The shader program to use for rendering.
-     */
-    shader(shader: Shader): void;
-    /**
-     * Set a uniform variable for the current shader.
-     * @param name The name of the uniform variable to set.
-     * @param value The value to set for the uniform variable.
-     */
-    setUniform(name: string, value: any): void;
+    destroy(): void;
     /** Get the current grid object used for rendering. */
     get grid(): TextmodeGrid;
     /** Get the current font object used for rendering. */
@@ -564,8 +404,19 @@ export declare class Textmodifier {
     get pipeline(): TextmodeConversionPipeline;
     /** Get the current frame count. */
     get frameCount(): number;
+    /** Get the WebGL renderer. */
+    get renderer(): GLRenderer;
+    /** Set the current frame count. */
+    set frameCount(value: number);
     /** Get the width of the canvas. */
     get width(): number;
     /** Get the height of the canvas. */
     get height(): number;
+    /** Get the textmodifier canvas containing the rendered output. */
+    get canvas(): TextmodeCanvas;
+    /** Check if the instance has been disposed/destroyed. */
+    get isDisposed(): boolean;
 }
+export interface Textmodifier extends RenderingCapabilities, ExportCapabilities, FontCapabilities, ConversionCapabilities {
+}
+export {};

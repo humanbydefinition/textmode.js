@@ -1,33 +1,26 @@
-export interface FramebufferOptions {
-    filter?: 'nearest' | 'linear';
-    wrap?: 'clamp' | 'repeat';
-    format?: 'rgba' | 'rgb';
-    type?: 'unsigned_byte' | 'float';
-}
+import { Framebuffer, type FramebufferOptions } from '../core/Framebuffer';
 /**
- * Supported media sources for framebuffer textures
- */
-export type MediaSource = HTMLCanvasElement | HTMLVideoElement;
-/**
- * Wrapper for WebGL framebuffer with automatic texture creation.
+ * WebGL implementation of the framebuffer abstraction.
+ * Provides GPU-accelerated render targets with automatic texture creation.
  * Can also be used as a standalone texture (without render target functionality).
  */
-export declare class Framebuffer {
-    private gl;
+export declare class GLFramebuffer extends Framebuffer {
+    private _gl;
     private _framebuffer;
     private _texture;
-    private _width;
-    private _height;
-    private options;
-    private previousState;
+    private _previousState;
     constructor(gl: WebGLRenderingContext, width: number, height?: number, options?: FramebufferOptions);
-    private createTexture;
-    private updateTextureSize;
-    private attachTexture;
+    /**
+     * Execute a function with this framebuffer bound, then restore previous binding
+     */
+    private _withFramebufferBound;
+    private _createTexture;
+    private _updateTextureSize;
+    private _attachTexture;
     /**
      * Update the framebuffer texture with canvas or video content
      */
-    update(source: MediaSource): void;
+    $update(source: HTMLCanvasElement | HTMLVideoElement): void;
     /**
      * Update the framebuffer texture with pixel data
      */
@@ -44,7 +37,6 @@ export declare class Framebuffer {
      * End rendering to this framebuffer and restore previous state
      */
     end(): void;
-    private _pixels;
     /**
      * Load pixel data from the framebuffer into the pixels array
      */
@@ -67,9 +59,11 @@ export declare class Framebuffer {
     get(): Uint8Array;
     get(x: number, y: number): [number, number, number, number];
     get(x: number, y: number, w: number, h: number): Uint8Array;
+    /**
+     * Dispose of WebGL resources used by this framebuffer.
+     * This method is idempotent and safe to call multiple times.
+     */
+    $dispose(): void;
     get framebuffer(): WebGLFramebuffer | null;
     get texture(): WebGLTexture;
-    get width(): number;
-    get height(): number;
-    get pixels(): Uint8Array | null;
 }

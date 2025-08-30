@@ -1,20 +1,27 @@
 import type { TextmodeFont } from "../font";
-import type { Framebuffer } from "../../rendering/webgl/Framebuffer";
 import type { GLRenderer } from "../../rendering/webgl/Renderer";
 import type { TextmodeGrid } from "../Grid";
+import type { Framebuffer } from "../../rendering";
+/**
+ * Base options interface for all textmode converters.
+ */
+export interface TextmodeConverterOptions {
+    /** Enable/disable the converter */
+    enabled: boolean;
+}
 /**
  * Base class for all textmode converters.
  */
-export declare class TextmodeConverter {
-    protected renderer: GLRenderer;
-    protected fontManager: TextmodeFont;
-    protected grid: TextmodeGrid;
+export declare class TextmodeConverter<TOptions extends TextmodeConverterOptions = TextmodeConverterOptions> {
+    protected _renderer: GLRenderer;
+    protected _fontManager: TextmodeFont;
+    protected _grid: TextmodeGrid;
     protected _characterFramebuffer: Framebuffer;
     protected _primaryColorFramebuffer: Framebuffer;
     protected _secondaryColorFramebuffer: Framebuffer;
     protected _rotationFramebuffer: Framebuffer;
     protected _transformFramebuffer: Framebuffer;
-    protected _options: any;
+    protected _options: TOptions;
     /**
      * Creates a new TextmodeConverter instance.
      * @param renderer Renderer instance for texture creation
@@ -23,17 +30,17 @@ export declare class TextmodeConverter {
      * @param options Additional options for the converter
      * @ignore
      */
-    constructor(renderer: GLRenderer, fontManager: TextmodeFont, grid: TextmodeGrid, options?: any);
+    constructor(renderer: GLRenderer, fontManager: TextmodeFont, grid: TextmodeGrid, options?: Partial<TOptions>);
     /**
      * Resizes all internal framebuffers to match the grid dimensions.
      * @ignore
      */
-    resize(): void;
+    $resize(): void;
     /**
      * Enables or disables the converter.
-     * @param enabled Whether to enable or disable the converter.
+     * @param enabled Whether to enable or disable the converter.<br/>Accepts boolean or number *(0 = false, any other number = true)*.
      */
-    enabled(enabled: boolean): void;
+    enabled(enabled: boolean | number): void;
     /**
      * Enables the converter.
      */
@@ -42,6 +49,11 @@ export declare class TextmodeConverter {
      * Disables the converter.
      */
     disable(): void;
+    /**
+     * Dispose of all framebuffers used by this converter.
+     * @ignore
+     */
+    $dispose(): void;
     /** Returns the framebuffer containing character data. */
     get characterFramebuffer(): Framebuffer;
     /** Returns the framebuffer containing primary color data. */
@@ -52,6 +64,6 @@ export declare class TextmodeConverter {
     get rotationFramebuffer(): Framebuffer;
     /** Returns the framebuffer containing transformation data. */
     get transformFramebuffer(): Framebuffer;
-    /** Returns the renderer used by this converter. */
-    get options(): any;
+    /** Returns the defined options for this converter. */
+    get options(): TOptions;
 }

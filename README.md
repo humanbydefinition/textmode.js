@@ -14,7 +14,9 @@
 
 Transform any `<canvas>` or `<video>` element into dynamic ASCII representations with blazing-fast WebGL rendering. Whether you're using p5.js, three.js, or vanilla JavaScript, textmode.js seamlessly integrates with your existing projects to create interactive textmode games, live visual performances, and artistic installations.
 
-For standalone projects, textmode.js provides its own p5.js-inspired drawing API, letting you create compelling ASCII experiences without additional dependencies. The library powers live coding performances, interactive installations, and digital art projects worldwide, bringing the nostalgic aesthetic of textmode art into modern web development.
+For standalone projects, textmode.js provides its own p5.js-inspired drawing API, letting you create compelling ASCII experiences without additional dependencies. 
+
+The library powers live coding performances, interactive installations, and digital art projects worldwide, bringing the nostalgic aesthetic of textmode art into modern web development.
 
 ## Features
 - **Dependency-free**: No external libraries required, making it lightweight and easy to integrate into any project.
@@ -23,7 +25,7 @@ For standalone projects, textmode.js provides its own p5.js-inspired drawing API
 - **Standalone drawing API**: Use the built-in `p5.js`-like drawing API for creating textmode art without any other dependencies.
 - **Injectable**: Easily inject `textmode.js` into websites like YouTube to convert `<video>` or `<canvas>` elements into textmode representations for a unique viewing experience.
 - **WebGL1/WebGL2 support**: All shader code provided by `textmode.js` is written in `GLSL ES 1.0`, making it compatible with both `WebGL1` and `WebGL2` contexts, allowing for a wide range of devices to run your ASCII projects.
-- **Exporting**: Export your creations to various image formats, and as `.txt`, `.svg` and `.json` files for easy sharing, printing and plotting.
+- **Exporting**: Export your creations to various image formats, and as `.txt`, `.svg` and image files for easy sharing, printing and plotting.
 - **Typescript support**: Fully typed library with TypeScript definitions, making it easy to integrate into TypeScript projects and ensuring type safety.
 
 ## Installation
@@ -41,20 +43,18 @@ To get started with `textmode.js`, you'll need:
 
 | Bundle type | File size | Font included? | Best for |
 |-------------|-----------|---------------|----------|
-| **Standard UMD**<br/> (`textmode.umd.js`) | ~117kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
-| **Standard ESM**<br/> (`textmode.esm.js`) | ~183kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
-| **Minified UMD**<br/> (`textmode.umd.min.js`) | ~71kB | ❌ Requires external font | Production apps, custom fonts |
-| **Minified ESM**<br/> (`textmode.esm.min.js`) | ~136kB | ❌ Requires external font | Production apps, custom fonts |
+| **Standard UMD** (`textmode.umd.js`) | ~111kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
+| **Standard ESM** (`textmode.esm.js`) | ~128kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
+| **Minified UMD** (`textmode.umd.min.js`) | ~64kB | ❌ Requires external font | Production apps, custom fonts |
+| **Minified ESM** (`textmode.esm.min.js`) | ~82kB | ❌ Requires external font | Production apps, custom fonts |
 
-**Choose Standard bundles for:**
-- The simplest setup with no additional configuration
+**Choose standard bundles for:**
+- Quick setup with no additional configuration
 - Everything embedded and ready to use
 - Getting started without worrying about fonts
 
-**Choose Minified bundles for:**
-- Bundle size optimization *(25-40% smaller)*
-- Custom fonts instead of the default
-- Production applications requiring maximum performance
+**Choose minified bundles for:**
+- Production applications that don't use the embedded font
 
 #### UMD
 
@@ -142,7 +142,8 @@ The documentation will help you unlock the full potential of `textmode.js` in yo
 
 ## Acknowledgements
 
-`textmode.js` uses a custom-made minified version of [`Typr.js`](https://github.com/photopea/Typr.js) by [**Photopea**](https://github.com/photopea) for font loading and parsing, containing only the necessary components for our use case. `Typr.js` is licensed under the [**MIT License**](https://github.com/photopea/Typr.js/blob/main/LICENSE).
+`textmode.js` uses a custom-made TypeScript rewrite and minified version of [`Typr.js`](https://github.com/photopea/Typr.js) by [**Photopea**](https://github.com/photopea) for font loading and parsing, containing only the necessary components for our use case. `Typr.js` is licensed under the [**MIT License**](https://github.com/photopea/Typr.js/blob/main/LICENSE).
+
 
 The non-minified version of `textmode.js` ships with [`UrsaFont`](https://ursafrank.itch.io/ursafont) as the default font, created by [**UrsaFrank**](https://ursafrank.itch.io/). This font is available under the [**CC0 (Creative Commons Zero) license**](https://creativecommons.org/publicdomain/zero/1.0/).
 

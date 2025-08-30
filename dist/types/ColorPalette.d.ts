@@ -1,13 +1,10 @@
-import { Framebuffer } from './rendering/webgl/Framebuffer';
+import { Framebuffer } from './rendering/core/Framebuffer';
 import type { GLRenderer } from './rendering/webgl/Renderer';
 /**
  * A 1D color palette stored in a framebuffer that is used to pass colors to shaders.
- *
- * There is no need to modify instances of this class provided by the library,
- * as they are managed internally and can be modified more easily through classes managing them.
- * But you technically could - *if you wanted to* - without breaking anything.
+ * @ignore
  */
-export declare class ColorPalette {
+export declare class TextmodeColorPalette {
     /** The framebuffer used to store the color palette. */
     private _framebuffer;
     private _renderer;
@@ -21,7 +18,7 @@ export declare class ColorPalette {
     /**
      * Update the framebuffer with the currently selected colors.
      */
-    private _updateFramebuffer;
+    private _update;
     /**
      * Sets the colors of the palette and updates the framebuffer.
      * @param newColors The new RGB colors to set as [r, g, b] arrays.
@@ -35,8 +32,4 @@ export declare class ColorPalette {
      * Get the framebuffer containing the colors of the palette.
      */
     get framebuffer(): Framebuffer;
-    /**
-     * Get the texture from the framebuffer for use in shaders.
-     */
-    get texture(): WebGLTexture;
 }

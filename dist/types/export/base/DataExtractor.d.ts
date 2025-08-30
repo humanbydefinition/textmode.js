@@ -1,3 +1,4 @@
+import type { TextmodeConversionPipeline } from '../../textmode/ConversionPipeline';
 import type { FramebufferData } from '../svg/types';
 /**
  * Base class for data extraction from textmode framebuffers.
@@ -9,7 +10,7 @@ export declare abstract class DataExtractor {
      * @param pipeline The conversion pipeline containing framebuffers
      * @returns Object containing all pixel data arrays
      */
-    extractFramebufferData(pipeline: any): FramebufferData;
+    $extractFramebufferData(pipeline: TextmodeConversionPipeline): FramebufferData;
     /**
      * Gets character index from character framebuffer pixels
      * @param characterPixels Character framebuffer pixel data
@@ -17,14 +18,14 @@ export declare abstract class DataExtractor {
      * @param charactersLength Total number of available characters
      * @returns Character index
      */
-    protected getCharacterIndex(characterPixels: Uint8Array, pixelIndex: number): number;
+    protected _getCharacterIndex(characterPixels: Uint8Array, pixelIndex: number): number;
     /**
      * Converts raw pixel data to RGBA color object
      * @param pixels Pixel data array
      * @param index Pixel index (already multiplied by 4 for RGBA)
      * @returns RGBA color object with r, g, b, a properties
      */
-    protected pixelsToRGBA(pixels: Uint8Array, index: number): {
+    protected _pixelsToRGBA(pixels: Uint8Array, index: number): {
         r: number;
         g: number;
         b: number;

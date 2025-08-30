@@ -1,8 +1,8 @@
-**textmode.js v0.1.2**
+**textmode.js v0.1.9**
 
 ***
 
-# textmode.js v0.1.2
+# textmode.js v0.1.9
 
 ## Namespaces
 
@@ -10,6 +10,7 @@
 | ------ | ------ |
 | [converters](textmode.js/namespaces/converters/README.md) | Contains all converters that can be added to a rendering pipeline to shape the textmode output. |
 | [export](textmode.js/namespaces/export/README.md) | All types related to export options for different formats. |
+| [rendering](textmode.js/namespaces/rendering/README.md) | Contains all rendering-related utilities and components. |
 
 ## Enumerations
 
@@ -31,12 +32,5 @@
 
 | Type Alias | Description |
 | ------ | ------ |
-| [CaptureSource](type-aliases/CaptureSource.md) | Supported capture sources for textmode rendering |
-| [TextmodeCharacter](type-aliases/TextmodeCharacter.md) | Represents a single character in the textmode font. |
+| [TextmodeCharacter](type-aliases/TextmodeCharacter.md) | Represents a single character in the [TextmodeFont.characters](classes/TextmodeFont.md#characters) array. |
 | [TextmodeOptions](type-aliases/TextmodeOptions.md) | Options for creating a [Textmodifier](classes/Textmodifier.md) instance. |
-
-## References
-
-### default
-
-Renames and re-exports [textmode](classes/textmode.md)

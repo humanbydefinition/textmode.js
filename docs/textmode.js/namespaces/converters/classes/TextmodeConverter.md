@@ -1,12 +1,12 @@
-[**textmode.js v0.1.2**](../../../../README.md)
+[**textmode.js v0.1.9**](../../../../README.md)
 
 ***
 
 [textmode.js](../../../../README.md) / [converters](../README.md) / TextmodeConverter
 
-# Class: TextmodeConverter
+# Class: TextmodeConverter\<TOptions\>
 
-Defined in: [textmode/converters/Converter.ts:9](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L9)
+Defined in: [textmode/converters/Converter.ts:18](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L18)
 
 Base class for all textmode converters.
 
@@ -14,21 +14,27 @@ Base class for all textmode converters.
 
 - [`TextmodeFeatureConverter`](TextmodeFeatureConverter.md)
 
+## Type Parameters
+
+| Type Parameter | Default type |
+| ------ | ------ |
+| `TOptions` *extends* [`TextmodeConverterOptions`](../interfaces/TextmodeConverterOptions.md) | [`TextmodeConverterOptions`](../interfaces/TextmodeConverterOptions.md) |
+
 ## Accessors
 
 ### characterFramebuffer
 
 #### Get Signature
 
-> **get** **characterFramebuffer**(): `Framebuffer`
+> **get** **characterFramebuffer**(): [`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
-Defined in: [textmode/converters/Converter.ts:80](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L80)
+Defined in: [textmode/converters/Converter.ts:115](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L115)
 
 Returns the framebuffer containing character data.
 
 ##### Returns
 
-`Framebuffer`
+[`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
 ***
 
@@ -36,15 +42,15 @@ Returns the framebuffer containing character data.
 
 #### Get Signature
 
-> **get** **options**(): `any`
+> **get** **options**(): `TOptions`
 
-Defined in: [textmode/converters/Converter.ts:95](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L95)
+Defined in: [textmode/converters/Converter.ts:130](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L130)
 
-Returns the renderer used by this converter.
+Returns the defined options for this converter.
 
 ##### Returns
 
-`any`
+`TOptions`
 
 ***
 
@@ -52,15 +58,15 @@ Returns the renderer used by this converter.
 
 #### Get Signature
 
-> **get** **primaryColorFramebuffer**(): `Framebuffer`
+> **get** **primaryColorFramebuffer**(): [`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
-Defined in: [textmode/converters/Converter.ts:83](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L83)
+Defined in: [textmode/converters/Converter.ts:118](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L118)
 
 Returns the framebuffer containing primary color data.
 
 ##### Returns
 
-`Framebuffer`
+[`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
 ***
 
@@ -68,15 +74,15 @@ Returns the framebuffer containing primary color data.
 
 #### Get Signature
 
-> **get** **rotationFramebuffer**(): `Framebuffer`
+> **get** **rotationFramebuffer**(): [`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
-Defined in: [textmode/converters/Converter.ts:89](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L89)
+Defined in: [textmode/converters/Converter.ts:124](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L124)
 
 Returns the framebuffer containing rotation data.
 
 ##### Returns
 
-`Framebuffer`
+[`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
 ***
 
@@ -84,15 +90,15 @@ Returns the framebuffer containing rotation data.
 
 #### Get Signature
 
-> **get** **secondaryColorFramebuffer**(): `Framebuffer`
+> **get** **secondaryColorFramebuffer**(): [`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
-Defined in: [textmode/converters/Converter.ts:86](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L86)
+Defined in: [textmode/converters/Converter.ts:121](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L121)
 
 Returns the framebuffer containing secondary color data.
 
 ##### Returns
 
-`Framebuffer`
+[`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
 ***
 
@@ -100,15 +106,15 @@ Returns the framebuffer containing secondary color data.
 
 #### Get Signature
 
-> **get** **transformFramebuffer**(): `Framebuffer`
+> **get** **transformFramebuffer**(): [`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
-Defined in: [textmode/converters/Converter.ts:92](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L92)
+Defined in: [textmode/converters/Converter.ts:127](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L127)
 
 Returns the framebuffer containing transformation data.
 
 ##### Returns
 
-`Framebuffer`
+[`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
 ## Methods
 
@@ -116,7 +122,7 @@ Returns the framebuffer containing transformation data.
 
 > **disable**(): `void`
 
-Defined in: [textmode/converters/Converter.ts:74](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L74)
+Defined in: [textmode/converters/Converter.ts:98](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L98)
 
 Disables the converter.
 
@@ -130,7 +136,7 @@ Disables the converter.
 
 > **enable**(): `void`
 
-Defined in: [textmode/converters/Converter.ts:67](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L67)
+Defined in: [textmode/converters/Converter.ts:91](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L91)
 
 Enables the converter.
 
@@ -144,7 +150,7 @@ Enables the converter.
 
 > **enabled**(`enabled`): `void`
 
-Defined in: [textmode/converters/Converter.ts:60](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L60)
+Defined in: [textmode/converters/Converter.ts:76](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L76)
 
 Enables or disables the converter.
 
@@ -152,7 +158,7 @@ Enables or disables the converter.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `enabled` | `boolean` | Whether to enable or disable the converter. |
+| `enabled` | `number` \| `boolean` | Whether to enable or disable the converter.<br/>Accepts boolean or number *(0 = false, any other number = true)*. |
 
 #### Returns
 

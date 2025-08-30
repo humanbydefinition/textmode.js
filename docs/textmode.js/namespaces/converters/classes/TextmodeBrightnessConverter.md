@@ -1,4 +1,4 @@
-[**textmode.js v0.1.2**](../../../../README.md)
+[**textmode.js v0.1.9**](../../../../README.md)
 
 ***
 
@@ -6,13 +6,13 @@
 
 # Class: TextmodeBrightnessConverter
 
-Defined in: [textmode/converters/BrightnessConverter.ts:45](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/BrightnessConverter.ts#L45)
+Defined in: [textmode/converters/BrightnessConverter.ts:69](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/BrightnessConverter.ts#L69)
 
 Converter that maps brightness values from a source texture to ASCII characters.
 
 ## Extends
 
-- [`TextmodeFeatureConverter`](TextmodeFeatureConverter.md)
+- [`TextmodeFeatureConverter`](TextmodeFeatureConverter.md)\<[`TextmodeBrightnessConverterOptions`](../interfaces/TextmodeBrightnessConverterOptions.md)\>
 
 ## Accessors
 
@@ -20,15 +20,15 @@ Converter that maps brightness values from a source texture to ASCII characters.
 
 #### Get Signature
 
-> **get** **characterFramebuffer**(): `Framebuffer`
+> **get** **characterFramebuffer**(): [`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
-Defined in: [textmode/converters/Converter.ts:80](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L80)
+Defined in: [textmode/converters/Converter.ts:115](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L115)
 
 Returns the framebuffer containing character data.
 
 ##### Returns
 
-`Framebuffer`
+[`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
 #### Inherited from
 
@@ -40,15 +40,15 @@ Returns the framebuffer containing character data.
 
 #### Get Signature
 
-> **get** **options**(): `any`
+> **get** **options**(): `TOptions`
 
-Defined in: [textmode/converters/Converter.ts:95](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L95)
+Defined in: [textmode/converters/Converter.ts:130](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L130)
 
-Returns the renderer used by this converter.
+Returns the defined options for this converter.
 
 ##### Returns
 
-`any`
+`TOptions`
 
 #### Inherited from
 
@@ -60,15 +60,15 @@ Returns the renderer used by this converter.
 
 #### Get Signature
 
-> **get** **primaryColorFramebuffer**(): `Framebuffer`
+> **get** **primaryColorFramebuffer**(): [`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
-Defined in: [textmode/converters/Converter.ts:83](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L83)
+Defined in: [textmode/converters/Converter.ts:118](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L118)
 
 Returns the framebuffer containing primary color data.
 
 ##### Returns
 
-`Framebuffer`
+[`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
 #### Inherited from
 
@@ -80,15 +80,15 @@ Returns the framebuffer containing primary color data.
 
 #### Get Signature
 
-> **get** **rotationFramebuffer**(): `Framebuffer`
+> **get** **rotationFramebuffer**(): [`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
-Defined in: [textmode/converters/Converter.ts:89](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L89)
+Defined in: [textmode/converters/Converter.ts:124](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L124)
 
 Returns the framebuffer containing rotation data.
 
 ##### Returns
 
-`Framebuffer`
+[`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
 #### Inherited from
 
@@ -100,15 +100,15 @@ Returns the framebuffer containing rotation data.
 
 #### Get Signature
 
-> **get** **secondaryColorFramebuffer**(): `Framebuffer`
+> **get** **secondaryColorFramebuffer**(): [`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
-Defined in: [textmode/converters/Converter.ts:86](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L86)
+Defined in: [textmode/converters/Converter.ts:121](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L121)
 
 Returns the framebuffer containing secondary color data.
 
 ##### Returns
 
-`Framebuffer`
+[`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
 #### Inherited from
 
@@ -120,15 +120,15 @@ Returns the framebuffer containing secondary color data.
 
 #### Get Signature
 
-> **get** **transformFramebuffer**(): `Framebuffer`
+> **get** **transformFramebuffer**(): [`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
-Defined in: [textmode/converters/Converter.ts:92](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L92)
+Defined in: [textmode/converters/Converter.ts:127](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L127)
 
 Returns the framebuffer containing transformation data.
 
 ##### Returns
 
-`Framebuffer`
+[`Framebuffer`](../../rendering/classes/Framebuffer.md)
 
 #### Inherited from
 
@@ -140,7 +140,7 @@ Returns the framebuffer containing transformation data.
 
 > **brightnessRange**(`range`): `void`
 
-Defined in: [textmode/converters/BrightnessConverter.ts:150](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/BrightnessConverter.ts#L150)
+Defined in: [textmode/converters/BrightnessConverter.ts:175](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/BrightnessConverter.ts#L175)
 
 Sets the brightness range for ASCII character mapping.
 
@@ -160,9 +160,9 @@ Cells that sample outside this range are rendered as transparent.
 
 ### cellColor()
 
-> **cellColor**(`r`, `g`, `b`, `a`): `void`
+> **cellColor**(`r`, `g?`, `b?`, `a?`): `void`
 
-Defined in: [textmode/converters/FeatureConverter.ts:92](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/FeatureConverter.ts#L92)
+Defined in: [textmode/converters/FeatureConverter.ts:118](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/FeatureConverter.ts#L118)
 
 Sets the cell color for all cells affected by the converter.
 This is only used when `cellColorMode` is set to `'fixed'`.
@@ -171,10 +171,10 @@ This is only used when `cellColorMode` is set to `'fixed'`.
 
 | Parameter | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
-| `r` | `number` | `undefined` | Red component (0-255). |
-| `g` | `number` | `r` | Green component (0-255). |
-| `b` | `number` | `r` | Blue component (0-255). |
-| `a` | `number` | `255` | Alpha component (0-255). |
+| `r` | `string` \| `number` | `undefined` | Red component (0-255) or hex string *(e.g., '#FF0000', '#F00', 'FF0000', 'F00')*. |
+| `g?` | `number` | `undefined` | Green component (0-255). |
+| `b?` | `number` | `undefined` | Blue component (0-255). |
+| `a?` | `number` | `255` | Alpha component (0-255). |
 
 #### Returns
 
@@ -190,11 +190,11 @@ This is only used when `cellColorMode` is set to `'fixed'`.
 
 > **cellColorMode**(`mode`): `void`
 
-Defined in: [textmode/converters/FeatureConverter.ts:110](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/FeatureConverter.ts#L110)
+Defined in: [textmode/converters/FeatureConverter.ts:131](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/FeatureConverter.ts#L131)
 
 Sets the cell color mode.
 - `'sampled'`: Uses sampled colors from the source texture.
-- `'fixed'`: Uses a fixed color set via [cellColor](TextmodeFeatureConverter.md#cellcolor).
+- `'fixed'`: Uses a fixed color set via [cellColor](#cellcolor).
 
 #### Parameters
 
@@ -214,9 +214,9 @@ Sets the cell color mode.
 
 ### characterColor()
 
-> **characterColor**(`r`, `g`, `b`, `a`): `void`
+> **characterColor**(`r`, `g?`, `b?`, `a?`): `void`
 
-Defined in: [textmode/converters/FeatureConverter.ts:54](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/FeatureConverter.ts#L54)
+Defined in: [textmode/converters/FeatureConverter.ts:93](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/FeatureConverter.ts#L93)
 
 Sets the color of the characters affected by the converter.
 This is only used when `characterColorMode` is set to `'fixed'`.
@@ -225,10 +225,10 @@ This is only used when `characterColorMode` is set to `'fixed'`.
 
 | Parameter | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
-| `r` | `number` | `undefined` | Red component (0-255). |
-| `g` | `number` | `r` | Green component (0-255). |
-| `b` | `number` | `r` | Blue component (0-255). |
-| `a` | `number` | `255` | Alpha component (0-255). |
+| `r` | `string` \| `number` | `undefined` | Red component (0-255) or hex string *(e.g., '#FF0000', '#F00', 'FF0000', 'F00')*. |
+| `g?` | `number` | `undefined` | Green component (0-255). |
+| `b?` | `number` | `undefined` | Blue component (0-255). |
+| `a?` | `number` | `255` | Alpha component (0-255). |
 
 #### Returns
 
@@ -244,7 +244,7 @@ This is only used when `characterColorMode` is set to `'fixed'`.
 
 > **characterColorMode**(`mode`): `void`
 
-Defined in: [textmode/converters/FeatureConverter.ts:72](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/FeatureConverter.ts#L72)
+Defined in: [textmode/converters/FeatureConverter.ts:106](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/FeatureConverter.ts#L106)
 
 Sets the character color mode.
 - `'sampled'`: Uses sampled colors from the source texture.
@@ -270,7 +270,7 @@ Sets the character color mode.
 
 > **characters**(`characters`): `void`
 
-Defined in: [textmode/converters/FeatureConverter.ts:34](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/FeatureConverter.ts#L34)
+Defined in: [textmode/converters/FeatureConverter.ts:72](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/FeatureConverter.ts#L72)
 
 Sets the characters used for mapping.
 
@@ -278,7 +278,7 @@ Sets the characters used for mapping.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `characters` | `string` | The characters to use for mapping, usually ordered from darkest to brightest. |
+| `characters` | `string` | The characters to use for mapping, usually ordered from least dense to most dense. |
 
 #### Returns
 
@@ -294,7 +294,7 @@ Sets the characters used for mapping.
 
 > **disable**(): `void`
 
-Defined in: [textmode/converters/Converter.ts:74](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L74)
+Defined in: [textmode/converters/Converter.ts:98](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L98)
 
 Disables the converter.
 
@@ -312,7 +312,7 @@ Disables the converter.
 
 > **enable**(): `void`
 
-Defined in: [textmode/converters/Converter.ts:67](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L67)
+Defined in: [textmode/converters/Converter.ts:91](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L91)
 
 Enables the converter.
 
@@ -330,7 +330,7 @@ Enables the converter.
 
 > **enabled**(`enabled`): `void`
 
-Defined in: [textmode/converters/Converter.ts:60](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/Converter.ts#L60)
+Defined in: [textmode/converters/Converter.ts:76](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/Converter.ts#L76)
 
 Enables or disables the converter.
 
@@ -338,7 +338,7 @@ Enables or disables the converter.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `enabled` | `boolean` | Whether to enable or disable the converter. |
+| `enabled` | `number` \| `boolean` | Whether to enable or disable the converter.<br/>Accepts boolean or number *(0 = false, any other number = true)*. |
 
 #### Returns
 
@@ -354,7 +354,7 @@ Enables or disables the converter.
 
 > **flipHorizontally**(`flip`): `void`
 
-Defined in: [textmode/converters/FeatureConverter.ts:165](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/FeatureConverter.ts#L165)
+Defined in: [textmode/converters/FeatureConverter.ts:170](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/FeatureConverter.ts#L170)
 
 Flips the characters horizontally.
 
@@ -378,7 +378,7 @@ Flips the characters horizontally.
 
 > **flipVertically**(`flip`): `void`
 
-Defined in: [textmode/converters/FeatureConverter.ts:181](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/FeatureConverter.ts#L181)
+Defined in: [textmode/converters/FeatureConverter.ts:178](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/FeatureConverter.ts#L178)
 
 Flips the characters vertically.
 
@@ -402,7 +402,7 @@ Flips the characters vertically.
 
 > **invert**(`invert`): `void`
 
-Defined in: [textmode/converters/FeatureConverter.ts:126](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/FeatureConverter.ts#L126)
+Defined in: [textmode/converters/FeatureConverter.ts:139](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/FeatureConverter.ts#L139)
 
 Swaps the character and cell color.
 
@@ -426,7 +426,7 @@ Swaps the character and cell color.
 
 > **rotation**(`angle`): `void`
 
-Defined in: [textmode/converters/FeatureConverter.ts:142](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/converters/FeatureConverter.ts#L142)
+Defined in: [textmode/converters/FeatureConverter.ts:147](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/converters/FeatureConverter.ts#L147)
 
 Sets the rotation angle for the characters.
 

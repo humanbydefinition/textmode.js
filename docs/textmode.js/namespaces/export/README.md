@@ -1,4 +1,4 @@
-[**textmode.js v0.1.2**](../../../README.md)
+[**textmode.js v0.1.9**](../../../README.md)
 
 ***
 

@@ -1,6 +1,7 @@
 import type { GLRenderer } from '../../rendering/webgl/Renderer.ts';
-import type { Framebuffer } from '../../rendering/webgl/Framebuffer.ts';
-import type { TextmodeCharacter, TyprFont } from './types.ts';
+import type { GLFramebuffer } from '../../rendering/webgl/Framebuffer.ts';
+import type { TextmodeCharacter } from './types.ts';
+import type { TyprFont } from './typr/types.ts';
 /**
  * Manages the textmode font used for rendering characters.
  *
@@ -34,20 +35,20 @@ export declare class TextmodeFont {
      * @returns Promise that resolves when initialization is complete
      * @ignore
      */
-    initialize(fontSource?: string): Promise<void>;
+    $initialize(fontSource?: string | URL): Promise<void>;
     /**
      * Sets the font size for rendering.
      * @param size The font size to set. If undefined, returns the current font size.
      * @ignore
      */
-    setFontSize(size: number | undefined): void | number;
+    $setFontSize(size: number | undefined): void | number;
     /**
      * Loads a new font from a file path.
      * @param fontPath Path to the .otf or .ttf font file
      * @returns Promise that resolves when font loading is complete
      * @ignore
      */
-    loadFont(fontPath: string): Promise<void>;
+    $loadFont(fontPath: string): Promise<void>;
     /**
      * Loads a FontFace from a font buffer.
      * @param fontBuffer ArrayBuffer containing font data
@@ -77,10 +78,15 @@ export declare class TextmodeFont {
      */
     hasAllCharacters(str: string): boolean;
     /**
+     * Dispose of all resources used by this font manager.
+     * @ignore
+     */
+    $dispose(): void;
+    /**
      * Returns the WebGL framebuffer containing the font texture atlas.
      * @ignore
      */
-    get fontFramebuffer(): Framebuffer;
+    get fontFramebuffer(): GLFramebuffer;
     /** Returns the array of {@link TextmodeCharacter} objects in the font. */
     get characters(): TextmodeCharacter[];
     /** Returns the number of columns in the texture atlas. */

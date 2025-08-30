@@ -10,5 +10,5 @@ export declare class TXTContentGenerator {
      * @param options Generation options
      * @returns TXT content as string
      */
-    generateTXTContent(characterGrid: string[][], options: TXTGenerationOptions): string;
+    $generateTXTContent(characterGrid: string[][], options: TXTGenerationOptions): string;
 }

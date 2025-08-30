@@ -1,14 +1,18 @@
 import type { TextmodeCharacter, GlyphDimensions } from './types.ts';
 import type { GLRenderer } from '../../rendering/webgl/Renderer.ts';
-import type { Framebuffer } from '../../rendering/webgl/Framebuffer.ts';
+import type { GLFramebuffer } from '../../rendering/webgl/Framebuffer.ts';
+import type { TyprFont } from './typr/types.ts';
 /**
  * Handles creation of texture atlases for font rendering.
  * This class manages the Canvas 2D rendering and WebGL framebuffer creation.
+ * Supports both Typr.js path-based rendering for uniform cross-browser text
+ * and fallback fillText rendering.
  */
 export declare class TextureAtlasCreation {
     private _textureCanvas;
     private _textureContext;
     private _renderer;
+    private _fontTableReader;
     /**
      * Creates a new TextureAtlasCreation instance.
      * @param renderer The WebGL renderer instance
@@ -19,11 +23,11 @@ export declare class TextureAtlasCreation {
      * @param characters Array of TextmodeCharacter objects
      * @param maxGlyphDimensions Maximum dimensions of glyphs
      * @param fontSize Font size for rendering
-     * @param fontFamilyName Font family name to use
+     * @param fontDataOrFamilyName Either Typr.js font data object for path rendering, or font family name string for fillText rendering
      * @returns Object containing framebuffer, columns, and rows
      */
-    createTextureAtlas(characters: TextmodeCharacter[], maxGlyphDimensions: GlyphDimensions, fontSize: number, fontFamilyName: string): {
-        framebuffer: Framebuffer;
+    createTextureAtlas(characters: TextmodeCharacter[], maxGlyphDimensions: GlyphDimensions, fontSize: number, fontDataOrFamilyName: TyprFont | string): {
+        framebuffer: GLFramebuffer;
         columns: number;
         rows: number;
     };
@@ -31,25 +35,37 @@ export declare class TextureAtlasCreation {
      * Sets up the canvas for rendering.
      * @param width Canvas buffer width
      * @param height Canvas buffer height
-     * @param fontSize Font size
-     * @param fontFamilyName Font family name
-     * @param logicalWidth Logical width for scaling context
-     * @param logicalHeight Logical height for scaling context
      */
     private _setupCanvas;
     /**
-     * Renders all characters to the canvas in a grid layout.
+     * Renders all characters to the canvas in a grid layout using Typr.js paths.
      * @param characters Array of characters to render
      * @param maxGlyphDimensions Maximum glyph dimensions
      * @param textureColumns Number of columns in the texture
      * @param fontSize Font size
+     * @param fontData Typr.js font data
      */
-    private _renderCharactersToCanvas;
+    private _renderCharacters;
     /**
-     * Applies a black and white threshold filter to the canvas.
-     * This converts antialiased grayscale pixels to pure black or white,
-     * ensuring crisp text rendering suitable for NEAREST texture filtering.
-     * @param threshold Threshold value (0-255) for black/white conversion
+     * Gets glyph data for a character using Typr.js
+     * @param fontData Typr.js font data
+     * @param character Character to get glyph data for
+     * @returns Parsed glyph data or null if not found
      */
-    private _applyBlackWhiteThreshold;
+    private _getGlyphData;
+    /**
+     * Gets the advance width for a glyph
+     * @param fontData The Typr.js font data
+     * @param glyphIndex The glyph index
+     * @returns The advance width in font units
+     */
+    private _getGlyphAdvanceWidth;
+    /**
+     * Renders a glyph to the canvas using direct path rendering from glyph outline data.
+     * @param glyphData Glyph data from Typr.js
+     * @param x X position
+     * @param y Y position (baseline position)
+     * @param scale Scale factor
+     */
+    private _renderGlyphToCanvas;
 }

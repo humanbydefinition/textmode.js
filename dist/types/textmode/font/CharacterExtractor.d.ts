@@ -1,9 +1,11 @@
-import type { TyprFont } from './types.ts';
+import type { TyprFont } from './typr/types.ts';
 /**
  * Handles extraction of characters from font cmap tables.
  * This class encapsulates the complex logic for reading different cmap table formats.
  */
 export declare class CharacterExtraction {
+    private _cmapParser;
+    constructor();
     /**
      * Extracts all available characters from a font's cmap tables.
      * @param font The parsed font object from Typr
@@ -11,35 +13,23 @@ export declare class CharacterExtraction {
      */
     extractCharacters(font: TyprFont): string[];
     /**
-     * Extracts characters from a Format 4 cmap table (Basic Multilingual Plane).
-     * @param table The Format 4 cmap table
-     * @returns Array of character strings
-     */
-    private _extractCharactersFromFormat4Table;
-    /**
-     * Extracts characters from a Format 12 cmap table (Extended Unicode ranges).
-     * @param table The Format 12 cmap table
-     * @returns Array of character strings
-     */
-    private _extractCharactersFromFormat12Table;
-    /**
-     * Calculates the glyph index for a character in a Format 4 cmap table.
-     * @param table The Format 4 cmap table
-     * @param codePoint The Unicode code point
-     * @param rangeIndex The index of the character range
-     * @returns The glyph index, or 0 if not found
-     */
-    private _calculateGlyphIndexFormat4;
-    /**
      * Filters out problematic characters that might cause rendering issues.
      * @param characters Array of character strings to filter
      * @returns Filtered array of character strings
      */
     filterProblematicCharacters(characters: string[]): string[];
     /**
-     * Checks if a character is valid for rendering.
-     * @param char The character to check
-     * @returns True if the character is valid, false otherwise
+     * Checks if a character exists in the font.
+     * @param font The parsed font object from Typr
+     * @param character The character to check
+     * @returns True if the character exists in the font
      */
-    private _isValidCharacter;
+    characterExists(font: TyprFont, character: string): boolean;
+    /**
+     * Checks if all characters in a string exist in the font.
+     * @param font The parsed font object from Typr
+     * @param text The text string to check
+     * @returns True if all characters exist in the font
+     */
+    allCharactersExist(font: TyprFont, text: string): boolean;
 }

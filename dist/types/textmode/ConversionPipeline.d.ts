@@ -1,6 +1,6 @@
-import type { Framebuffer } from "../rendering/webgl/Framebuffer";
+import type { Framebuffer } from "../rendering/core/Framebuffer";
 import type { GLRenderer } from "../rendering/webgl/Renderer";
-import { TextmodeConverter } from "./converters";
+import { TextmodeBrightnessConverter, TextmodeConverter } from "./converters";
 import type { TextmodeFont } from "./font";
 import type { TextmodeGrid } from "./Grid";
 /**
@@ -11,10 +11,12 @@ import type { TextmodeGrid } from "./Grid";
  * color adjustments, transformations, and more.
  */
 export declare class TextmodeConversionPipeline {
-    private renderer;
-    private font;
-    private grid;
-    private converters;
+    private _renderer;
+    private _font;
+    private _grid;
+    private _converters;
+    private _brightness;
+    private _custom;
     private _resultFramebuffer;
     private _asciiShader;
     private _characterFramebuffer;
@@ -35,35 +37,34 @@ export declare class TextmodeConversionPipeline {
      * @param sourceFramebuffer The source framebuffer to convert.
      * @ignore
      */
-    render(sourceFramebuffer: Framebuffer): void;
-    /**
-     * Get a specific converter by name.
-     * @param name The name of the converter to retrieve.
-     * @returns The requested `TextmodeConverter` instance.
-     */
-    get(name: string): TextmodeConverter | void;
+    $render(sourceFramebuffer: Framebuffer): void;
     /**
      * Adds a new converter to the pipeline.
-     * @param name A unique name for the converter.
+     * @param converter The converter instance to add.
+     * @returns The added {@link TextmodeConverter} instance.
+     */
+    /**
+     * Adds a new converter to the pipeline.
      * @param type The type of converter to add. Can be either "brightness" or "custom".
      * @returns The newly created {@link TextmodeConverter} instance or `void` if the addition failed.
      */
-    add(name: string, type: "brightness" | "custom"): TextmodeConverter | void;
+    add(type: "brightness" | "custom"): TextmodeConverter | void;
     /**
- * Removes a converter from the pipeline by name or instance.
- * @param nameOrInstance The unique name of the converter or the converter instance to remove.
- * @returns `true` if the converter was successfully removed, `false` otherwise.
- */
-    remove(nameOrInstance: string | TextmodeConverter): boolean;
-    /**
-     * Returns the framebuffer containing the textmode conversion result.
+     * Removes a converter from the pipeline.
+     * @param converter The converter instance to remove.
      */
-    get texture(): Framebuffer;
+    remove(converter: TextmodeConverter): void;
+    /**
+     * Swaps two converters in the pipeline.
+     * @param first Either an index *(integer)* or a {@link TextmodeConverter} instance.
+     * @param second Either an index *(integer)* or a {@link TextmodeConverter} instance.
+     */
+    swap(first: number | TextmodeConverter, second: number | TextmodeConverter): void;
     /**
      * Resizes all internal framebuffers.
      * @ignore
      */
-    resize(): void;
+    $resize(): void;
     /**
      * Checks if any converter in the pipeline is enabled.
      * @returns `true` if any converter is enabled, `false` otherwise.
@@ -77,14 +78,33 @@ export declare class TextmodeConversionPipeline {
      * Enables all converters in the pipeline.
      */
     enable(): void;
-    /** Returns the character framebuffer containing the combined result of all converters. @ignore */
+    /**
+     * Dispose of all resources used by this conversion pipeline.
+     * @ignore
+     */
+    $dispose(): void;
+    /** Returns the framebuffer containing the textmode conversion result.*/
+    get texture(): Framebuffer;
+    /** Returns the character framebuffer containing the combined result of all converters. */
     get characterFramebuffer(): Framebuffer;
-    /** Returns the primary color framebuffer containing the combined result of all converters. @ignore */
+    /** Returns the primary color framebuffer containing the combined result of all converters. */
     get primaryColorFramebuffer(): Framebuffer;
-    /** Returns the secondary color framebuffer containing the combined result of all converters. @ignore */
+    /** Returns the secondary color framebuffer containing the combined result of all converters. */
     get secondaryColorFramebuffer(): Framebuffer;
-    /** Returns the rotation framebuffer containing the combined result of all converters. @ignore */
+    /** Returns the rotation framebuffer containing the combined result of all converters. */
     get rotationFramebuffer(): Framebuffer;
-    /** Returns the transform framebuffer containing the combined result of all converters. @ignore */
+    /** Returns the transform framebuffer containing the combined result of all converters. */
     get transformFramebuffer(): Framebuffer;
+    /**
+     * Returns the pre-defined brightness converter that is part of the pipeline by default.
+     *
+     * This converter can also be removed from the pipeline via `pipeline.remove(pipeline.brightness)`.
+     */
+    get brightness(): TextmodeBrightnessConverter;
+    /**
+     * Returns the pre-defined custom converter that is part of the pipeline by default.
+     *
+     * This converter can also be removed from the pipeline via `pipeline.remove(pipeline.custom)`.
+     */
+    get custom(): TextmodeConverter;
 }

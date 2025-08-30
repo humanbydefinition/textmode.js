@@ -1,42 +1,36 @@
-import type { TextmodeErrorLevel } from './errors';
-import { Textmodifier, type TextmodeOptions, type CaptureSource } from './textmode/Textmodifier';
-export { Textmodifier } from './textmode/Textmodifier';
-export { TextmodeFont } from './textmode/font';
-export { TextmodeCanvas } from './textmode/Canvas';
-export { TextmodeGrid } from './textmode/Grid';
-export type { TextmodeOptions, CaptureSource } from './textmode/Textmodifier';
-export type { TextmodeCharacter } from './textmode/font';
-export { TextmodeErrorLevel } from './errors/ErrorHandler';
-/** Contains all converters that can be added to a rendering pipeline to shape the textmode output. */
-export * as TextmodeConverters from './textmode/converters';
+import { type TextmodeErrorLevel } from './errors';
+import { Textmodifier, type TextmodeOptions } from './textmode/Textmodifier';
 /**
  * The main entry point for the `textmode.js` library.
  *
- * Provides static methods for creating textmode instances and managing global settings.
+ * Provides static methods for creating {@link Textmodifier} instances and managing global settings.
  */
 export declare class Textmode {
+    private constructor();
     /**
      * Create a {@link Textmodifier} instance for textmode rendering.
      *
-     * @param sourceOrOptions - Either an HTML canvas/video element for capturing content, or options for standalone mode.
-     * @param opts - Optional configuration options *(only used when first parameter is a canvas/video element)*.
-     * @returns A Promise that resolves to a Textmodifier instance.
+     * @param sourceOrOptions - Either a `HTMLCanvasElement` or `HTMLVideoElement` for capturing content, or options for standalone mode.
+     * @param opts - Optional configuration options *(only used when first parameter is a `HTMLCanvasElement` or `HTMLVideoElement`)*.
+     * @returns A Promise that resolves to a {@link Textmodifier} instance.
      *
      * @example
+     * Creating a {@link Textmodifier} for an existing canvas:
      * ```javascript
-     * // Create a Textmodifier for an existing canvas
      * const canvas = document.querySelector('canvas#myCanvas');
      * const textmodifier = await textmode.create(canvas);
+     * ```
      *
-     * ////////
-     *
-     * // Create a Textmodifier for a video element
+     * @example
+     * Creating a {@link Textmodifier} for a video element:
+     * ```javascript
      * const video = document.querySelector('video#myVideo');
      * const textmodifier = await textmode.create(video);
+     * ```
      *
-     * ////////
-     *
-     * // Create a standalone Textmodifier
+     * @example
+     * Creating a standalone {@link Textmodifier} with animation:
+     * ```javascript
      * const t = await textmode.create({ width: 800, height: 600 });
      *
      * // Set up a draw loop for standalone usage
@@ -45,7 +39,7 @@ export declare class Textmode {
      *
      *   const centerX = t.width / 2;
      *   const centerY = t.height / 2;
-     *   const radius = Math.min(t.width, t .height) / 3;
+     *   const radius = Math.min(t.width, t.height) / 3;
      *   const speed = 0.02; // Adjust speed of rotation
      *
      *   const angle = t.frameCount * speed;
@@ -60,9 +54,10 @@ export declare class Textmode {
      * });
      * ```
      */
-    static create(sourceOrOptions?: CaptureSource | TextmodeOptions, opts?: TextmodeOptions): Promise<Textmodifier>;
+    static create(sourceOrOptions?: HTMLCanvasElement | HTMLVideoElement | TextmodeOptions, opts?: TextmodeOptions): Promise<Textmodifier>;
     /**
-     * Set the global error handling level for the library. This applies to all `Textmodifier` instances.
+     * Set the global error handling level for the library. This applies to all {@link Textmodifier} instances present.
+     *
      * @param level The error handling level to set.
      *
      * @example
@@ -73,7 +68,7 @@ export declare class Textmode {
      */
     static setErrorLevel(level: TextmodeErrorLevel): void;
     /**
-     * Returns the current version of the `textmode.js` library.
+     * Returns the version of `textmode.js` being used.
      *
      * @example
      * ```javascript
@@ -81,5 +76,4 @@ export declare class Textmode {
      * ```
      */
     static get version(): string;
-    private constructor();
 }

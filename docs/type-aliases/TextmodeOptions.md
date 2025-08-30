@@ -1,4 +1,4 @@
-[**textmode.js v0.1.2**](../README.md)
+[**textmode.js v0.1.9**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **TextmodeOptions** = `object`
 
-Defined in: [textmode/Textmodifier.ts:23](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L23)
+Defined in: [textmode/Textmodifier.ts:23](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L23)
 
 Options for creating a [Textmodifier](../classes/Textmodifier.md) instance.
 
@@ -18,7 +18,7 @@ Options for creating a [Textmodifier](../classes/Textmodifier.md) instance.
 
 > `optional` **fontSize**: `number`
 
-Defined in: [textmode/Textmodifier.ts:25](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L25)
+Defined in: [textmode/Textmodifier.ts:25](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L25)
 
 The font size to use for text rendering. Defaults to 16.
 
@@ -28,11 +28,11 @@ The font size to use for text rendering. Defaults to 16.
 
 > `optional` **fontSource**: `string`
 
-Defined in: [textmode/Textmodifier.ts:48](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L48)
+Defined in: [textmode/Textmodifier.ts:48](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L48)
 
-URL or path to a custom font file (.otf/.ttf).
-Required when using minified builds that don't include embedded fonts.
-Optional for full builds (will override embedded font if provided).
+URL or path to a custom font file *(.otf/.ttf)*.
+Required when using minified builds that don't include a default font.
+Optional for full builds *(will override embedded font if provided)*.
 
 ***
 
@@ -40,7 +40,7 @@ Optional for full builds (will override embedded font if provided).
 
 > `optional` **frameRate**: `number`
 
-Defined in: [textmode/Textmodifier.ts:35](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L35)
+Defined in: [textmode/Textmodifier.ts:35](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L35)
 
 Maximum frames per second for auto rendering. Defaults to 60.
 
@@ -50,9 +50,9 @@ Maximum frames per second for auto rendering. Defaults to 60.
 
 > `optional` **height**: `number`
 
-Defined in: [textmode/Textmodifier.ts:41](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L41)
+Defined in: [textmode/Textmodifier.ts:41](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L41)
 
-The height of the canvas in standalone mode. Defaults to 600.
+The height of the canvas in `standalone` mode. Defaults to 600.
 
 ***
 
@@ -60,11 +60,11 @@ The height of the canvas in standalone mode. Defaults to 600.
 
 > `optional` **renderMode**: `"manual"` \| `"auto"`
 
-Defined in: [textmode/Textmodifier.ts:32](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L32)
+Defined in: [textmode/Textmodifier.ts:32](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L32)
 
 Automatic rendering mode. Defaults to 'auto'.
-- 'manual': Requires manual `render()` calls
-- 'auto': Automatically renders using requestAnimationFrame
+- `'manual'`: Requires manual `render()` calls
+- `'auto'`: Automatically renders using [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
 
 ***
 
@@ -72,6 +72,6 @@ Automatic rendering mode. Defaults to 'auto'.
 
 > `optional` **width**: `number`
 
-Defined in: [textmode/Textmodifier.ts:38](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L38)
+Defined in: [textmode/Textmodifier.ts:38](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L38)
 
-The width of the canvas in standalone mode. Defaults to 800.
+The width of the canvas in `standalone` mode. Defaults to 800.

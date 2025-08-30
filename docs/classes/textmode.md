@@ -1,4 +1,4 @@
-[**textmode.js v0.1.2**](../README.md)
+[**textmode.js v0.1.9**](../README.md)
 
 ***
 
@@ -6,11 +6,11 @@
 
 # Class: textmode
 
-Defined in: [Textmode.ts:25](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/Textmode.ts#L25)
+Defined in: [Textmode.ts:12](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/Textmode.ts#L12)
 
 The main entry point for the `textmode.js` library.
 
-Provides static methods for creating textmode instances and managing global settings.
+Provides static methods for creating [Textmodifier](Textmodifier.md) instances and managing global settings.
 
 ## Accessors
 
@@ -20,9 +20,9 @@ Provides static methods for creating textmode instances and managing global sett
 
 > **get** `static` **version**(): `string`
 
-Defined in: [Textmode.ts:104](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/Textmode.ts#L104)
+Defined in: [Textmode.ts:110](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/Textmode.ts#L110)
 
-Returns the current version of the `textmode.js` library.
+Returns the version of `textmode.js` being used.
 
 ##### Example
 
@@ -40,7 +40,7 @@ console.log(textmode.version); // "1.0.0"
 
 > `static` **create**(`sourceOrOptions?`, `opts?`): `Promise`\<[`Textmodifier`](Textmodifier.md)\>
 
-Defined in: [Textmode.ts:71](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/Textmode.ts#L71)
+Defined in: [Textmode.ts:64](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/Textmode.ts#L64)
 
 Create a [Textmodifier](Textmodifier.md) instance for textmode rendering.
 
@@ -48,31 +48,31 @@ Create a [Textmodifier](Textmodifier.md) instance for textmode rendering.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `sourceOrOptions?` | [`TextmodeOptions`](../type-aliases/TextmodeOptions.md) \| [`CaptureSource`](../type-aliases/CaptureSource.md) | Either an HTML canvas/video element for capturing content, or options for standalone mode. |
-| `opts?` | [`TextmodeOptions`](../type-aliases/TextmodeOptions.md) | Optional configuration options *(only used when first parameter is a canvas/video element)*. |
+| `sourceOrOptions?` | `HTMLCanvasElement` \| `HTMLVideoElement` \| [`TextmodeOptions`](../type-aliases/TextmodeOptions.md) | Either a `HTMLCanvasElement` or `HTMLVideoElement` for capturing content, or options for standalone mode. |
+| `opts?` | [`TextmodeOptions`](../type-aliases/TextmodeOptions.md) | Optional configuration options *(only used when first parameter is a `HTMLCanvasElement` or `HTMLVideoElement`)*. |
 
 #### Returns
 
 `Promise`\<[`Textmodifier`](Textmodifier.md)\>
 
-A Promise that resolves to a Textmodifier instance.
+A Promise that resolves to a [Textmodifier](Textmodifier.md) instance.
 
-#### Example
+#### Examples
 
+Creating a [Textmodifier](Textmodifier.md) for an existing canvas:
 ```javascript
-// Create a Textmodifier for an existing canvas
 const canvas = document.querySelector('canvas#myCanvas');
 const textmodifier = await textmode.create(canvas);
+```
 
-////////
-
-// Create a Textmodifier for a video element
+Creating a [Textmodifier](Textmodifier.md) for a video element:
+```javascript
 const video = document.querySelector('video#myVideo');
 const textmodifier = await textmode.create(video);
+```
 
-////////
-
-// Create a standalone Textmodifier
+Creating a standalone [Textmodifier](Textmodifier.md) with animation:
+```javascript
 const t = await textmode.create({ width: 800, height: 600 });
 
 // Set up a draw loop for standalone usage
@@ -81,7 +81,7 @@ t.draw(() => {
 
   const centerX = t.width / 2;
   const centerY = t.height / 2;
-  const radius = Math.min(t.width, t .height) / 3;
+  const radius = Math.min(t.width, t.height) / 3;
   const speed = 0.02; // Adjust speed of rotation
 
   const angle = t.frameCount * speed;
@@ -102,9 +102,9 @@ t.draw(() => {
 
 > `static` **setErrorLevel**(`level`): `void`
 
-Defined in: [Textmode.ts:92](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/Textmode.ts#L92)
+Defined in: [Textmode.ts:98](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/Textmode.ts#L98)
 
-Set the global error handling level for the library. This applies to all `Textmodifier` instances.
+Set the global error handling level for the library. This applies to all [Textmodifier](Textmodifier.md) instances present.
 
 #### Parameters
 

@@ -11,14 +11,12 @@ export type ImageFormat = 'png' | 'jpg' | 'webp';
 export type ImageExportOptions = {
     /**
      * The filename to save the image file as (without extension).
-     *
-     * If not provided, a default filename is used.
+     * @ignore
      */
     filename?: string;
     /**
      * The image format to export (`'png'`, `'jpg'`, or `'webp'`).
-     *
-     * Default is `'png'`.
+     * @ignore
      */
     format?: ImageFormat;
     /**
@@ -40,7 +38,7 @@ export type ImageExportOptions = {
     /**
      * Background color for formats that don't support transparency (`'jpg'`).
      *
-     * Format: CSS color string or `'transparent'` for `'png'`/`'webp'`.
+     * **Format:** CSS color string.
      *
      * Default is `'black'`.
      */

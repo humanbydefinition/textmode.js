@@ -1,4 +1,4 @@
-[**textmode.js v0.1.2**](../README.md)
+[**textmode.js v0.1.9**](../README.md)
 
 ***
 
@@ -6,14 +6,36 @@
 
 # Class: Textmodifier
 
-Defined in: [textmode/Textmodifier.ts:57](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L57)
+Defined in: [textmode/Textmodifier.ts:70](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L70)
 
 Manages textmode rendering on a canvas or video element.
 
-Each `Textmodifier` instance can be applied to a specific HTML canvas or video element via [textmode.create](textmode.md#create),
-or created as a standalone instance for independent rendering.
+Each `Textmodifier` instance applies a `HTMLCanvasElement` with custom WebGL rendering on top of the original content.
+
+If the `Textmodifier` instance is created in `standalone` mode without a capture source, 
+it simply creates a new `HTMLCanvasElement` to draw on using the `textmode.js` drawing API.
+
+## Extends
+
+- `TextmodifierCore`\<`this`\>.`RenderingCapabilities`.`ExportCapabilities`.`FontCapabilities`.`ConversionCapabilities`
 
 ## Accessors
+
+### canvas
+
+#### Get Signature
+
+> **get** **canvas**(): `TextmodeCanvas`
+
+Defined in: [textmode/Textmodifier.ts:732](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L732)
+
+Get the textmodifier canvas containing the rendered output.
+
+##### Returns
+
+`TextmodeCanvas`
+
+***
 
 ### font
 
@@ -21,7 +43,7 @@ or created as a standalone instance for independent rendering.
 
 > **get** **font**(): [`TextmodeFont`](TextmodeFont.md)
 
-Defined in: [textmode/Textmodifier.ts:871](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L871)
+Defined in: [textmode/Textmodifier.ts:692](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L692)
 
 Get the current font object used for rendering.
 
@@ -37,13 +59,31 @@ Get the current font object used for rendering.
 
 > **get** **frameCount**(): `number`
 
-Defined in: [textmode/Textmodifier.ts:880](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L880)
+Defined in: [textmode/Textmodifier.ts:707](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L707)
 
 Get the current frame count.
 
 ##### Returns
 
 `number`
+
+#### Set Signature
+
+> **set** **frameCount**(`value`): `void`
+
+Defined in: [textmode/Textmodifier.ts:717](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L717)
+
+Set the current frame count.
+
+##### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `value` | `number` |
+
+##### Returns
+
+`void`
 
 ***
 
@@ -53,7 +93,7 @@ Get the current frame count.
 
 > **get** **grid**(): [`TextmodeGrid`](TextmodeGrid.md)
 
-Defined in: [textmode/Textmodifier.ts:868](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L868)
+Defined in: [textmode/Textmodifier.ts:687](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L687)
 
 Get the current grid object used for rendering.
 
@@ -69,7 +109,7 @@ Get the current grid object used for rendering.
 
 > **get** **height**(): `number`
 
-Defined in: [textmode/Textmodifier.ts:886](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L886)
+Defined in: [textmode/Textmodifier.ts:727](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L727)
 
 Get the height of the canvas.
 
@@ -79,13 +119,29 @@ Get the height of the canvas.
 
 ***
 
+### isDisposed
+
+#### Get Signature
+
+> **get** **isDisposed**(): `boolean`
+
+Defined in: [textmode/Textmodifier.ts:737](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L737)
+
+Check if the instance has been disposed/destroyed.
+
+##### Returns
+
+`boolean`
+
+***
+
 ### mode
 
 #### Get Signature
 
 > **get** **mode**(): `"manual"` \| `"auto"`
 
-Defined in: [textmode/Textmodifier.ts:874](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L874)
+Defined in: [textmode/Textmodifier.ts:697](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L697)
 
 Get the current rendering mode.
 
@@ -101,7 +157,7 @@ Get the current rendering mode.
 
 > **get** **pipeline**(): [`TextmodeConversionPipeline`](TextmodeConversionPipeline.md)
 
-Defined in: [textmode/Textmodifier.ts:877](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L877)
+Defined in: [textmode/Textmodifier.ts:702](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L702)
 
 Get the current textmode conversion pipeline.
 
@@ -111,13 +167,29 @@ Get the current textmode conversion pipeline.
 
 ***
 
+### renderer
+
+#### Get Signature
+
+> **get** **renderer**(): `GLRenderer`
+
+Defined in: [textmode/Textmodifier.ts:712](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L712)
+
+Get the WebGL renderer.
+
+##### Returns
+
+`GLRenderer`
+
+***
+
 ### width
 
 #### Get Signature
 
 > **get** **width**(): `number`
 
-Defined in: [textmode/Textmodifier.ts:883](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L883)
+Defined in: [textmode/Textmodifier.ts:722](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L722)
 
 Get the width of the canvas.
 
@@ -127,22 +199,64 @@ Get the width of the canvas.
 
 ## Methods
 
+### addConverter()
+
+> **addConverter**(`type`): `void` \| [`TextmodeConverter`](../textmode.js/namespaces/converters/classes/TextmodeConverter.md)\<[`TextmodeConverterOptions`](../textmode.js/namespaces/converters/interfaces/TextmodeConverterOptions.md)\>
+
+Defined in: [textmode/mixins/ConversionMixin.ts:32](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/ConversionMixin.ts#L32)
+
+Adds a new converter to the pipeline.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `type` | `"brightness"` \| `"custom"` | The type of converter to add. Can be either "brightness" or "custom". |
+
+#### Returns
+
+`void` \| [`TextmodeConverter`](../textmode.js/namespaces/converters/classes/TextmodeConverter.md)\<[`TextmodeConverterOptions`](../textmode.js/namespaces/converters/interfaces/TextmodeConverterOptions.md)\>
+
+The newly created [TextmodeConverter](../textmode.js/namespaces/converters/classes/TextmodeConverter.md) instance or `void` if the addition failed.
+
+#### Example
+
+```javascript
+// Fetch a canvas element to apply textmode rendering to
+const canvas = document.querySelector('canvas#myCanvas');
+
+// Create a Textmodifier instance
+const textmodifier = await textmode.create(canvas);
+
+// Add a new brightness converter
+const myConverter = textmodifier.addConverter('brightness');
+
+// Configure the new converter
+myConverter.characters("▓▒░ ");
+myConverter.enabled(true);
+
+// Add a custom converter
+const customConverter = textmodifier.addConverter('custom');
+```
+
+***
+
 ### background()
 
-> **background**(`r`, `g`, `b`, `a`): `void`
+> **background**(`r`, `g?`, `b?`, `a?`): `void`
 
-Defined in: [textmode/Textmodifier.ts:836](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L836)
+Defined in: [textmode/mixins/RenderingMixin.ts:390](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L390)
 
 Set the background color for the canvas.
 
 #### Parameters
 
-| Parameter | Type | Default value | Description |
-| ------ | ------ | ------ | ------ |
-| `r` | `number` | `undefined` | Red component (0-255) |
-| `g` | `number` | `r` | Green component (0-255, optional) |
-| `b` | `number` | `r` | Blue component (0-255, optional) |
-| `a` | `number` | `255` | Alpha component (0-255, optional) |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `r` | `number` | Red component (0-255) |
+| `g?` | `number` | Green component (0-255, optional) |
+| `b?` | `number` | Blue component (0-255, optional) |
+| `a?` | `number` | Alpha component (0-255, optional) |
 
 #### Returns
 
@@ -179,65 +293,94 @@ t.draw(() => {
 
 ***
 
-### converter()
+### clear()
 
-> **converter**(`name`): `void` \| [`TextmodeConverter`](../textmode.js/namespaces/converters/classes/TextmodeConverter.md)
+> **clear**(): `void`
 
-Defined in: [textmode/Textmodifier.ts:719](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L719)
+Defined in: [textmode/mixins/RenderingMixin.ts:434](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L434)
 
-Get a specific converter by name.
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `name` | `string` | The name of the converter to retrieve. |
+Clear the canvas.
 
 #### Returns
 
-`void` \| [`TextmodeConverter`](../textmode.js/namespaces/converters/classes/TextmodeConverter.md)
-
-The requested `TextmodeConverter` instance.
-
-#### Example
-
-```javascript
-// Fetch a canvas element to apply textmode rendering to
-const canvas = document.querySelector('canvas#myCanvas');
-
-// Create a Textmodifier instance
-const textmodifier = await textmode.create(canvas);
-
-// Get the pre-defined brightness converter from the pipeline
-const brightnessConverter = textmodifier.converter('brightness');
-
-// Update properties of the brightness converter
-brightnessConverter.invert(true);
-brightnessConverter.characters(" .,;:*");
-```
+`void`
 
 ***
 
-### createShader()
+### createFilterShader()
 
-> **createShader**(`vertexSource`, `fragmentSource`): `Shader`
+> **createFilterShader**(`fragmentSource`): `GLShader`
 
-Defined in: [textmode/Textmodifier.ts:846](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L846)
+Defined in: [textmode/mixins/RenderingMixin.ts:406](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L406)
 
-Create a shader program from vertex and fragment source code.
+Create a filter shader program from a fragment source code.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `vertexSource` | `string` | The GLSL source code for the vertex shader. |
 | `fragmentSource` | `string` | The GLSL source code for the fragment shader. |
 
 #### Returns
 
-`Shader`
+`GLShader`
 
-The created shader program for use in `textmode.js`.
+The created filter shader program for use in `textmode.js`.
+
+***
+
+### createFramebuffer()
+
+> **createFramebuffer**(`width`, `height`, `options`): [`Framebuffer`](../textmode.js/namespaces/rendering/classes/Framebuffer.md)
+
+Defined in: [textmode/mixins/RenderingMixin.ts:442](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L442)
+
+Create a framebuffer.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `width` | `number` | The width in pixels |
+| `height` | `number` | The height in pixels |
+| `options` | [`FramebufferOptions`](../textmode.js/namespaces/rendering/type-aliases/FramebufferOptions.md) | Additional options for the framebuffer |
+
+#### Returns
+
+[`Framebuffer`](../textmode.js/namespaces/rendering/classes/Framebuffer.md)
+
+***
+
+### destroy()
+
+> **destroy**(): `void`
+
+Defined in: [textmode/Textmodifier.ts:664](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L664)
+
+Completely destroy this Textmodifier instance and free all associated resources.
+
+After calling this method, the instance should not be used and will be eligible for garbage collection.
+
+This method is idempotent and safe to call multiple times.
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+// Create a textmodifier instance
+const textmodifier = await textmode.create(canvas);
+
+// Use it for rendering
+textmodifier.render();
+
+// When done, completely clean up
+textmodifier.destroy();
+
+// Instance is now safely disposed and ready for garbage collection
+```
 
 ***
 
@@ -245,10 +388,11 @@ The created shader program for use in `textmode.js`.
 
 > **draw**(`callback`): `void`
 
-Defined in: [textmode/Textmodifier.ts:643](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L643)
+Defined in: [textmode/Textmodifier.ts:582](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L582)
 
 Set a draw callback function that will be executed before each render.
-This method is primarily useful for standalone textmodifier instances.
+This method is primarily useful for standalone textmodifier instances, 
+but can also be used to draw on top of the captured video or canvas.
 
 #### Parameters
 
@@ -286,7 +430,7 @@ t.draw(() => {
 
 > **fill**(`r`, `g?`, `b?`, `a?`): `void`
 
-Defined in: [textmode/Textmodifier.ts:758](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L758)
+Defined in: [textmode/mixins/RenderingMixin.ts:44](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L44)
 
 Sets the fill color for subsequent rendering operations
 
@@ -338,7 +482,7 @@ t.draw(() => {
 
 > **fontSize**(`size`): `void`
 
-Defined in: [textmode/Textmodifier.ts:602](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L602)
+Defined in: [textmode/mixins/FontMixin.ts:45](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/FontMixin.ts#L45)
 
 Set the font size used for rendering.
 
@@ -371,7 +515,7 @@ textmodifier.fontSize(24);
 
 > **frameRate**(`fps?`): `number` \| `void`
 
-Defined in: [textmode/Textmodifier.ts:571](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L571)
+Defined in: [textmode/Textmodifier.ts:390](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L390)
 
 Set the maximum frame rate for auto rendering. If called without arguments, returns the current measured frame rate.
 
@@ -400,11 +544,135 @@ textmodifier.frameRate(30);
 
 ***
 
+### image()
+
+> **image**(`source`, `posX`, `posY`, `width?`, `height?`): `void`
+
+Defined in: [textmode/mixins/RenderingMixin.ts:429](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L429)
+
+Draw an image to the canvas.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `source` | [`Framebuffer`](../textmode.js/namespaces/rendering/classes/Framebuffer.md) | The image source |
+| `posX` | `number` | The x position to draw the image |
+| `posY` | `number` | The y position to draw the image |
+| `width?` | `number` | The width to draw the image (optional) |
+| `height?` | `number` | The height to draw the image (optional) |
+
+#### Returns
+
+`void`
+
+***
+
+### isLooping()
+
+> **isLooping**(): `boolean`
+
+Defined in: [textmode/Textmodifier.ts:553](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L553)
+
+Check whether the textmodifier is currently running the automatic render loop.
+
+Returns `true` when both the render mode is `'auto'` AND the loop is active.
+Returns `false` when in `'manual'` mode or when [noLoop](#noloop) has been called.
+
+#### Returns
+
+`boolean`
+
+True if the automatic render loop is currently active, false otherwise.
+
+#### Example
+
+```javascript
+const textmodifier = await textmode.create(canvas);
+
+// Check loop status in different states
+console.log(textmodifier.isLooping()); // true (auto mode, looping)
+
+textmodifier.noLoop();
+console.log(textmodifier.isLooping()); // false (auto mode, not looping)
+
+textmodifier.renderMode('manual');
+console.log(textmodifier.isLooping()); // false (manual mode)
+
+textmodifier.renderMode('auto');
+console.log(textmodifier.isLooping()); // false (auto mode, but loop was stopped)
+
+textmodifier.loop();
+console.log(textmodifier.isLooping()); // true (auto mode, looping)
+```
+
+***
+
+### line()
+
+> **line**(`x1`, `y1`, `x2`, `y2`): `void`
+
+Defined in: [textmode/mixins/RenderingMixin.ts:353](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L353)
+
+Draw a line from point (x1, y1) to point (x2, y2) with the current stroke settings.
+Lines respect stroke color, stroke weight, and rotation, but ignore fill properties.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `x1` | `number` | X-coordinate of the line start point |
+| `y1` | `number` | Y-coordinate of the line start point |
+| `x2` | `number` | X-coordinate of the line end point |
+| `y2` | `number` | Y-coordinate of the line end point |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = await textmode.create({
+  width: 800,
+  height: 600,
+})
+
+t.draw(() => {
+  // Set the background color to black
+  t.background(0);
+
+  // Draw a simple line
+  t.stroke(255, 0, 0); // Red stroke
+  t.strokeWeight(2);   // 2px thick
+  t.line(100, 100, 300, 200);
+
+  // Draw an animated rotating line
+  t.push();
+  t.stroke(0, 255, 0); // Green stroke
+  t.strokeWeight(4);   // 4px thick
+  t.rotate(t.frameCount * 2); // Rotate based on frame count
+  t.line(400, 300, 600, 300);
+  t.pop();
+
+  // Draw a thick yellow line
+  t.stroke(255, 255, 0); // Yellow stroke
+  t.strokeWeight(8);     // 8px thick
+  t.line(200, 400, 400, 500);
+
+  // Line with no stroke won't be visible
+  t.noStroke();
+  t.line(500, 100, 700, 200); // This won't render
+});
+```
+
+***
+
 ### loadFont()
 
 > **loadFont**(`fontSource`): `Promise`\<`void`\>
 
-Defined in: [textmode/Textmodifier.ts:348](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L348)
+Defined in: [textmode/mixins/FontMixin.ts:27](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/FontMixin.ts#L27)
 
 Update the font used for rendering.
 
@@ -436,22 +704,271 @@ await textmodifier.loadFont('https://example.com/fonts/myfont.ttf');
 
 ***
 
+### loop()
+
+> **loop**(): `void`
+
+Defined in: [textmode/Textmodifier.ts:469](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L469)
+
+Resume the automatic rendering loop if it was stopped by [noLoop](#noloop).
+
+This method restarts the render loop when in `'auto'` mode. If the render mode
+is `'manual'`, the loop state will be set but automatic rendering will not start
+until the mode is changed back to `'auto'`.
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+// Create a textmodifier instance
+const textmodifier = await textmode.create(canvas);
+
+// Stop the loop
+textmodifier.noLoop();
+
+// Resume the loop
+textmodifier.loop();
+
+// You can also use this pattern for conditional animation
+if (someCondition) {
+  textmodifier.loop();
+} else {
+  textmodifier.noLoop();
+}
+```
+
+***
+
+### noFill()
+
+> **noFill**(): `void`
+
+Defined in: [textmode/mixins/RenderingMixin.ts:160](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L160)
+
+Disables fill rendering for subsequent operations
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = await textmode.create({
+  width: 800,
+  height: 600,
+})
+
+t.draw(() => {
+  t.background(0);
+
+  // Rectangle with fill
+  t.fill(255, 0, 0);
+  t.stroke(0, 255, 0);
+  t.strokeWeight(4);
+  t.rect(100, 100, 150, 100);
+
+  // Rectangle without fill (stroke only)
+  t.noFill();
+  t.rect(300, 100, 150, 100);
+});
+```
+
+***
+
+### noLoop()
+
+> **noLoop**(): `void`
+
+Defined in: [textmode/Textmodifier.ts:432](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L432)
+
+Stop the automatic rendering loop while keeping the render mode as 'auto'.
+
+This method pauses the render loop without changing the render mode, allowing
+it to be resumed later with [loop](#loop). This is useful for temporarily pausing
+animation while maintaining the ability to restart it.
+
+**Note:** This only affects rendering when in `'auto'` mode. In `'manual'` mode,
+this method has no effect since rendering is already controlled manually.
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+// Create a textmodifier instance in auto mode
+const textmodifier = await textmode.create(canvas);
+
+// The render loop is running automatically
+console.log(textmodifier.isLooping()); // true
+
+// Stop the automatic rendering loop
+textmodifier.noLoop();
+console.log(textmodifier.isLooping()); // false
+
+// Resume the automatic rendering loop
+textmodifier.loop();
+console.log(textmodifier.isLooping()); // true
+```
+
+***
+
+### noStroke()
+
+> **noStroke**(): `void`
+
+Defined in: [textmode/mixins/RenderingMixin.ts:133](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L133)
+
+Disables stroke rendering for subsequent operations
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = await textmode.create({
+  width: 800,
+  height: 600,
+})
+
+t.draw(() => {
+  t.background(0);
+
+  // Rectangle with stroke
+  t.fill(255, 0, 0);
+  t.stroke(0, 255, 0);
+  t.strokeWeight(4);
+  t.rect(100, 100, 150, 100);
+
+  // Rectangle without stroke (fill only)
+  t.noStroke();
+  t.rect(300, 100, 150, 100);
+});
+```
+
+***
+
+### pop()
+
+> **pop**(): `void`
+
+Defined in: [textmode/mixins/RenderingMixin.ts:271](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L271)
+
+Restore the most recently saved rendering state from the state stack.
+Use with [push](#push) to isolate style changes within a block.
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = await textmode.create({
+  width: 800,
+  height: 600,
+})
+
+t.draw(() => {
+  t.background(0);
+
+  // Default styles
+  t.fill(255);           // White fill
+  t.stroke(0);           // Black stroke
+  t.strokeWeight(1);     // Thin stroke
+
+  t.push(); // Save current state
+  
+  // Temporary style changes
+  t.fill(255, 0, 0);     // Red fill
+  t.strokeWeight(8);     // Thick stroke
+  t.rect(50, 50, 100, 100);
+  
+  t.push(); // Save red style state
+  
+  t.fill(0, 255, 0);     // Green fill
+  t.noStroke();          // No stroke
+  t.rect(200, 50, 100, 100);
+  
+  t.pop(); // Back to red fill, thick stroke
+  t.rect(350, 50, 100, 100);
+  
+  t.pop(); // Back to white fill, black stroke, thin stroke
+  t.rect(500, 50, 100, 100);
+});
+```
+
+***
+
+### push()
+
+> **push**(): `void`
+
+Defined in: [textmode/mixins/RenderingMixin.ts:229](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L229)
+
+Save the current rendering state (fill, stroke, etc.) to the state stack.
+Use with [pop](#pop) to isolate style changes within a block.
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = await textmode.create({
+  width: 800,
+  height: 600,
+})
+
+t.draw(() => {
+  t.background(0);
+
+  // Set initial styles
+  t.fill(255, 0, 0);      // Red fill
+  t.stroke(0, 255, 0);    // Green stroke
+  t.strokeWeight(4);      // Thick stroke
+
+  t.push(); // Save current state
+  
+  // Change styles temporarily
+  t.fill(0, 0, 255);      // Blue fill
+  t.stroke(255, 255, 0);  // Yellow stroke
+  t.strokeWeight(2);      // Thin stroke
+  t.rect(100, 100, 150, 100);
+  
+  t.pop(); // Restore previous state
+  
+  // Back to red fill, green stroke, thick stroke
+  t.rect(300, 100, 150, 100);
+});
+```
+
+***
+
 ### rect()
 
-> **rect**(`x`, `y`, `width`, `height`): `void`
+> **rect**(`x`, `y`, `width?`, `height?`): `void`
 
-Defined in: [textmode/Textmodifier.ts:797](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L797)
+Defined in: [textmode/mixins/RenderingMixin.ts:308](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L308)
 
 Draw a rectangle with the current shader or fill color.
 
 #### Parameters
 
-| Parameter | Type | Default value | Description |
-| ------ | ------ | ------ | ------ |
-| `x` | `number` | `undefined` | X-coordinate of the rectangle |
-| `y` | `number` | `undefined` | Y-coordinate of the rectangle |
-| `width` | `number` | `1` | Width of the rectangle |
-| `height` | `number` | `1` | Height of the rectangle |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `x` | `number` | X-coordinate of the rectangle |
+| `y` | `number` | Y-coordinate of the rectangle |
+| `width?` | `number` | Width of the rectangle |
+| `height?` | `number` | Height of the rectangle |
 
 #### Returns
 
@@ -488,11 +1005,99 @@ t.draw(() => {
 
 ***
 
+### redraw()
+
+> **redraw**(`n`): `void`
+
+Defined in: [textmode/Textmodifier.ts:511](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L511)
+
+Execute the render function a specified number of times.
+
+This method is useful when the render loop has been stopped with [noLoop](#noloop) 
+or when in `'manual'` mode, allowing you to trigger rendering on demand.
+Similar to p5.js's `redraw()` function.
+
+#### Parameters
+
+| Parameter | Type | Default value | Description |
+| ------ | ------ | ------ | ------ |
+| `n` | `number` | `1` | The number of times to execute the render function. Defaults to 1. |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+// Create a textmodifier instance
+const textmodifier = await textmode.create(canvas, { renderMode: 'manual' });
+
+// Set up drawing
+textmodifier.draw(() => {
+  textmodifier.background(0);
+  textmodifier.fill(255, 0, 0);
+  textmodifier.rect(100, 100, 200, 150);
+});
+
+// Render once manually
+textmodifier.redraw();
+
+// Render 5 times
+textmodifier.redraw(5);
+
+// Also useful when loop is stopped
+textmodifier.noLoop();
+textmodifier.redraw(3); // Render 3 times despite loop being stopped
+```
+
+***
+
+### removeConverter()
+
+> **removeConverter**(`nameOrInstance`): `void`
+
+Defined in: [textmode/mixins/ConversionMixin.ts:57](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/ConversionMixin.ts#L57)
+
+Removes a converter from the pipeline by name or instance.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `nameOrInstance` | `string` \| [`TextmodeConverter`](../textmode.js/namespaces/converters/classes/TextmodeConverter.md)\<[`TextmodeConverterOptions`](../textmode.js/namespaces/converters/interfaces/TextmodeConverterOptions.md)\> | The unique name of the converter or the converter instance to remove. |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+// Fetch a canvas element to apply textmode rendering to
+const canvas = document.querySelector('canvas#myCanvas');
+
+// Create a Textmodifier instance
+const textmodifier = await textmode.create(canvas);
+
+// Add a converter
+const myConverter = textmodifier.addConverter('temp-converter', 'brightness');
+
+// Remove by name
+textmodifier.removeConverter('temp-converter');
+
+// Or remove by instance
+const anotherConverter = textmodifier.addConverter('another', 'custom');
+textmodifier.removeConverter(anotherConverter);
+```
+
+***
+
 ### render()
 
 > **render**(): `void`
 
-Defined in: [textmode/Textmodifier.ts:394](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L394)
+Defined in: [textmode/Textmodifier.ts:221](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L221)
 
 Apply textmode rendering to the canvas.
 
@@ -540,13 +1145,11 @@ function draw() {
 
 ### renderMode()
 
-> **renderMode**(`mode?`): `void` \| `"manual"` \| `"auto"`
+> **renderMode**(`mode`): `void`
 
-Defined in: [textmode/Textmodifier.ts:540](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L540)
+Defined in: [textmode/Textmodifier.ts:363](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L363)
 
 Update the rendering mode. 
-
-If called without arguments, returns the current mode.
 
 - `'manual'`: Requires manual [render](#render) calls
 - `'auto'`: Automatically renders using [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
@@ -555,11 +1158,11 @@ If called without arguments, returns the current mode.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `mode?` | `"manual"` \| `"auto"` | The new rendering mode to set. |
+| `mode` | `"manual"` \| `"auto"` | The new rendering mode to set. |
 
 #### Returns
 
-`void` \| `"manual"` \| `"auto"`
+`void`
 
 #### Example
 
@@ -582,9 +1185,11 @@ textmodifier.renderMode('manual');
 
 > **resizeCanvas**(`width`, `height`): `void`
 
-Defined in: [textmode/Textmodifier.ts:685](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L685)
+Defined in: [textmode/Textmodifier.ts:626](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L626)
 
-Resize the `textmode.js` canvas.
+Resize the `textmode.js` canvas. 
+
+Can only be used in `standalone` mode since the textmode canvas otherwise automatically adjusts to the video/canvas size.
 
 #### Parameters
 
@@ -599,11 +1204,59 @@ Resize the `textmode.js` canvas.
 
 ***
 
+### rotate()
+
+> **rotate**(`degrees`): `void`
+
+Defined in: [textmode/mixins/RenderingMixin.ts:193](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L193)
+
+Sets the rotation angle for subsequent rendering operations
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `degrees` | `number` | The rotation angle in degrees |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = await textmode.create({
+  width: 800,
+  height: 600,
+})
+
+t.draw(() => {
+  t.background(0);
+
+  // Normal rectangle
+  t.fill(255, 0, 0);
+  t.rect(100, 100, 150, 100);
+
+  // Rotated rectangle
+  t.push(); // Save current state
+  t.rotate(45); // Rotate 45 degrees
+  t.fill(0, 255, 0);
+  t.rect(300, 100, 150, 100);
+  t.pop(); // Restore state (no rotation)
+
+  // Back to normal (no rotation)
+  t.fill(0, 0, 255);
+  t.rect(500, 100, 150, 100);
+});
+```
+
+***
+
 ### saveCanvas()
 
-> **saveCanvas**(`filename`, `format`, `options`): `Promise`\<`void`\>
+> **saveCanvas**(`filename`, `format?`, `options?`): `Promise`\<`void`\>
 
-Defined in: [textmode/Textmodifier.ts:316](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L316)
+Defined in: [textmode/mixins/ExportMixin.ts:141](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/ExportMixin.ts#L141)
 
 Export the current textmode rendering to an image file.
 
@@ -612,8 +1265,8 @@ Export the current textmode rendering to an image file.
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `filename` | `string` | The filename (without extension) to save the image as |
-| `format` | `"png"` \| `"jpg"` \| `"webp"` | The image format ('png', 'jpg', or 'webp') |
-| `options` | `Omit`\<[`ImageExportOptions`](../textmode.js/namespaces/export/type-aliases/ImageExportOptions.md), `"filename"` \| `"format"`\> | Additional options for image export |
+| `format?` | `"png"` \| `"jpg"` \| `"webp"` | The image format ('png', 'jpg', or 'webp') |
+| `options?` | `Omit`\<[`ImageExportOptions`](../textmode.js/namespaces/export/type-aliases/ImageExportOptions.md), `"filename"` \| `"format"`\> | Additional options for image export |
 
 #### Returns
 
@@ -646,9 +1299,9 @@ textmodifier.saveCanvas('my_textmode_rendering', 'jpg', {
 
 ### saveStrings()
 
-> **saveStrings**(`options`): `void`
+> **saveStrings**(`options?`): `void`
 
-Defined in: [textmode/Textmodifier.ts:226](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L226)
+Defined in: [textmode/mixins/ExportMixin.ts:60](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/ExportMixin.ts#L60)
 
 Export the current textmode rendering to a TXT file.
 
@@ -656,7 +1309,7 @@ Export the current textmode rendering to a TXT file.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `options` | [`TXTExportOptions`](../textmode.js/namespaces/export/type-aliases/TXTExportOptions.md) | Options for TXT export |
+| `options?` | [`TXTExportOptions`](../textmode.js/namespaces/export/type-aliases/TXTExportOptions.md) | Options for TXT export |
 
 #### Returns
 
@@ -685,9 +1338,9 @@ textmodifier.saveStrings({
 
 ### saveSVG()
 
-> **saveSVG**(`options`): `void`
+> **saveSVG**(`options?`): `void`
 
-Defined in: [textmode/Textmodifier.ts:283](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L283)
+Defined in: [textmode/mixins/ExportMixin.ts:111](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/ExportMixin.ts#L111)
 
 Export the current textmode rendering to an SVG file.
 
@@ -695,7 +1348,7 @@ Export the current textmode rendering to an SVG file.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `options` | [`SVGExportOptions`](../textmode.js/namespaces/export/type-aliases/SVGExportOptions.md) | Options for SVG export |
+| `options?` | [`SVGExportOptions`](../textmode.js/namespaces/export/type-aliases/SVGExportOptions.md) | Options for SVG export |
 
 #### Returns
 
@@ -725,7 +1378,7 @@ textmodifier.saveSVG({
 
 > **setUniform**(`name`, `value`): `void`
 
-Defined in: [textmode/Textmodifier.ts:863](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L863)
+Defined in: [textmode/mixins/RenderingMixin.ts:419](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L419)
 
 Set a uniform variable for the current shader.
 
@@ -734,7 +1387,7 @@ Set a uniform variable for the current shader.
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `name` | `string` | The name of the uniform variable to set. |
-| `value` | `any` | The value to set for the uniform variable. |
+| `value` | [`UniformValue`](../textmode.js/namespaces/rendering/type-aliases/UniformValue.md) | The value to set for the uniform variable. |
 
 #### Returns
 
@@ -746,7 +1399,7 @@ Set a uniform variable for the current shader.
 
 > **shader**(`shader`): `void`
 
-Defined in: [textmode/Textmodifier.ts:854](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L854)
+Defined in: [textmode/mixins/RenderingMixin.ts:412](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L412)
 
 Set the current shader for rendering.
 
@@ -754,7 +1407,7 @@ Set the current shader for rendering.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `shader` | `Shader` | The shader program to use for rendering. |
+| `shader` | `GLShader` | The shader program to use for rendering. |
 
 #### Returns
 
@@ -762,11 +1415,103 @@ Set the current shader for rendering.
 
 ***
 
+### stroke()
+
+> **stroke**(`r`, `g?`, `b?`, `a?`): `void`
+
+Defined in: [textmode/mixins/RenderingMixin.ts:79](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L79)
+
+Sets the stroke color for subsequent rendering operations
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `r` | `number` | Red component (0-255) |
+| `g?` | `number` | Green component (0-255, optional) |
+| `b?` | `number` | Blue component (0-255, optional) |
+| `a?` | `number` | Alpha component (0-255, optional) |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = await textmode.create({
+  width: 800,
+  height: 600,
+})
+
+t.draw(() => {
+  // Set the background color to black
+  t.background(0);
+
+  // Set stroke color to red and stroke weight to 4 pixels
+  t.stroke(255, 0, 0);
+  t.strokeWeight(4);
+
+  // Draw a rectangle with red stroke
+  t.rect(100, 100, 200, 150);
+
+  // Rectangle with both fill and stroke
+  t.fill(0, 255, 0);
+  t.stroke(0, 0, 255);
+  t.strokeWeight(2);
+  t.rect(350, 100, 200, 150);
+});
+```
+
+***
+
+### strokeWeight()
+
+> **strokeWeight**(`weight`): `void`
+
+Defined in: [textmode/mixins/RenderingMixin.ts:106](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/RenderingMixin.ts#L106)
+
+Sets the stroke weight (thickness) for subsequent stroke operations
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `weight` | `number` | The stroke thickness in pixels |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = await textmode.create({
+  width: 800,
+  height: 600,
+})
+
+t.draw(() => {
+  t.background(0);
+
+  // Thin stroke
+  t.stroke(255);
+  t.strokeWeight(1);
+  t.rect(50, 50, 100, 100);
+
+  // Thick stroke
+  t.strokeWeight(8);
+  t.rect(200, 50, 100, 100);
+});
+```
+
+***
+
 ### toString()
 
-> **toString**(`options`): `string`
+> **toString**(`options?`): `string`
 
-Defined in: [textmode/Textmodifier.ts:199](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L199)
+Defined in: [textmode/mixins/ExportMixin.ts:36](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/ExportMixin.ts#L36)
 
 Generate the current textmode rendering as a text string.
 
@@ -774,7 +1519,7 @@ Generate the current textmode rendering as a text string.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `options` | `Omit`\<[`TXTExportOptions`](../textmode.js/namespaces/export/type-aliases/TXTExportOptions.md), `"filename"`\> | Options for text generation *(excluding filename)* |
+| `options?` | `Omit`\<[`TXTExportOptions`](../textmode.js/namespaces/export/type-aliases/TXTExportOptions.md), `"filename"`\> | Options for text generation *(excluding filename)* |
 
 #### Returns
 
@@ -802,27 +1547,15 @@ const textString = textmodifier.toString({
 
 // Print to console or use otherwise
 console.log(textString);
-
-////////
-
-// Example with video element
-const video = document.querySelector('video#myVideo');
-const videoTextmodifier = await textmode.create(video);
-
-// The textmode overlay will automatically update as the video plays
-video.play();
-
-// Get current frame as ASCII
-const videoFrame = videoTextmodifier.toString();
 ```
 
 ***
 
 ### toSVG()
 
-> **toSVG**(`options`): `string`
+> **toSVG**(`options?`): `string`
 
-Defined in: [textmode/Textmodifier.ts:257](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L257)
+Defined in: [textmode/mixins/ExportMixin.ts:88](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/mixins/ExportMixin.ts#L88)
 
 Generate the current textmode rendering as an SVG string.
 
@@ -830,7 +1563,7 @@ Generate the current textmode rendering as an SVG string.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `options` | `Omit`\<[`SVGExportOptions`](../textmode.js/namespaces/export/type-aliases/SVGExportOptions.md), `"filename"`\> | Options for SVG generation *(excluding filename)* |
+| `options?` | `Omit`\<[`SVGExportOptions`](../textmode.js/namespaces/export/type-aliases/SVGExportOptions.md), `"filename"`\> | Options for SVG generation *(excluding filename)* |
 
 #### Returns
 
@@ -866,7 +1599,7 @@ console.log(svgString);
 
 > **windowResized**(`callback`): `void`
 
-Defined in: [textmode/Textmodifier.ts:676](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/textmode/Textmodifier.ts#L676)
+Defined in: [textmode/Textmodifier.ts:615](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/textmode/Textmodifier.ts#L615)
 
 Set a callback function that will be called when the window is resized.
 

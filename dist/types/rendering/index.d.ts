@@ -1,4 +1,4 @@
-export { Shader } from './webgl/Shader';
+export * from './core';
+export { GLShader as Shader } from './webgl/Shader';
 export { GLRenderer } from './webgl/Renderer';
-export { Framebuffer } from './webgl/Framebuffer';
-export { Rectangle } from './webgl/geometries/Rectangle';
+export { GLFramebuffer } from './webgl/Framebuffer';

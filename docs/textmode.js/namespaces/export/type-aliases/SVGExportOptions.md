@@ -1,4 +1,4 @@
-[**textmode.js v0.1.2**](../../../../README.md)
+[**textmode.js v0.1.9**](../../../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **SVGExportOptions** = `object`
 
-Defined in: [export/svg/types.ts:68](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/export/svg/types.ts#L68)
+Defined in: [export/svg/types.ts:68](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/export/svg/types.ts#L68)
 
 Options for exporting the textmode content to SVG format.
 
@@ -18,7 +18,7 @@ Options for exporting the textmode content to SVG format.
 
 > `optional` **backgroundColor**: \[`number`, `number`, `number`, `number`\]
 
-Defined in: [export/svg/types.ts:108](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/export/svg/types.ts#L108)
+Defined in: [export/svg/types.ts:108](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/export/svg/types.ts#L108)
 
 Background color for the SVG as RGBA array `[r, g, b, a]`.
 
@@ -30,7 +30,7 @@ Default is transparent black `[0, 0, 0, 0]`.
 
 > `optional` **drawMode**: `"fill"` \| `"stroke"`
 
-Defined in: [export/svg/types.ts:94](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/export/svg/types.ts#L94)
+Defined in: [export/svg/types.ts:94](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/export/svg/types.ts#L94)
 
 The drawing mode for ASCII characters.
 
@@ -46,7 +46,7 @@ Default is `'fill'`.
 
 > `optional` **filename**: `string`
 
-Defined in: [export/svg/types.ts:74](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/export/svg/types.ts#L74)
+Defined in: [export/svg/types.ts:74](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/export/svg/types.ts#L74)
 
 The filename to save the SVG file as. 
 
@@ -58,7 +58,7 @@ If not provided, a default filename is used.
 
 > `optional` **includeBackgroundRectangles**: `boolean`
 
-Defined in: [export/svg/types.ts:83](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/export/svg/types.ts#L83)
+Defined in: [export/svg/types.ts:83](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/export/svg/types.ts#L83)
 
 Whether to include cell background rectangles in the SVG output.
 
@@ -72,7 +72,7 @@ Default is `true`.
 
 > `optional` **strokeWidth**: `number`
 
-Defined in: [export/svg/types.ts:101](https://github.com/humanbydefinition/textmode.js-dev/blob/667e212b07d0571c5d8b15c2a0c3528d79d14b5e/src/export/svg/types.ts#L101)
+Defined in: [export/svg/types.ts:101](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/export/svg/types.ts#L101)
 
 The stroke width to use when drawMode is set to `'stroke'`.
 
