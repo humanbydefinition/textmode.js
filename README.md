@@ -43,10 +43,10 @@ To get started with `textmode.js`, you'll need:
 
 | Bundle type | File size | Font included? | Best for |
 |-------------|-----------|---------------|----------|
-| **Standard UMD** (`textmode.umd.js`) | ~111kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
-| **Standard ESM** (`textmode.esm.js`) | ~128kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
-| **Minified UMD** (`textmode.umd.min.js`) | ~64kB | ❌ Requires external font | Production apps, custom fonts |
-| **Minified ESM** (`textmode.esm.min.js`) | ~82kB | ❌ Requires external font | Production apps, custom fonts |
+| **Standard UMD**<br/>(`textmode.umd.js`) | ~111kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
+| **Standard ESM**<br/>(`textmode.esm.js`) | ~128kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
+| **Minified UMD**<br/>(`textmode.umd.min.js`) | ~64kB | ❌ Requires external font | Production apps, custom fonts |
+| **Minified ESM**<br/>(`textmode.esm.min.js`) | ~82kB | ❌ Requires external font | Production apps, custom fonts |
 
 **Choose standard bundles for:**
 - Quick setup with no additional configuration
