@@ -3,10 +3,10 @@ import type { GLFramebuffer } from '../../rendering/webgl/Framebuffer.ts';
 import type { TextmodeCharacter } from './types.ts';
 import type { TyprFont } from './typr/types.ts';
 /**
- * Manages the textmode font used for rendering characters.
+ * Manages the font used for rendering characters.
  *
  * This class coordinates font loading, character extraction, texture atlas creation,
- * and provides character color information. It acts as a facade for the font system.
+ * and provides character information.
  */
 export declare class TextmodeFont {
     private _font;
@@ -17,7 +17,6 @@ export declare class TextmodeFont {
     private _textureRows;
     private _maxGlyphDimensions;
     private _fontFace;
-    private _fontFamilyName;
     private _characterExtractor;
     private _textureAtlas;
     private _metricsCalculator;
@@ -62,21 +61,17 @@ export declare class TextmodeFont {
      * Get the color associated with a character.
      * @param character The character to get the color for.
      * @returns The RGB color as an array `[r, g, b]`.
+     * @ignore
      */
-    getCharacterColor(character: string): [number, number, number];
+    $getCharacterColor(character: string): [number, number, number];
     /**
      * Get the colors associated with a string of characters.
      * @param characters The string of characters to get colors for.
      * @returns An array of RGB colors for each character in the string.
      * Each color is represented as an array `[r, g, b]`.
+     * @ignore
      */
-    getCharacterColors(characters: string): [number, number, number][];
-    /**
-     * Checks if all characters in the given string exist in the font.
-     * @param str The string to check.
-     * @returns `true` if all characters exist in the font, `false` otherwise.
-     */
-    hasAllCharacters(str: string): boolean;
+    $getCharacterColors(characters: string): [number, number, number][];
     /**
      * Dispose of all resources used by this font manager.
      * @ignore

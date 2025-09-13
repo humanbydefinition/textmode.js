@@ -17,7 +17,7 @@ export declare class CharacterColorMapper {
     /**
      * Generates a unique RGB color for a character based on its index.
      * @param index The index of the character
-     * @returns RGB color as a tuple [r, g, b]
+     * @returns RGB color as a tuple [r, g, b] with values from 0-1 for shader use
      */
     private _generateCharacterColor;
     /**
@@ -26,12 +26,12 @@ export declare class CharacterColorMapper {
      * @param characters Array of TextmodeCharacter objects
      * @returns RGB color as a tuple [r, g, b], or [0, 0, 0] if not found
      */
-    getCharacterColor(character: string, characters: TextmodeCharacter[]): [number, number, number];
+    $getCharacterColor(character: string, characters: TextmodeCharacter[]): [number, number, number];
     /**
      * Gets colors for multiple characters.
      * @param characterString String of characters to get colors for
      * @param characters Array of TextmodeCharacter objects
      * @returns Array of RGB colors for each character
      */
-    getCharacterColors(characterString: string, characters: TextmodeCharacter[]): [number, number, number][];
+    $getCharacterColors(characterString: string, characters: TextmodeCharacter[]): [number, number, number][];
 }

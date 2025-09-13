@@ -21,7 +21,7 @@ export declare class TXTExporter {
      * @param options Export options (excluding filename)
      * @returns TXT content as string
      */
-    $generateTXT(renderingData: TextmodeRenderingData, options?: Omit<TXTExportOptions, 'filename'>): string;
+    $generateTXT(renderingData: TextmodeRenderingData, options?: TXTExportOptions): string;
     /**
      * Exports TXT content to a downloadable file
      * @param renderingData The textmode rendering data containing pipeline, grid, and font

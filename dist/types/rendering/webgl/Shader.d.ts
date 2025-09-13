@@ -1,9 +1,13 @@
-import { Shader, type UniformValue } from '../core/Shader';
+import { GLFramebuffer } from './Framebuffer';
+/**
+ * Supported uniform value types
+ */
+type UniformValue = number | boolean | number[] | Float32Array | Int32Array | GLFramebuffer | WebGLTexture;
 /**
  * WebGL implementation of the shader abstraction.
  * Provides GPU shader program management with automatic uniform handling.
  */
-export declare class GLShader extends Shader {
+export declare class GLShader {
     private _gl;
     private _program;
     private _uniformLocations;
@@ -18,13 +22,6 @@ export declare class GLShader extends Shader {
      * @ignore
      */
     constructor(gl: WebGLRenderingContext, vertexSource: string, fragmentSource: string);
-    /**
-     * Factory method to create a shader from source object
-     */
-    static fromSource(gl: WebGLRenderingContext, source: {
-        vertex: string;
-        fragment: string;
-    }): GLShader;
     private _cacheLocations;
     private _createProgram;
     private _createShader;
@@ -35,23 +32,25 @@ export declare class GLShader extends Shader {
     /**
      * Reset texture unit counter and other state
      */
-    $resetState(): void;
+    private _resetState;
+    $setUniforms(uniforms: Record<string, UniformValue>): void;
+    /**
+     * Check if a uniform exists in this shader
+     */
+    $hasUniform(name: string): boolean;
     /**
      * Set a single uniform value with automatic texture unit management
      */
-    setUniform(name: string, value: UniformValue): void;
+    $setUniform(name: string, value: UniformValue): void;
     private _getNextTextureUnit;
-    /**
-     * Check if a uniform is an integer type
-     */
-    private _isUniformInteger;
     /**
      * Get the WebGL program
      */
-    get glProgram(): WebGLProgram;
+    get $glProgram(): WebGLProgram;
     /**
      * Dispose of WebGL resources used by this shader.
      * This method is idempotent and safe to call multiple times.
      */
     $dispose(): void;
 }
+export {};

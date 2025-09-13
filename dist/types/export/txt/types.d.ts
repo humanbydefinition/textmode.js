@@ -2,7 +2,6 @@
  * TXT-specific type definitions for the textmode.js library.
  */
 import type { TextmodeFont, TextmodeGrid } from '../..';
-import type { TextmodeConversionPipeline } from '../../textmode/ConversionPipeline';
 /**
  * Options for exporting the textmode content to TXT format.
  */
@@ -40,12 +39,13 @@ export interface TXTGenerationOptions {
     preserveTrailingSpaces: boolean;
     lineEnding: 'lf' | 'crlf';
     emptyCharacter: string;
+    filename: string;
 }
 /**
  * Data required for textmode rendering export
  */
 export interface TextmodeRenderingData {
-    pipeline: TextmodeConversionPipeline;
+    pipeline: any;
     grid: TextmodeGrid;
     font: TextmodeFont;
 }

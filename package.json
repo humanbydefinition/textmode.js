@@ -1,12 +1,37 @@
 {
   "name": "textmode.js",
   "private": true,
-  "version": "0.1.9",
+  "version": "0.2.0",
+  "description": "textmode.js is a lightweight creative coding library for creating real-time ASCII art on the web.",
   "type": "module",
   "scripts": {
     "dev": "vite"
   },
   "devDependencies": {
     "vite": "^6.3.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/humanbydefinition/textmode.js.git"
+  },
+  "keywords": [
+    "ascii",
+    "petscii",
+    "textmode",
+    "canvas",
+    "webgl",
+    "creative-coding",
+    "art",
+    "design",
+    "graphics"
+  ],
+  "author": "humanbydefinition",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/humanbydefinition/textmode.js/issues"
+  },
+  "homepage": "https://code.textmode.art",
+  "files": [
+    "dist"
+  ]
 }

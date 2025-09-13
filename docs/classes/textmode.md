@@ -1,12 +1,10 @@
-[**textmode.js v0.1.9**](../README.md)
+[**textmode.js v0.2.0**](../README.md)
 
 ***
 
 [textmode.js](../README.md) / textmode
 
 # Class: textmode
-
-Defined in: [Textmode.ts:12](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/Textmode.ts#L12)
 
 The main entry point for the `textmode.js` library.
 
@@ -19,8 +17,6 @@ Provides static methods for creating [Textmodifier](Textmodifier.md) instances a
 #### Get Signature
 
 > **get** `static` **version**(): `string`
-
-Defined in: [Textmode.ts:110](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/Textmode.ts#L110)
 
 Returns the version of `textmode.js` being used.
 
@@ -38,62 +34,43 @@ console.log(textmode.version); // "1.0.0"
 
 ### create()
 
-> `static` **create**(`sourceOrOptions?`, `opts?`): `Promise`\<[`Textmodifier`](Textmodifier.md)\>
+> `static` **create**(`opts`): [`Textmodifier`](Textmodifier.md)
 
-Defined in: [Textmode.ts:64](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/Textmode.ts#L64)
-
-Create a [Textmodifier](Textmodifier.md) instance for textmode rendering.
+Create a new [Textmodifier](Textmodifier.md) instance with optional configuration.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `sourceOrOptions?` | `HTMLCanvasElement` \| `HTMLVideoElement` \| [`TextmodeOptions`](../type-aliases/TextmodeOptions.md) | Either a `HTMLCanvasElement` or `HTMLVideoElement` for capturing content, or options for standalone mode. |
-| `opts?` | [`TextmodeOptions`](../type-aliases/TextmodeOptions.md) | Optional configuration options *(only used when first parameter is a `HTMLCanvasElement` or `HTMLVideoElement`)*. |
+| `opts` | [`TextmodeOptions`](../type-aliases/TextmodeOptions.md) | Configuration options for the Textmodifier instance |
 
 #### Returns
 
-`Promise`\<[`Textmodifier`](Textmodifier.md)\>
+[`Textmodifier`](Textmodifier.md)
 
-A Promise that resolves to a [Textmodifier](Textmodifier.md) instance.
+A new Textmodifier instance
 
-#### Examples
+#### Example
 
-Creating a [Textmodifier](Textmodifier.md) for an existing canvas:
 ```javascript
-const canvas = document.querySelector('canvas#myCanvas');
-const textmodifier = await textmode.create(canvas);
-```
+// Create with default canvas
+const textmodifier = textmode.create();
 
-Creating a [Textmodifier](Textmodifier.md) for a video element:
-```javascript
-const video = document.querySelector('video#myVideo');
-const textmodifier = await textmode.create(video);
-```
-
-Creating a standalone [Textmodifier](Textmodifier.md) with animation:
-```javascript
-const t = await textmode.create({ width: 800, height: 600 });
-
-// Set up a draw loop for standalone usage
-t.draw(() => {
-  t.background(0);
-
-  const centerX = t.width / 2;
-  const centerY = t.height / 2;
-  const radius = Math.min(t.width, t.height) / 3;
-  const speed = 0.02; // Adjust speed of rotation
-
-  const angle = t.frameCount * speed;
-  const x = centerX + Math.cos(angle) * radius - 100;
-  const y = centerY + Math.sin(angle) * radius - 50;
-
-  // Set the fill color to white
-  t.fill(255);
-
-  // Draw a rectangle with the fill color
-  t.rect(x, y, 200, 150);
+textmodifier.setup(() => {
+  // Called when the Textmodifier is ready
+  console.log(`Grid size: ${textmodifier.grid.cols}x${textmodifier.grid.rows}`);
 });
+
+textmodifier.draw(() => {
+  textmodifier.background(128);
+  textmodifier.rect(10, 10, 20, 20);
+});
+
+// Create with options
+const textmodifier2 = textmode.create({ width: 1920, height: 1080 });
+
+// Create with canvas and options
+const textmodifier3 = textmode.create({ canvas: canvas, fontSize: 20 });
 ```
 
 ***
@@ -101,8 +78,6 @@ t.draw(() => {
 ### setErrorLevel()
 
 > `static` **setErrorLevel**(`level`): `void`
-
-Defined in: [Textmode.ts:98](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/Textmode.ts#L98)
 
 Set the global error handling level for the library. This applies to all [Textmodifier](Textmodifier.md) instances present.
 

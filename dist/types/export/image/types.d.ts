@@ -11,14 +11,12 @@ export type ImageFormat = 'png' | 'jpg' | 'webp';
 export type ImageExportOptions = {
     /**
      * The filename to save the image file as (without extension).
-     * @ignore
      */
     filename?: string;
     /**
      * The image format to export (`'png'`, `'jpg'`, or `'webp'`).
-     * @ignore
      */
-    format?: ImageFormat;
+    format?: 'png' | 'jpg' | 'webp';
     /**
      * Image quality for lossy formats (`'jpg'`, `'webp'`).
      *
@@ -48,6 +46,7 @@ export type ImageExportOptions = {
  * Internal options used by image generation (with all defaults applied).
  */
 export interface ImageGenerationOptions {
+    filename: string;
     format: ImageFormat;
     quality: number;
     scale: number;

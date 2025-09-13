@@ -1,4 +1,4 @@
-import type { ImageExportOptions } from './types';
+import type { ImageExportOptions, ImageGenerationOptions } from './types';
 import type { TextmodeCanvas } from '../../index';
 /**
  * Main image exporter for the textmode.js library.
@@ -23,23 +23,16 @@ export declare class ImageExporter {
      */
     private _validateOptions;
     /**
-     * Generates image data from textmode rendering without saving to file
-     * @param canvas The canvas data containing the rendered textmode graphics
-     * @param options Export options (excluding filename)
-     * @returns Data URL string containing the image data
-     */
-    $generateImage(canvas: TextmodeCanvas, options?: Omit<ImageExportOptions, 'filename'>): string;
-    /**
      * Generates image blob from textmode rendering without saving to file
      * @param canvasData The canvas data containing the rendered textmode graphics
-     * @param options Export options (excluding filename)
+     * @param options Export options
      * @returns Promise that resolves to a Blob containing the image data
      */
-    $generateImageBlob(canvas: TextmodeCanvas, options?: Omit<ImageExportOptions, 'filename'>): Promise<Blob>;
+    $generateImageBlob(canvas: TextmodeCanvas, options: ImageGenerationOptions): Promise<Blob>;
     /**
      * Exports image to a downloadable file
      * @param canvas The canvas data containing the rendered textmode graphics
-     * @param options Export options including filename
+     * @param options Export options
      */
     $saveImage(canvas: TextmodeCanvas, options?: ImageExportOptions): Promise<void>;
 }

@@ -171,7 +171,7 @@ export interface GlyphData {
  * Each table parser implements this interface
  */
 export interface TableParser<T = any> {
-    parseTab: (data: Uint8Array, offset: number, length: number, font?: TyprFont) => T;
+    parseTab: (data: Uint8Array, offset: number, length: number, font: TyprFont) => T;
 }
 /**
  * Extended cmap parser with format-specific methods

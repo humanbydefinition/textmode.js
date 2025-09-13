@@ -1,4 +1,4 @@
-[**textmode.js v0.1.9**](../../../../README.md)
+[**textmode.js v0.2.0**](../../../../README.md)
 
 ***
 
@@ -8,8 +8,6 @@
 
 > **ImageExportOptions** = `object`
 
-Defined in: [export/image/types.ts:13](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/export/image/types.ts#L13)
-
 Options for exporting the textmode content to image format.
 
 ## Properties
@@ -17,8 +15,6 @@ Options for exporting the textmode content to image format.
 ### backgroundColor?
 
 > `optional` **backgroundColor**: `string`
-
-Defined in: [export/image/types.ts:51](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/export/image/types.ts#L51)
 
 Background color for formats that don't support transparency (`'jpg'`).
 
@@ -28,11 +24,25 @@ Default is `'black'`.
 
 ***
 
+### filename?
+
+> `optional` **filename**: `string`
+
+The filename to save the image file as (without extension).
+
+***
+
+### format?
+
+> `optional` **format**: `"png"` \| `"jpg"` \| `"webp"`
+
+The image format to export (`'png'`, `'jpg'`, or `'webp'`).
+
+***
+
 ### quality?
 
 > `optional` **quality**: `number`
-
-Defined in: [export/image/types.ts:33](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/export/image/types.ts#L33)
 
 Image quality for lossy formats (`'jpg'`, `'webp'`). 
 
@@ -45,8 +55,6 @@ Default is `1.0`. Ignored for `'png'` format.
 ### scale?
 
 > `optional` **scale**: `number`
-
-Defined in: [export/image/types.ts:42](https://github.com/humanbydefinition/textmode.js-dev/blob/02f2317592c96b7b0129f0da9a382c12c28ad890/src/export/image/types.ts#L42)
 
 Scale factor for the output image.
 

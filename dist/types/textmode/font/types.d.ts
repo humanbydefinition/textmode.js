@@ -6,7 +6,7 @@ export type TextmodeCharacter = {
     character: string;
     /** The Unicode code point of the character. */
     unicode: number;
-    /** The RGB color associated with the character for identification. */
+    /** The shader color associated with the character. */
     color: [number, number, number];
     /** The advance width of the character. @ignore */
     advanceWidth: number;

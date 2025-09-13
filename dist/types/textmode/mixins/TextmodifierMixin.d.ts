@@ -3,9 +3,10 @@
  */
 import type { GLRenderer } from '../../rendering/webgl/Renderer';
 import type { TextmodeFont } from '../font';
-import type { TextmodeConversionPipeline } from '../ConversionPipeline';
 import type { TextmodeCanvas } from '../Canvas';
 import type { TextmodeGrid } from '../Grid';
+import type { AnimationController } from '../AnimationController';
+import type { GLFramebuffer, Shader } from '../../rendering';
 /**
  * Constructor type for mixin pattern
  */
@@ -23,12 +24,20 @@ export interface TextmodifierContext {
     readonly _renderer: GLRenderer;
     /** Font management @ignore */
     readonly _font: TextmodeFont;
-    /** Conversion pipeline @ignore */
-    readonly _pipeline: TextmodeConversionPipeline;
     /** Canvas management @ignore */
     readonly _canvas: TextmodeCanvas;
     /** Grid management @ignore */
     readonly _grid: TextmodeGrid;
+    /** Animation controller for managing rendering loop @ignore */
+    readonly _animationController: AnimationController;
+    /** Draw shader that contains content drawn by the user @ignore */
+    readonly _textmodeDrawShader: Shader;
+    /** Framebuffer used for offscreen rendering @ignore */
+    readonly _textmodeDrawFramebuffer: GLFramebuffer;
+    /** Shader used for converting pixels to textmode grid format @ignore */
+    readonly _textmodeConversionShader: Shader;
+    /** Main render method @ignore */
+    $render(): void;
 }
 /**
  * Simple utility function to apply multiple mixins to a base class
@@ -36,4 +45,4 @@ export interface TextmodifierContext {
  * @param mixins Array of mixin functions to apply
  * @returns The composed class with all mixins applied
  */
-export declare function applyMixins<T extends Constructor>(Base: T, ...mixins: any[]): T;
+export declare function $applyMixins<T extends Constructor>(Base: T, ...mixins: any[]): T;

@@ -1,4 +1,4 @@
-import type { SVGExportOptions } from './types';
+import type { SVGExportOptions, TextmodeRenderingData } from './types';
 /**
  * Main SVG exporter for the textmode.js library.
  * Orchestrates the SVG export process by coordinating data extraction,
@@ -17,15 +17,15 @@ export declare class SVGExporter {
     private _applyDefaultOptions;
     /**
      * Generates SVG content from textmode rendering data without saving to file
-     * @param textmodifier The textmodifier instance containing rendering data
+     * @param renderingData The textmode rendering data containing pipeline, grid, and font
      * @param options Export options (excluding filename)
      * @returns SVG content as string
      */
-    $generateSVG(textmodifier: any, options?: Omit<SVGExportOptions, 'filename'>): string;
+    $generateSVG(renderingData: TextmodeRenderingData, options?: SVGExportOptions): string;
     /**
      * Exports SVG content to a downloadable file
-     * @param textmodifier The textmodifier instance containing rendering data
+     * @param renderingData The textmode rendering data containing pipeline, grid, and font
      * @param options Export options including filename
      */
-    $saveSVG(textmodifier: any, options?: SVGExportOptions): void;
+    $saveSVG(renderingData: TextmodeRenderingData, options?: SVGExportOptions): void;
 }

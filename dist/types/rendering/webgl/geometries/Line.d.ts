@@ -1,11 +1,20 @@
+/**
+ * Instanced line geometry implementation
+ */
+import type { InstanceBatch } from '../InstanceBatch';
+import { type LineParams } from '../types/GeometryTypes';
 import { BaseGeometry } from './BaseGeometry';
 /**
- * Line geometry renderer
+ * Instanced line geometry renderer.
+ * Batches all line draw calls for efficient GPU rendering.
  */
 export declare class Line extends BaseGeometry {
-    constructor(gl: WebGLRenderingContext);
+    constructor(gl: WebGL2RenderingContext, batch: InstanceBatch);
     /**
-     * Draw a line from (x1, y1) to (x2, y2) with specified weight
+     * Add a line instance to the batch
+     * @param params Line parameters
+     * @param renderState Current render state
+     * @returns Index of the added instance
      */
-    $draw(x1: number, y1: number, x2: number, y2: number, weight: number): void;
+    $addInstance(params: LineParams, renderState: any): number;
 }

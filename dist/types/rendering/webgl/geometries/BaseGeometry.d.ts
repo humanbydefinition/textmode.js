@@ -1,40 +1,48 @@
 /**
- * Base class for WebGL geometry rendering with shared vertex buffer management
+ * Base class for instanced geometry implementations
  */
-export declare abstract class BaseGeometry {
-    protected _gl: WebGLRenderingContext;
-    protected _unitBuffer: WebGLBuffer | null;
-    protected _bytesPerVertex: number;
-    private _attribCache;
-    constructor(gl: WebGLRenderingContext);
+import type { InstanceBatch } from '../InstanceBatch';
+import type { InstanceData } from '../InstanceData';
+import type { IGeometry, GeometryType, UnitGeometryData } from '../types/GeometryTypes';
+/**
+ * Abstract base class for all instanced geometries.
+ * Provides common functionality for instance data creation and batch management.
+ */
+export declare abstract class BaseGeometry implements IGeometry {
+    protected readonly _gl: WebGL2RenderingContext;
+    protected readonly _batch: InstanceBatch;
+    protected readonly _type: GeometryType;
+    protected readonly _unitGeometry: UnitGeometryData;
+    private _unitBuffer;
+    constructor(gl: WebGL2RenderingContext, batch: InstanceBatch, type: GeometryType, unitGeometry: UnitGeometryData);
+    get type(): GeometryType;
+    get unitGeometry(): UnitGeometryData;
+    get unitBuffer(): WebGLBuffer;
+    get batch(): InstanceBatch;
+    $clearInstances(): void;
+    $hasInstances(): boolean;
+    $dispose(): void;
+    abstract $addInstance(params: any, renderState: any): number;
     /**
-     * Ensure the unit buffer is created and bound
+     * Create base instance data from render state.
+     * This method handles the common instance data creation logic.
+     * Subclasses can override this to add geometry-specific data.
      */
-    protected _ensureUnitBuffer(): void;
+    protected _createBaseInstanceData(x: number, y: number, width: number, height: number, renderState: any): InstanceData;
     /**
-     * Enable vertex attributes and return their locations
-     */
-    protected _enableAttribs(): {
-        positionLoc: number;
-        texLoc: number;
-    };
-    /**
-     * Disable vertex attributes
-     */
-    protected _disableAttribs(positionLoc: number, texLoc: number): void;
-    /**
-     * Convert screen coordinates to NDC (Normalized Device Coordinates)
+     * Convert screen coordinates to NDC for compatibility with existing code
      */
     protected _toNDC(x: number, y: number): {
         nx: number;
         ny: number;
     };
-    /**
-     * Upload quad vertices to the buffer in NDC coordinates
-     */
-    protected _uploadQuadNDC(x1: number, y1: number, x2: number, y2: number): void;
-    /**
-     * Dispose of WebGL resources used by this geometry
-     */
-    $dispose(): void;
+    protected _setRotationCenter(instanceData: InstanceData, centerX: number, centerY: number): void;
+    protected _calculateRotationParams(x: number, y: number, width: number, height: number, rotationXDegrees: number, rotationYDegrees: number, rotationZDegrees: number): {
+        centerX: number;
+        centerY: number;
+        radiansX: number;
+        radiansY: number;
+        radiansZ: number;
+        aspectRatio: number;
+    };
 }

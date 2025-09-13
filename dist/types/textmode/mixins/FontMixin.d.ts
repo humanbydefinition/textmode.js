@@ -9,11 +9,8 @@ export interface FontCapabilities {
      *
      * @example
      * ```javascript
-     * // Fetch a canvas element to apply textmode rendering to
-     * const canvas = document.querySelector('canvas#myCanvas');
-     *
      * // Create a Textmodifier instance
-     * const textmodifier = await textmode.create(canvas);
+     * const textmodifier = textmode.create();
      *
      * // Load a custom font from a URL
      * await textmodifier.loadFont('https://example.com/fonts/myfont.ttf');
@@ -29,14 +26,11 @@ export interface FontCapabilities {
      *
      * @example
      * ```javascript
-     * // Fetch a canvas element to apply textmode rendering to
-     * const canvas = document.querySelector('canvas#myCanvas');
-     *
      * // Create a Textmodifier instance
-     * const textmodifier = await textmode.create(canvas);
+     * const textmodifier = await textmode.create();
      *
-     * // Set the font size to 24
-     * textmodifier.fontSize(24);
+     * // Set the font size to 32
+     * textmodifier.fontSize(32);
      * ```
      */
     fontSize(size: number): void;

@@ -10,32 +10,36 @@
 
 </div>
 
-`textmode.js` is a free, lightweight and framework-agnostic creative coding library for real-time ASCII art and textmode experiences in web browsers.
+textmode.js is a lightweight creative-coding library for real‑time ASCII and textmode graphics in the browser. It combines a grid‑based API with a modern `WebGL2` pipeline, multiple render targets, and aggressive instanced rendering to deliver smooth, high‑performance rendering.
 
-Transform any `<canvas>` or `<video>` element into dynamic ASCII representations with blazing-fast WebGL rendering. Whether you're using p5.js, three.js, or vanilla JavaScript, textmode.js seamlessly integrates with your existing projects to create interactive textmode games, live visual performances, and artistic installations.
+The library is designed to be easy to use and accessible to developers of all skill levels. Whether you're a seasoned developer or just starting out, `textmode.js` provides a simple and intuitive API that makes it easy to create stunning textmode art and animations.
 
-For standalone projects, textmode.js provides its own p5.js-inspired drawing API, letting you create compelling ASCII experiences without additional dependencies. 
-
-The library powers live coding performances, interactive installations, and digital art projects worldwide, bringing the nostalgic aesthetic of textmode art into modern web development.
+Key ideas in one sentence: you draw with simple shape calls; under the hood we batch instances and write to a special framebuffer with five render targets; a conversion pass maps those buffers to a crisp grid of characters on the canvas.
 
 ## Features
-- **Dependency-free**: No external libraries required, making it lightweight and easy to integrate into any project.
-- **TTF/OTF font support**: Load and use TrueType and OpenType fonts for rendering textmode art, allowing for a wide range of styles and characters.
-- **Framework-agnostic**: Use `textmode.js` with any JavaScript framework or library, such as `p5.js`, `three.js`, or even vanilla JavaScript.
-- **Standalone drawing API**: Use the built-in `p5.js`-like drawing API for creating textmode art without any other dependencies.
-- **Injectable**: Easily inject `textmode.js` into websites like YouTube to convert `<video>` or `<canvas>` elements into textmode representations for a unique viewing experience.
-- **WebGL1/WebGL2 support**: All shader code provided by `textmode.js` is written in `GLSL ES 1.0`, making it compatible with both `WebGL1` and `WebGL2` contexts, allowing for a wide range of devices to run your ASCII projects.
-- **Exporting**: Export your creations to various image formats, and as `.txt`, `.svg` and image files for easy sharing, printing and plotting.
-- **Typescript support**: Fully typed library with TypeScript definitions, making it easy to integrate into TypeScript projects and ensuring type safety.
+- Real‑time* ASCII/textmode rendering with a simple drawing API
+- `WebGL2` pipeline with [Multiple Render Targets (MRT)](https://en.wikipedia.org/wiki/Multiple_Render_Targets) for rich per‑cell data
+- Instanced rendering and batching for low draw call counts
+- Font system with runtime font loading and dynamic sizing
+- Author custom filter shaders in [`GLSL ES 3.00`](https://registry.khronos.org/OpenGL/specs/es/3.0/GLSL_ES_Specification_3.00.pdf) for advanced effects
+- Flexible exporting: TXT, SVG, and raster images *(PNG/JPG/WebP)*
+- Animation loop control: `frameRate`, `loop`/`noLoop`, `redraw`, `frameCount`, etc.
+- Zero dependencies, written in TypeScript, with comprehensive type definitions
+
+> [!NOTE]
+> *Performance depends on the complexity of your scene and device capabilities. Consider authoring filter shaders for complex effects at low cost.
 
 ## Installation
 
 ### Prerequisites
 
 To get started with `textmode.js`, you'll need:
-- A **modern web browser** with `WebGL` support
-- A `<canvas>` or `<video>` element in your project *(optional, for capturing content from a different source)*
-- **Node.js 16+** and `npm` *(optional, for ESM installation)*
+- A **modern web browser** with `WebGL2` support *(Chrome, Firefox, Safari, Edge, etc.)*
+- A [`<canvas>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas) in your project *(optional, otherwise the library will create one for you)*
+- [Node.js 16+](https://nodejs.org/) and `npm` *(optional, for ESM installation)*
+
+> [!IMPORTANT]
+> `textmode.js` is currently fully dependent on `WebGL2`. Ensure your target browsers support it. You can check compatibility on [caniuse.com](https://caniuse.com/webgl2).
 
 ### Importing `textmode.js`
 
@@ -43,28 +47,31 @@ To get started with `textmode.js`, you'll need:
 
 | Bundle type | File size | Font included? | Best for |
 |-------------|-----------|---------------|----------|
-| **Standard UMD** (`textmode.umd.js`) | ~111kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
-| **Standard ESM** (`textmode.esm.js`) | ~128kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
-| **Minified UMD** (`textmode.umd.min.js`) | ~64kB | ❌ Requires external font | Production apps, custom fonts |
-| **Minified ESM** (`textmode.esm.min.js`) | ~82kB | ❌ Requires external font | Production apps, custom fonts |
+| **Standard UMD** (`textmode.umd.js`) | ~112kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
+| **Standard ESM** (`textmode.esm.js`) | ~130kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
+| **Minified UMD** (`textmode.umd.min.js`) | ~65kB | ❌ Requires external font | Custom fonts |
+| **Minified ESM** (`textmode.esm.min.js`) | ~84kB | ❌ Requires external font | Custom fonts |
 
 **Choose standard bundles for:**
 - Quick setup with no additional configuration
-- Everything embedded and ready to use
-- Getting started without worrying about fonts
+- Production applications that use the embedded font
 
 **Choose minified bundles for:**
 - Production applications that don't use the embedded font
 
-#### UMD
+> [!NOTE]
+> Apart from the font inclusion, both bundle types are functionally identical and equally minified.
+
+### UMD
 
 To use `textmode.js` in a UMD environment, download the latest `umd` build from the [**GitHub releases page**](https://github.com/humanbydefinition/textmode.js/releases/) or import it directly from a CDN like [**jsDelivr**](https://www.jsdelivr.com/package/npm/textmode.js). The library is distributed as a single JavaScript file, which you can include in your project by adding the following script tag to your HTML file:
 
 ```html
+<!-- index.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>textmode.js example</title>
+    <title>textmode.js sketch</title>
 
     <!-- Standard bundle (with embedded UrsaFont) -->
     <script src="https://cdn.jsdelivr.net/npm/textmode.js@latest/dist/textmode.umd.js"></script>
@@ -73,26 +80,40 @@ To use `textmode.js` in a UMD environment, download the latest `umd` build from 
     <!-- <script src="https://cdn.jsdelivr.net/npm/textmode.js@latest/dist/textmode.umd.min.js"></script> -->
 </head>
 <body>
-    <canvas id="myCanvas" width="800" height="600"></canvas>
-    <script>
-        (async () => {
-            // Reference your existing canvas element
-            const canvas = document.querySelector('canvas#myCanvas');
-
-            // Standard bundle - no font configuration needed
-            const textmodifier = await textmode.create(canvas);
-            
-            // Minified bundle - font required
-            // const textmodifier = await textmode.create(canvas, {
-            //     fontSource: './path/to/your/font.ttf'
-            // });
-        })();
-    </script>
+    <script src="sketch.js"></script>
 </body>
 </html>
 ```
 
-#### ESM
+```javascript
+// sketch.js
+const t = textmode.create({
+    width: window.innerWidth,
+    height: window.innerHeight,
+    fontSize: 16,
+    frameRate: 60
+});
+
+t.setup(() => {
+    // Optional setup code here (e.g., load fonts/shaders, initialize variables that access 't')
+});
+
+t.draw(() => {
+    t.background(32); // Dark gray background
+
+    t.char('A');
+    t.charColor(255, 0, 0); // Cover the top-left quarter of the grid with a rectangle of red 'A's
+    t.rect(0, 0, t.grid.cols / 2, t.grid.rows / 2);
+
+    // ...add your drawing code here!
+});
+
+t.windowResized(() => {
+    t.resizeCanvas(window.innerWidth, window.innerHeight);
+});
+```
+
+### ESM
 
 To use `textmode.js` in an ESM environment, you can install it via `npm`:
 
@@ -102,43 +123,73 @@ npm install textmode.js
 
 Then, you can import it in your JavaScript or TypeScript files:
 
+```html
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>textmode.js sketch</title>
+</head>
+<body>
+    <script type="module" src="./sketch.js"></script>
+</body>
+</html>
+```
+
 ```javascript
+// sketch.js
 // Standard bundle (with embedded UrsaFont)
 import { textmode } from 'textmode.js';
 
 // OR Minified bundle (requires external font)
 // import { textmode } from 'textmode.js/min';
 
-(async () => {
-    // Canvas example
-    const canvas = document.querySelector('canvas#myCanvas');
-    
-    // Standard bundle - no font configuration needed
-    const textmodifier = await textmode.create(canvas);
-    
-    // Minified bundle - font required
-    // const textmodifier = await textmode.create(canvas, {
-    //     fontSource: './path/to/your/font.ttf'
-    // });
-})();
+const t = textmode.create({
+    width: window.innerWidth,
+    height: window.innerHeight,
+    fontSize: 16,
+    frameRate: 60
+});
+
+t.setup(() => {
+    // Optional setup code here (e.g., load fonts/shaders, initialize variables that access 't')
+});
+
+t.draw(() => {
+    t.background(32); // Dark gray background
+
+    t.char('A');
+    t.charColor(255, 0, 0); // Cover the top-left quarter of the grid with a rectangle of red 'A's
+    t.rect(0, 0, t.grid.cols / 2, t.grid.rows / 2);
+
+    // ...add your drawing code here!
+});
+
+t.windowResized(() => {
+    t.resizeCanvas(window.innerWidth, window.innerHeight);
+});
 ```
 
-### Next steps
+## Verification
 
-Now that you have `textmode.js` set up, you can start creating your ASCII art projects! Check out the [**API documentation**](/api/) for detailed information on how to use the library, including examples and advanced features.
+To verify your installation is working correctly, try this simple test:
 
-## Learn more
+```javascript
+// Test if textmode.js is available
+console.log('textmode.js version:', textmode.version);
+```
 
-### 📚 [Visit the Official Documentation](https://code.textmode.art/)
+> [!NOTE]
+> If you see the version number printed in the console, your installation was successful!
 
-Explore the comprehensive documentation at [code.textmode.art](https://code.textmode.art/) for:
-- Detailed guides
-- Interactive examples
-- Complete API reference
-- Tips and tricks
-- ... and much more!
+## Next steps
 
-The documentation will help you unlock the full potential of `textmode.js` in your creative coding projects.
+Now that you have `textmode.js` set up, you can start creating your textmode art projects! Going forward, here are some resources to help you get the most out of the library:
+
+📚 **[Visit the Official Documentation](https://code.textmode.art/)** for detailed guides, interactive examples, complete API reference, tips and tricks, and much more to unlock the full potential of `textmode.js` in your creative coding projects.
+
+🎨 **[Try the Web Editor](https://editor.textmode.art)** to experiment with `textmode.js` without setting up a local environment.
 
 ## Acknowledgements
 

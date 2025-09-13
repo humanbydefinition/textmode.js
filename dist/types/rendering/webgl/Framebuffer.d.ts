@@ -1,69 +1,70 @@
-import { Framebuffer, type FramebufferOptions } from '../core/Framebuffer';
+export type FramebufferOptions = {
+    /** Texture filtering mode */
+    filter?: 'nearest' | 'linear';
+    /** Texture wrapping mode */
+    wrap?: 'clamp' | 'repeat';
+    /** Texture format */
+    format?: 'rgba' | 'rgb';
+    /** Data type for texture data */
+    type?: 'unsigned_byte' | 'float';
+};
 /**
- * WebGL implementation of the framebuffer abstraction.
+ * WebGL2 implementation of the framebuffer abstraction.
  * Provides GPU-accelerated render targets with automatic texture creation.
+ * Supports both single-texture and Multiple Render Targets (MRT) functionality.
  * Can also be used as a standalone texture (without render target functionality).
  */
-export declare class GLFramebuffer extends Framebuffer {
+export declare class GLFramebuffer {
+    protected _width: number;
+    protected _height: number;
+    protected _options: FramebufferOptions;
+    protected _pixels: Uint8Array | null;
     private _gl;
     private _framebuffer;
-    private _texture;
+    private _textures;
+    private _attachmentCount;
     private _previousState;
-    constructor(gl: WebGLRenderingContext, width: number, height?: number, options?: FramebufferOptions);
-    /**
-     * Execute a function with this framebuffer bound, then restore previous binding
-     */
-    private _withFramebufferBound;
-    private _createTexture;
-    private _updateTextureSize;
-    private _attachTexture;
+    private _attachmentPixels;
+    constructor(gl: WebGL2RenderingContext, width: number, height?: number, attachmentCount?: number, options?: FramebufferOptions);
+    private _createTextures;
+    private _attachTextures;
     /**
      * Update the framebuffer texture with canvas or video content
+     * Note: Only updates the first attachment in multi-attachment mode
      */
     $update(source: HTMLCanvasElement | HTMLVideoElement): void;
     /**
-     * Update the framebuffer texture with pixel data
-     */
-    updatePixels(pixelData: Uint8Array, width: number, height: number): void;
-    /**
      * Resize the framebuffer
      */
-    resize(width: number, height: number): void;
+    $resize(width: number, height: number): void;
+    /**
+     * Read pixels from a specific color attachment into an RGBA Uint8Array.
+     * Rows are flipped to top-left origin to match row-major iteration in exporters.
+     */
+    $readAttachment(attachmentIndex: number): Uint8Array;
+    /** Read and cache all attachments. */
+    $readAll(): void;
     /**
      * Begin rendering to this framebuffer
      */
-    begin(): void;
+    $begin(): void;
     /**
      * End rendering to this framebuffer and restore previous state
      */
-    end(): void;
-    /**
-     * Load pixel data from the framebuffer into the pixels array
-     */
-    loadPixels(): void;
-    /**
-     * Gets a pixel or a region of pixels from the framebuffer.
-     *
-     * The version of `get()` with no parameters returns pixel data for the entire framebuffer.
-     * The version of `get()` with two parameters interprets them as coordinates and returns
-     * an array with the `[R, G, B, A]` values of the pixel at the given point.
-     * The version of `get()` with four parameters interprets them as coordinates and dimensions
-     * and returns pixel data for the specified region.
-     *
-     * @param x x-coordinate of the pixel (optional)
-     * @param y y-coordinate of the pixel (optional)
-     * @param w width of the region (optional)
-     * @param h height of the region (optional)
-     * @returns Uint8Array for regions or number array for single pixel
-     */
-    get(): Uint8Array;
-    get(x: number, y: number): [number, number, number, number];
-    get(x: number, y: number, w: number, h: number): Uint8Array;
+    $end(): void;
     /**
      * Dispose of WebGL resources used by this framebuffer.
      * This method is idempotent and safe to call multiple times.
      */
     $dispose(): void;
+    get width(): number;
+    get height(): number;
+    get pixels(): Uint8Array | null;
+    get options(): FramebufferOptions;
     get framebuffer(): WebGLFramebuffer | null;
     get texture(): WebGLTexture;
+    get textures(): WebGLTexture[];
+    get attachmentCount(): number;
+    /** Return a cached copy of pixels for an attachment if previously read, else null. */
+    getAttachmentPixels(attachmentIndex: number): Uint8Array | null;
 }

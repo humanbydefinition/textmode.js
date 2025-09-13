@@ -1,5 +1,5 @@
 /**
- * Manages the grid for the ASCII rendering pipeline of a {@link Textmodifier} instance.
+ * Manages the grid of a {@link Textmodifier} instance.
  */
 export declare class TextmodeGrid {
     /** The number of columns in the grid. */
@@ -14,8 +14,6 @@ export declare class TextmodeGrid {
     private _offsetX;
     /** The offset to the outer canvas on the y-axis when centering the grid. */
     private _offsetY;
-    /** Whether the grid dimensions are fixed, or responsive based on the canvas dimensions. */
-    private _fixedDimensions;
     /** The canvas element used to determine the grid dimensions. */
     private _canvas;
     /** The width of each cell in the grid. */
@@ -36,43 +34,12 @@ export declare class TextmodeGrid {
      */
     $reset(): void;
     /**
-     * Reset the total grid width & height, and the offset to the outer canvas.
-     */
-    private _updateDimensions;
-    /**
      * Re-assign the grid cell dimensions and `reset()` the grid.
      * @param newCellWidth The new cell width.
      * @param newCellHeight The new cell height.
      * @ignore
      */
     $resizeCellPixelDimensions(newCellWidth: number, newCellHeight: number): void;
-    /**
-     * Re-assign the grid dimensions and resize the grid.
-     *
-     * Calling this method makes the grid dimensions fixed, meaning they will not automatically resize based on the canvas dimensions.
-     * @param newCols The new number of columns.
-     * @param newRows The new number of rows.
-     * @ignore
-     */
-    $resizeGridDimensions(newCols: number, newRows: number): void;
-    /**
-     * Make the grid dimensions flexible again, and `reset()` the grid.
-     * @ignore
-     */
-    $resetGridDimensions(): void;
-    /**
-     * Update the canvas used by the grid, and reset the grid dimensions.
-     * @param canvas The new canvas element to use for the grid.
-     * @ignore
-     */
-    $resize(): void;
-    /**
-     * Gets or sets whether the grid dimensions *(columns and rows)* are fixed or responsive based on the canvas dimensions.
-     * @param value Optional. `true` to make the grid dimensions fixed, or `false` to make them responsive. If not provided, returns the current state.
-     * @returns If no parameter is provided, returns `true` if the grid dimensions are fixed, or `false` if they are responsive.
-     * @ignore
-     */
-    $fixedDimensions(value?: boolean): boolean | void;
     /** Returns the width of each cell in the grid. */
     get cellWidth(): number;
     /** Returns the height of each cell in the grid. */

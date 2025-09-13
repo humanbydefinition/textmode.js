@@ -1,15 +1,20 @@
+/**
+ * Instanced rectangle geometry implementation
+ */
+import type { InstanceBatch } from '../InstanceBatch';
+import { type RectangleParams } from '../types/GeometryTypes';
 import { BaseGeometry } from './BaseGeometry';
 /**
- * Rectangle geometry renderer with fill and stroke support
+ * Instanced rectangle geometry renderer.
+ * Batches all rectangle draw calls for efficient GPU rendering.
  */
 export declare class Rectangle extends BaseGeometry {
-    constructor(gl: WebGLRenderingContext);
+    constructor(gl: WebGL2RenderingContext, batch: InstanceBatch);
     /**
-     * Draw a filled rectangle
+     * Add a rectangle instance to the batch
+     * @param params Rectangle parameters
+     * @param renderState Current render state
+     * @returns Index of the added instance
      */
-    $drawFill(x: number, y: number, width: number, height: number): void;
-    /**
-     * Draw a rectangle stroke (outline)
-     */
-    $drawStroke(x: number, y: number, width: number, height: number, weight: number): void;
+    $addInstance(params: RectangleParams, renderState: any): number;
 }

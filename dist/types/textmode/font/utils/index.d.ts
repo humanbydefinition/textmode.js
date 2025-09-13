@@ -6,4 +6,3 @@
  */
 export { FontTableReader } from './FontTableReader.ts';
 export { CmapParser } from './CmapParser.ts';
-export * from './FontConstants.ts';

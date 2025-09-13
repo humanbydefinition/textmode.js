@@ -1,6 +1,7 @@
 /**
  * SVG-specific type definitions for the textmode.js library.
  */
+import type { TextmodeFont, TextmodeGrid } from '../..';
 /**
  * RGBA color representation.
  */
@@ -116,4 +117,13 @@ export interface SVGGenerationOptions {
     drawMode: 'fill' | 'stroke';
     strokeWidth: number;
     backgroundColor: [number, number, number, number];
+    filename: string;
+}
+/**
+ * Data required for textmode rendering export (shared shape with TXT exporter)
+ */
+export interface TextmodeRenderingData {
+    pipeline: any;
+    grid: TextmodeGrid;
+    font: TextmodeFont;
 }

@@ -1,37 +1,36 @@
 import type { TextmodeOptions } from "./Textmodifier";
 /**
- * Supported capture sources for textmode rendering.
- */
-export type TextmodeCaptureSource = HTMLCanvasElement | HTMLVideoElement;
-/**
- * TextmodeCanvas is a utility class that creates an overlay canvas
- * for rendering textmode graphics on top of an existing HTML canvas or video element,
- * or manages a standalone canvas for independent rendering.
+ * Manages a `HTMLCanvasElement` for textmode rendering.
  * @ignore
  */
 export declare class TextmodeCanvas {
     private _canvas;
-    private _captureSource;
-    private _isStandalone;
     private _resizeObserver?;
-    onTransformChange?: () => void;
-    constructor(captureSource: TextmodeCaptureSource, isStandalone?: boolean, opts?: TextmodeOptions);
+    private _canvasCreatedByUs;
+    /**
+     * Creates a new TextmodeCanvas instance.
+     * @param opts Options for creating or using an existing canvas
+     * @ignore
+     */
+    constructor(opts?: TextmodeOptions);
     private _createCanvas;
-    private _positionOverlayCanvas;
+    /**
+     * Resize the canvas to the specified width and height.
+     * If width or height is not provided, it retains the current dimension.
+     * @param width The new width of the canvas in pixels.
+     * @param height The new height of the canvas in pixels.
+     * @ignore
+     */
     $resize(width?: number, height?: number): void;
     /**
      * Get the WebGL context for the overlay canvas
+     * @ignore
      */
-    $getWebGLContext(): WebGL2RenderingContext | WebGLRenderingContext;
-    /**
-     * Set up ResizeObserver to monitor for CSS transform changes
-     *
-     * note: might be redundant and can be deleted?
-     */
-    private setupTransformObserver;
+    $getWebGLContext(): WebGL2RenderingContext;
     /**
      * Dispose of this TextmodeCanvas and clean up all resources.
      * This method is idempotent and safe to call multiple times.
+     * @ignore
      */
     $dispose(): void;
     get canvas(): HTMLCanvasElement;

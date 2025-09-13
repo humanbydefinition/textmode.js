@@ -17,7 +17,7 @@ export interface ExportCapabilities {
      * const canvas = document.querySelector('canvas#myCanvas');
      *
      * // Create a Textmodifier instance
-     * const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
+     * const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
      *
      * // Render a single frame
      * textmodifier.render();
@@ -32,7 +32,7 @@ export interface ExportCapabilities {
      * console.log(textString);
      * ```
      */
-    toString(options?: Omit<TXTExportOptions, 'filename'>): string;
+    toString(options?: TXTExportOptions): string;
     /**
      * Export the current textmode rendering to a TXT file.
      * @param options Options for TXT export
@@ -43,7 +43,7 @@ export interface ExportCapabilities {
      * const canvas = document.querySelector('canvas#myCanvas');
      *
      * // Create a Textmodifier instance
-     * const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
+     * const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
      *
      * // Render a single frame
      * textmodifier.render();
@@ -67,7 +67,7 @@ export interface ExportCapabilities {
      * const canvas = document.querySelector('canvas#myCanvas');
      *
      * // Create a Textmodifier instance
-     * const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
+     * const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
      *
      * // Render a single frame
      * textmodifier.render();
@@ -82,7 +82,7 @@ export interface ExportCapabilities {
      * console.log(svgString);
      * ```
      */
-    toSVG(options?: Omit<SVGExportOptions, 'filename'>): string;
+    toSVG(options?: SVGExportOptions): string;
     /**
      * Export the current textmode rendering to an SVG file.
      * @param options Options for SVG export
@@ -93,7 +93,7 @@ export interface ExportCapabilities {
      * const canvas = document.querySelector('canvas#myCanvas');
      *
      * // Create a Textmodifier instance
-     * const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
+     * const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
      *
      * // Render a single frame
      * textmodifier.render();
@@ -107,9 +107,7 @@ export interface ExportCapabilities {
     saveSVG(options?: SVGExportOptions): void;
     /**
      * Export the current textmode rendering to an image file.
-     * @param filename The filename (without extension) to save the image as
-     * @param format The image format ('png', 'jpg', or 'webp')
-     * @param options Additional options for image export
+     * @param options Options for image export
      *
      * @example
      * ```javascript
@@ -117,7 +115,7 @@ export interface ExportCapabilities {
      * const canvas = document.querySelector('canvas#myCanvas');
      *
      * // Create a Textmodifier instance
-     * const textmodifier = await textmode.create(canvas, {renderMode: 'manual'});
+     * const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
      *
      * // Render a single frame
      * textmodifier.render();
@@ -133,7 +131,7 @@ export interface ExportCapabilities {
      * });
      * ```
      */
-    saveCanvas(filename: string, format?: 'png' | 'jpg' | 'webp', options?: Omit<ImageExportOptions, 'filename' | 'format'>): Promise<void>;
+    saveCanvas(options?: ImageExportOptions): Promise<void>;
 }
 /**
  * Mixin that adds export capabilities to a class

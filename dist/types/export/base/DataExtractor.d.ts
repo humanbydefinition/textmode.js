@@ -1,4 +1,4 @@
-import type { TextmodeConversionPipeline } from '../../textmode/ConversionPipeline';
+import type { GLFramebuffer } from '../../rendering';
 import type { FramebufferData } from '../svg/types';
 /**
  * Base class for data extraction from textmode framebuffers.
@@ -7,10 +7,10 @@ import type { FramebufferData } from '../svg/types';
 export declare abstract class DataExtractor {
     /**
      * Extracts pixel data from all framebuffers needed for export
-     * @param pipeline The conversion pipeline containing framebuffers
+     * @param framebuffer The conversion pipeline containing framebuffers
      * @returns Object containing all pixel data arrays
      */
-    $extractFramebufferData(pipeline: TextmodeConversionPipeline): FramebufferData;
+    $extractFramebufferData(framebuffer: GLFramebuffer): FramebufferData;
     /**
      * Gets character index from character framebuffer pixels
      * @param characterPixels Character framebuffer pixel data

@@ -8,53 +8,33 @@ import { Textmodifier, type TextmodeOptions } from './textmode/Textmodifier';
 export declare class Textmode {
     private constructor();
     /**
-     * Create a {@link Textmodifier} instance for textmode rendering.
-     *
-     * @param sourceOrOptions - Either a `HTMLCanvasElement` or `HTMLVideoElement` for capturing content, or options for standalone mode.
-     * @param opts - Optional configuration options *(only used when first parameter is a `HTMLCanvasElement` or `HTMLVideoElement`)*.
-     * @returns A Promise that resolves to a {@link Textmodifier} instance.
+     * Create a new {@link Textmodifier} instance with optional configuration.
+     * @param opts Configuration options for the Textmodifier instance
+     * @returns A new Textmodifier instance
      *
      * @example
-     * Creating a {@link Textmodifier} for an existing canvas:
      * ```javascript
-     * const canvas = document.querySelector('canvas#myCanvas');
-     * const textmodifier = await textmode.create(canvas);
-     * ```
+     * // Create with default canvas
+     * const textmodifier = textmode.create();
      *
-     * @example
-     * Creating a {@link Textmodifier} for a video element:
-     * ```javascript
-     * const video = document.querySelector('video#myVideo');
-     * const textmodifier = await textmode.create(video);
-     * ```
-     *
-     * @example
-     * Creating a standalone {@link Textmodifier} with animation:
-     * ```javascript
-     * const t = await textmode.create({ width: 800, height: 600 });
-     *
-     * // Set up a draw loop for standalone usage
-     * t.draw(() => {
-     *   t.background(0);
-     *
-     *   const centerX = t.width / 2;
-     *   const centerY = t.height / 2;
-     *   const radius = Math.min(t.width, t.height) / 3;
-     *   const speed = 0.02; // Adjust speed of rotation
-     *
-     *   const angle = t.frameCount * speed;
-     *   const x = centerX + Math.cos(angle) * radius - 100;
-     *   const y = centerY + Math.sin(angle) * radius - 50;
-     *
-     *   // Set the fill color to white
-     *   t.fill(255);
-     *
-     *   // Draw a rectangle with the fill color
-     *   t.rect(x, y, 200, 150);
+     * textmodifier.setup(() => {
+     *   // Called when the Textmodifier is ready
+     *   console.log(`Grid size: ${textmodifier.grid.cols}x${textmodifier.grid.rows}`);
      * });
+     *
+     * textmodifier.draw(() => {
+     *   textmodifier.background(128);
+     *   textmodifier.rect(10, 10, 20, 20);
+     * });
+     *
+     * // Create with options
+     * const textmodifier2 = textmode.create({ width: 1920, height: 1080 });
+     *
+     * // Create with canvas and options
+     * const textmodifier3 = textmode.create({ canvas: canvas, fontSize: 20 });
      * ```
      */
-    static create(sourceOrOptions?: HTMLCanvasElement | HTMLVideoElement | TextmodeOptions, opts?: TextmodeOptions): Promise<Textmodifier>;
+    static create(opts?: TextmodeOptions): Textmodifier;
     /**
      * Set the global error handling level for the library. This applies to all {@link Textmodifier} instances present.
      *
