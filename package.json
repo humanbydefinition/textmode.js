@@ -1,7 +1,7 @@
 {
   "name": "textmode.js",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.1.9",
   "description": "textmode.js is a lightweight creative coding library for creating real-time ASCII art on the web.",
   "type": "module",
   "scripts": {
