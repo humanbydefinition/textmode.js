@@ -4,6 +4,7 @@
 import type { InstanceBatch } from '../InstanceBatch';
 import type { InstanceData } from '../InstanceData';
 import type { IGeometry, GeometryType, UnitGeometryData } from '../types/GeometryTypes';
+import type { IRenderState } from '../RenderState';
 /**
  * Abstract base class for all instanced geometries.
  * Provides common functionality for instance data creation and batch management.
@@ -28,7 +29,7 @@ export declare abstract class BaseGeometry implements IGeometry {
      * This method handles the common instance data creation logic.
      * Subclasses can override this to add geometry-specific data.
      */
-    protected _createBaseInstanceData(x: number, y: number, width: number, height: number, renderState: any): InstanceData;
+    protected _createBaseInstanceData(x: number, y: number, width: number, height: number, renderState: IRenderState): InstanceData;
     /**
      * Convert screen coordinates to NDC for compatibility with existing code
      */

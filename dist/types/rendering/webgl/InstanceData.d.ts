@@ -3,22 +3,22 @@
  * Contains all necessary data for ASCII character rendering via MRT.
  */
 export interface InstanceData {
-    position: [number, number];
-    size: [number, number];
-    character: [number, number, number];
-    primaryColor: [number, number, number, number];
-    secondaryColor: [number, number, number, number];
-    rotation: [number, number];
-    transform: [number, number, number];
-    globalRotationX: number;
-    globalRotationY: number;
-    globalRotationZ: number;
-    rotationCenter: [number, number];
-    arcAngles?: [number, number];
-    bezierControlPoint1?: [number, number];
-    bezierControlPoint2?: [number, number];
-    bezierStartPoint?: [number, number];
-    bezierEndPoint?: [number, number];
+    _position: [number, number];
+    _size: [number, number];
+    _character: [number, number, number];
+    _charColor: [number, number, number, number];
+    _cellColor: [number, number, number, number];
+    _charRotation: [number, number];
+    _charTransform: [number, number, number];
+    _rotationX: number;
+    _rotationY: number;
+    _rotationZ: number;
+    _rotationCenter: [number, number];
+    _arcAngles?: [number, number];
+    _bezierControlPoint1?: [number, number];
+    _bezierControlPoint2?: [number, number];
+    _bezierStartPoint?: [number, number];
+    _bezierEndPoint?: [number, number];
 }
 /**
  * Optimized packed instance data layout for GPU upload.

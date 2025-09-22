@@ -2,18 +2,29 @@ import { GLRenderer } from '../rendering/webgl/Renderer';
 import { TextmodeFont } from './font';
 import { TextmodeGrid } from './Grid';
 import { TextmodeCanvas } from './Canvas';
+import { TextmodeImage } from './TextmodeImage';
 import { AnimationController } from './AnimationController';
+import { MouseManager } from './managers';
+import { KeyboardManager } from './managers';
 import { type TextmodifierContext } from './mixins';
 import type { RenderingCapabilities } from './mixins/RenderingMixin';
 import type { ExportCapabilities } from './mixins/ExportMixin';
 import type { FontCapabilities } from './mixins/FontMixin';
 import type { AnimationCapabilities } from './mixins/AnimationMixin';
+import type { MouseCapabilities } from './mixins/MouseMixin';
+import type { KeyboardCapabilities } from './mixins/KeyboardMixin';
 import type { GLFramebuffer, Shader } from '../rendering';
 /**
  * Options for creating a {@link Textmodifier} instance.
  */
 export type TextmodeOptions = {
-    /** An existing [HTMLCanvasElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) to use instead of creating a new one. */
+    /**
+     * An existing [HTMLCanvasElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) to use instead of creating a new one.
+     *
+     * **Note:**
+     * If using `overlay` mode, this should be the target canvas or video element to overlay on.
+     * `textmode.js` will create its own canvas applied on top of the target element, always matching its size and position.
+     */
     canvas?: HTMLCanvasElement;
     /** The font size to use for text rendering. Defaults to 16. */
     fontSize?: number;
@@ -31,6 +42,20 @@ export type TextmodeOptions = {
      * Optional for full builds *(will override embedded font if provided)*.
      */
     fontSource?: string;
+    /**
+     * Use `textmode.js` in overlay mode,
+     * which sets up the textmode `<canvas>` on top of an existing HTMLCanvasElement or HTMLVideoElement,
+     * automatically resizing and positioning it to match the target element.
+     *
+     * In this mode `textmode.js` fetches the content of the target element and applies it with adjustable textmode conversion
+     * as a first layer to the textmode canvas.
+     *
+     * Useful for applying textmode conversion to p5.js sketches, YouTube videos, and sooo much more.
+     *
+     * All functionality of `textmode.js` remains available, including drawing additional content on top of the converted source.
+     *
+     */
+    overlay?: boolean;
 };
 /**
  * Base class for mixin application.
@@ -41,9 +66,13 @@ declare class TextmodifierCore implements TextmodifierContext {
     _canvas: TextmodeCanvas;
     _grid: TextmodeGrid;
     _animationController: AnimationController;
+    _mouseManager: MouseManager;
+    _keyboardManager: KeyboardManager;
     _textmodeDrawShader: Shader;
     _textmodeDrawFramebuffer: GLFramebuffer;
     _textmodeConversionShader: Shader;
+    _asciiColorFramebuffer: GLFramebuffer;
+    _presentShader: Shader;
     $render(): void;
 }
 declare const Textmodifier_base: typeof TextmodifierCore;
@@ -61,6 +90,9 @@ export declare class Textmodifier extends Textmodifier_base {
     private _drawCallback;
     private _resizedCallback;
     private _windowResizeListener;
+    private _resizeObserver?;
+    private _isOverlay;
+    private _targetCanvasImage?;
     /**
      * Creates an instance of Textmodifier.
      * @param opts Optional configuration options for the Textmodifier instance.
@@ -210,9 +242,12 @@ export declare class Textmodifier extends Textmodifier_base {
     get canvas(): HTMLCanvasElement;
     /** Check if the instance has been disposed/destroyed. */
     get isDisposed(): boolean;
-    /** Get the draw framebuffer used for offscreen rendering. @ignore */
-    get drawFramebuffer(): any;
+    /**
+     * If in overlay mode, returns the {@link TextmodeImage} instance capturing the target canvas/video content,
+     * allowing further configuration of the conversion parameters.
+     */
+    get overlay(): TextmodeImage | undefined;
 }
-export interface Textmodifier extends RenderingCapabilities, ExportCapabilities, FontCapabilities, AnimationCapabilities {
+export interface Textmodifier extends RenderingCapabilities, ExportCapabilities, FontCapabilities, AnimationCapabilities, MouseCapabilities, KeyboardCapabilities {
 }
 export {};

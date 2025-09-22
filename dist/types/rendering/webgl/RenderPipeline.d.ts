@@ -2,6 +2,10 @@ import type { IGeometry } from './types/GeometryTypes';
 import { GeometryType } from './types/GeometryTypes';
 import type { RenderContext } from './types/RenderTypes';
 import type { DrawCommand } from './types/DrawCommand';
+import { GLShader } from './Shader';
+interface IShaderProvider {
+    $getCopyShader(): GLShader;
+}
 /**
  * Execute draw commands exactly in the order they were enqueued while
  * still batching consecutive commands of the same geometry type to minimize
@@ -10,13 +14,17 @@ import type { DrawCommand } from './types/DrawCommand';
 export declare class RenderPipeline {
     private readonly _vaoMgr;
     private readonly _gl;
-    private _copyShader;
+    private readonly _renderer;
     private _tempRectFBO;
     private _tempRectFBOSize;
-    constructor(gl: WebGL2RenderingContext);
+    constructor(gl: WebGL2RenderingContext, renderer: IShaderProvider);
     $execute(context: RenderContext, commands: Iterable<DrawCommand>, geometries: Map<GeometryType, IGeometry>): void;
-    /** Immediate custom-rect draw using provided shader/uniforms; mirrors prior GLRenderer path */
+    /** Execute a custom-shaded rectangle using provided shader/uniforms */
     private _drawCustomRect;
+    /** Draw a rectangle with the specified shader, uniforms, and viewport handling */
+    private _drawRectangleWithShader;
     private _getCopyShader;
     private _getTempRectFBO;
+    $dispose(): void;
 }
+export {};

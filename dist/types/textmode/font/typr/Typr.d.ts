@@ -11,8 +11,10 @@
  * @license MIT
  */
 import type { TyprStatic } from './types';
+declare function woffToOtfSync(buff: ArrayBuffer): ArrayBuffer;
 /**
  * Main Typr class implementation
  */
 declare const Typr: TyprStatic;
 export default Typr;
+export declare const convertWoffToOtf: typeof woffToOtfSync;

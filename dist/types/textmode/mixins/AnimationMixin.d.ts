@@ -4,10 +4,6 @@ import type { Mixin } from './TextmodifierMixin';
  */
 export interface AnimationCapabilities {
     /**
-     * Get or set the current frame count.
-     */
-    frameCount: number;
-    /**
      * Set the maximum frame rate. If called without arguments, returns the current measured frame rate.
      * @param fps The maximum frames per second for rendering.
      *
@@ -115,6 +111,14 @@ export interface AnimationCapabilities {
      * ```
      */
     isLooping(): boolean;
+    /**
+     * Get the current frame count.
+     */
+    get frameCount(): number;
+    /**
+     * Set the current frame count.
+     */
+    set frameCount(value: number);
 }
 /**
  * Mixin that adds animation capabilities to a class

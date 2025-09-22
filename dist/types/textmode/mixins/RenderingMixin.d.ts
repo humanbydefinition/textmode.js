@@ -1,5 +1,16 @@
 import type { Mixin } from './TextmodifierMixin';
 import type { GLShader } from '../../rendering/webgl/Shader';
+import type { GLFramebuffer } from '../../rendering';
+import { TextmodeImage } from '../TextmodeImage';
+/**
+ * Options for creating a framebuffer.
+ */
+export type TextmodeFramebufferOptions = {
+    /** Width of the framebuffer in grid cells */
+    width: number;
+    /** Height of the framebuffer in grid cells */
+    height: number;
+};
 /**
  * Supported uniform value types for shader parameters
  */
@@ -10,7 +21,6 @@ type UniformValue = number | boolean | number[] | Float32Array | Int32Array | We
 export interface RenderingCapabilities {
     /**
      * Set a custom shader for subsequent rendering operations.
-     * Pass null to return to the default shader.
      * @param shader The custom shader to use
      *
      * @example
@@ -32,13 +42,90 @@ export interface RenderingCapabilities {
      *   t.shader(customShader);
      *   t.setUniform('u_frameCount', t.frameCount);
      *   t.rect(0, 0, t.grid.cols, t.grid.rows);
-     *
-     *   // Return to default shader
-     *   t.shader(null);
      * });
      * ```
      */
     shader(shader: GLShader): void;
+    /**
+     * Create a new framebuffer for offscreen rendering.
+     *
+     * The framebuffer uses the same 5-attachment MRT structure as the main
+     * rendering pipeline, allowing all standard drawing operations to work
+     * seamlessly when rendering to the framebuffer.
+     *
+     * @param options Configuration options for the framebuffer.
+     * @returns A new Framebuffer instance.
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({
+     *   width: 800,
+     *   height: 600,
+     * });
+     *
+     * // Create a framebuffer with 50x30 grid cells
+     * const fb = t.createFramebuffer({
+     *   width: 50,
+     *   height: 30
+     * });
+     *
+     * t.draw(() => {
+     *   // Render to framebuffer
+     *   fb.begin();
+     *   t.background(255, 0, 0);
+     *   t.charColor(255);
+     *   t.rect(10, 10, 20, 10);
+     *   fb.end();
+     *
+     *   // Render framebuffer to main canvas
+     *   t.background(0);
+     *   t.image(fb, 0, 0);
+     * });
+     * ```
+     */
+    createFramebuffer(options: TextmodeFramebufferOptions): GLFramebuffer;
+    /**
+     * Draw a TextmodeFramebuffer or TextmodeImage to the current render target.
+     *
+     * @param source The TextmodeFramebuffer or TextmodeImage to render
+     * @param x X position on the grid where to place the content *(top-left corner)*
+     * @param y Y position on the grid where to place the content *(top-left corner)*
+     * @param width Width to scale the content
+     * @param height Height to scale the content
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({
+     *   width: 800,
+     *   height: 600,
+     * });
+     *
+     * const fb = t.createFramebuffer({width: 30, height: 20});
+     *
+     * t.draw(() => {
+     *   // Draw something to the framebuffer
+     *   fb.begin();
+     *   t.charColor(255, 0, 0);
+     *   t.rect(5, 5, 20, 10);
+     *   fb.end();
+     *
+     *   // Clear main canvas and render framebuffer content
+     *   t.background(0);
+     *
+     *   // Render at original size
+     *   t.image(fb, 10, 10);
+     *
+     *   // Render scaled version
+     *   t.image(fb, 50, 10, 60, 40);
+     * });
+     * ```
+     */
+    image(source: GLFramebuffer | TextmodeImage, x: number, y: number, width?: number, height?: number): void;
+    /**
+     * Load an image and return a TextmodeImage that can be drawn with image().
+     * @param src URL or existing HTMLImageElement
+     */
+    loadImage(src: string | HTMLImageElement): Promise<TextmodeImage>;
     /**
      * Set a uniform value for the current custom shader.
      * @param name The name of the uniform variable
@@ -150,7 +237,10 @@ export interface RenderingCapabilities {
      */
     createFilterShader(fragmentSource: string): GLShader;
     /**
-     * Sets the rotation angles for subsequent shape rendering operations
+     * Sets the rotation angles for subsequent shape rendering operations.
+     *
+     * All geometries rotate around the center of the shape.
+     *
      * @param degreesX The rotation angle in degrees around the X-axis (optional, defaults to 0)
      * @param degreesY The rotation angle in degrees around the Y-axis (optional, defaults to 0)
      * @param degreesZ The rotation angle in degrees around the Z-axis (optional, defaults to 0)
@@ -177,7 +267,10 @@ export interface RenderingCapabilities {
      */
     rotate(degreesX?: number, degreesY?: number, degreesZ?: number): void;
     /**
-     * Sets the X-axis rotation angle for subsequent shape rendering operations
+     * Sets the X-axis rotation angle for subsequent shape rendering operations.
+     *
+     * All geometries rotate around the center of the shape.
+     *
      * @param degrees The rotation angle in degrees around the X-axis
      *
      * @example
@@ -196,7 +289,10 @@ export interface RenderingCapabilities {
      */
     rotateX(degrees: number): void;
     /**
-     * Sets the Y-axis rotation angle for subsequent shape rendering operations
+     * Sets the Y-axis rotation angle for subsequent shape rendering operations.
+     *
+     * All geometries rotate around the center of the shape.
+     *
      * @param degrees The rotation angle in degrees around the Y-axis
      *
      * @example
@@ -215,7 +311,10 @@ export interface RenderingCapabilities {
      */
     rotateY(degrees: number): void;
     /**
-     * Sets the Z-axis rotation angle for subsequent shape rendering operations
+     * Sets the Z-axis rotation angle for subsequent shape rendering operations.
+     *
+     * All geometries rotate around the center of the shape.
+     *
      * @param degrees The rotation angle in degrees around the Z-axis
      *
      * @example
@@ -304,6 +403,27 @@ export interface RenderingCapabilities {
      * ```
      */
     rect(x: number, y: number, width?: number, height?: number): void;
+    /**
+     * Draw a single point at (x, y) with the current settings.
+     * @param x X-coordinate of the point
+     * @param y Y-coordinate of the point
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({
+     *   width: 800,
+     *   height: 600,
+     * })
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     *
+     *   t.char('*');
+     *   t.point(10, 10);
+     * });
+     * ```
+     */
+    point(x: number, y: number): void;
     /**
      * Draw a line from point (x1, y1) to point (x2, y2) with the settings.
      * @param x1 X-coordinate of the line start point

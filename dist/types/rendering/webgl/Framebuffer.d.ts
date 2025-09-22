@@ -1,3 +1,4 @@
+import type { GLRenderer } from './Renderer';
 export type FramebufferOptions = {
     /** Texture filtering mode */
     filter?: 'nearest' | 'linear';
@@ -9,10 +10,7 @@ export type FramebufferOptions = {
     type?: 'unsigned_byte' | 'float';
 };
 /**
- * WebGL2 implementation of the framebuffer abstraction.
- * Provides GPU-accelerated render targets with automatic texture creation.
- * Supports both single-texture and Multiple Render Targets (MRT) functionality.
- * Can also be used as a standalone texture (without render target functionality).
+ * Framebuffer class for managing offscreen rendering targets.
  */
 export declare class GLFramebuffer {
     protected _width: number;
@@ -25,46 +23,71 @@ export declare class GLFramebuffer {
     private _attachmentCount;
     private _previousState;
     private _attachmentPixels;
-    constructor(gl: WebGL2RenderingContext, width: number, height?: number, attachmentCount?: number, options?: FramebufferOptions);
+    private _renderer;
+    private _isolatedState;
+    private _stateForFBO;
+    /**
+     * Create a new GLFramebuffer instance.
+     * @param gl WebGL2 rendering context
+     * @param width Framebuffer width
+     * @param height Framebuffer height
+     * @param attachmentCount Number of color attachments
+     * @param options Framebuffer options
+     * @param renderer Optional GLRenderer instance for state management
+     * @param isolatedState Optional flag to isolate framebuffer state from renderer
+     * @ignore
+     */
+    constructor(gl: WebGL2RenderingContext, width: number, height?: number, attachmentCount?: number, options?: FramebufferOptions, renderer?: GLRenderer | null, isolatedState?: boolean);
     private _createTextures;
     private _attachTextures;
     /**
      * Update the framebuffer texture with canvas or video content
      * Note: Only updates the first attachment in multi-attachment mode
+     * @ignore
      */
     $update(source: HTMLCanvasElement | HTMLVideoElement): void;
     /**
-     * Resize the framebuffer
+     * Resize the framebuffer.
+     * @param width New width
+     * @param height New height
      */
-    $resize(width: number, height: number): void;
+    resize(width: number, height: number): void;
     /**
      * Read pixels from a specific color attachment into an RGBA Uint8Array.
      * Rows are flipped to top-left origin to match row-major iteration in exporters.
+     * @ignore
      */
     $readAttachment(attachmentIndex: number): Uint8Array;
-    /** Read and cache all attachments. */
-    $readAll(): void;
     /**
-     * Begin rendering to this framebuffer
+     * Begin rendering to this framebuffer.
      */
-    $begin(): void;
+    begin(): void;
     /**
-     * End rendering to this framebuffer and restore previous state
+     * End rendering to this framebuffer and restore previous state.
      */
-    $end(): void;
+    end(): void;
     /**
      * Dispose of WebGL resources used by this framebuffer.
      * This method is idempotent and safe to call multiple times.
+     * @ignore
      */
     $dispose(): void;
+    /** Get the current framebuffer width. */
     get width(): number;
+    /** Get the current framebuffer height. */
     get height(): number;
-    get pixels(): Uint8Array | null;
-    get options(): FramebufferOptions;
-    get framebuffer(): WebGLFramebuffer | null;
-    get texture(): WebGLTexture;
+    /**
+     * Get all textures associated with this framebuffer.
+     *
+     * Useful for binding textures for reading in shaders.
+     *
+     * TextmodeFramebuffers have 5 attachments:
+     * - 0: Character colors that encode the character to display via red and green channels
+     * - 1: Character colors
+     * - 2: Cell background colors
+     * - 3: Rotation of each character encoded in red and green channels
+     * - 4: Inversion, horizontal, and vertical flip flags encoded in red, green, blue channels
+     *
+     */
     get textures(): WebGLTexture[];
-    get attachmentCount(): number;
-    /** Return a cached copy of pixels for an attachment if previously read, else null. */
-    getAttachmentPixels(attachmentIndex: number): Uint8Array | null;
 }

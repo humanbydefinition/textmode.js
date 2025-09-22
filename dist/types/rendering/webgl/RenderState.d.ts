@@ -2,17 +2,17 @@
  * Represents a snapshot of the current rendering state
  */
 export interface IRenderState {
-    lineWeight: number;
-    rotationX: number;
-    rotationY: number;
-    rotationZ: number;
-    character: [number, number, number];
-    charColor: [number, number, number, number];
-    cellColor: [number, number, number, number];
-    flipHorizontally: boolean;
-    flipVertically: boolean;
-    invert: boolean;
-    charRotation: [number, number];
+    _lineWeight: number;
+    _rotationX: number;
+    _rotationY: number;
+    _rotationZ: number;
+    _character: [number, number, number];
+    _charColor: [number, number, number, number];
+    _cellColor: [number, number, number, number];
+    _flipX: boolean;
+    _flipY: boolean;
+    _invert: boolean;
+    _charRotation: [number, number];
 }
 /**
  * Manages rendering state and provides push/pop functionality for state management
@@ -40,27 +40,21 @@ export declare class RenderState {
      */
     $pop(): void;
     /**
-     * Reset frame-specific state - called automatically after each frame.
-     * Note: This does not reset fill/stroke state as that should persist
-     * across frames and be managed by push/pop or explicit calls.
-     */
-    $reset(): void;
-    /**
      * Write current state into an existing target object/struct to avoid allocations.
      * The target is expected to have the same shape as RenderStateSnapshot, with mutable arrays.
      */
     $writeSnapshotTo(target: {
-        lineWeight: number;
-        rotationX: number;
-        rotationY: number;
-        rotationZ: number;
-        character: number[];
-        charColor: number[];
-        bgColor: number[];
-        flipHorizontally: boolean;
-        flipVertically: boolean;
-        invert: boolean;
-        charRotation: number[];
+        _lineWeight: number;
+        _rotationX: number;
+        _rotationY: number;
+        _rotationZ: number;
+        _character: number[];
+        _charColor: number[];
+        _cellColor: number[];
+        _flipX: boolean;
+        _flipY: boolean;
+        _invert: boolean;
+        _charRotation: number[];
     }): void;
     get lineWeight(): number;
     get canvasBackgroundColor(): [number, number, number, number];

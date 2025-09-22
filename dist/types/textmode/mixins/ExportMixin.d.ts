@@ -19,9 +19,6 @@ export interface ExportCapabilities {
      * // Create a Textmodifier instance
      * const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
      *
-     * // Render a single frame
-     * textmodifier.render();
-     *
      * // Get the current rendering as a text string
      * const textString = textmodifier.toString({
      *   preserveTrailingSpaces: false,
@@ -45,9 +42,6 @@ export interface ExportCapabilities {
      * // Create a Textmodifier instance
      * const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
      *
-     * // Render a single frame
-     * textmodifier.render();
-     *
      * // Export the current rendering to a TXT file
      * textmodifier.saveStrings({
      *   filename: 'my_textmode_rendering',
@@ -68,9 +62,6 @@ export interface ExportCapabilities {
      *
      * // Create a Textmodifier instance
      * const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
-     *
-     * // Render a single frame
-     * textmodifier.render();
      *
      * // Get the current rendering as an SVG string
      * const svgString = textmodifier.toSVG({
@@ -95,9 +86,6 @@ export interface ExportCapabilities {
      * // Create a Textmodifier instance
      * const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
      *
-     * // Render a single frame
-     * textmodifier.render();
-     *
      * // Export the current rendering to an SVG file
      * textmodifier.saveSVG({
      *   filename: 'my_textmode_rendering',
@@ -117,14 +105,13 @@ export interface ExportCapabilities {
      * // Create a Textmodifier instance
      * const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
      *
-     * // Render a single frame
-     * textmodifier.render();
-     *
-     * // Export the current rendering to a PNG file
-     * textmodifier.saveCanvas('my_textmode_rendering', 'png');
+     * // Export the current rendering to a PNG file *(default)*
+     * textmodifier.saveCanvas();
      *
      * // Export with custom options
-     * textmodifier.saveCanvas('my_textmode_rendering', 'jpg', {
+     * textmodifier.saveCanvas({
+     *   filename: 'my_textmode_rendering',
+     *   format: 'jpg',
      *   quality: 0.8,
      *   scale: 2.0,
      *   backgroundColor: 'white'

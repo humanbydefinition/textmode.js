@@ -2,10 +2,10 @@ import { GLFramebuffer } from './Framebuffer';
 /**
  * Supported uniform value types
  */
-type UniformValue = number | boolean | number[] | Float32Array | Int32Array | GLFramebuffer | WebGLTexture;
+type UniformValue = number | boolean | number[] | number[][] | Float32Array | Int32Array | GLFramebuffer | WebGLTexture;
 /**
  * WebGL implementation of the shader abstraction.
- * Provides GPU shader program management with automatic uniform handling.
+ * Provides GPU shader program management with automatic uniform handling and minification support.
  */
 export declare class GLShader {
     private _gl;
@@ -13,7 +13,6 @@ export declare class GLShader {
     private _uniformLocations;
     private _uniformTypes;
     private _textureUnitCounter;
-    private _maxTextureUnits;
     /**
      * Creates a new GLShader instance.
      * @param gl The WebGL rendering context.
@@ -39,7 +38,22 @@ export declare class GLShader {
      */
     $hasUniform(name: string): boolean;
     /**
-     * Set a single uniform value with automatic texture unit management
+     * Get debug information about a uniform
+     */
+    $getUniformInfo(name: string): {
+        type: number;
+        size: number;
+    } | null;
+    /**
+     * List all available uniforms for debugging
+     */
+    $listUniforms(): Array<{
+        name: string;
+        type: number;
+        size: number;
+    }>;
+    /**
+     * Set a single uniform value with automatic texture unit management and proper type detection
      */
     $setUniform(name: string, value: UniformValue): void;
     private _getNextTextureUnit;

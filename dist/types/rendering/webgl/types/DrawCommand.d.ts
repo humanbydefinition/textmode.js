@@ -1,5 +1,5 @@
 import type { GeometryParams, GeometryType } from './GeometryTypes';
-import type { IRenderState } from '../RenderState';
+import type { RenderState } from '../RenderState';
 import type { GLShader } from '../Shader';
 export type CustomRectParams = {
     x: number;
@@ -14,5 +14,5 @@ export interface DrawCommand {
     id: number;
     type: GeometryType;
     params: DrawParams;
-    state: IRenderState;
+    state: RenderState;
 }

@@ -10,24 +10,39 @@
 
 </div>
 
-textmode.js is a lightweight creative-coding library for real‑time ASCII and textmode graphics in the browser. It combines a grid‑based API with a modern `WebGL2` pipeline, multiple render targets, and aggressive instanced rendering to deliver smooth, high‑performance rendering.
+textmode.js is a free, lightweight, and framework-agnostic creative-coding library for real‑time ASCII and textmode graphics in the browser. It combines a grid‑based API with a modern [`WebGL2`](https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext) pipeline, multiple render targets, and aggressive instanced rendering to deliver smooth, high‑performance rendering.
 
 The library is designed to be easy to use and accessible to developers of all skill levels. Whether you're a seasoned developer or just starting out, `textmode.js` provides a simple and intuitive API that makes it easy to create stunning textmode art and animations.
 
-Key ideas in one sentence: you draw with simple shape calls; under the hood we batch instances and write to a special framebuffer with five render targets; a conversion pass maps those buffers to a crisp grid of characters on the canvas.
-
 ## Features
+
 - Real‑time* ASCII/textmode rendering with a simple drawing API
 - `WebGL2` pipeline with [Multiple Render Targets (MRT)](https://en.wikipedia.org/wiki/Multiple_Render_Targets) for rich per‑cell data
 - Instanced rendering and batching for low draw call counts
-- Font system with runtime font loading and dynamic sizing
+- Font system with runtime font loading and dynamic sizing *(supports TTF/OTF/WOFF)*
 - Author custom filter shaders in [`GLSL ES 3.00`](https://registry.khronos.org/OpenGL/specs/es/3.0/GLSL_ES_Specification_3.00.pdf) for advanced effects
 - Flexible exporting: TXT, SVG, and raster images *(PNG/JPG/WebP)*
 - Animation loop control: `frameRate`, `loop`/`noLoop`, `redraw`, `frameCount`, etc.
+- Framework-agnostic: Use `textmode.js` with any canvas-based framework or library
 - Zero dependencies, written in TypeScript, with comprehensive type definitions
 
 > [!NOTE]
 > *Performance depends on the complexity of your scene and device capabilities. Consider authoring filter shaders for complex effects at low cost.
+
+## Try it online first
+
+Before installing anything locally, you can try `textmode.js` directly in your browser using our dedicated web editor:
+
+🌐 **[editor.textmode.art](https://editor.textmode.art)**
+
+The web editor is specifically designed for `textmode.js` and provides:
+- ✨ **Zero setup required** - Start coding immediately
+- 🚀 **Live preview** - See your creations in real-time  
+- 💾 **Save & share** - Export your sketches and share with others
+- 📚 **Built-in examples** - Learn from interactive examples
+- 🔧 **Full API access** - All `textmode.js` features available
+
+The web editor is perfect for learning, prototyping, or creating quick experiments without any local setup!
 
 ## Installation
 
@@ -47,10 +62,10 @@ To get started with `textmode.js`, you'll need:
 
 | Bundle type | File size | Font included? | Best for |
 |-------------|-----------|---------------|----------|
-| **Standard UMD** (`textmode.umd.js`) | ~112kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
-| **Standard ESM** (`textmode.esm.js`) | ~130kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
-| **Minified UMD** (`textmode.umd.min.js`) | ~65kB | ❌ Requires external font | Custom fonts |
-| **Minified ESM** (`textmode.esm.min.js`) | ~84kB | ❌ Requires external font | Custom fonts |
+| **Standard UMD** (`textmode.umd.js`) | ~86kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
+| **Standard ESM** (`textmode.esm.js`) | ~111kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
+| **Minified UMD** (`textmode.umd.min.js`) | ~79kB | ❌ Requires external font | Custom fonts |
+| **Minified ESM** (`textmode.esm.min.js`) | ~103kB | ❌ Requires external font | Custom fonts |
 
 **Choose standard bundles for:**
 - Quick setup with no additional configuration
@@ -62,7 +77,7 @@ To get started with `textmode.js`, you'll need:
 > [!NOTE]
 > Apart from the font inclusion, both bundle types are functionally identical and equally minified.
 
-### UMD
+#### UMD
 
 To use `textmode.js` in a UMD environment, download the latest `umd` build from the [**GitHub releases page**](https://github.com/humanbydefinition/textmode.js/releases/) or import it directly from a CDN like [**jsDelivr**](https://www.jsdelivr.com/package/npm/textmode.js). The library is distributed as a single JavaScript file, which you can include in your project by adding the following script tag to your HTML file:
 
@@ -113,7 +128,7 @@ t.windowResized(() => {
 });
 ```
 
-### ESM
+#### ESM
 
 To use `textmode.js` in an ESM environment, you can install it via `npm`:
 
@@ -170,18 +185,6 @@ t.windowResized(() => {
     t.resizeCanvas(window.innerWidth, window.innerHeight);
 });
 ```
-
-## Verification
-
-To verify your installation is working correctly, try this simple test:
-
-```javascript
-// Test if textmode.js is available
-console.log('textmode.js version:', textmode.version);
-```
-
-> [!NOTE]
-> If you see the version number printed in the console, your installation was successful!
 
 ## Next steps
 

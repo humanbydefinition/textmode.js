@@ -1,9 +1,12 @@
 import { Textmode } from './Textmode';
 export { Textmodifier } from './textmode/Textmodifier';
 export { TextmodeFont } from './textmode/font';
+export { GLFramebuffer as TextmodeFramebuffer } from './rendering';
+export { TextmodeImage } from './textmode/TextmodeImage';
 export { TextmodeCanvas } from './textmode/Canvas';
 export { TextmodeGrid } from './textmode/Grid';
 export type { TextmodeOptions } from './textmode/Textmodifier';
+export type { TextmodeFramebufferOptions } from './textmode/mixins/RenderingMixin';
 export type { TextmodeCharacter } from './textmode/font';
 /** All types related to export options for different formats. */
 export * as export from './export';

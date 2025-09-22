@@ -1,6 +1,7 @@
 export * from './Framebuffer';
 export * from './Renderer';
 export * from './Shader';
+export * from './ShaderManager';
 export * from './StateCache';
 export { GeometryType } from './types/GeometryTypes';
 export type { IGeometry as IInstancedGeometry, UnitGeometryData, RectangleParams, LineParams, EllipseParams, ArcParams, TriangleParams, BezierCurveParams, GeometryParams } from './types/GeometryTypes';

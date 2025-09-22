@@ -19,20 +19,20 @@ export declare enum GeometryType {
  */
 export interface UnitGeometryData {
     /** Vertex data as Float32Array (position + texCoord interleaved) */
-    vertices: Float32Array;
+    _vertices: Float32Array;
     /** Number of vertices in the geometry */
-    vertexCount: number;
+    _vertexCount: number;
     /** WebGL primitive type (gl.TRIANGLES, gl.LINES, etc.) */
-    primitiveType: number;
+    _primitiveType: number;
     /** Stride in bytes between vertices */
-    stride: number;
+    _stride: number;
     /** Attribute configuration for position and texCoord */
-    attributes: {
-        position: {
+    _attributes: {
+        _position: {
             size: number;
             offset: number;
         };
-        texCoord: {
+        _texCoord: {
             size: number;
             offset: number;
         };

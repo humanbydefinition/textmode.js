@@ -5,4 +5,3 @@
  * across the font system components.
  */
 export { FontTableReader } from './FontTableReader.ts';
-export { CmapParser } from './CmapParser.ts';

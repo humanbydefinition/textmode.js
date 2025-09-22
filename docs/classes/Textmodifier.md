@@ -1,4 +1,4 @@
-[**textmode.js v0.2.0**](../README.md)
+[**textmode.js v0.3.0**](../README.md)
 
 ***
 
@@ -15,13 +15,7 @@ If a canvas is provided, it will use that canvas instead.
 
 ## Extends
 
-- `TextmodifierCore`\<`this`\>.`RenderingCapabilities`.`ExportCapabilities`.`FontCapabilities`.`AnimationCapabilities`
-
-## Properties
-
-| Property | Type | Description |
-| ------ | ------ | ------ |
-| <a id="framecount"></a> `frameCount` | `number` | Get or set the current frame count. |
+- `TextmodifierCore`\<`this`\>.`RenderingCapabilities`.`ExportCapabilities`.`FontCapabilities`.`AnimationCapabilities`.`MouseCapabilities`.`KeyboardCapabilities`
 
 ## Accessors
 
@@ -50,6 +44,36 @@ Get the current font object used for rendering.
 ##### Returns
 
 [`TextmodeFont`](TextmodeFont.md)
+
+***
+
+### frameCount
+
+#### Get Signature
+
+> **get** **frameCount**(): `number`
+
+Get the current frame count.
+
+##### Returns
+
+`number`
+
+#### Set Signature
+
+> **set** **frameCount**(`value`): `void`
+
+Set the current frame count.
+
+##### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `value` | `number` |
+
+##### Returns
+
+`void`
 
 ***
 
@@ -92,6 +116,57 @@ Check if the instance has been disposed/destroyed.
 ##### Returns
 
 `boolean`
+
+***
+
+### mouse
+
+#### Get Signature
+
+> **get** **mouse**(): `MousePosition`
+
+Get the current mouse position in grid coordinates.
+
+Returns the mouse position as grid cell coordinates *(column, row)*.
+
+If the mouse is outside the grid or the instance is not ready,
+it returns `{ x: -1, y: -1 }`.
+
+##### Example
+
+```javascript
+const t = textmode.create({ width: 800, height: 600 });
+
+t.draw(() => {
+  const mousePos = t.mouse;
+  
+  if (mousePos.x !== -1 && mousePos.y !== -1) {
+    // Mouse is over the grid
+    t.char('*');
+    t.charColor(255, 0, 0);
+    t.point(mousePos.x, mousePos.y);
+  }
+});
+```
+
+##### Returns
+
+`MousePosition`
+
+***
+
+### overlay
+
+#### Get Signature
+
+> **get** **overlay**(): `undefined` \| [`TextmodeImage`](TextmodeImage.md)
+
+If in overlay mode, returns the [TextmodeImage](TextmodeImage.md) instance capturing the target canvas/video content, 
+allowing further configuration of the conversion parameters.
+
+##### Returns
+
+`undefined` \| [`TextmodeImage`](TextmodeImage.md)
 
 ***
 
@@ -460,6 +535,58 @@ t.draw(() => {
 
 ***
 
+### createFramebuffer()
+
+> **createFramebuffer**(`options`): [`TextmodeFramebuffer`](TextmodeFramebuffer.md)
+
+Create a new framebuffer for offscreen rendering.
+
+The framebuffer uses the same 5-attachment MRT structure as the main
+rendering pipeline, allowing all standard drawing operations to work
+seamlessly when rendering to the framebuffer.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options` | [`TextmodeFramebufferOptions`](../type-aliases/TextmodeFramebufferOptions.md) | Configuration options for the framebuffer. |
+
+#### Returns
+
+[`TextmodeFramebuffer`](TextmodeFramebuffer.md)
+
+A new Framebuffer instance.
+
+#### Example
+
+```javascript
+const t = textmode.create({
+  width: 800,
+  height: 600,
+});
+
+// Create a framebuffer with 50x30 grid cells
+const fb = t.createFramebuffer({
+  width: 50,
+  height: 30
+});
+
+t.draw(() => {
+  // Render to framebuffer
+  fb.begin();
+  t.background(255, 0, 0);
+  t.charColor(255);
+  t.rect(10, 10, 20, 10);
+  fb.end();
+  
+  // Render framebuffer to main canvas
+  t.background(0);
+  t.image(fb, 0, 0);
+});
+```
+
+***
+
 ### destroy()
 
 > **destroy**(): `void`
@@ -648,7 +775,7 @@ Set the font size used for rendering.
 
 ```javascript
 // Create a Textmodifier instance
-const textmodifier = await textmode.create();
+const textmodifier = textmode.create();
 
 // Set the font size to 32
 textmodifier.fontSize(32);
@@ -680,6 +807,126 @@ const textmodifier = textmode.create();
 
 // Set the maximum frame rate to 30 FPS
 textmodifier.frameRate(30);
+```
+
+***
+
+### glyphColor()
+
+> **glyphColor**(`char`): `null` \| \[`number`, `number`, `number`\]
+
+Get the RGB shader color of a specific character in the current font.
+
+Useful for custom shaders to control the character to render.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `char` | `string` | The character to get the color for. |
+
+#### Returns
+
+`null` \| \[`number`, `number`, `number`\]
+
+An array representing the RGB color, or null if the character is not found.
+
+#### Example
+
+```javascript
+// Create a Textmodifier instance
+const textmodifier = textmode.create();
+
+// Get the color of the character 'A'
+textmodifier.setup(() => {
+  const color = textmodifier.glyphColor('A');
+  console.log(color); // e.g., [1, 0, 0] for red
+});
+```
+
+***
+
+### glyphColors()
+
+> **glyphColors**(`str`): (`null` \| \[`number`, `number`, `number`\])[]
+
+Get the RGB shader colors of all characters in a string for the current font.
+
+Useful for custom shaders to control the characters to render.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `str` | `string` | The string to get the colors for. |
+
+#### Returns
+
+(`null` \| \[`number`, `number`, `number`\])[]
+
+An array of RGB color arrays, or null if a character is not found.
+
+#### Example
+
+```javascript
+// Create a Textmodifier instance
+const textmodifier = textmode.create();
+
+// Get the colors of the string 'Hello'
+textmodifier.setup(() => {
+  const colors = textmodifier.glyphColors('Hello');
+  console.log(colors); // e.g., [[0.1, 0, 0], ...]
+});
+```
+
+***
+
+### image()
+
+> **image**(`source`, `x`, `y`, `width?`, `height?`): `void`
+
+Draw a TextmodeFramebuffer or TextmodeImage to the current render target.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `source` | [`TextmodeFramebuffer`](TextmodeFramebuffer.md) \| [`TextmodeImage`](TextmodeImage.md) | The TextmodeFramebuffer or TextmodeImage to render |
+| `x` | `number` | X position on the grid where to place the content *(top-left corner)* |
+| `y` | `number` | Y position on the grid where to place the content *(top-left corner)* |
+| `width?` | `number` | Width to scale the content |
+| `height?` | `number` | Height to scale the content |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = textmode.create({
+  width: 800,
+  height: 600,
+});
+
+const fb = t.createFramebuffer({width: 30, height: 20});
+
+t.draw(() => {
+  // Draw something to the framebuffer
+  fb.begin();
+  t.charColor(255, 0, 0);
+  t.rect(5, 5, 20, 10);
+  fb.end();
+  
+  // Clear main canvas and render framebuffer content
+  t.background(0);
+  
+  // Render at original size
+  t.image(fb, 10, 10);
+  
+  // Render scaled version
+  t.image(fb, 50, 10, 60, 40);
+});
 ```
 
 ***
@@ -717,6 +964,58 @@ t.draw(() => {
 
 ***
 
+### isKeyPressed()
+
+> **isKeyPressed**(`key`): `boolean`
+
+Check if a specific key is currently being pressed.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `key` | `string` | The key to check (e.g., 'a', 'Enter', 'ArrowLeft') |
+
+#### Returns
+
+`boolean`
+
+true if the key is currently pressed, false otherwise
+
+#### Example
+
+```javascript
+const t = textmode.create({ width: 800, height: 600 });
+
+let playerX = 0;
+let playerY = 0;
+
+t.draw(() => {
+  t.background(0);
+  
+  // Check for arrow keys to move a character
+  if (t.isKeyPressed('ArrowUp')) {
+    playerY -= 1;
+  }
+  if (t.isKeyPressed('ArrowDown')) {
+    playerY += 1;
+  }
+  if (t.isKeyPressed('ArrowLeft')) {
+    playerX -= 1;
+  }
+  if (t.isKeyPressed('ArrowRight')) {
+    playerX += 1;
+  }
+  
+  // Draw player character
+  t.char('@');
+  t.charColor(255, 255, 0);
+  t.point(playerX, playerY);
+});
+```
+
+***
+
 ### isLooping()
 
 > **isLooping**(): `boolean`
@@ -742,6 +1041,71 @@ console.log(textmodifier.isLooping()); // false (not looping)
 
 textmodifier.loop();
 console.log(textmodifier.isLooping()); // true (alooping)
+```
+
+***
+
+### keyPressed()
+
+> **keyPressed**(`callback`): `void`
+
+Set a callback function that will be called when a key is pressed down.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | () => `void` | The function to call when a key is pressed |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = textmode.create({ width: 800, height: 600 });
+
+t.keyPressed((data) => {
+  console.log(`Key pressed: ${data.key}`);
+  if (data.key === 'Enter') {
+    console.log('Enter key was pressed!');
+  }
+  if (data.ctrlKey && data.key === 's') {
+    console.log('Ctrl+S was pressed!');
+  }
+});
+```
+
+***
+
+### keyReleased()
+
+> **keyReleased**(`callback`): `void`
+
+Set a callback function that will be called when a key is released.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | () => `void` | The function to call when a key is released |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = textmode.create({ width: 800, height: 600 });
+
+t.keyReleased((data) => {
+  console.log(`Key released: ${data.key}`);
+  if (data.key === ' ') {
+    console.log('Spacebar was released!');
+  }
+});
 ```
 
 ***
@@ -843,11 +1207,29 @@ Update the font used for rendering.
 const textmodifier = textmode.create();
 
 // Load a custom font from a URL
-await textmodifier.loadFont('https://example.com/fonts/myfont.ttf');
+ textmodifier.loadFont('https://example.com/fonts/myfont.ttf');
 
 // Local font example
-// await textmodifier.loadFont('./fonts/myfont.ttf'); 
+// textmodifier.loadFont('./fonts/myfont.ttf'); 
 ```
+
+***
+
+### loadImage()
+
+> **loadImage**(`src`): `Promise`\<[`TextmodeImage`](TextmodeImage.md)\>
+
+Load an image and return a TextmodeImage that can be drawn with image().
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `src` | `string` \| `HTMLImageElement` | URL or existing HTMLImageElement |
+
+#### Returns
+
+`Promise`\<[`TextmodeImage`](TextmodeImage.md)\>
 
 ***
 
@@ -883,6 +1265,151 @@ if (someCondition) {
 
 ***
 
+### mouseClicked()
+
+> **mouseClicked**(`callback`): `void`
+
+Set a callback function that will be called when the mouse is clicked.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | () => `void` | The function to call when the mouse is clicked |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = textmode.create({ width: 800, height: 600 });
+
+t.mouseClicked((data) => {
+  console.log(`Clicked at grid position: ${data.position.x}, ${data.position.y}`);
+  console.log(`Button: ${data.button}`); // 0=left, 1=middle, 2=right
+});
+```
+
+***
+
+### mouseMoved()
+
+> **mouseMoved**(`callback`): `void`
+
+Set a callback function that will be called when the mouse moves.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | () => `void` | The function to call when the mouse moves |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = textmode.create({ width: 800, height: 600 });
+
+t.mouseMoved((data) => {
+  if (data.position.x !== -1 && data.position.y !== -1) {
+    console.log(`Mouse moved to: ${data.position.x}, ${data.position.y}`);
+    console.log(`Previous position: ${data.previousPosition.x}, ${data.previousPosition.y}`);
+  }
+});
+```
+
+***
+
+### mousePressed()
+
+> **mousePressed**(`callback`): `void`
+
+Set a callback function that will be called when the mouse is pressed down.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | () => `void` | The function to call when the mouse is pressed |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = textmode.create({ width: 800, height: 600 });
+
+t.mousePressed((data) => {
+  console.log(`Mouse pressed at: ${data.position.x}, ${data.position.y}`);
+});
+```
+
+***
+
+### mouseReleased()
+
+> **mouseReleased**(`callback`): `void`
+
+Set a callback function that will be called when the mouse is released.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | () => `void` | The function to call when the mouse is released |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = textmode.create({ width: 800, height: 600 });
+
+t.mouseReleased((data) => {
+  console.log(`Mouse released at: ${data.position.x}, ${data.position.y}`);
+});
+```
+
+***
+
+### mouseScrolled()
+
+> **mouseScrolled**(`callback`): `void`
+
+Set a callback function that will be called when the mouse wheel is scrolled.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | () => `void` | The function to call when the mouse wheel is scrolled |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = textmode.create({ width: 800, height: 600 });
+
+t.mouseScrolled((data) => {
+  console.log(`Mouse scrolled at: ${data.position.x}, ${data.position.y}`);
+  console.log(`Scroll delta: ${data.delta?.x}, ${data.delta?.y}`);
+});
+```
+
+***
+
 ### noLoop()
 
 > **noLoop**(): `void`
@@ -913,6 +1440,41 @@ console.log(textmodifier.isLooping()); // false
 // Resume the rendering loop
 textmodifier.loop();
 console.log(textmodifier.isLooping()); // true
+```
+
+***
+
+### point()
+
+> **point**(`x`, `y`): `void`
+
+Draw a single point at (x, y) with the current settings.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `x` | `number` | X-coordinate of the point |
+| `y` | `number` | Y-coordinate of the point |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+const t = textmode.create({
+  width: 800,
+  height: 600,
+})
+
+t.draw(() => {
+  t.background(0);
+
+  t.char('*');
+  t.point(10, 10);
+});
 ```
 
 ***
@@ -1083,7 +1645,9 @@ Resize the canvas and adjust all related components accordingly.
 
 > **rotate**(`degreesX?`, `degreesY?`, `degreesZ?`): `void`
 
-Sets the rotation angles for subsequent shape rendering operations
+Sets the rotation angles for subsequent shape rendering operations.
+
+All geometries rotate around the center of the shape.
 
 #### Parameters
 
@@ -1124,7 +1688,9 @@ t.draw(() => {
 
 > **rotateX**(`degrees`): `void`
 
-Sets the X-axis rotation angle for subsequent shape rendering operations
+Sets the X-axis rotation angle for subsequent shape rendering operations.
+
+All geometries rotate around the center of the shape.
 
 #### Parameters
 
@@ -1157,7 +1723,9 @@ t.draw(() => {
 
 > **rotateY**(`degrees`): `void`
 
-Sets the Y-axis rotation angle for subsequent shape rendering operations
+Sets the Y-axis rotation angle for subsequent shape rendering operations.
+
+All geometries rotate around the center of the shape.
 
 #### Parameters
 
@@ -1190,7 +1758,9 @@ t.draw(() => {
 
 > **rotateZ**(`degrees`): `void`
 
-Sets the Z-axis rotation angle for subsequent shape rendering operations
+Sets the Z-axis rotation angle for subsequent shape rendering operations.
+
+All geometries rotate around the center of the shape.
 
 #### Parameters
 
@@ -1244,14 +1814,13 @@ const canvas = document.querySelector('canvas#myCanvas');
 // Create a Textmodifier instance
 const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
 
-// Render a single frame
-textmodifier.render();
-
-// Export the current rendering to a PNG file
-textmodifier.saveCanvas('my_textmode_rendering', 'png');
+// Export the current rendering to a PNG file *(default)*
+textmodifier.saveCanvas();
 
 // Export with custom options
-textmodifier.saveCanvas('my_textmode_rendering', 'jpg', {
+textmodifier.saveCanvas({
+  filename: 'my_textmode_rendering',
+  format: 'jpg',
   quality: 0.8,
   scale: 2.0,
   backgroundColor: 'white'
@@ -1284,9 +1853,6 @@ const canvas = document.querySelector('canvas#myCanvas');
 
 // Create a Textmodifier instance
 const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
-
-// Render a single frame
-textmodifier.render();
 
 // Export the current rendering to a TXT file
 textmodifier.saveStrings({
@@ -1321,9 +1887,6 @@ const canvas = document.querySelector('canvas#myCanvas');
 
 // Create a Textmodifier instance
 const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
-
-// Render a single frame
-textmodifier.render();
 
 // Export the current rendering to an SVG file
 textmodifier.saveSVG({
@@ -1467,7 +2030,6 @@ textmodifier.draw(() => {
 > **shader**(`shader`): `void`
 
 Set a custom shader for subsequent rendering operations.
-Pass null to return to the default shader.
 
 #### Parameters
 
@@ -1499,9 +2061,6 @@ t.draw(() => {
   t.shader(customShader);
   t.setUniform('u_frameCount', t.frameCount);
   t.rect(0, 0, t.grid.cols, t.grid.rows);
-  
-  // Return to default shader
-  t.shader(null);
 });
 ```
 
@@ -1533,9 +2092,6 @@ const canvas = document.querySelector('canvas#myCanvas');
 
 // Create a Textmodifier instance
 const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
-
-// Render a single frame
-textmodifier.render();
 
 // Get the current rendering as a text string
 const textString = textmodifier.toString({
@@ -1575,9 +2131,6 @@ const canvas = document.querySelector('canvas#myCanvas');
 
 // Create a Textmodifier instance
 const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
-
-// Render a single frame
-textmodifier.render();
 
 // Get the current rendering as an SVG string
 const svgString = textmodifier.toSVG({

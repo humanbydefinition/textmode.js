@@ -5,6 +5,8 @@ import type { TextmodeOptions } from "./Textmodifier";
  */
 export declare class TextmodeCanvas {
     private _canvas;
+    private _targetCanvas;
+    private _isOverlay;
     private _resizeObserver?;
     private _canvasCreatedByUs;
     /**
@@ -14,6 +16,9 @@ export declare class TextmodeCanvas {
      */
     constructor(opts?: TextmodeOptions);
     private _createCanvas;
+    private _createOverlayCanvas;
+    private _setupOverlayPositioning;
+    private _positionOverlayCanvas;
     /**
      * Resize the canvas to the specified width and height.
      * If width or height is not provided, it retains the current dimension.
@@ -34,6 +39,7 @@ export declare class TextmodeCanvas {
      */
     $dispose(): void;
     get canvas(): HTMLCanvasElement;
+    get targetCanvas(): HTMLCanvasElement | HTMLVideoElement | null;
     get width(): number;
     get height(): number;
 }

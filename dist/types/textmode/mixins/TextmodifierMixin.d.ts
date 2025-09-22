@@ -7,6 +7,8 @@ import type { TextmodeCanvas } from '../Canvas';
 import type { TextmodeGrid } from '../Grid';
 import type { AnimationController } from '../AnimationController';
 import type { GLFramebuffer, Shader } from '../../rendering';
+import type { MouseManager } from '../managers';
+import type { KeyboardManager } from '../managers';
 /**
  * Constructor type for mixin pattern
  */
@@ -30,12 +32,20 @@ export interface TextmodifierContext {
     readonly _grid: TextmodeGrid;
     /** Animation controller for managing rendering loop @ignore */
     readonly _animationController: AnimationController;
+    /** Mouse interaction manager @ignore */
+    readonly _mouseManager: MouseManager;
+    /** Keyboard interaction manager @ignore */
+    readonly _keyboardManager: KeyboardManager;
     /** Draw shader that contains content drawn by the user @ignore */
     readonly _textmodeDrawShader: Shader;
     /** Framebuffer used for offscreen rendering @ignore */
     readonly _textmodeDrawFramebuffer: GLFramebuffer;
     /** Shader used for converting pixels to textmode grid format @ignore */
     readonly _textmodeConversionShader: Shader;
+    /** Framebuffer used for textmode conversion @ignore */
+    readonly _asciiColorFramebuffer: GLFramebuffer;
+    /** Shader used for final presentation to the screen @ignore */
+    readonly _presentShader: Shader;
     /** Main render method @ignore */
     $render(): void;
 }

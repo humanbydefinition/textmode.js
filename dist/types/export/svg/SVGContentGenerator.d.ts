@@ -26,12 +26,6 @@ export declare class SVGContentGenerator {
      */
     $generateBackground(gridInfo: TextmodeGrid, options: SVGGenerationOptions): string;
     /**
-     * Converts RGBA object to CSS color string
-     * @param color RGBA color object
-     * @returns CSS color string
-     */
-    private _rgbaToColorString;
-    /**
      * Generates SVG transform attribute string
      * @param cellData Cell data with transform information
      * @param gridInfo Grid information for center calculations

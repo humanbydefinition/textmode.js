@@ -2,12 +2,14 @@ import { GLFramebuffer } from "./Framebuffer";
 import type { FramebufferOptions } from '../webgl/Framebuffer';
 import { GLShader } from "./Shader";
 import { RenderState } from "./RenderState";
+import type { TextmodeImage } from "../../textmode/TextmodeImage";
 /**
  * Core WebGL renderer that manages the WebGL context and provides high-level rendering operations
  */
 export declare class GLRenderer {
     private _gl;
     private _currentShader;
+    private _shaderManager;
     private _userShader;
     private _userUniforms;
     private _ndcQuadBuffer;
@@ -15,6 +17,7 @@ export declare class GLRenderer {
     private readonly _renderPipeline;
     private readonly _drawQueue;
     private _renderState;
+    private _stateStack;
     constructor(gl: WebGL2RenderingContext);
     /** Get or create a geometry instance */
     private _getGeometry;
@@ -24,13 +27,27 @@ export declare class GLRenderer {
     $shader(shader: GLShader): void;
     $createShader(vertexSource: string, fragmentSource: string): GLShader;
     /**
+     * Get the shared MRT copy shader
+     */
+    $getCopyShader(): GLShader;
+    /**
+     * Get the main MRT draw shader
+     */
+    $getMainDrawShader(): GLShader;
+    /**
+     * Get the ASCII conversion shader
+     */
+    $getConversionShader(): GLShader;
+    /** Internal: image to MRT shader */
+    private $getImageToMRTShader;
+    /**
      * Set a custom user shader for subsequent rendering operations
      */
     $setUserShader(shader: GLShader | null): void;
     /**
      * Set a uniform value for the current user shader
      */
-    $setUserUniform(name: string, value: any): void;
+    $setUniform(name: string, value: any): void;
     /**
      * Set multiple uniform values for the current user shader
      */
@@ -39,6 +56,20 @@ export declare class GLRenderer {
      * Create a filter shader using the standard instanced vertex shader
      */
     $createFilterShader(fragmentSource: string): GLShader;
+    /**
+     * Enqueue an image blit from a source MRT framebuffer to the current render target.
+     * This uses the internal copy shader and preserves draw ordering within the pipeline.
+     */
+    $imageRect(src: GLFramebuffer, x: number, y: number, width: number, height: number): void;
+    /**
+     * Enqueue drawing of an RGBA texture by converting to MRT attachments on the fly.
+     * The texture is sampled and resized into the target rect, writing brightness to character and grayscale to primary color.
+     */
+    /**
+     * Enqueue drawing of a TextmodeImage by converting its RGBA texture to MRT attachments on the fly.
+     * The method accepts only TextmodeImage to make the intent explicit and simplify callers.
+     */
+    $imageTexture(image: TextmodeImage, x: number, y: number, width: number, height: number): void;
     /**
      * Draw a quad covering the pixel rectangle (x, y, width, height) on the canvas.
      * The quad is converted to NDC and rendered with the current shader using only a_position.
@@ -109,6 +140,10 @@ export declare class GLRenderer {
      */
     get context(): WebGLRenderingContext;
     get state(): RenderState;
+    /** Internal: push a specific render state as current (used by user FBO begin) */
+    $pushState(state: RenderState): void;
+    /** Internal: pop the render state after user FBO end */
+    $popState(): void;
     /**
      * Flush all batched instances for instanced rendering.
      * This must be called at the end of each frame to actually render the batched geometry.

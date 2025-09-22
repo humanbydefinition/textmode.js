@@ -18,6 +18,12 @@ export interface TyprBinary {
     readUint: (buff: Uint8Array, p: number) => number;
     /** Read ASCII string */
     readASCII: (buff: Uint8Array, p: number, l: number) => string;
+    /** Write unsigned 16-bit integer (big-endian) */
+    writeUshort: (buff: Uint8Array, p: number, n: number) => void;
+    /** Write unsigned 32-bit integer (big-endian) */
+    writeUint: (buff: Uint8Array, p: number, n: number) => void;
+    /** Write ASCII string */
+    writeASCII: (buff: Uint8Array, p: number, s: string) => void;
     /** Shared typed array buffers for efficient reading */
     t: {
         uint8: Uint8Array;
