@@ -10,7 +10,7 @@ export type FramebufferOptions = {
     type?: 'unsigned_byte' | 'float';
 };
 /**
- * Framebuffer class for managing offscreen rendering targets.
+ * Framebuffer class for managing offscreen rendering targets initialized via {@link Textmodifier.createFramebuffer}.
  */
 export declare class GLFramebuffer {
     protected _width: number;

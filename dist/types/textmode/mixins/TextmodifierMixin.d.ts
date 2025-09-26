@@ -7,8 +7,9 @@ import type { TextmodeCanvas } from '../Canvas';
 import type { TextmodeGrid } from '../Grid';
 import type { AnimationController } from '../AnimationController';
 import type { GLFramebuffer, Shader } from '../../rendering';
-import type { MouseManager } from '../managers';
-import type { KeyboardManager } from '../managers';
+import type { MouseManager } from '../managers/MouseManager';
+import type { KeyboardManager } from '../managers/KeyboardManager';
+import type { TouchManager } from '../managers/TouchManager';
 /**
  * Constructor type for mixin pattern
  */
@@ -34,6 +35,8 @@ export interface TextmodifierContext {
     readonly _animationController: AnimationController;
     /** Mouse interaction manager @ignore */
     readonly _mouseManager: MouseManager;
+    /** Touch interaction manager @ignore */
+    readonly _touchManager: TouchManager;
     /** Keyboard interaction manager @ignore */
     readonly _keyboardManager: KeyboardManager;
     /** Draw shader that contains content drawn by the user @ignore */

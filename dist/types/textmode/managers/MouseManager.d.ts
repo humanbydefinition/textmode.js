@@ -17,11 +17,13 @@ export interface MouseEventData {
     position: MousePosition;
     /** Previous mouse position in grid coordinates */
     previousPosition: MousePosition;
-    /** Mouse button that triggered the event (for click events) */
+    /** Mouse button that triggered the event *(for click events)* */
     button?: number;
     /** Scroll delta for wheel events */
     delta?: {
+        /** Scroll delta in X direction */
         x: number;
+        /** Scroll delta in Y direction */
         y: number;
     };
     /** Original DOM event */
@@ -34,6 +36,7 @@ export type MouseEventHandler = (data: MouseEventData) => void;
 /**
  * Manages all mouse interaction for a Textmodifier instance.
  * Handles event listeners, coordinate conversion, and event dispatching.
+ * @ignore
  */
 export declare class MouseManager {
     private _canvas;
@@ -41,6 +44,7 @@ export declare class MouseManager {
     private _mousePosition;
     private _previousMousePosition;
     private _lastClientCoordinates;
+    private _suppressUntil;
     private _mouseMoveListener;
     private _mouseLeaveListener;
     private _mouseDownListener;
@@ -54,6 +58,20 @@ export declare class MouseManager {
     private _mouseMovedCallback?;
     private _mouseScrolledCallback?;
     constructor(canvas: TextmodeCanvas);
+    /**
+     * Temporarily suppress mouse event callbacks for a duration in milliseconds.
+     * Used to prevent synthetic mouse events from touch interactions from firing twice.
+     */
+    $suppressEventsFor(durationMs: number): void;
+    private _isSuppressed;
+    /**
+     * Set the CSS cursor for the textmode canvas.
+     * Pass a valid CSS cursor value (e.g. 'pointer', 'crosshair', 'move', 'nwse-resize', 'none').
+     * Call with no argument or an empty string to reset to the default cursor.
+     *
+     * Reference: https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
+     */
+    $setCursor(cursor?: string): void;
     /**
      * Update the grid reference (useful when grid changes after font loading)
      */

@@ -1,4 +1,4 @@
-[**textmode.js v0.3.0**](../README.md)
+[**textmode.js v0.3.1**](../README.md)
 
 ***
 
@@ -7,7 +7,7 @@
 # Class: Textmodifier
 
 Manages textmode rendering on a [`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) and provides methods for drawing,
-exporting, font management, and animation control.
+exporting, font management, event handling, and animation control.
 
 If the `Textmodifier` instance is created without a canvas parameter,
 it creates a new `HTMLCanvasElement` to draw on using the `textmode.js` drawing API.
@@ -15,7 +15,7 @@ If a canvas is provided, it will use that canvas instead.
 
 ## Extends
 
-- `TextmodifierCore`\<`this`\>.`RenderingCapabilities`.`ExportCapabilities`.`FontCapabilities`.`AnimationCapabilities`.`MouseCapabilities`.`KeyboardCapabilities`
+- `TextmodifierCore`\<`this`\>.`RenderingCapabilities`.`ExportCapabilities`.`FontCapabilities`.`AnimationCapabilities`.`MouseCapabilities`.`TouchCapabilities`.`KeyboardCapabilities`
 
 ## Accessors
 
@@ -123,7 +123,7 @@ Check if the instance has been disposed/destroyed.
 
 #### Get Signature
 
-> **get** **mouse**(): `MousePosition`
+> **get** **mouse**(): [`MousePosition`](../textmode.js/namespaces/input/namespaces/mouse/interfaces/MousePosition.md)
 
 Get the current mouse position in grid coordinates.
 
@@ -151,7 +151,7 @@ t.draw(() => {
 
 ##### Returns
 
-`MousePosition`
+[`MousePosition`](../textmode.js/namespaces/input/namespaces/mouse/interfaces/MousePosition.md)
 
 ***
 
@@ -167,6 +167,33 @@ allowing further configuration of the conversion parameters.
 ##### Returns
 
 `undefined` \| [`TextmodeImage`](TextmodeImage.md)
+
+***
+
+### touches
+
+#### Get Signature
+
+> **get** **touches**(): [`TouchPosition`](../textmode.js/namespaces/input/namespaces/touch/interfaces/TouchPosition.md)[]
+
+Get the currently active touches in grid coordinates.
+
+Returns a copy of each touch, including grid position, client coordinates, and pressure when
+available. Use this inside a draw loop to react to active multi-touch scenarios.
+
+##### Example
+
+```javascript
+t.draw(() => {
+  for (const touch of t.touches) {
+    t.point(touch.x, touch.y);
+  }
+});
+```
+
+##### Returns
+
+[`TouchPosition`](../textmode.js/namespaces/input/namespaces/touch/interfaces/TouchPosition.md)[]
 
 ***
 
@@ -303,7 +330,7 @@ t.draw(() => {
 
 ### cellColor()
 
-> **cellColor**(`r`, `g`, `b`): `void`
+> **cellColor**(`r`, `g`, `b`, `a`): `void`
 
 Set the cell background color for subsequent rendering operations.
 
@@ -314,6 +341,7 @@ Set the cell background color for subsequent rendering operations.
 | `r` | `number` | Red component (0-255) |
 | `g` | `number` | Green component (0-255) |
 | `b` | `number` | Blue component (0-255) |
+| `a` | `number` | Alpha component (0-255, optional, defaults to 255) |
 
 #### Returns
 
@@ -371,7 +399,7 @@ t.draw(() => {
 
 ### charColor()
 
-> **charColor**(`r`, `g`, `b`): `void`
+> **charColor**(`r`, `g`, `b`, `a?`): `void`
 
 Set the character color for subsequent rendering operations.
 
@@ -382,6 +410,7 @@ Set the character color for subsequent rendering operations.
 | `r` | `number` | Red component (0-255) |
 | `g` | `number` | Green component (0-255) |
 | `b` | `number` | Blue component (0-255) |
+| `a?` | `number` | Alpha component (0-255, optional, defaults to 255) |
 
 #### Returns
 
@@ -587,6 +616,38 @@ t.draw(() => {
 
 ***
 
+### cursor()
+
+> **cursor**(`cursor?`): `void`
+
+Set the mouse cursor for the textmode canvas.
+
+Provide any valid CSS cursor value (e.g. 'default', 'pointer', 'crosshair', 'move', 'text', 'grab', 'grabbing',
+'none', 'zoom-in', 'zoom-out', 'ns-resize', 'ew-resize', 'nwse-resize', 'nesw-resize', etc.),
+or a CSS `url(...)` cursor. Call with no argument or an empty string to reset to default.
+
+See MDN for all options: https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `cursor?` | `string` |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+t.cursor('crosshair');
+// ... later, reset:
+t.cursor();
+```
+
+***
+
 ### destroy()
 
 > **destroy**(): `void`
@@ -611,6 +672,35 @@ const textmodifier = textmode.create();
 textmodifier.destroy();
 
 // Instance is now safely disposed and ready for garbage collection
+```
+
+***
+
+### doubleTap()
+
+> **doubleTap**(`callback`): `void`
+
+Register a callback for double tap gestures.
+
+Double taps reuse the same TouchTapEventData as taps with `taps` set to `2`. This
+helper lets you supply a dedicated handler when you want to treat double taps differently.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | [`TouchTapHandler`](../textmode.js/namespaces/input/namespaces/touch/type-aliases/TouchTapHandler.md) | The function to call when a double tap is detected. |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+t.doubleTap((data) => {
+  console.log('Double tap detected', data.touch);
+});
 ```
 
 ***
@@ -1055,7 +1145,7 @@ Set a callback function that will be called when a key is pressed down.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `callback` | () => `void` | The function to call when a key is pressed |
+| `callback` | [`KeyboardEventHandler`](../textmode.js/namespaces/input/namespaces/keyboard/type-aliases/KeyboardEventHandler.md) | The function to call when a key is pressed |
 
 #### Returns
 
@@ -1089,7 +1179,7 @@ Set a callback function that will be called when a key is released.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `callback` | () => `void` | The function to call when a key is released |
+| `callback` | [`KeyboardEventHandler`](../textmode.js/namespaces/input/namespaces/keyboard/type-aliases/KeyboardEventHandler.md) | The function to call when a key is released |
 
 #### Returns
 
@@ -1233,6 +1323,35 @@ Load an image and return a TextmodeImage that can be drawn with image().
 
 ***
 
+### longPress()
+
+> **longPress**(`callback`): `void`
+
+Register a callback for long press gestures.
+
+A long press is emitted when the user keeps a finger on the canvas without moving beyond the
+configured tolerance. The event includes the press duration in milliseconds.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | [`TouchLongPressHandler`](../textmode.js/namespaces/input/namespaces/touch/type-aliases/TouchLongPressHandler.md) | The function to call when a long press gesture is detected. |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+t.longPress((data) => {
+  console.log(`Long press for ${Math.round(data.duration)}ms`);
+});
+```
+
+***
+
 ### loop()
 
 > **loop**(): `void`
@@ -1275,7 +1394,7 @@ Set a callback function that will be called when the mouse is clicked.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `callback` | () => `void` | The function to call when the mouse is clicked |
+| `callback` | [`MouseEventHandler`](../textmode.js/namespaces/input/namespaces/mouse/type-aliases/MouseEventHandler.md) | The function to call when the mouse is clicked |
 
 #### Returns
 
@@ -1304,7 +1423,7 @@ Set a callback function that will be called when the mouse moves.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `callback` | () => `void` | The function to call when the mouse moves |
+| `callback` | [`MouseEventHandler`](../textmode.js/namespaces/input/namespaces/mouse/type-aliases/MouseEventHandler.md) | The function to call when the mouse moves |
 
 #### Returns
 
@@ -1335,7 +1454,7 @@ Set a callback function that will be called when the mouse is pressed down.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `callback` | () => `void` | The function to call when the mouse is pressed |
+| `callback` | [`MouseEventHandler`](../textmode.js/namespaces/input/namespaces/mouse/type-aliases/MouseEventHandler.md) | The function to call when the mouse is pressed |
 
 #### Returns
 
@@ -1363,7 +1482,7 @@ Set a callback function that will be called when the mouse is released.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `callback` | () => `void` | The function to call when the mouse is released |
+| `callback` | [`MouseEventHandler`](../textmode.js/namespaces/input/namespaces/mouse/type-aliases/MouseEventHandler.md) | The function to call when the mouse is released |
 
 #### Returns
 
@@ -1391,7 +1510,7 @@ Set a callback function that will be called when the mouse wheel is scrolled.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `callback` | () => `void` | The function to call when the mouse wheel is scrolled |
+| `callback` | [`MouseEventHandler`](../textmode.js/namespaces/input/namespaces/mouse/type-aliases/MouseEventHandler.md) | The function to call when the mouse wheel is scrolled |
 
 #### Returns
 
@@ -1440,6 +1559,35 @@ console.log(textmodifier.isLooping()); // false
 // Resume the rendering loop
 textmodifier.loop();
 console.log(textmodifier.isLooping()); // true
+```
+
+***
+
+### pinch()
+
+> **pinch**(`callback`): `void`
+
+Register a callback for pinch gestures, receiving scale deltas.
+
+Pinch gestures involve two touch points. The callback receives the current scale relative to
+the initial distance and the change since the previous update, enabling zoom interactions.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | [`TouchPinchHandler`](../textmode.js/namespaces/input/namespaces/touch/type-aliases/TouchPinchHandler.md) | The function to call when a pinch gesture is detected. |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+t.pinch((data) => {
+  console.log(`Pinch scale: ${data.scale.toFixed(2)}`);
+});
 ```
 
 ***
@@ -1679,6 +1827,35 @@ t.draw(() => {
   t.rotate(30, 45, 60);
   
   t.rect(10, 10, 5, 5);
+});
+```
+
+***
+
+### rotateGesture()
+
+> **rotateGesture**(`callback`): `void`
+
+Register a callback for rotate gestures, receiving rotation deltas in degrees.
+
+Rotation callbacks provide the cumulative rotation and delta rotation since the last update,
+along with the gesture centre in grid coordinates. Ideal for dial-like interactions.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | [`TouchRotateHandler`](../textmode.js/namespaces/input/namespaces/touch/type-aliases/TouchRotateHandler.md) | The function to call when a rotation gesture is detected. |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+t.rotateGesture((data) => {
+  console.log(`Rotated ${data.deltaRotation.toFixed(1)}°`);
 });
 ```
 
@@ -2066,6 +2243,64 @@ t.draw(() => {
 
 ***
 
+### swipe()
+
+> **swipe**(`callback`): `void`
+
+Register a callback for swipe gestures.
+
+Swipes provide the dominant direction (`up`, `down`, `left`, `right`), travelled distance, and
+velocity in CSS pixels per millisecond. Useful for panning, flicks, or quick shortcuts.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | [`TouchSwipeHandler`](../textmode.js/namespaces/input/namespaces/touch/type-aliases/TouchSwipeHandler.md) | The function to call when a swipe gesture is detected. |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+t.swipe((data) => {
+  console.log(`Swipe ${data.direction} with distance ${data.distance}`);
+});
+```
+
+***
+
+### tap()
+
+> **tap**(`callback`): `void`
+
+Register a callback for tap gestures.
+
+A tap is fired when the user quickly touches and releases the canvas without travelling far.
+Use TouchTapEventData.taps to determine whether the gesture is a single or multi tap.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | [`TouchTapHandler`](../textmode.js/namespaces/input/namespaces/touch/type-aliases/TouchTapHandler.md) | The function to call when a tap gesture is detected. |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+t.tap((data) => {
+  console.log(`Tapped at ${data.touch.x}, ${data.touch.y}`);
+});
+```
+
+***
+
 ### toString()
 
 > **toString**(`options?`): `string`
@@ -2140,6 +2375,126 @@ const svgString = textmodifier.toSVG({
 
 // Print to console or use otherwise
 console.log(svgString);
+```
+
+***
+
+### touchCancelled()
+
+> **touchCancelled**(`callback`): `void`
+
+Set a callback function that will be called when a touch is cancelled by the browser.
+
+Cancellation can occur when the browser takes ownership for scrolling or if the gesture
+leaves the window. Treat this as an aborted touch and clean up any in-progress state.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | [`TouchEventHandler`](../textmode.js/namespaces/input/namespaces/touch/type-aliases/TouchEventHandler.md) | The function to call when a touch is cancelled. |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+t.touchCancelled((data) => {
+  console.warn(`Touch ${data.touch.id} cancelled by the browser`);
+});
+```
+
+***
+
+### touchEnded()
+
+> **touchEnded**(`callback`): `void`
+
+Set a callback function that will be called when a touch ends normally.
+
+This fires after the finger leaves the canvas surface and the browser raises a `touchend`
+event. Use it to finalise state such as drawing strokes or completing gestures.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | [`TouchEventHandler`](../textmode.js/namespaces/input/namespaces/touch/type-aliases/TouchEventHandler.md) | The function to call when a touch ends. |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+t.touchEnded((data) => {
+  console.log(`Touch ${data.touch.id} finished at ${data.touch.x}, ${data.touch.y}`);
+});
+```
+
+***
+
+### touchMoved()
+
+> **touchMoved**(`callback`): `void`
+
+Set a callback function that will be called when a touch point moves across the canvas.
+
+The provided callback is invoked continuously while the browser reports move events. Use the
+`previousTouch` and `deltaTime` fields to derive velocity or gesture behaviour.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | [`TouchEventHandler`](../textmode.js/namespaces/input/namespaces/touch/type-aliases/TouchEventHandler.md) | The function to call when a touch moves. |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+t.touchMoved((data) => {
+  const { touch, previousTouch } = data;
+  if (previousTouch) {
+    console.log(`Touch moved by ${touch.x - previousTouch.x}, ${touch.y - previousTouch.y}`);
+  }
+});
+```
+
+***
+
+### touchStarted()
+
+> **touchStarted**(`callback`): `void`
+
+Set a callback function that will be called when a touch point begins.
+
+The callback receives TouchEventData containing the touch that triggered the event,
+all active touches, and the original DOM event. Use this to react when the user places one or
+more fingers on the canvas.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `callback` | [`TouchEventHandler`](../textmode.js/namespaces/input/namespaces/touch/type-aliases/TouchEventHandler.md) | The function to call when a touch starts. |
+
+#### Returns
+
+`void`
+
+#### Example
+
+```javascript
+t.touchStarted((data) => {
+  console.log(`Touch ${data.touch.id} began at ${data.touch.x}, ${data.touch.y}`);
+});
 ```
 
 ***

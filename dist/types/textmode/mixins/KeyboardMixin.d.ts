@@ -1,4 +1,5 @@
 import type { Mixin } from './TextmodifierMixin';
+import type { KeyboardEventHandler } from '../managers/KeyboardManager';
 /**
  * Capabilities provided by the KeyboardMixin
  */
@@ -61,7 +62,7 @@ export interface KeyboardCapabilities {
      * });
      * ```
      */
-    keyPressed(callback: () => void): void;
+    keyPressed(callback: KeyboardEventHandler): void;
     /**
      * Set a callback function that will be called when a key is released.
      *
@@ -79,7 +80,7 @@ export interface KeyboardCapabilities {
      * });
      * ```
      */
-    keyReleased(callback: () => void): void;
+    keyReleased(callback: KeyboardEventHandler): void;
 }
 /**
  * Mixin that adds keyboard interaction capabilities to Textmodifier.

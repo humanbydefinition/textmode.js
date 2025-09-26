@@ -9,9 +9,9 @@ export interface TextmodeImageRenderData {
     flipY: number;
     charRotation: [number, number];
     charColorFixed: boolean;
-    charColor: [number, number, number];
+    charColor: [number, number, number, number];
     cellColorFixed: boolean;
-    cellColor: [number, number, number];
+    cellColor: [number, number, number, number];
     backgroundColor: [number, number, number, number];
     charCount: number;
     charList: number[][];
@@ -113,7 +113,7 @@ export declare class TextmodeImage {
      * @param b Blue channel (0-255)
      * @returns This instance for chaining.
      */
-    charColor(r: number, g?: number, b?: number): this;
+    charColor(r: number, g?: number, b?: number, a?: number): this;
     /**
      * Defines the cell color used when {@link cellColorMode} is `'fixed'`.
      * @param r Red channel (0-255)
@@ -121,7 +121,7 @@ export declare class TextmodeImage {
      * @param b Blue channel (0-255)
      * @returns This instance for chaining.
      */
-    cellColor(r: number, g?: number, b?: number): this;
+    cellColor(r: number, g?: number, b?: number, a?: number): this;
     /**
      * Set background color for transparent pixels.
      * @param r Red channel (0-255)

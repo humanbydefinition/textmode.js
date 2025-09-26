@@ -4,14 +4,16 @@ import { TextmodeGrid } from './Grid';
 import { TextmodeCanvas } from './Canvas';
 import { TextmodeImage } from './TextmodeImage';
 import { AnimationController } from './AnimationController';
-import { MouseManager } from './managers';
-import { KeyboardManager } from './managers';
+import { MouseManager } from './managers/MouseManager';
+import { KeyboardManager } from './managers/KeyboardManager';
+import { TouchManager } from './managers/TouchManager';
 import { type TextmodifierContext } from './mixins';
 import type { RenderingCapabilities } from './mixins/RenderingMixin';
 import type { ExportCapabilities } from './mixins/ExportMixin';
 import type { FontCapabilities } from './mixins/FontMixin';
 import type { AnimationCapabilities } from './mixins/AnimationMixin';
 import type { MouseCapabilities } from './mixins/MouseMixin';
+import type { TouchCapabilities } from './mixins/TouchMixin';
 import type { KeyboardCapabilities } from './mixins/KeyboardMixin';
 import type { GLFramebuffer, Shader } from '../rendering';
 /**
@@ -67,6 +69,7 @@ declare class TextmodifierCore implements TextmodifierContext {
     _grid: TextmodeGrid;
     _animationController: AnimationController;
     _mouseManager: MouseManager;
+    _touchManager: TouchManager;
     _keyboardManager: KeyboardManager;
     _textmodeDrawShader: Shader;
     _textmodeDrawFramebuffer: GLFramebuffer;
@@ -78,7 +81,7 @@ declare class TextmodifierCore implements TextmodifierContext {
 declare const Textmodifier_base: typeof TextmodifierCore;
 /**
  * Manages textmode rendering on a [`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) and provides methods for drawing,
- * exporting, font management, and animation control.
+ * exporting, font management, event handling, and animation control.
  *
  * If the `Textmodifier` instance is created without a canvas parameter,
  * it creates a new `HTMLCanvasElement` to draw on using the `textmode.js` drawing API.
@@ -248,6 +251,6 @@ export declare class Textmodifier extends Textmodifier_base {
      */
     get overlay(): TextmodeImage | undefined;
 }
-export interface Textmodifier extends RenderingCapabilities, ExportCapabilities, FontCapabilities, AnimationCapabilities, MouseCapabilities, KeyboardCapabilities {
+export interface Textmodifier extends RenderingCapabilities, ExportCapabilities, FontCapabilities, AnimationCapabilities, MouseCapabilities, TouchCapabilities, KeyboardCapabilities {
 }
 export {};

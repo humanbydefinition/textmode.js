@@ -1,4 +1,4 @@
-[**textmode.js v0.3.0**](../README.md)
+[**textmode.js v0.3.1**](../README.md)
 
 ***
 
@@ -83,7 +83,7 @@ This instance for chaining.
 
 ### cellColor()
 
-> **cellColor**(`r`, `g?`, `b?`): `this`
+> **cellColor**(`r`, `g?`, `b?`, `a?`): `this`
 
 Defines the cell color used when [cellColorMode](#cellcolormode) is `'fixed'`.
 
@@ -94,6 +94,7 @@ Defines the cell color used when [cellColorMode](#cellcolormode) is `'fixed'`.
 | `r` | `number` | Red channel (0-255) |
 | `g?` | `number` | Green channel (0-255) |
 | `b?` | `number` | Blue channel (0-255) |
+| `a?` | `number` | - |
 
 #### Returns
 
@@ -143,7 +144,7 @@ The maximum number of characters for brightness mapping currently is `64`; exces
 
 ### charColor()
 
-> **charColor**(`r`, `g?`, `b?`): `this`
+> **charColor**(`r`, `g?`, `b?`, `a?`): `this`
 
 Defines the character color used when [charColorMode](#charcolormode) is `'fixed'`.
 
@@ -154,6 +155,7 @@ Defines the character color used when [charColorMode](#charcolormode) is `'fixed
 | `r` | `number` | Red channel (0-255) |
 | `g?` | `number` | Green channel (0-255) |
 | `b?` | `number` | Blue channel (0-255) |
+| `a?` | `number` | - |
 
 #### Returns
 

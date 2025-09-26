@@ -12,6 +12,8 @@ export type { TextmodeCharacter } from './textmode/font';
 export * as export from './export';
 export { TextmodeErrorLevel } from './errors/ErrorHandler';
 export { Textmode as textmode } from './Textmode';
+/** All types and interfaces related to input event handling. */
+export * as input from './textmode/managers';
 /**
  * Exports the create, setErrorLevel, and version functions from the Textmode class for UMD compatibility,
  * so calls like `textmode.create()` can be used.

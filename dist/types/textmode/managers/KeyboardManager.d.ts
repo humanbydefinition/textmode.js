@@ -25,6 +25,7 @@ export interface KeyboardEventData {
 export type KeyboardEventHandler = (data: KeyboardEventData) => void;
 /**
  * Key state information
+ * @ignore
  */
 export interface KeyState {
     /** Whether the key is currently pressed */
@@ -43,6 +44,7 @@ export interface KeyState {
  * - Current key state tracking
  * - Special key handling (arrows, function keys, etc.)
  * - Modifier key support (Ctrl, Shift, Alt, Meta)
+ * @ignore
  */
 export declare class KeyboardManager {
     private _keyStates;

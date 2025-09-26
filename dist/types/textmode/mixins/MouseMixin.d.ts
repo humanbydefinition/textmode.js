@@ -1,5 +1,5 @@
 import type { Mixin } from './TextmodifierMixin';
-import type { MousePosition } from '../managers';
+import type { MouseEventHandler, MousePosition } from '../managers/MouseManager';
 /**
  * Capabilities provided by the MouseMixin
  */
@@ -19,7 +19,7 @@ export interface MouseCapabilities {
      * });
      * ```
      */
-    mouseClicked(callback: () => void): void;
+    mouseClicked(callback: MouseEventHandler): void;
     /**
      * Set a callback function that will be called when the mouse is pressed down.
      *
@@ -34,7 +34,7 @@ export interface MouseCapabilities {
      * });
      * ```
      */
-    mousePressed(callback: () => void): void;
+    mousePressed(callback: MouseEventHandler): void;
     /**
      * Set a callback function that will be called when the mouse is released.
      *
@@ -49,7 +49,7 @@ export interface MouseCapabilities {
      * });
      * ```
      */
-    mouseReleased(callback: () => void): void;
+    mouseReleased(callback: MouseEventHandler): void;
     /**
      * Set a callback function that will be called when the mouse moves.
      *
@@ -67,7 +67,7 @@ export interface MouseCapabilities {
      * });
      * ```
      */
-    mouseMoved(callback: () => void): void;
+    mouseMoved(callback: MouseEventHandler): void;
     /**
      * Set a callback function that will be called when the mouse wheel is scrolled.
      *
@@ -83,7 +83,7 @@ export interface MouseCapabilities {
      * });
      * ```
      */
-    mouseScrolled(callback: () => void): void;
+    mouseScrolled(callback: MouseEventHandler): void;
     /**
      * Get the current mouse position in grid coordinates.
      *
@@ -109,6 +109,23 @@ export interface MouseCapabilities {
      * ```
      */
     get mouse(): MousePosition;
+    /**
+     * Set the mouse cursor for the textmode canvas.
+     *
+     * Provide any valid CSS cursor value (e.g. 'default', 'pointer', 'crosshair', 'move', 'text', 'grab', 'grabbing',
+     * 'none', 'zoom-in', 'zoom-out', 'ns-resize', 'ew-resize', 'nwse-resize', 'nesw-resize', etc.),
+     * or a CSS `url(...)` cursor. Call with no argument or an empty string to reset to default.
+     *
+     * See MDN for all options: https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
+     *
+     * @example
+     * ```javascript
+     * t.cursor('crosshair');
+     * // ... later, reset:
+     * t.cursor();
+     * ```
+     */
+    cursor(cursor?: string): void;
 }
 /**
  * Mixin that adds mouse tracking capabilities to Textmodifier.

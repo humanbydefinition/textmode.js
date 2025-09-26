@@ -563,6 +563,7 @@ export interface RenderingCapabilities {
      * @param r Red component (0-255)
      * @param g Green component (0-255)
      * @param b Blue component (0-255)
+     * @param a Alpha component (0-255, optional, defaults to 255)
      *
      * @example
      * ```javascript
@@ -578,12 +579,13 @@ export interface RenderingCapabilities {
      * });
      * ```
      */
-    charColor(r: number, g: number, b: number): void;
+    charColor(r: number, g: number, b: number, a?: number): void;
     /**
      * Set the cell background color for subsequent rendering operations.
      * @param r Red component (0-255)
      * @param g Green component (0-255)
      * @param b Blue component (0-255)
+     * @param a Alpha component (0-255, optional, defaults to 255)
      *
      * @example
      * ```javascript
@@ -599,7 +601,7 @@ export interface RenderingCapabilities {
      * });
      * ```
      */
-    cellColor(r: number, g: number, b: number): void;
+    cellColor(r: number, g: number, b: number, a: number): void;
     /**
      * Toggle horizontal flipping for subsequent character rendering.
      * @param toggle Whether to flip horizontally

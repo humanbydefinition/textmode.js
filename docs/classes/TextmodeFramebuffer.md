@@ -1,4 +1,4 @@
-[**textmode.js v0.3.0**](../README.md)
+[**textmode.js v0.3.1**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: TextmodeFramebuffer
 
-Framebuffer class for managing offscreen rendering targets.
+Framebuffer class for managing offscreen rendering targets initialized via [Textmodifier.createFramebuffer](Textmodifier.md#createframebuffer).
 
 ## Accessors
 
