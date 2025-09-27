@@ -64,7 +64,7 @@ To get started with `textmode.js`, you'll need:
 |-------------|-----------|---------------|----------|
 | **Standard UMD** (`textmode.umd.js`) | ~94kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
 | **Standard ESM** (`textmode.esm.js`) | ~121kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
-| **Minified UMD** (`textmode.umd.min.js`) | ~96kB | ❌ Requires external font | Custom fonts |
+| **Minified UMD** (`textmode.umd.min.js`) | ~86kB | ❌ Requires external font | Custom fonts |
 | **Minified ESM** (`textmode.esm.min.js`) | ~113kB | ❌ Requires external font | Custom fonts |
 
 **Choose standard bundles for:**
