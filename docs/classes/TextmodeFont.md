@@ -1,4 +1,4 @@
-[**textmode.js v0.3.1**](../README.md)
+[**textmode.js v0.4.0**](../README.md)
 
 ***
 
@@ -85,3 +85,24 @@ Returns the number of rows in the texture atlas.
 ##### Returns
 
 `number`
+
+## Methods
+
+### getGlyphData()
+
+> **getGlyphData**(`codePoint`): `null` \| `GlyphData`
+
+Lazily retrieves glyph data for the given Unicode code point.
+Glyph data is cached after the first access to avoid repeated Typr parsing.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `codePoint` | `number` | Unicode code point |
+
+#### Returns
+
+`null` \| `GlyphData`
+
+Parsed glyph data or null if unavailable

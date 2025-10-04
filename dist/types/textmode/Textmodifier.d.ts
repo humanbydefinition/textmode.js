@@ -8,8 +8,8 @@ import { MouseManager } from './managers/MouseManager';
 import { KeyboardManager } from './managers/KeyboardManager';
 import { TouchManager } from './managers/TouchManager';
 import { type TextmodifierContext } from './mixins';
+import { type TextmodePlugin, type TextmodePluginContext } from './plugins/PluginManager';
 import type { RenderingCapabilities } from './mixins/RenderingMixin';
-import type { ExportCapabilities } from './mixins/ExportMixin';
 import type { FontCapabilities } from './mixins/FontMixin';
 import type { AnimationCapabilities } from './mixins/AnimationMixin';
 import type { MouseCapabilities } from './mixins/MouseMixin';
@@ -58,6 +58,8 @@ export type TextmodeOptions = {
      *
      */
     overlay?: boolean;
+    /** List of plugins to install when the Textmodifier instance is created. */
+    plugins?: TextmodePlugin[];
 };
 /**
  * Base class for mixin application.
@@ -88,6 +90,7 @@ declare const Textmodifier_base: typeof TextmodifierCore;
  * If a canvas is provided, it will use that canvas instead.
  */
 export declare class Textmodifier extends Textmodifier_base {
+    private _pluginManager;
     private _isDisposed;
     private _setupCallback;
     private _drawCallback;
@@ -107,6 +110,11 @@ export declare class Textmodifier extends Textmodifier_base {
      * @param opts Configuration options
      */
     private _initialize;
+    /**
+     * Provide plugins with a minimal API surface so they can interact with the renderer safely.
+     * @ignore
+     */
+    $getPluginContext(): TextmodePluginContext;
     /**
      * Setup event listeners for resize handling.
      * @ignore
@@ -243,6 +251,8 @@ export declare class Textmodifier extends Textmodifier_base {
     get height(): number;
     /** Get the textmodifier canvas containing the rendered output. */
     get canvas(): HTMLCanvasElement;
+    /** Get the WebGL framebuffer used for drawing operations. */
+    get drawFramebuffer(): GLFramebuffer;
     /** Check if the instance has been disposed/destroyed. */
     get isDisposed(): boolean;
     /**
@@ -251,6 +261,6 @@ export declare class Textmodifier extends Textmodifier_base {
      */
     get overlay(): TextmodeImage | undefined;
 }
-export interface Textmodifier extends RenderingCapabilities, ExportCapabilities, FontCapabilities, AnimationCapabilities, MouseCapabilities, TouchCapabilities, KeyboardCapabilities {
+export interface Textmodifier extends RenderingCapabilities, FontCapabilities, AnimationCapabilities, MouseCapabilities, TouchCapabilities, KeyboardCapabilities {
 }
 export {};

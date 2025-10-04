@@ -21,7 +21,7 @@ The library is designed to be easy to use and accessible to developers of all sk
 - Instanced rendering and batching for low draw call counts
 - Font system with runtime font loading and dynamic sizing *(supports TTF/OTF/WOFF)*
 - Author custom filter shaders in [`GLSL ES 3.00`](https://registry.khronos.org/OpenGL/specs/es/3.0/GLSL_ES_Specification_3.00.pdf) for advanced effects
-- Flexible exporting: TXT, SVG, and raster images *(PNG/JPG/WebP)*
+- Flexible exporting: TXT, SVG, raster images *(PNG/JPG/WebP)*, animated GIFs, and video *(WebM)*
 - Animation loop control: `frameRate`, `loop`/`noLoop`, `redraw`, `frameCount`, etc.
 - Framework-agnostic: Use `textmode.js` with any canvas-based framework or library
 - Zero dependencies, written in TypeScript, with comprehensive type definitions
@@ -62,10 +62,10 @@ To get started with `textmode.js`, you'll need:
 
 | Bundle type | File size | Font included? | Best for |
 |-------------|-----------|---------------|----------|
-| **Standard UMD** (`textmode.umd.js`) | ~94kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
-| **Standard ESM** (`textmode.esm.js`) | ~121kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
-| **Minified UMD** (`textmode.umd.min.js`) | ~86kB | ❌ Requires external font | Custom fonts |
-| **Minified ESM** (`textmode.esm.min.js`) | ~113kB | ❌ Requires external font | Custom fonts |
+| **Standard UMD** (`textmode.umd.js`) | ~87kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
+| **Standard ESM** (`textmode.esm.js`) | ~111kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
+| **Minified UMD** (`textmode.umd.min.js`) | ~79kB | ❌ Requires external font | Custom fonts |
+| **Minified ESM** (`textmode.esm.min.js`) | ~103kB | ❌ Requires external font | Custom fonts |
 
 **Choose standard bundles for:**
 - Quick setup with no additional configuration

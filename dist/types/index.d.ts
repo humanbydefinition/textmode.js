@@ -8,8 +8,7 @@ export { TextmodeGrid } from './textmode/Grid';
 export type { TextmodeOptions } from './textmode/Textmodifier';
 export type { TextmodeFramebufferOptions } from './textmode/mixins/RenderingMixin';
 export type { TextmodeCharacter } from './textmode/font';
-/** All types related to export options for different formats. */
-export * as export from './export';
+export type { TextmodePlugin, TextmodePluginAPI, } from './textmode/plugins/PluginManager';
 export { TextmodeErrorLevel } from './errors/ErrorHandler';
 export { Textmode as textmode } from './Textmode';
 /** All types and interfaces related to input event handling. */

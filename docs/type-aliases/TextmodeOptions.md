@@ -1,4 +1,4 @@
-[**textmode.js v0.3.1**](../README.md)
+[**textmode.js v0.4.0**](../README.md)
 
 ***
 
@@ -74,6 +74,14 @@ as a first layer to the textmode canvas.
 Useful for applying textmode conversion to p5.js sketches, YouTube videos, and sooo much more.
 
 All functionality of `textmode.js` remains available, including drawing additional content on top of the converted source.
+
+***
+
+### plugins?
+
+> `optional` **plugins**: [`TextmodePlugin`](../interfaces/TextmodePlugin.md)[]
+
+List of plugins to install when the Textmodifier instance is created.
 
 ***
 

@@ -1,14 +1,13 @@
-**textmode.js v0.3.1**
+**textmode.js v0.4.0**
 
 ***
 
-# textmode.js v0.3.1
+# textmode.js v0.4.0
 
 ## Namespaces
 
 | Namespace | Description |
 | ------ | ------ |
-| [export](textmode.js/namespaces/export/README.md) | All types related to export options for different formats. |
 | [input](textmode.js/namespaces/input/README.md) | All types and interfaces related to input event handling. |
 
 ## Enumerations
@@ -27,6 +26,13 @@
 | [TextmodeGrid](classes/TextmodeGrid.md) | Manages the grid of a [Textmodifier](classes/Textmodifier.md) instance. |
 | [TextmodeImage](classes/TextmodeImage.md) | Represents an image uploaded for textmode rendering via [Textmodifier.loadImage](classes/Textmodifier.md#loadimage). |
 | [Textmodifier](classes/Textmodifier.md) | Manages textmode rendering on a [`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) and provides methods for drawing, exporting, font management, event handling, and animation control. |
+
+## Interfaces
+
+| Interface | Description |
+| ------ | ------ |
+| [TextmodePlugin](interfaces/TextmodePlugin.md) | A plugin interface for extending the functionality of a [Textmodifier](classes/Textmodifier.md) instance. |
+| [TextmodePluginAPI](interfaces/TextmodePluginAPI.md) | An extended API provided to plugins when they are installed on a [Textmodifier](classes/Textmodifier.md) instance. |
 
 ## Type Aliases
 

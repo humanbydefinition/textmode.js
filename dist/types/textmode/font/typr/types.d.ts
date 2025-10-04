@@ -229,22 +229,6 @@ export interface TyprFont {
     [tableName: string]: any;
 }
 /**
- * Glyph outline data structure
- * Contains coordinate and control point information for rendering glyphs
- */
-export interface GlyphData {
-    /** Number of contours in the glyph */
-    noc: number;
-    /** X coordinates of glyph points */
-    xs: number[];
-    /** Y coordinates of glyph points */
-    ys: number[];
-    /** Indices of the last point in each contour */
-    endPts: number[];
-    /** Flags indicating point types (on-curve, off-curve, etc.) */
-    flags: number[];
-}
-/**
  * Main Typr interface
  * Provides font parsing and table lookup functionality
  */

@@ -13,10 +13,10 @@ export interface FontCapabilities {
      * const textmodifier = textmode.create();
      *
      * // Load a custom font from a URL
-     *  textmodifier.loadFont('https://example.com/fonts/myfont.ttf');
+     * await textmodifier.loadFont('https://example.com/fonts/myfont.ttf');
      *
      * // Local font example
-     * // textmodifier.loadFont('./fonts/myfont.ttf');
+     * // await textmodifier.loadFont('./fonts/myfont.ttf');
      * ```
      */
     loadFont(fontSource: string): Promise<void>;

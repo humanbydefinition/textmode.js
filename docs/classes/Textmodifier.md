@@ -1,4 +1,4 @@
-[**textmode.js v0.3.1**](../README.md)
+[**textmode.js v0.4.0**](../README.md)
 
 ***
 
@@ -15,7 +15,7 @@ If a canvas is provided, it will use that canvas instead.
 
 ## Extends
 
-- `TextmodifierCore`\<`this`\>.`RenderingCapabilities`.`ExportCapabilities`.`FontCapabilities`.`AnimationCapabilities`.`MouseCapabilities`.`TouchCapabilities`.`KeyboardCapabilities`
+- `TextmodifierCore`\<`this`\>.`RenderingCapabilities`.`FontCapabilities`.`AnimationCapabilities`.`MouseCapabilities`.`TouchCapabilities`.`KeyboardCapabilities`
 
 ## Accessors
 
@@ -30,6 +30,20 @@ Get the textmodifier canvas containing the rendered output.
 ##### Returns
 
 `HTMLCanvasElement`
+
+***
+
+### drawFramebuffer
+
+#### Get Signature
+
+> **get** **drawFramebuffer**(): [`TextmodeFramebuffer`](TextmodeFramebuffer.md)
+
+Get the WebGL framebuffer used for drawing operations.
+
+##### Returns
+
+[`TextmodeFramebuffer`](TextmodeFramebuffer.md)
 
 ***
 
@@ -1297,10 +1311,10 @@ Update the font used for rendering.
 const textmodifier = textmode.create();
 
 // Load a custom font from a URL
- textmodifier.loadFont('https://example.com/fonts/myfont.ttf');
+await textmodifier.loadFont('https://example.com/fonts/myfont.ttf');
 
 // Local font example
-// textmodifier.loadFont('./fonts/myfont.ttf'); 
+// await textmodifier.loadFont('./fonts/myfont.ttf'); 
 ```
 
 ***
@@ -1966,113 +1980,6 @@ t.draw(() => {
 
 ***
 
-### saveCanvas()
-
-> **saveCanvas**(`options?`): `Promise`\<`void`\>
-
-Export the current textmode rendering to an image file.
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `options?` | [`ImageExportOptions`](../textmode.js/namespaces/export/type-aliases/ImageExportOptions.md) | Options for image export |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-#### Example
-
-```javascript
-// Fetch a canvas element to apply textmode rendering to
-const canvas = document.querySelector('canvas#myCanvas');
-
-// Create a Textmodifier instance
-const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
-
-// Export the current rendering to a PNG file *(default)*
-textmodifier.saveCanvas();
-
-// Export with custom options
-textmodifier.saveCanvas({
-  filename: 'my_textmode_rendering',
-  format: 'jpg',
-  quality: 0.8,
-  scale: 2.0,
-  backgroundColor: 'white'
-});
-```
-
-***
-
-### saveStrings()
-
-> **saveStrings**(`options?`): `void`
-
-Export the current textmode rendering to a TXT file.
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `options?` | [`TXTExportOptions`](../textmode.js/namespaces/export/type-aliases/TXTExportOptions.md) | Options for TXT export |
-
-#### Returns
-
-`void`
-
-#### Example
-
-```javascript
-// Fetch a canvas element to apply textmode rendering to
-const canvas = document.querySelector('canvas#myCanvas');
-
-// Create a Textmodifier instance
-const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
-
-// Export the current rendering to a TXT file
-textmodifier.saveStrings({
-  filename: 'my_textmode_rendering',
-  preserveTrailingSpaces: false
-});
-```
-
-***
-
-### saveSVG()
-
-> **saveSVG**(`options?`): `void`
-
-Export the current textmode rendering to an SVG file.
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `options?` | [`SVGExportOptions`](../textmode.js/namespaces/export/type-aliases/SVGExportOptions.md) | Options for SVG export |
-
-#### Returns
-
-`void`
-
-#### Example
-
-```javascript
-// Fetch a canvas element to apply textmode rendering to
-const canvas = document.querySelector('canvas#myCanvas');
-
-// Create a Textmodifier instance
-const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
-
-// Export the current rendering to an SVG file
-textmodifier.saveSVG({
-  filename: 'my_textmode_rendering',
-});
-```
-
-***
-
 ### setUniform()
 
 > **setUniform**(`name`, `value`): `void`
@@ -2297,84 +2204,6 @@ Use TouchTapEventData.taps to determine whether the gesture is a single or multi
 t.tap((data) => {
   console.log(`Tapped at ${data.touch.x}, ${data.touch.y}`);
 });
-```
-
-***
-
-### toString()
-
-> **toString**(`options?`): `string`
-
-Generate the current textmode rendering as a text string.
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `options?` | [`TXTExportOptions`](../textmode.js/namespaces/export/type-aliases/TXTExportOptions.md) | Options for text generation *(excluding filename)* |
-
-#### Returns
-
-`string`
-
-Textmode grid content as a string.
-
-#### Example
-
-```javascript
-// Fetch a canvas element to apply textmode rendering to
-const canvas = document.querySelector('canvas#myCanvas');
-
-// Create a Textmodifier instance
-const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
-
-// Get the current rendering as a text string
-const textString = textmodifier.toString({
-  preserveTrailingSpaces: false,
-  lineEnding: 'lf'
-});
-
-// Print to console or use otherwise
-console.log(textString);
-```
-
-***
-
-### toSVG()
-
-> **toSVG**(`options?`): `string`
-
-Generate the current textmode rendering as an SVG string.
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `options?` | [`SVGExportOptions`](../textmode.js/namespaces/export/type-aliases/SVGExportOptions.md) | Options for SVG generation *(excluding filename)* |
-
-#### Returns
-
-`string`
-
-SVG content as a string.
-
-#### Example
-
-```javascript
-// Fetch a canvas element to apply textmode rendering to
-const canvas = document.querySelector('canvas#myCanvas');
-
-// Create a Textmodifier instance
-const textmodifier = textmode.create(canvas, {renderMode: 'manual'});
-
-// Get the current rendering as an SVG string
-const svgString = textmodifier.toSVG({
-  includeBackgroundRectangles: true,
-  drawMode: 'fill'
-});
-
-// Print to console or use otherwise
-console.log(svgString);
 ```
 
 ***

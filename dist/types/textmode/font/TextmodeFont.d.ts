@@ -1,7 +1,7 @@
 import type { GLRenderer } from '../../rendering/webgl/Renderer.ts';
 import type { GLFramebuffer } from '../../rendering/webgl/Framebuffer.ts';
 import type { TextmodeCharacter } from './types.ts';
-import type { TyprFont } from './typr/types.ts';
+import type { TyprFont, GlyphData } from './typr/types.ts';
 /**
  * Manages the font used for rendering characters.
  *
@@ -17,6 +17,7 @@ export declare class TextmodeFont {
     private _textureRows;
     private _maxGlyphDimensions;
     private _fontFace;
+    private _glyphCache;
     private _characterExtractor;
     private _textureAtlas;
     private _metricsCalculator;
@@ -72,6 +73,14 @@ export declare class TextmodeFont {
      * @ignore
      */
     $getCharacterColors(characters: string): [number, number, number][];
+    /**
+     * Lazily retrieves glyph data for the given Unicode code point.
+     * Glyph data is cached after the first access to avoid repeated Typr parsing.
+     * @param codePoint Unicode code point
+     * @returns Parsed glyph data or null if unavailable
+     */
+    getGlyphData(codePoint: number): GlyphData | null;
+    private _getGlyphIndex;
     /**
      * Dispose of all resources used by this font manager.
      * @ignore

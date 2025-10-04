@@ -54,10 +54,9 @@ export declare class GLFramebuffer {
     resize(width: number, height: number): void;
     /**
      * Read pixels from a specific color attachment into an RGBA Uint8Array.
-     * Rows are flipped to top-left origin to match row-major iteration in exporters.
      * @ignore
      */
-    $readAttachment(attachmentIndex: number): Uint8Array;
+    readPixels(attachmentIndex: number): Uint8Array;
     /**
      * Begin rendering to this framebuffer.
      */
