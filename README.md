@@ -17,6 +17,8 @@ The library is designed to be easy to use and accessible to developers of all sk
 ## Features
 
 - Real‑time* ASCII/textmode rendering with a simple drawing API
+- `WebGL2` pipeline with [Multiple Render Targets (MRT)](https://en.wikipedia.org/wiki/Multiple_Render_Targets) for rich per‑cell data
+- Instanced rendering and batching for low draw call counts
 - Font system with runtime font loading and dynamic sizing *(supports TTF/OTF/WOFF)*
 - Author custom filter shaders in [`GLSL ES 3.00`](https://registry.khronos.org/OpenGL/specs/es/3.0/GLSL_ES_Specification_3.00.pdf) for advanced effects
 - Flexible exporting: TXT, SVG, raster images *(PNG/JPG/WebP)*, animated GIFs, and video *(WebM)*
@@ -69,9 +71,6 @@ To use `textmode.js` in a UMD environment, download the latest `umd` build from 
 
     <!-- Standard bundle (with embedded UrsaFont) -->
     <script src="https://cdn.jsdelivr.net/npm/textmode.js@latest/dist/textmode.umd.js"></script>
-    
-    <!-- OR Minified bundle (requires external font) -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/textmode.js@latest/dist/textmode.umd.min.js"></script> -->
 </head>
 <body>
     <script src="sketch.js"></script>
@@ -136,9 +135,6 @@ Then, you can import it in your JavaScript or TypeScript files:
 // Standard bundle (with embedded UrsaFont)
 import { textmode } from 'textmode.js';
 
-// OR Minified bundle (requires external font)
-// import { textmode } from 'textmode.js/min';
-
 const t = textmode.create({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -164,6 +160,65 @@ t.windowResized(() => {
     t.resizeCanvas(window.innerWidth, window.innerHeight);
 });
 ```
+
+## Conversion strategies & add-ons
+
+`textmode.js` now exposes a pluggable conversion pipeline so you can swap out how images, videos, and other sources translate into ASCII cells. The core bundle ships with the classic brightness-based converter, and you can register additional strategies at runtime—either from your own code or from official/community add-ons.
+
+```ts
+import {
+    registerConversionStrategy,
+    Shader,
+    type TextmodeConversionStrategy,
+} from 'textmode.js';
+
+import fragmentSource from './my-custom-image-to-mrt.frag';
+import vertexSource from './my-shared-instanced.vert';
+
+const customStrategy: TextmodeConversionStrategy = {
+    id: 'posterize',
+    createShader({ gl }) {
+        return new Shader(gl, vertexSource, fragmentSource);
+    },
+    createUniforms({ source }) {
+        return {
+            ...source.createBaseConversionUniforms(),
+            u_levels: 6,
+        };
+    },
+};
+
+registerConversionStrategy(customStrategy);
+
+// Later in your sketch
+image.conversionMode('posterize');
+```
+
+### Accurate conversion add-on
+
+The heavy multi-sample “accurate” converter now lives in a standalone add-on so you only pay for it when you need it:
+
+```bash
+npm install textmode.accurate.js
+```
+
+```ts
+import { textmode } from 'textmode.js';
+import { createAccurateConversionPlugin } from 'textmode.accurate.js';
+
+const t = textmode.create({
+    width: 1024,
+    height: 576,
+    plugins: [createAccurateConversionPlugin()],
+});
+
+t.setup(async () => {
+    const img = await t.loadImage('https://example.com/image.jpg');
+    img.conversionMode('accurate', { sampleRate: 12 });
+});
+```
+
+If you call `conversionMode('accurate')` without the add-on installed, `textmode.js` will throw a clear runtime error explaining how to enable it.
 
 ## Next steps
 
