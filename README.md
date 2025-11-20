@@ -17,8 +17,6 @@ The library is designed to be easy to use and accessible to developers of all sk
 ## Features
 
 - Real‑time* ASCII/textmode rendering with a simple drawing API
-- `WebGL2` pipeline with [Multiple Render Targets (MRT)](https://en.wikipedia.org/wiki/Multiple_Render_Targets) for rich per‑cell data
-- Instanced rendering and batching for low draw call counts
 - Font system with runtime font loading and dynamic sizing *(supports TTF/OTF/WOFF)*
 - Author custom filter shaders in [`GLSL ES 3.00`](https://registry.khronos.org/OpenGL/specs/es/3.0/GLSL_ES_Specification_3.00.pdf) for advanced effects
 - Flexible exporting: TXT, SVG, raster images *(PNG/JPG/WebP)*, animated GIFs, and video *(WebM)*
@@ -57,25 +55,6 @@ To get started with `textmode.js`, you'll need:
 > `textmode.js` is currently fully dependent on `WebGL2`. Ensure your target browsers support it. You can check compatibility on [caniuse.com](https://caniuse.com/webgl2).
 
 ### Importing `textmode.js`
-
-`textmode.js` is available in multiple bundle variants to suit different project needs:
-
-| Bundle type | File size | Font included? | Best for |
-|-------------|-----------|---------------|----------|
-| **Standard UMD** (`textmode.umd.js`) | ~87kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
-| **Standard ESM** (`textmode.esm.js`) | ~111kB | ✅ [UrsaFont](https://ursafrank.itch.io/ursafont) embedded | Quick setup, prototyping |
-| **Minified UMD** (`textmode.umd.min.js`) | ~79kB | ❌ Requires external font | Custom fonts |
-| **Minified ESM** (`textmode.esm.min.js`) | ~103kB | ❌ Requires external font | Custom fonts |
-
-**Choose standard bundles for:**
-- Quick setup with no additional configuration
-- Production applications that use the embedded font
-
-**Choose minified bundles for:**
-- Production applications that don't use the embedded font
-
-> [!NOTE]
-> Apart from the font inclusion, both bundle types are functionally identical and equally minified.
 
 #### UMD
 
