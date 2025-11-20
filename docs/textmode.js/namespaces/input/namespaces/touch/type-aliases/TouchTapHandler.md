@@ -1,12 +1,10 @@
-[**textmode.js v0.4.0**](../../../../../../README.md)
-
-***
-
-[textmode.js](../../../../../../README.md) / [input](../../../README.md) / [touch](../README.md) / TouchTapHandler
+[textmode.js](../../../../../../index.md) / [input](../../../index.md) / [touch](../index.md) / TouchTapHandler
 
 # Type Alias: TouchTapHandler()
 
-> **TouchTapHandler** = (`data`) => `void`
+```ts
+type TouchTapHandler = (data) => void;
+```
 
 Touch tap event handler function type
 

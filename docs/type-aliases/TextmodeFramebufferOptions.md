@@ -1,27 +1,29 @@
-[**textmode.js v0.4.0**](../README.md)
-
-***
-
-[textmode.js](../README.md) / TextmodeFramebufferOptions
+[textmode.js](../index.md) / TextmodeFramebufferOptions
 
 # Type Alias: TextmodeFramebufferOptions
 
-> **TextmodeFramebufferOptions** = `object`
+```ts
+type TextmodeFramebufferOptions = object;
+```
 
-Options for creating a framebuffer.
+Options for creating a framebuffer. If not specified, width and height default to the current textmode grid size.
 
 ## Properties
 
-### height
+### height?
 
-> **height**: `number`
+```ts
+optional height: number;
+```
 
 Height of the framebuffer in grid cells
 
 ***
 
-### width
+### width?
 
-> **width**: `number`
+```ts
+optional width: number;
+```
 
 Width of the framebuffer in grid cells

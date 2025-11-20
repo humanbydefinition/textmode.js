@@ -3,7 +3,6 @@
  * Provides precise frame rate limiting and smooth animation timing.
  */
 export declare class AnimationController {
-    private _frameRateLimit;
     private _frameInterval;
     private _animationFrameId;
     private _lastFrameTime;
@@ -22,60 +21,51 @@ export declare class AnimationController {
      * Start the animation loop with the provided render callback.
      * @param renderCallback Function to call for each frame render
      */
-    start(renderCallback: () => void): void;
+    $start(renderCallback: () => void): void;
     /**
      * Stop the animation loop.
      */
-    stop(): void;
+    $stop(): void;
     /**
      * Pause the animation loop without stopping it completely.
      */
-    pause(): void;
+    $pause(): void;
     /**
      * Resume the animation loop if it was paused.
      * @param renderCallback Function to call for each frame render
      */
-    resume(renderCallback: () => void): void;
+    $resume(renderCallback: () => void): void;
     /**
      * Set or get the frame rate limit.
      * @param fps Optional new frame rate limit. If not provided, returns current measured frame rate.
      * @param renderCallback Required when setting new frame rate and animation is running
      * @returns Current measured frame rate when getting, void when setting
      */
-    frameRate(fps?: number, renderCallback?: () => void): number | void;
+    $frameRate(fps?: number, renderCallback?: () => void): number | void;
     /**
      * Update frame rate measurement. Should be called on each render.
      * Uses a rolling average for smoother frame rate reporting.
      */
-    measureFrameRate(): void;
+    $measureFrameRate(): void;
     /**
      * Check if the animation loop is currently active.
      */
-    get isLooping(): boolean;
-    /**
-     * Get the current frame rate limit.
-     */
-    get frameRateLimit(): number;
+    get $isLooping(): boolean;
     /**
      * Get the current measured frame rate.
      */
-    get currentFrameRate(): number;
+    get $currentFrameRate(): number;
     /**
      * Get the current frame count.
      */
-    get frameCount(): number;
+    get $frameCount(): number;
     /**
      * Set the current frame count.
      */
-    set frameCount(value: number);
+    set $frameCount(value: number);
     /**
      * Increment the frame count by one.
      * Should be called on each render to track total frames rendered.
      */
-    incrementFrame(): void;
-    /**
-     * Reset the frame count to zero.
-     * Useful when restarting animations or resetting state.
-     */
-    resetFrameCount(): void;
+    $incrementFrame(): void;
 }

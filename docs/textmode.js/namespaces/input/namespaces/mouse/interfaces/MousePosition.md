@@ -1,8 +1,4 @@
-[**textmode.js v0.4.0**](../../../../../../README.md)
-
-***
-
-[textmode.js](../../../../../../README.md) / [input](../../../README.md) / [mouse](../README.md) / MousePosition
+[textmode.js](../../../../../../index.md) / [input](../../../index.md) / [mouse](../index.md) / MousePosition
 
 # Interface: MousePosition
 

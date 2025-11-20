@@ -1,10 +1,10 @@
-export { type Constructor, type Mixin, type TextmodifierContext, $applyMixins } from './TextmodifierMixin';
-export { RenderingMixin, type RenderingCapabilities } from './RenderingMixin';
-export { FontMixin, type FontCapabilities } from './FontMixin';
-export { AnimationMixin, type AnimationCapabilities } from './AnimationMixin';
-export { MouseMixin, type MouseCapabilities } from './MouseMixin';
-export { TouchMixin, type TouchCapabilities } from './TouchMixin';
-export { KeyboardMixin, type KeyboardCapabilities } from './KeyboardMixin';
+export { type Constructor, type Mixin, $applyMixins } from './TextmodifierMixin';
+export { RenderingMixin } from './RenderingMixin';
+export { FontMixin } from './FontMixin';
+export { AnimationMixin } from './AnimationMixin';
+export { MouseMixin } from './MouseMixin';
+export { TouchMixin } from './TouchMixin';
+export { KeyboardMixin } from './KeyboardMixin';
 export type { MousePosition, MouseEventData, MouseEventHandler } from '../managers/MouseManager';
-export type { TouchEventData, TouchLongPressEventData, TouchPinchEventData, TouchPosition, TouchRotateEventData, TouchSwipeEventData, TouchTapEventData } from '../managers/TouchManager';
 export type { KeyboardEventData, KeyboardEventHandler, KeyState } from '../managers/KeyboardManager';
+export type { TouchEventData, TouchLongPressEventData, TouchPinchEventData, TouchPosition, TouchRotateEventData, TouchSwipeEventData, TouchTapEventData } from '../managers/TouchManager';

@@ -1,26 +1,55 @@
-[**textmode.js v0.4.0**](../README.md)
-
-***
-
-[textmode.js](../README.md) / TextmodeFramebuffer
+[textmode.js](../index.md) / TextmodeFramebuffer
 
 # Class: TextmodeFramebuffer
 
 Framebuffer class for managing offscreen rendering targets initialized via [Textmodifier.createFramebuffer](Textmodifier.md#createframebuffer).
 
+`TextmodeFramebuffer` instances contain 3 attachments to support the rendering pipeline:
+- Attachment 0: Character and transform data *(RGBA)*
+- Attachment 1: Primary color data *(RGBA)*
+- Attachment 2: Secondary color data *(RGBA)*
+
+## Implements
+
+- `IFramebuffer`
+
 ## Accessors
+
+### attachmentCount
+
+#### Get Signature
+
+```ts
+get attachmentCount(): number;
+```
+
+Get the number of color attachments in this framebuffer
+
+##### Returns
+
+`number`
+
+***
 
 ### height
 
 #### Get Signature
 
-> **get** **height**(): `number`
+```ts
+get height(): number;
+```
 
-Get the current framebuffer height.
+Get the height of the framebuffer
 
 ##### Returns
 
 `number`
+
+#### Implementation of
+
+```ts
+IFramebuffer.height
+```
 
 ***
 
@@ -28,22 +57,21 @@ Get the current framebuffer height.
 
 #### Get Signature
 
-> **get** **textures**(): `WebGLTexture`[]
+```ts
+get textures(): WebGLTexture[];
+```
 
-Get all textures associated with this framebuffer. 
-
-Useful for binding textures for reading in shaders.
-
-TextmodeFramebuffers have 5 attachments:
-- 0: Character colors that encode the character to display via red and green channels
-- 1: Character colors
-- 2: Cell background colors
-- 3: Rotation of each character encoded in red and green channels
-- 4: Inversion, horizontal, and vertical flip flags encoded in red, green, blue channels
+Get the WebGL textures associated with this framebuffer
 
 ##### Returns
 
 `WebGLTexture`[]
+
+#### Implementation of
+
+```ts
+IFramebuffer.textures
+```
 
 ***
 
@@ -51,19 +79,29 @@ TextmodeFramebuffers have 5 attachments:
 
 #### Get Signature
 
-> **get** **width**(): `number`
+```ts
+get width(): number;
+```
 
-Get the current framebuffer width.
+Get the width of the framebuffer
 
 ##### Returns
 
 `number`
 
+#### Implementation of
+
+```ts
+IFramebuffer.width
+```
+
 ## Methods
 
 ### begin()
 
-> **begin**(): `void`
+```ts
+begin(): void;
+```
 
 Begin rendering to this framebuffer.
 
@@ -71,11 +109,19 @@ Begin rendering to this framebuffer.
 
 `void`
 
+#### Implementation of
+
+```ts
+IFramebuffer.begin
+```
+
 ***
 
 ### end()
 
-> **end**(): `void`
+```ts
+end(): void;
+```
 
 End rendering to this framebuffer and restore previous state.
 
@@ -83,21 +129,69 @@ End rendering to this framebuffer and restore previous state.
 
 `void`
 
+#### Implementation of
+
+```ts
+IFramebuffer.end
+```
+
 ***
 
-### resize()
+### readPixels()
 
-> **resize**(`width`, `height`): `void`
+```ts
+readPixels(attachmentIndex): Uint8Array;
+```
 
-Resize the framebuffer.
+Read pixels from a specific color attachment into an RGBA Uint8Array.
+
+The returned pixel data:
+- Is in RGBA format (4 bytes per pixel)
+- Has top-left origin (first pixel is top-left corner)
+- Is cached until the next render pass to this framebuffer
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `width` | `number` | New width |
-| `height` | `number` | New height |
+| `attachmentIndex` | `number` | The index of the color attachment to read (0-based)<br/> 0. Character data and transform info<br/> 1. Character colors<br/> 2. Cell background colors<br/> |
+
+#### Returns
+
+`Uint8Array`
+
+A Uint8Array containing the pixel data in RGBA format
+
+#### Implementation of
+
+```ts
+IFramebuffer.readPixels
+```
+
+***
+
+### resize()
+
+```ts
+resize(width, height): void;
+```
+
+Resize the framebuffer to new dimensions.
+This recreates the internal textures with the new size and invalidates any cached pixel data.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `width` | `number` | New width in pixels/cells |
+| `height` | `number` | New height in pixels/cells |
 
 #### Returns
 
 `void`
+
+#### Implementation of
+
+```ts
+IFramebuffer.resize
+```

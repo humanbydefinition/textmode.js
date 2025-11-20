@@ -1,7 +1,7 @@
 /**
  * Core interfaces and types for the instanced geometry system
  */
-import type { InstanceBatch } from '../InstanceBatch';
+import type { InstanceBatch } from '../batching/InstanceBatch';
 /**
  * Geometry types supported by the instanced rendering system
  */
@@ -11,9 +11,16 @@ export declare enum GeometryType {
     ELLIPSE = "ellipse",
     ARC = "arc",
     TRIANGLE = "triangle",
-    BEZIER_CURVE = "bezier_curve",
-    CUSTOM = "custom"
+    BEZIER_CURVE = "bezier_curve"
 }
+/**
+ * Mapping from GeometryType to numeric shader constant.
+ * Must match the constants defined in instanced.vert:
+ * - GEOMETRY_TYPE_FLAT = 2 (rectangle, line, ellipse, triangle)
+ * - GEOMETRY_TYPE_ARC = 3
+ * - GEOMETRY_TYPE_BEZIER = 4
+ */
+export declare const GEOMETRY_TYPE_ID: Record<GeometryType, number>;
 /**
  * Unit geometry vertex data for a specific geometry type
  */
@@ -72,8 +79,6 @@ export interface IGeometry {
  * Parameters for rectangle geometry
  */
 export interface RectangleParams {
-    x: number;
-    y: number;
     width: number;
     height: number;
 }
@@ -91,8 +96,6 @@ export interface LineParams {
  * Parameters for ellipse geometry
  */
 export interface EllipseParams {
-    x: number;
-    y: number;
     width: number;
     height: number;
     startAngle?: number;
@@ -102,11 +105,8 @@ export interface EllipseParams {
 /**
  * Parameters for arc geometry (filled pie segment)
  * Angles are specified in DEGREES and arcs are drawn clockwise from start to stop.
- * x, y specify the center of the arc (consistent with current ellipse implementation).
  */
 export interface ArcParams {
-    x: number;
-    y: number;
     width: number;
     height: number;
     start: number;

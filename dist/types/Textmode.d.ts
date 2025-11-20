@@ -1,5 +1,6 @@
 import { type TextmodeErrorLevel } from './errors';
-import { Textmodifier, type TextmodeOptions } from './textmode/Textmodifier';
+import { Textmodifier } from './textmode/Textmodifier';
+import type { TextmodeOptions } from './textmode/types';
 /**
  * The main entry point for the `textmode.js` library.
  *
@@ -12,27 +13,17 @@ export declare class Textmode {
      * @param opts Configuration options for the Textmodifier instance
      * @returns A new Textmodifier instance
      *
-     * @example
-     * ```javascript
-     * // Create with default canvas
-     * const textmodifier = textmode.create();
-     *
-     * textmodifier.setup(() => {
-     *   // Called when the Textmodifier is ready
-     *   console.log(`Grid size: ${textmodifier.grid.cols}x${textmodifier.grid.rows}`);
-     * });
-     *
-     * textmodifier.draw(() => {
-     *   textmodifier.background(128);
-     *   textmodifier.rect(10, 10, 20, 20);
-     * });
-     *
-     * // Create with options
-     * const textmodifier2 = textmode.create({ width: 1920, height: 1080 });
-     *
-     * // Create with canvas and options
-     * const textmodifier3 = textmode.create({ canvas: canvas, fontSize: 20 });
-     * ```
+    * @example
+    * ```javascript
+    * const t = textmode.create({ width: 800, height: 600, fontSize: 16 });
+    *
+    * t.draw(() => {
+    *     t.background(0);
+    *     t.char("x");
+    *     t.rotateZ(t.frameCount);
+    *     t.rect(10, 10);
+    * });
+    * ```
      */
     static create(opts?: TextmodeOptions): Textmodifier;
     /**

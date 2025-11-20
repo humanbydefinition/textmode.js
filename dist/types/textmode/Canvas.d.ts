@@ -1,4 +1,5 @@
-import type { TextmodeOptions } from "./Textmodifier";
+import type { TextmodeOptions } from "./types";
+import { type RGBA } from "./utils/cssColor";
 /**
  * Manages a `HTMLCanvasElement` for textmode rendering.
  * @ignore
@@ -7,7 +8,6 @@ export declare class TextmodeCanvas {
     private _canvas;
     private _targetCanvas;
     private _isOverlay;
-    private _resizeObserver?;
     private _canvasCreatedByUs;
     /**
      * Creates a new TextmodeCanvas instance.
@@ -18,6 +18,13 @@ export declare class TextmodeCanvas {
     private _createCanvas;
     private _createOverlayCanvas;
     private _setupOverlayPositioning;
+    private _collectBackgroundSources;
+    /**
+     * Attempts to detect the background color behind the textmode canvas.
+     * Used internally for theming transparent UI elements like the loading screen.
+     * @ignore
+     */
+    $sampleBackgroundColor(): RGBA | null;
     private _positionOverlayCanvas;
     /**
      * Resize the canvas to the specified width and height.
@@ -38,6 +45,7 @@ export declare class TextmodeCanvas {
      * @ignore
      */
     $dispose(): void;
+    /** Getters */
     get canvas(): HTMLCanvasElement;
     get targetCanvas(): HTMLCanvasElement | HTMLVideoElement | null;
     get width(): number;

@@ -1,10 +1,7 @@
-/**
- * Base class for instanced geometry implementations
- */
-import type { InstanceBatch } from '../InstanceBatch';
-import type { InstanceData } from '../InstanceData';
+import type { InstanceBatch } from '../batching/InstanceBatch';
+import type { InstanceData } from '../batching/InstanceData';
 import type { IGeometry, GeometryType, UnitGeometryData } from '../types/GeometryTypes';
-import type { IRenderState } from '../RenderState';
+import type { IRenderState } from '../state/RenderState';
 /**
  * Abstract base class for all instanced geometries.
  * Provides common functionality for instance data creation and batch management.
@@ -24,26 +21,33 @@ export declare abstract class BaseGeometry implements IGeometry {
     $hasInstances(): boolean;
     $dispose(): void;
     abstract $addInstance(params: any, renderState: any): number;
+    protected _addInstance(instanceData: InstanceData, _rotationCenterX: number, _rotationCenterY: number): number;
     /**
-     * Create base instance data from render state.
-     * This method handles the common instance data creation logic.
-     * Subclasses can override this to add geometry-specific data.
+     * Write instance data directly to batch buffer (zero-allocation helper).
+     * Handles all common instance data setup to eliminate code duplication.
+     *
+     * @param x - X position
+     * @param y - Y position
+     * @param width - Width
+     * @param height - Height
+     * @param centerX - Rotation center X (in pixels)
+     * @param centerY - Rotation center Y (in pixels)
+     * @param renderState - Current render state
+     * @param geometryData - Optional geometry-specific data (arc angles, bezier points, depth)
+     * @returns Index of the written instance
      */
-    protected _createBaseInstanceData(x: number, y: number, width: number, height: number, renderState: IRenderState): InstanceData;
-    /**
-     * Convert screen coordinates to NDC for compatibility with existing code
-     */
-    protected _toNDC(x: number, y: number): {
-        nx: number;
-        ny: number;
-    };
-    protected _setRotationCenter(instanceData: InstanceData, centerX: number, centerY: number): void;
-    protected _calculateRotationParams(x: number, y: number, width: number, height: number, rotationXDegrees: number, rotationYDegrees: number, rotationZDegrees: number): {
-        centerX: number;
-        centerY: number;
-        radiansX: number;
-        radiansY: number;
-        radiansZ: number;
-        aspectRatio: number;
-    };
+    protected _writeInstance(x: number, y: number, width: number, height: number, renderState: IRenderState, geometryData?: {
+        arcStart?: number;
+        arcStop?: number;
+        cp1x?: number;
+        cp1y?: number;
+        cp2x?: number;
+        cp2y?: number;
+        bezStartX?: number;
+        bezStartY?: number;
+        bezEndX?: number;
+        bezEndY?: number;
+        depth?: number;
+        baseZ?: number;
+    }): number;
 }

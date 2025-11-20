@@ -1,5 +1,7 @@
 /**
  * Manages the grid of a {@link Textmodifier} instance.
+ *
+ * Can be accessed via {@link Textmodifier.grid}.
  */
 export declare class TextmodeGrid {
     /** The number of columns in the grid. */

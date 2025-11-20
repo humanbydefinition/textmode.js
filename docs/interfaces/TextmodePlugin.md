@@ -1,14 +1,16 @@
-[**textmode.js v0.4.0**](../README.md)
-
-***
-
-[textmode.js](../README.md) / TextmodePlugin
+[textmode.js](../index.md) / TextmodePlugin
 
 # Interface: TextmodePlugin
 
 A plugin interface for extending the functionality of a [Textmodifier](../classes/Textmodifier.md) instance.
 
 Users can create plugins by implementing this interface.
+
+## Note
+
+Plugins are currently experimental and the API may change in future releases. 
+For now, it has been integrated to outsource export features to `textmode.export.js`.
+Documentation and examples will be provided as the plugin system matures.
 
 ## Properties
 
@@ -21,7 +23,9 @@ Users can create plugins by implementing this interface.
 
 ### install()
 
-> **install**(`textmodifier`, `api`): `void` \| `Promise`\<`void`\>
+```ts
+install(textmodifier, api): void | Promise<void>;
+```
 
 Called when the plugin is installed on a [Textmodifier](../classes/Textmodifier.md) instance.
 
@@ -40,7 +44,9 @@ Called when the plugin is installed on a [Textmodifier](../classes/Textmodifier.
 
 ### uninstall()?
 
-> `optional` **uninstall**(`textmodifier`, `api`): `void` \| `Promise`\<`void`\>
+```ts
+optional uninstall(textmodifier, api): void | Promise<void>;
+```
 
 Called when the plugin is uninstalled from a [Textmodifier](../classes/Textmodifier.md) instance.
 

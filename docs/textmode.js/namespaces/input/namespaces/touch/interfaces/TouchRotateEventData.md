@@ -1,8 +1,4 @@
-[**textmode.js v0.4.0**](../../../../../../README.md)
-
-***
-
-[textmode.js](../../../../../../README.md) / [input](../../../README.md) / [touch](../README.md) / TouchRotateEventData
+[textmode.js](../../../../../../index.md) / [input](../../../index.md) / [touch](../index.md) / TouchRotateEventData
 
 # Interface: TouchRotateEventData
 

@@ -220,6 +220,4 @@ export declare class TouchManager {
     private _evaluateTapAndSwipe;
     private _detectDoubleTap;
     private _cloneTouchPosition;
-    private _distance;
-    private _angle;
 }

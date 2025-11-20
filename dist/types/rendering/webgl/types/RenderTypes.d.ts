@@ -1,7 +1,7 @@
 /**
  * Rendering pipeline interfaces and types
  */
-import type { GLShader } from '../Shader';
+import type { GLShader } from '../core/Shader';
 /**
  * Render context containing shader and rendering configuration
  */

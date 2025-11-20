@@ -1,12 +1,10 @@
-[**textmode.js v0.4.0**](../README.md)
-
-***
-
-[textmode.js](../README.md) / TextmodeGrid
+[textmode.js](../index.md) / TextmodeGrid
 
 # Class: TextmodeGrid
 
 Manages the grid of a [Textmodifier](Textmodifier.md) instance.
+
+Can be accessed via [Textmodifier.grid](Textmodifier.md#grid).
 
 ## Accessors
 
@@ -14,7 +12,9 @@ Manages the grid of a [Textmodifier](Textmodifier.md) instance.
 
 #### Get Signature
 
-> **get** **cellHeight**(): `number`
+```ts
+get cellHeight(): number;
+```
 
 Returns the height of each cell in the grid.
 
@@ -28,7 +28,9 @@ Returns the height of each cell in the grid.
 
 #### Get Signature
 
-> **get** **cellWidth**(): `number`
+```ts
+get cellWidth(): number;
+```
 
 Returns the width of each cell in the grid.
 
@@ -42,7 +44,9 @@ Returns the width of each cell in the grid.
 
 #### Get Signature
 
-> **get** **cols**(): `number`
+```ts
+get cols(): number;
+```
 
 Returns the number of columns in the grid.
 
@@ -56,7 +60,9 @@ Returns the number of columns in the grid.
 
 #### Get Signature
 
-> **get** **height**(): `number`
+```ts
+get height(): number;
+```
 
 Returns the total height of the grid.
 
@@ -70,7 +76,9 @@ Returns the total height of the grid.
 
 #### Get Signature
 
-> **get** **offsetX**(): `number`
+```ts
+get offsetX(): number;
+```
 
 Returns the offset to the outer canvas borders on the x-axis when centering the grid.
 
@@ -84,7 +92,9 @@ Returns the offset to the outer canvas borders on the x-axis when centering the 
 
 #### Get Signature
 
-> **get** **offsetY**(): `number`
+```ts
+get offsetY(): number;
+```
 
 Returns the offset to the outer canvas borders on the y-axis when centering the grid.
 
@@ -98,7 +108,9 @@ Returns the offset to the outer canvas borders on the y-axis when centering the 
 
 #### Get Signature
 
-> **get** **rows**(): `number`
+```ts
+get rows(): number;
+```
 
 Returns the number of rows in the grid.
 
@@ -112,7 +124,9 @@ Returns the number of rows in the grid.
 
 #### Get Signature
 
-> **get** **width**(): `number`
+```ts
+get width(): number;
+```
 
 Returns the total width of the grid.
 

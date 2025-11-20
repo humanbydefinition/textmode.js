@@ -1,8 +1,4 @@
-[**textmode.js v0.4.0**](../README.md)
-
-***
-
-[textmode.js](../README.md) / textmode
+[textmode.js](../index.md) / textmode
 
 # Class: textmode
 
@@ -16,7 +12,9 @@ Provides static methods for creating [Textmodifier](Textmodifier.md) instances a
 
 #### Get Signature
 
-> **get** `static` **version**(): `string`
+```ts
+get static version(): string;
+```
 
 Returns the version of `textmode.js` being used.
 
@@ -34,7 +32,9 @@ console.log(textmode.version); // "1.0.0"
 
 ### create()
 
-> `static` **create**(`opts`): [`Textmodifier`](Textmodifier.md)
+```ts
+static create(opts): Textmodifier;
+```
 
 Create a new [Textmodifier](Textmodifier.md) instance with optional configuration.
 
@@ -53,31 +53,23 @@ A new Textmodifier instance
 #### Example
 
 ```javascript
-// Create with default canvas
-const textmodifier = textmode.create();
+const t = textmode.create({ width: 800, height: 600, fontSize: 16 });
 
-textmodifier.setup(() => {
-  // Called when the Textmodifier is ready
-  console.log(`Grid size: ${textmodifier.grid.cols}x${textmodifier.grid.rows}`);
+t.draw(() => {
+    t.background(0);
+    t.char("x");
+    t.rotateZ(t.frameCount);
+    t.rect(10, 10);
 });
-
-textmodifier.draw(() => {
-  textmodifier.background(128);
-  textmodifier.rect(10, 10, 20, 20);
-});
-
-// Create with options
-const textmodifier2 = textmode.create({ width: 1920, height: 1080 });
-
-// Create with canvas and options
-const textmodifier3 = textmode.create({ canvas: canvas, fontSize: 20 });
 ```
 
 ***
 
 ### setErrorLevel()
 
-> `static` **setErrorLevel**(`level`): `void`
+```ts
+static setErrorLevel(level): void;
+```
 
 Set the global error handling level for the library. This applies to all [Textmodifier](Textmodifier.md) instances present.
 

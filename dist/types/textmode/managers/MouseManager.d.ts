@@ -89,7 +89,7 @@ export declare class MouseManager {
      * This is useful when grid dimensions change (font size, window resize, etc.)
      * and we need to recalculate the mouse coordinates without waiting for a mouse event.
      */
-    $updatePosition(): void;
+    $updatePositions(): void;
     /**
      * Set a callback function that will be called when the mouse is clicked.
      * @param callback The function to call when the mouse is clicked

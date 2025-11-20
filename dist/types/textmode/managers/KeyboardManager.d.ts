@@ -39,7 +39,7 @@ export interface KeyState {
  * Manages all keyboard interaction for a Textmodifier instance.
  * Handles event listeners, key state tracking, and event dispatching.
  *
- * Provides p5.js-like keyboard functionality including:
+ * Provides keyboard functionality including:
  * - keyPressed() and keyReleased() callbacks
  * - Current key state tracking
  * - Special key handling (arrows, function keys, etc.)
@@ -56,7 +56,6 @@ export declare class KeyboardManager {
     private _keyPressedCallback?;
     private _keyReleasedCallback?;
     private readonly _specialKeyMap;
-    constructor();
     /**
      * Setup keyboard event listeners.
      */
@@ -119,7 +118,7 @@ export declare class KeyboardManager {
      */
     private _handleKeyUp;
     /**
-     * Normalize key names for consistency (map to p5.js-like constants where applicable)
+     * Normalize key names for consistency
      */
     private _normalizeKey;
 }

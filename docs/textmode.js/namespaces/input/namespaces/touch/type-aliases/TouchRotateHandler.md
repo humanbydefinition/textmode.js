@@ -1,12 +1,10 @@
-[**textmode.js v0.4.0**](../../../../../../README.md)
-
-***
-
-[textmode.js](../../../../../../README.md) / [input](../../../README.md) / [touch](../README.md) / TouchRotateHandler
+[textmode.js](../../../../../../index.md) / [input](../../../index.md) / [touch](../index.md) / TouchRotateHandler
 
 # Type Alias: TouchRotateHandler()
 
-> **TouchRotateHandler** = (`data`) => `void`
+```ts
+type TouchRotateHandler = (data) => void;
+```
 
 Touch rotate event handler function type
 

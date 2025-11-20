@@ -1,12 +1,10 @@
-[**textmode.js v0.4.0**](../../../../../../README.md)
-
-***
-
-[textmode.js](../../../../../../README.md) / [input](../../../README.md) / [mouse](../README.md) / MouseEventHandler
+[textmode.js](../../../../../../index.md) / [input](../../../index.md) / [mouse](../index.md) / MouseEventHandler
 
 # Type Alias: MouseEventHandler()
 
-> **MouseEventHandler** = (`data`) => `void`
+```ts
+type MouseEventHandler = (data) => void;
+```
 
 Mouse event handler function type
 

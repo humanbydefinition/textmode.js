@@ -1,16 +1,20 @@
 import { Textmode } from './Textmode';
 export { Textmodifier } from './textmode/Textmodifier';
-export { TextmodeFont } from './textmode/font';
 export { GLFramebuffer as TextmodeFramebuffer } from './rendering';
-export { TextmodeImage } from './textmode/TextmodeImage';
+export { TextmodeColor } from './textmode/TextmodeColor';
 export { TextmodeCanvas } from './textmode/Canvas';
 export { TextmodeGrid } from './textmode/Grid';
-export type { TextmodeOptions } from './textmode/Textmodifier';
-export type { TextmodeFramebufferOptions } from './textmode/mixins/RenderingMixin';
-export type { TextmodeCharacter } from './textmode/font';
-export type { TextmodePlugin, TextmodePluginAPI, } from './textmode/plugins/PluginManager';
+export type { TextmodeOptions } from './textmode/types';
+export type { TextmodeFramebufferOptions } from './rendering/webgl';
+export { registerConversionStrategy, unregisterConversionStrategy, getConversionStrategy, } from './textmode/conversion';
+export type { TextmodeConversionStrategy, TextmodeConversionContext, TextmodeConversionMode, } from './textmode/conversion';
+export type { TextmodePlugin, TextmodePluginAPI, } from './textmode/managers/PluginManager';
 export { TextmodeErrorLevel } from './errors/ErrorHandler';
 export { Textmode as textmode } from './Textmode';
+/** All loading screen related modules and types. */
+export * as loading from './textmode/loading';
+/** All loadable assets related to textmode rendering. */
+export * as loadables from './textmode/loadables';
 /** All types and interfaces related to input event handling. */
 export * as input from './textmode/managers';
 /**

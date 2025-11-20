@@ -1,12 +1,10 @@
-[**textmode.js v0.4.0**](../../../../../../README.md)
-
-***
-
-[textmode.js](../../../../../../README.md) / [input](../../../README.md) / [touch](../README.md) / TouchLongPressHandler
+[textmode.js](../../../../../../index.md) / [input](../../../index.md) / [touch](../index.md) / TouchLongPressHandler
 
 # Type Alias: TouchLongPressHandler()
 
-> **TouchLongPressHandler** = (`data`) => `void`
+```ts
+type TouchLongPressHandler = (data) => void;
+```
 
 Touch long press event handler function type
 

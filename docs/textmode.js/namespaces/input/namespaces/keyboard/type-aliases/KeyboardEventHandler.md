@@ -1,12 +1,10 @@
-[**textmode.js v0.4.0**](../../../../../../README.md)
-
-***
-
-[textmode.js](../../../../../../README.md) / [input](../../../README.md) / [keyboard](../README.md) / KeyboardEventHandler
+[textmode.js](../../../../../../index.md) / [input](../../../index.md) / [keyboard](../index.md) / KeyboardEventHandler
 
 # Type Alias: KeyboardEventHandler()
 
-> **KeyboardEventHandler** = (`data`) => `void`
+```ts
+type KeyboardEventHandler = (data) => void;
+```
 
 Keyboard event handler function type
 
