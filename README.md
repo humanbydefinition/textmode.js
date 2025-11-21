@@ -17,8 +17,6 @@ The library is designed to be easy to use and accessible to developers of all sk
 ## Features
 
 - Real‑time* ASCII/textmode rendering with a simple drawing API
-- `WebGL2` pipeline with [Multiple Render Targets (MRT)](https://en.wikipedia.org/wiki/Multiple_Render_Targets) for rich per‑cell data
-- Instanced rendering and batching for low draw call counts
 - Font system with runtime font loading and dynamic sizing *(supports TTF/OTF/WOFF)*
 - Author custom filter shaders in [`GLSL ES 3.00`](https://registry.khronos.org/OpenGL/specs/es/3.0/GLSL_ES_Specification_3.00.pdf) for advanced effects
 - Flexible exporting: TXT, SVG, raster images *(PNG/JPG/WebP)*, animated GIFs, and video *(WebM)*
