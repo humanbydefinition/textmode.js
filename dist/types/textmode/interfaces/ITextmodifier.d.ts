@@ -16,6 +16,7 @@ import type { ITouchMixin } from '../mixins/interfaces/ITouchMixin';
 import type { IMouseMixin } from '../mixins/interfaces/IMouseMixin';
 import type { IAnimationMixin } from '../mixins/interfaces/IAnimationMixin';
 import type { LoadingScreenManager } from '../loading/LoadingScreenManager';
+import type { TextmodeLayerManager } from '../layers';
 /**
  * Manages textmode rendering on a [`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) and provides methods for drawing,
  * exporting, font management, event handling, and animation control.
@@ -53,6 +54,8 @@ export interface ITextmodifier extends IRenderingMixin, IFontMixin, IAnimationMi
     readonly _loading: LoadingScreenManager;
     /** Sources registered for rendering @ignore */
     readonly _sources: Set<TextmodeSource>;
+    /** Layer manager for handling multiple layers @ignore */
+    readonly _layerManager: TextmodeLayerManager;
     /** @ignore */
     $registerSource(source: TextmodeSource): void;
     /** Main render method @ignore */
@@ -95,9 +98,12 @@ export interface ITextmodifier extends IRenderingMixin, IFontMixin, IAnimationMi
      */
     setup(callback: () => void): void;
     /**
-     * Set a draw callback function that will be executed before each render.
+     * Set a draw callback function for the base layer.
      *
-     * This callback function is where all drawing commands should be placed for textmode rendering.
+     * This callback function is where all drawing commands should be placed for textmode rendering on the main layer.
+     *
+     * If multiple layers are added via {@link Textmodifier.layers}, each layer can have its own draw callback set via {@link TextmodeLayer.draw}.
+     * This allows for complex multi-layered compositions with independent rendering logic per layer.
      *
      * @param callback The function to call before each render
      *

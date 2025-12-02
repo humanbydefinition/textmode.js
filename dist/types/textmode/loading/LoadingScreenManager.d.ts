@@ -68,7 +68,7 @@ export declare class LoadingScreenManager {
      * Get the current overall loading progress (0-1).
     *
     * @example
-    * ```ts
+    * ```javascript
     * const t = textmode.create({
     *   width: 800,
     *   height: 600,
@@ -92,7 +92,7 @@ export declare class LoadingScreenManager {
      * @returns The current loading screen message.
     *
     * @example
-    * ```ts
+    * ```javascript
     * const t = textmode.create({
     *   width: 800,
     *   height: 600,
@@ -121,7 +121,7 @@ export declare class LoadingScreenManager {
      * @returns A handle to the created loading phase.
     *
     * @example
-    * ```ts
+    * ```javascript
     * const t = textmode.create({
     *   width: 800,
     *   height: 600,
@@ -162,7 +162,7 @@ export declare class LoadingScreenManager {
      * @param error The error message or `Error` object.
     *
     * @example
-    * ```ts
+    * ```javascript
     * const t = textmode.create({
     *   width: 800,
     *   height: 600,

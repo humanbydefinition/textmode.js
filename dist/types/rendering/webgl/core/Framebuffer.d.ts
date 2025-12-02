@@ -21,6 +21,15 @@ export type TextmodeFramebufferOptions = {
     width?: number;
     /** Height of the framebuffer in grid cells */
     height?: number;
+    /**
+     * Number of color attachments *(1-8)*
+     *
+     * Defaults to 3 for textmode framebuffers *(character/transform data, primary color, secondary color)*.
+     * You probably do not want to go below 3 for textmode rendering, otherwise rendering will not function correctly.
+     *
+     * Going above 3 is only recommended for advanced use cases involving custom shaders that utilize additional attachments.
+     */
+    attachments?: number;
 };
 /**
  * Framebuffer class for managing offscreen rendering targets initialized via {@link Textmodifier.createFramebuffer}.

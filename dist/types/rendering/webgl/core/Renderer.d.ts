@@ -17,8 +17,10 @@ export declare class GLRenderer implements IRenderer {
     private _userUniforms;
     private _framebufferBindingStack;
     private _viewportStack;
+    private _attachmentCountStack;
     private _currentFramebuffer;
     private _currentViewport;
+    private _currentAttachmentCount;
     constructor(gl: WebGL2RenderingContext);
     /**
      * Push current framebuffer and viewport state onto the stack.
@@ -36,7 +38,7 @@ export declare class GLRenderer implements IRenderer {
      * Bind a framebuffer and update CPU-side tracking.
      * @internal
      */
-    $bindFramebuffer(framebuffer: WebGLFramebuffer | null, width: number, height: number): void;
+    $bindFramebuffer(framebuffer: WebGLFramebuffer | null, width: number, height: number, attachmentCount?: number): void;
     $shader(shader: GLShader): void;
     $createShader(vertexSource: string, fragmentSource: string): GLShader;
     $setUserShader(shader: GLShader | null): void;
@@ -54,6 +56,15 @@ export declare class GLRenderer implements IRenderer {
     $createFramebuffer(width: number, height: number, attachmentCount?: number, options?: FramebufferOptions): GLFramebuffer;
     $background(r: number, g?: number, b?: number, a?: number): void;
     $clear(r?: number, g?: number, b?: number, a?: number): void;
+    /**
+     * Internal MRT-aware clear implementation.
+     * @param r Red component (0-1)
+     * @param g Green component (0-1)
+     * @param b Blue component (0-1)
+     * @param a Alpha component (0-1)
+     * @param preserveCharData If true, clears attachment 0 to (1, 1, 0, 0); if false, clears to (0, 0, 0, 0)
+     */
+    private _clearMRT;
     $resetViewport(): void;
     $flushInstances(): void;
     $dispose(): void;

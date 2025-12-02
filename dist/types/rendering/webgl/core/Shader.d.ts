@@ -13,6 +13,8 @@ export declare class GLShader {
     private _uniformLocations;
     private _uniformTypes;
     private _textureUnitCounter;
+    private _textureUnitAssignments;
+    private _maxTextureUnits;
     /**
      * Creates a new GLShader instance.
      * @param gl The WebGL rendering context.
@@ -37,6 +39,7 @@ export declare class GLShader {
      * Set a single uniform value with automatic texture unit management and proper type detection
      */
     $setUniform(name: string, value: UniformValue): void;
+    private _acquireTextureUnit;
     /**
      * Get the WebGL program
      */

@@ -12,10 +12,13 @@ export interface IRenderingMixin {
      * @param shader The custom shader to use
      *
      * @example
-     * ```javascript
-     * const t = textmode.create({ width: 800, height: 600 });
-     *
-     * const glitchShader = t.createFilterShader(`#version 300 es
+    * ```javascript
+    * const t = textmode.create({ width: 800, height: 600 });
+    *
+    * let glitchShader;
+    *
+    * t.setup(async() => {
+    *     glitchShader = await t.createFilterShader(`#version 300 es
      *   precision highp float;
      *   in vec2 v_uv;
      *   uniform float u_intensity;
@@ -33,11 +36,11 @@ export interface IRenderingMixin {
      *   }
      * `);
      *
-     * t.draw(() => {
-     *   t.shader(glitchShader);
-     *   t.setUniform('u_intensity', Math.sin(t.frameCount * 0.1) * 0.02);
-     *   t.rect(t.grid.cols, t.grid.rows);
-     * });
+    * t.draw(() => {
+    *     t.shader(glitchShader);
+    *     t.setUniform('u_intensity', Math.sin(t.frameCount * 0.1) * 0.02);
+    *     t.rect(t.grid.cols, t.grid.rows);
+    * });
      * ```
      */
     shader(shader: GLShader): void;
@@ -196,7 +199,10 @@ export interface IRenderingMixin {
      * ```javascript
      * const t = textmode.create({ width: 800, height: 600 });
      *
-     * const pulseShader = t.createFilterShader(`#version 300 es
+     * let pulseShader;
+     *
+     * t.setup(async () => {
+     *     pulseShader = await t.createFilterShader(`#version 300 es
      *   precision highp float;
      *   in vec2 v_uv;
      *   uniform float u_time;
@@ -212,11 +218,12 @@ export interface IRenderingMixin {
      *     o_secondaryColor = vec4(color * 0.3, 1.0);
      *   }
      * `);
+     * });
      *
      * t.draw(() => {
-     *   t.shader(pulseShader);
-     *   t.setUniform('u_time', t.frameCount * 0.005);
-     *   t.rect(t.grid.cols, t.grid.rows);
+     *     t.shader(pulseShader);
+     *     t.setUniform('u_time', t.frameCount * 0.005);
+     *     t.rect(t.grid.cols, t.grid.rows);
      * });
      * ```
      */
@@ -229,7 +236,10 @@ export interface IRenderingMixin {
      * ```javascript
      * const t = textmode.create({ width: 800, height: 600 });
      *
-     * const rippleShader = t.createFilterShader(`#version 300 es
+     * let rippleShader;
+     *
+     * t.setup(async() => {
+     *     rippleShader = await t.createFilterShader(`#version 300 es
      *   precision highp float;
      *   in vec2 v_uv;
      *   uniform float u_time;
@@ -247,14 +257,15 @@ export interface IRenderingMixin {
      *     o_secondaryColor = vec4(color * 0.4, 1.0);
      *   }
      * `);
+     * });
      *
      * t.draw(() => {
-     *   t.shader(rippleShader);
-     *   t.setUniforms({
-     *     u_time: t.frameCount * 0.0005,
-     *     u_center: [0.5, 0.5]
-     *   });
-     *   t.rect(t.grid.cols, t.grid.rows);
+     *     t.shader(rippleShader);
+     *     t.setUniforms({
+     *         u_time: t.frameCount * 0.0005,
+     *         u_center: [0.5, 0.5]
+     *     });
+     *     t.rect(t.grid.cols, t.grid.rows);
      * });
      * ```
      */
@@ -310,6 +321,52 @@ export interface IRenderingMixin {
     * ```
      */
     createFilterShader(fragmentSource: string): Promise<GLShader>;
+    /**
+     * Create a custom shader from vertex and fragment shader source code or file paths.
+     * Both the vertex and fragment shaders can be provided as inline GLSL source code
+     * or as file paths (e.g., './vertex.vert', './fragment.frag').
+     * @param vertexSource The vertex shader source code or a file path (e.g., './shader.vert')
+     * @param fragmentSource The fragment shader source code or a file path (e.g., './shader.frag')
+     * @returns A Promise that resolves to a compiled shader ready for use with {@link shader}
+     *
+    * @example
+    * ```javascript
+    * const t = textmode.create({
+    *   width: 800,
+    *   height: 600,
+    * });
+    *
+    * let customShader;
+    *
+    * t.setup(async () => {
+    *   // Load shaders from files
+    *   customShader = await t.createShader('./vertex.vert', './fragment.frag');
+    *
+    *   // Or create from inline source
+    *   // customShader = await t.createShader(
+    *   //   `#version 300 es
+    *   //   in vec2 a_position;
+    *   //   void main() {
+    *   //     gl_Position = vec4(a_position, 0.0, 1.0);
+    *   //   }`,
+    *   //   `#version 300 es
+    *   //   precision highp float;
+    *   //   out vec4 fragColor;
+    *   //   void main() {
+    *   //     fragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    *   //   }`
+    *   // );
+    * });
+    *
+    * t.draw(() => {
+    *   if (customShader) {
+    *     t.shader(customShader);
+    *     t.rect(t.grid.cols, t.grid.rows);
+    *   }
+    * });
+    * ```
+     */
+    createShader(vertexSource: string, fragmentSource: string): Promise<GLShader>;
     /**
      * Sets the rotation angles for subsequent shape rendering operations.
      *
@@ -837,18 +894,12 @@ export interface IRenderingMixin {
      *   height: 600,
      * })
      *
-     * let semicolon;
-     *
-     * t.setup(() => {
-     *  semicolon = t.color(';');
-     * });
-     *
      * t.draw(() => {
      *   t.background(0);
      *   t.char('A');
      *   t.rect(10, 10);
      *
-     *   t.char(semicolon);
+     *   t.char(";");
      *   t.translate(15, 0);
      *   t.rect(10, 10);
      * });
@@ -922,6 +973,7 @@ export interface IRenderingMixin {
      * t.draw(() => {
      *   t.background(0);
      *   t.flipX(true);
+     *   t.char('A');
      *   t.rect(5, 5);
      * });
      * ```
@@ -941,6 +993,7 @@ export interface IRenderingMixin {
      * t.draw(() => {
      *   t.background(0);
      *   t.flipY(true);
+     *   t.char('A');
      *   t.rect(5, 5);
      * });
      * ```

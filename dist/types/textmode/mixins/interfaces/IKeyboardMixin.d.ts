@@ -70,7 +70,6 @@ export interface IKeyboardMixin {
     *
     *   // Show the last pressed key at the center of the grid
     *   t.push();
-    *   t.translate(t.grid.cols / 2, t.grid.rows / 2);
     *   t.char(lastKey.length ? lastKey[0] : '?');
     *   t.point();
     *   t.pop();

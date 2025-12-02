@@ -9,6 +9,8 @@ export type { TextmodeFramebufferOptions } from './rendering/webgl';
 export { registerConversionStrategy, unregisterConversionStrategy, getConversionStrategy, } from './textmode/conversion';
 export type { TextmodeConversionStrategy, TextmodeConversionContext, TextmodeConversionMode, } from './textmode/conversion';
 export type { TextmodePlugin, TextmodePluginAPI, } from './textmode/managers/PluginManager';
+/** All filter related modules and types. */
+export * as filters from './textmode/filters';
 export { TextmodeErrorLevel } from './errors/ErrorHandler';
 export { Textmode as textmode } from './Textmode';
 /** All loading screen related modules and types. */
@@ -17,6 +19,8 @@ export * as loading from './textmode/loading';
 export * as loadables from './textmode/loadables';
 /** All types and interfaces related to input event handling. */
 export * as input from './textmode/managers';
+/** All modules and types related to multi-layered textmode rendering. */
+export * as layering from './textmode/layers';
 /**
  * Exports the create, setErrorLevel, and version functions from the Textmode class for UMD compatibility,
  * so calls like `textmode.create()` can be used.

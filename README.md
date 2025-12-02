@@ -18,6 +18,9 @@ The library is designed to be easy to use and accessible to developers of all sk
 
 - Real‑time* ASCII/textmode rendering with a simple drawing API
 - Font system with runtime font loading and dynamic sizing *(supports TTF/OTF/WOFF)*
+- Dynamic layering system with blend modes and opacity for multi‑layered textmode scenes
+- Filter system with built-in filters and support for custom filter shaders
+- Load images and videos as sources and render them in customizable textmode styles
 - Author custom filter shaders in [`GLSL ES 3.00`](https://registry.khronos.org/OpenGL/specs/es/3.0/GLSL_ES_Specification_3.00.pdf) for advanced effects
 - Flexible exporting: TXT, SVG, raster images *(PNG/JPG/WebP)*, animated GIFs, and video *(WebM)*
 - Animation loop control: `frameRate`, `loop`/`noLoop`, `redraw`, `frameCount`, etc.
@@ -159,65 +162,6 @@ t.windowResized(() => {
 });
 ```
 
-## Conversion strategies & add-ons
-
-`textmode.js` now exposes a pluggable conversion pipeline so you can swap out how images, videos, and other sources translate into ASCII cells. The core bundle ships with the classic brightness-based converter, and you can register additional strategies at runtime—either from your own code or from official/community add-ons.
-
-```ts
-import {
-    registerConversionStrategy,
-    Shader,
-    type TextmodeConversionStrategy,
-} from 'textmode.js';
-
-import fragmentSource from './my-custom-image-to-mrt.frag';
-import vertexSource from './my-shared-instanced.vert';
-
-const customStrategy: TextmodeConversionStrategy = {
-    id: 'posterize',
-    createShader({ gl }) {
-        return new Shader(gl, vertexSource, fragmentSource);
-    },
-    createUniforms({ source }) {
-        return {
-            ...source.createBaseConversionUniforms(),
-            u_levels: 6,
-        };
-    },
-};
-
-registerConversionStrategy(customStrategy);
-
-// Later in your sketch
-image.conversionMode('posterize');
-```
-
-### Accurate conversion add-on
-
-The heavy multi-sample “accurate” converter now lives in a standalone add-on so you only pay for it when you need it:
-
-```bash
-npm install textmode.accurate.js
-```
-
-```ts
-import { textmode } from 'textmode.js';
-import { createAccurateConversionPlugin } from 'textmode.accurate.js';
-
-const t = textmode.create({
-    width: 1024,
-    height: 576,
-    plugins: [createAccurateConversionPlugin()],
-});
-
-t.setup(async () => {
-    const img = await t.loadImage('https://example.com/image.jpg');
-    img.conversionMode('accurate', { sampleRate: 12 });
-});
-```
-
-If you call `conversionMode('accurate')` without the add-on installed, `textmode.js` will throw a clear runtime error explaining how to enable it.
-
 ## Next steps
 
 Now that you have `textmode.js` set up, you can start creating your textmode art projects! Going forward, here are some resources to help you get the most out of the library:
@@ -231,5 +175,5 @@ Now that you have `textmode.js` set up, you can start creating your textmode art
 `textmode.js` uses a custom-made TypeScript rewrite and minified version of [`Typr.js`](https://github.com/photopea/Typr.js) by [**Photopea**](https://github.com/photopea) for font loading and parsing, containing only the necessary components for our use case. `Typr.js` is licensed under the [**MIT License**](https://github.com/photopea/Typr.js/blob/main/LICENSE).
 
 
-The non-minified version of `textmode.js` ships with [`UrsaFont`](https://ursafrank.itch.io/ursafont) as the default font, created by [**UrsaFrank**](https://ursafrank.itch.io/). This font is available under the [**CC0 (Creative Commons Zero) license**](https://creativecommons.org/publicdomain/zero/1.0/).
+`textmode.js` ships with [`UrsaFont`](https://ursafrank.itch.io/ursafont) as the default font, created by [**UrsaFrank**](https://ursafrank.itch.io/). This font is available under the [**CC0 (Creative Commons Zero) license**](https://creativecommons.org/publicdomain/zero/1.0/).
 

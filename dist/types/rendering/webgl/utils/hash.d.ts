@@ -67,22 +67,6 @@ export declare function hashArray(arr: number[] | number[][]): number;
  * ```
  */
 export declare function hashTypedArray(arr: Float32Array | Int32Array): number;
-/**
- * Hash an object by converting it to a string representation.
- * Uses the object's memory address (toString) as the hash basis.
- *
- * This is useful for WebGL objects like textures, buffers, etc.
- * where identity is more important than value equality.
- *
- * @param obj - Object to hash
- * @returns Hash based on object identity
- *
- * @example
- * ```typescript
- * const texture = gl.createTexture();
- * hashObject(texture) // → hash based on texture identity
- * ```
- */
 export declare function hashObject(obj: any): number;
 /**
  * Combine two hash values into a single hash.

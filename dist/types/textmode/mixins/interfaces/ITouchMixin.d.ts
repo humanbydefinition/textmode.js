@@ -177,7 +177,7 @@ export interface ITouchMixin {
      * ```javascript
      * t.draw(() => {
      *   for (const touch of t.touches) {
-     *     t.point(touch.x, touch.y);
+     *     t.point();
      *   }
      * });
      * ```

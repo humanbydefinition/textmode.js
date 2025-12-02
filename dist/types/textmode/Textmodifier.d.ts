@@ -18,6 +18,10 @@ import type { IKeyboardMixin } from './mixins/interfaces/IKeyboardMixin';
 import type { ITouchMixin } from './mixins/interfaces/ITouchMixin';
 import type { IMouseMixin } from './mixins/interfaces/IMouseMixin';
 import { LoadingScreenManager } from './loading/LoadingScreenManager';
+import { LayerManager } from './layers/LayerManager';
+import type { TextmodeLayerManager } from './layers';
+import { TextmodeFilterManager } from './filters';
+import type { FilterName, BuiltInFilterName, BuiltInFilterParams } from './filters';
 declare const Textmodifier_base: {
     new (): {};
 };
@@ -43,6 +47,12 @@ export declare class Textmodifier extends Textmodifier_base implements ITextmodi
     _textmodeConversionShader: GLShader;
     _textmodeFramebuffer: GLFramebuffer;
     _presentShader: GLShader;
+    _layerManager: TextmodeLayerManager;
+    /** @internal */
+    _filterManager: TextmodeFilterManager;
+    private _globalFilterQueue;
+    private _preFilterFramebuffer;
+    private _postFilterFramebuffer;
     private _pluginManager;
     private _destroyRequested;
     private _isRenderingFrame;
@@ -84,6 +94,65 @@ export declare class Textmodifier extends Textmodifier_base implements ITextmodi
     get isDisposed(): boolean;
     get overlay(): TextmodeImage | undefined;
     get loading(): LoadingScreenManager;
+    get layers(): LayerManager;
+    /**
+     * Access the filter manager for this Textmodifier instance.
+     *
+     * Use this to register custom filters that can be applied both globally
+     * (via {@link filter}) and on individual layers (via {@link TextmodeLayer.filter}).
+     * Filters only need to be registered once and are available everywhere.
+     *
+     * @example
+     * ```typescript
+     * // Register a custom filter once
+     * await t.filters.register('vignette', vignetteShader, {
+     *     u_intensity: ['intensity', 0.5]
+     * });
+     *
+     * t.draw(() => {
+     *     t.background(0);
+     *     t.char('A');
+     *     t.rect(10, 10);
+     *
+     *     // Apply filter globally to final output
+     *     t.filter('vignette', { intensity: 0.8 });
+     *
+     *     // Or apply to a specific layer
+     *     t.layers.base.filter('vignette', 0.5);
+     * });
+     * ```
+     */
+    get filters(): TextmodeFilterManager;
+    /**
+     * Apply a filter to the final composited output.
+     *
+     * Filters are applied after all layers are composited but before
+     * the result is presented to the canvas. Multiple filters can be
+     * queued per frame and will be applied in order.
+     *
+     * @param name The name of the filter to apply (built-in or custom)
+     * @param params Optional parameters for the filter
+     *
+     * @example
+     * ```typescript
+     * t.draw(() => {
+     *     t.background(0);
+     *     t.charColor(255);
+     *     t.char('A');
+     *     t.rect(10, 10);
+     *
+     *     // Apply built-in filters
+     *     t.filter('grayscale', 0.5);
+     *     t.filter('invert');
+     *
+     *     // Chain multiple filters
+     *     t.filter('sepia', { amount: 0.3 });
+     *     t.filter('threshold', 0.5);
+     * });
+     * ```
+     */
+    filter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
+    filter(name: FilterName, params?: unknown): void;
     $registerSource(source: TextmodeSource): void;
 }
 export interface Textmodifier extends IRenderingMixin, IFontMixin, IAnimationMixin, IMouseMixin, ITouchMixin, IKeyboardMixin {
