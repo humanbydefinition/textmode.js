@@ -46,6 +46,10 @@ export interface TextmodeLayerOptions {
      * The vertical offset of the layer in pixels. Default is `0`.
      */
     offsetY?: number;
+    /**
+     * The rotation of the layer in degrees around its center. Default is `0`.
+     */
+    rotation?: number;
 }
 /**
  * Dependencies required by a TextmodeLayer to function.

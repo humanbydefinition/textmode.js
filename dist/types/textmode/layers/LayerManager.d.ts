@@ -36,6 +36,7 @@ export declare class LayerManager implements ILayerManager {
     remove(layer: TextmodeLayer): void;
     move(layer: TextmodeLayer, newIndex: number): void;
     swap(layerA: TextmodeLayer, layerB: TextmodeLayer): void;
+    clear(): void;
     /**
      * Initialize all pending layers and the compositor.
      * @ignore

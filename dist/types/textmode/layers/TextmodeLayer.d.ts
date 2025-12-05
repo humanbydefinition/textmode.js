@@ -25,6 +25,8 @@ export declare class TextmodeLayer implements ITextmodeLayer {
     $offsetX: number;
     /** @ignore */
     $offsetY: number;
+    /** @ignore */
+    $rotation: number;
     private _deps?;
     private _drawFramebuffer?;
     private _asciiFramebuffer?;
@@ -66,6 +68,7 @@ export declare class TextmodeLayer implements ITextmodeLayer {
         x: number;
         y: number;
     } | void;
+    rotateZ(z?: number): number | void;
     filter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
     filter(name: FilterName, params?: unknown): void;
     /**

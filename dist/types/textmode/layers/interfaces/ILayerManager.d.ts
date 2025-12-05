@@ -33,4 +33,11 @@ export interface ILayerManager {
      * @param layerB The second layer to swap.
      */
     swap(layerA: TextmodeLayer, layerB: TextmodeLayer): void;
+    /**
+     * Remove all user-created layers from the manager.
+     * The base layer is not affected by this operation.
+     * This is useful for integration into live-coding environments where code is re-evaluated
+     * and layers need to be recreated from scratch.
+     */
+    clear(): void;
 }

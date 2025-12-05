@@ -1,5 +1,4 @@
 import type { GLRenderer, GLFramebuffer } from '../../rendering';
-import type { TextmodeGrid } from '../Grid';
 import type { TextmodeLayer } from './TextmodeLayer';
 /**
  * Parameters for the composite operation.
@@ -15,6 +14,18 @@ export interface CompositeParams {
     baseLayer: TextmodeLayer;
     /** The array of user layers to composite on top of the base. */
     layers: readonly TextmodeLayer[];
+    /** Canvas width in pixels. */
+    canvasWidth: number;
+    /** Canvas height in pixels. */
+    canvasHeight: number;
+    /** Grid width in pixels (layer size). */
+    gridWidth: number;
+    /** Grid height in pixels (layer size). */
+    gridHeight: number;
+    /** X offset to center the grid within the canvas. */
+    baseOffsetX: number;
+    /** Y offset to center the grid within the canvas. */
+    baseOffsetY: number;
 }
 /**
  * Handles the compositing of multiple layers using shader-based blending.
@@ -42,16 +53,16 @@ export declare class Layer2DCompositor {
     constructor(renderer: GLRenderer);
     /**
      * Initialize the compositor's framebuffers.
-     * @param grid The grid defining the render dimensions.
+     * @param canvasWidth The canvas width in pixels.
+     * @param canvasHeight The canvas height in pixels.
      * @ignore
      */
-    $initialize(grid: TextmodeGrid): void;
+    $initialize(canvasWidth: number, canvasHeight: number): void;
     /**
      * Composite all layers onto the target framebuffer.
      * @param params The composite parameters.
-     * @param grid The grid defining render dimensions.
      */
-    $composite(params: CompositeParams, grid: TextmodeGrid): void;
+    $composite(params: CompositeParams): void;
     /**
      * Blend a single layer onto the current composite.
      */
@@ -62,10 +73,11 @@ export declare class Layer2DCompositor {
     private _copyToTarget;
     /**
      * Resize the compositor's framebuffers.
-     * @param grid The grid defining the new dimensions.
+     * @param canvasWidth The canvas width in pixels.
+     * @param canvasHeight The canvas height in pixels.
      * @ignore
      */
-    $resize(grid: TextmodeGrid): void;
+    $resize(canvasWidth: number, canvasHeight: number): void;
     /**
      * Dispose of all compositor resources.
      * @ignore
