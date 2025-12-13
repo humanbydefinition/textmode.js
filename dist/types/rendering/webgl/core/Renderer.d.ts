@@ -1,9 +1,10 @@
-import { GLFramebuffer } from "./Framebuffer";
+import { GLFramebuffer } from './Framebuffer';
 import type { FramebufferOptions } from './Framebuffer';
-import { GLShader } from "./Shader";
-import { RenderState } from "../state/RenderState";
+import { GLShader } from './Shader';
+import { RenderState } from '../state/RenderState';
 import type { TextmodeSource } from '../../../textmode/loadables/TextmodeSource';
-import type { IRenderer } from "./interfaces/IRenderer";
+import type { TextmodeFont } from '../../../textmode/loadables/font/TextmodeFont';
+import type { IRenderer } from './interfaces/IRenderer';
 import { MaterialManager } from '../materials/MaterialManager';
 export declare class GLRenderer implements IRenderer {
     private _gl;
@@ -45,7 +46,7 @@ export declare class GLRenderer implements IRenderer {
     $setUniform(name: string, value: any): void;
     $setUserUniforms(uniforms: Record<string, any>): void;
     $createFilterShader(fragmentSource: string): GLShader;
-    $image(source: GLFramebuffer | TextmodeSource, width?: number, height?: number): void;
+    $image(source: GLFramebuffer | TextmodeSource, width?: number, height?: number, activeFont?: TextmodeFont): void;
     $quad(x: number, y: number, width: number, height: number): void;
     $rect(width: number, height: number): void;
     $line(x1: number, y1: number, x2: number, y2: number): void;
@@ -68,7 +69,7 @@ export declare class GLRenderer implements IRenderer {
     $resetViewport(): void;
     $flushInstances(): void;
     $dispose(): void;
-    get context(): WebGLRenderingContext;
+    get context(): WebGL2RenderingContext;
     get state(): RenderState;
     get materialManager(): MaterialManager;
 }

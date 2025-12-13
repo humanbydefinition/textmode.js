@@ -1,5 +1,5 @@
-import type { TextmodePlugin } from "./managers/PluginManager";
-import type { LoadingScreenOptions } from "./loading/";
+import type { TextmodePlugin } from './managers/PluginManager';
+import type { LoadingScreenOptions } from './loading/';
 /**
  * Options for creating a {@link Textmodifier} instance.
  */
@@ -22,10 +22,6 @@ export type TextmodeOptions = {
     height?: number;
     /**
      * URL or path to a custom font file *(.otf/.ttf)*.
-     *
-     * Required when using minified builds that don't include a default font.
-     *
-     * Optional for full builds *(will override embedded font if provided)*.
      */
     fontSource?: string;
     /**

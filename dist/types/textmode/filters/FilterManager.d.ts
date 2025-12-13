@@ -56,10 +56,6 @@ export declare class TextmodeFilterManager {
      * await t.filters.register('vignette', './vignette.frag', {
      *     u_intensity: ['intensity', 0.5]
      * });
-     *
-     * // Register with pre-compiled shader
-     * const shader = await t.createShader(vertSrc, fragSrc);
-     * await t.filters.register('custom', shader, {});
      * ```
      */
     register(id: FilterName, shader: GLShader | string, uniformDefs?: Record<string, [paramName: string, defaultValue: unknown]>): Promise<void>;

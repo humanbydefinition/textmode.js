@@ -1,6 +1,6 @@
 {
   "name": "textmode.js",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "textmode.js is a lightweight creative coding library for creating real-time ASCII art on the web.",
   "type": "module",
   "types": "./dist/types/index.d.ts",
@@ -23,7 +23,9 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "format": "prettier --write \"src/**/*.{ts,js}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,js}\""
   },
   "devDependencies": {
     "@mapwhit/glsl-minify": "^1.0.0",
@@ -32,6 +34,7 @@
     "@types/node": "^24.0.13",
     "@vitest/ui": "^3.1.2",
     "jsdom": "^26.1.0",
+    "prettier": "^3.7.4",
     "terser": "^5.43.1",
     "tslib": "^2.8.1",
     "typedoc": "^0.28.13",

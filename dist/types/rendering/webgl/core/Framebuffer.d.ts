@@ -69,13 +69,7 @@ export declare class GLFramebuffer implements IFramebuffer {
     $update(source: HTMLCanvasElement | HTMLVideoElement): void;
     resize(width: number, height: number): void;
     readPixels(attachmentIndex: number): Uint8Array;
-    /**
-     * Begin rendering to this framebuffer.
-     */
     begin(): void;
-    /**
-     * End rendering to this framebuffer and restore previous state.
-     */
     end(): void;
     /**
      * Get or create the material for rendering this framebuffer.

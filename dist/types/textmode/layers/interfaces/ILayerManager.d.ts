@@ -1,5 +1,6 @@
 import type { TextmodeLayer } from '../TextmodeLayer';
 import type { TextmodeLayerOptions } from '../types';
+import type { TextmodeGrid } from '../../Grid';
 export interface ILayerManager {
     /**
      * Get all user layers as a readonly array.
@@ -40,4 +41,10 @@ export interface ILayerManager {
      * and layers need to be recreated from scratch.
      */
     clear(): void;
+    /**
+     * Get the grid of the topmost visible layer.
+     * Returns the topmost user layer's grid if any are visible, otherwise returns the base layer's grid.
+     * This is useful for input managers that need to map coordinates to the layer the user sees on top.
+     */
+    $getTopmostGrid(): TextmodeGrid | undefined;
 }

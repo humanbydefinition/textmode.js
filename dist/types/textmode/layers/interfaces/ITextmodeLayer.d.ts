@@ -1,4 +1,5 @@
 import type { GLFramebuffer } from '../../../rendering';
+import type { TextmodeFont } from '../../loadables/font';
 import type { TextmodeLayerBlendMode } from '../types';
 import type { FilterName, BuiltInFilterName, BuiltInFilterParams } from '../../filters';
 /**
@@ -38,11 +39,13 @@ export interface ITextmodeLayer {
      * If the layer is not yet initialized, returns undefined.
      */
     readonly drawFramebuffer: GLFramebuffer | undefined;
+    /** The font used by this layer. */
+    readonly font: TextmodeFont;
     /**
      * Define this layer's draw callback. The callback is executed each frame
      * and should contain all drawing commands for this layer.
      *
-     * Inside the callback, use `t` (your textmode instance) to access drawing
+     * Inside the callback, use `t` (your `Textmodifier` instance) to access drawing
      * methods like `char()`, `charColor()`, `translate()`, and `rect()`.
      *
      * @param callback The function to call when drawing this layer.
@@ -118,6 +121,24 @@ export interface ITextmodeLayer {
      * ```
      */
     draw(callback: () => void): void;
+    /** Get or set the font size for this layer. */
+    fontSize(size?: number): number | void;
+    /**
+     * Load a font from the given source into this layer.
+     *
+     * @param fontSource The URL or path to the font file.
+     * @returns The loaded TextmodeFont instance.
+     *
+     * @example
+     * ```javascript
+     * const layer = t.layers.add();
+     *
+     * t.setup(async () => {
+     *   await layer.loadFont('./fonts/custom.ttf');
+     * });
+     * ```
+     */
+    loadFont(fontSource: string | TextmodeFont): Promise<TextmodeFont>;
     /**
      * Show this layer for rendering.
      */
@@ -138,7 +159,7 @@ export interface ITextmodeLayer {
      * @param mode The blend mode to set.
      * @returns The current blend mode if no parameter is provided.
      *
-     * **Available Blend Modes:**
+     * **Available blend modes:**
      * - `'normal'` - Standard alpha compositing
      * - `'additive'` - Adds colors together (great for glow/energy effects)
      * - `'multiply'` - Darkens by multiplying colors
@@ -279,32 +300,32 @@ export interface ITextmodeLayer {
      * @param z The rotation angle in degrees. Positive values rotate clockwise.
      * @returns The current rotation in degrees if no parameter is provided.
      *
-    * @example
-    * ```typescript
-    * import { textmode } from 'textmode.js';
-    *
-    * const t = textmode.create();
-    *
-    * const rotatingLayer = t.layers.add({ blendMode: 'difference', opacity: 1.0 });
-    *
-    * rotatingLayer.draw(() => {
-    *   t.clear();
-    *   t.charColor(255, 200, 100);
-    *   t.char('#');
-    *   t.rect(10, 5);
-    * });
-    *
-    * t.draw(() => {
-    *   t.background(20, 20, 40);
-    *
-    *   // Rotate the layer over time
-    *   rotatingLayer.rotateZ(t.frameCount * 2);
-    *
-    *   t.charColor(100, 200, 255);
-    *   t.char('-');
-    *   t.rect(t.grid.cols, t.grid.rows);
-    * });
-    * ```
+     * @example
+     * ```typescript
+     * import { textmode } from 'textmode.js';
+     *
+     * const t = textmode.create();
+     *
+     * const rotatingLayer = t.layers.add({ blendMode: 'difference', opacity: 1.0 });
+     *
+     * rotatingLayer.draw(() => {
+     *   t.clear();
+     *   t.charColor(255, 200, 100);
+     *   t.char('#');
+     *   t.rect(10, 5);
+     * });
+     *
+     * t.draw(() => {
+     *   t.background(20, 20, 40);
+     *
+     *   // Rotate the layer over time
+     *   rotatingLayer.rotateZ(t.frameCount * 2);
+     *
+     *   t.charColor(100, 200, 255);
+     *   t.char('-');
+     *   t.rect(t.grid.cols, t.grid.rows);
+     * });
+     * ```
      */
     rotateZ(z?: number): number | void;
     /**
@@ -313,7 +334,7 @@ export interface ITextmodeLayer {
      * Filters are applied after ASCII conversion in the order they are called.
      * Call this method within your layer's draw callback to apply effects.
      *
-     * **Built-in Filters:**
+     * **Built-in filters:**
      * - `'invert'` - Inverts all colors
      * - `'grayscale'` - Converts to grayscale (param: amount 0-1, default 1)
      * - `'sepia'` - Applies sepia tone (param: amount 0-1, default 1)

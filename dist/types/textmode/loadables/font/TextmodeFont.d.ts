@@ -25,6 +25,7 @@ export declare class TextmodeFont {
     private _textureAtlas;
     private _metricsCalculator;
     private _characterColorMapper;
+    private _isInitialized;
     /**
      * Creates a new TextmodeFont instance.
      * @param renderer Renderer instance for texture creation
@@ -81,6 +82,8 @@ export declare class TextmodeFont {
      * @ignore
      */
     $dispose(): void;
+    /** Returns whether this font has been initialized. @ignore */
+    get $isInitialized(): boolean;
     /** Returns the WebGL framebuffer containing the font texture atlas. */
     get fontFramebuffer(): GLFramebuffer;
     /** Returns the character map for O(1) lookups. */

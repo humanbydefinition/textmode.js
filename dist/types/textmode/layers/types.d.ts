@@ -1,8 +1,8 @@
 import type { GLFramebuffer } from '../../rendering';
-import type { TextmodeGrid } from '../Grid';
 import type { GLRenderer } from '../../rendering/webgl/core/Renderer';
-import type { TextmodeFont } from '../loadables/font';
 import type { TextmodeFilterManager } from '../filters';
+import type { TextmodeCanvas } from '../Canvas';
+import type { TextmodeFont } from '../loadables';
 /**
  * Blend modes available for {@link TextmodeLayer} compositing in 2D mode.
  *
@@ -47,9 +47,19 @@ export interface TextmodeLayerOptions {
      */
     offsetY?: number;
     /**
-     * The rotation of the layer in degrees around its center. Default is `0`.
+     * The z-rotation of the layer in degrees around its center. Default is `0`.
      */
-    rotation?: number;
+    rotationZ?: number;
+    /**
+     * The font size for the layer's text. Default is `16`.
+     */
+    fontSize?: number;
+    /**
+     * Source for the font to use in this layer.
+     *
+     * Can be a URL/path to a font file, or an existing TextmodeFont instance.
+     */
+    fontSource?: string | TextmodeFont;
 }
 /**
  * Dependencies required by a TextmodeLayer to function.
@@ -57,27 +67,12 @@ export interface TextmodeLayerOptions {
  */
 export interface LayerDependencies {
     renderer: GLRenderer;
-    grid: TextmodeGrid;
-    font: TextmodeFont;
-    createFramebuffer: (width: number, height: number, attachments?: number) => GLFramebuffer;
+    canvas: TextmodeCanvas;
+    createFramebuffer: (width: number, height: number, attachments?: number, options?: {
+        depth?: boolean;
+    }) => GLFramebuffer;
     /**
      * The shared filter manager for applying post-ASCII filters.
      */
     filterManager: TextmodeFilterManager;
-    /**
-     * Ping-pong buffers for layer filter chain processing (grid-sized).
-     * Shared across all layers within the LayerManager.
-     */
-    layerPingPongBuffers: [GLFramebuffer, GLFramebuffer];
-    /**
-     * Optional external draw framebuffer. When provided, the layer will use this
-     * instead of creating its own. Used for the base layer which shares the
-     * main textmode draw framebuffer.
-     */
-    externalDrawFramebuffer?: GLFramebuffer;
-    /**
-     * Optional external ASCII framebuffer. When provided, the layer will use this
-     * instead of creating its own. Used for the base layer.
-     */
-    externalAsciiFramebuffer?: GLFramebuffer;
 }

@@ -4,28 +4,26 @@ import type { TextmodeLayer } from './TextmodeLayer';
  * Parameters for the composite operation.
  */
 export interface CompositeParams {
-    /** The base texture to composite onto. */
-    baseTexture: WebGLTexture;
+    /** The base layer placement (texture + size + offset). */
+    base: CompositeLayerPlacement;
+    /** The array of user layer placements to composite on top of the base. */
+    layers: readonly CompositeLayerPlacement[];
     /** The target framebuffer to render the final result into. */
     targetFramebuffer: GLFramebuffer;
     /** The background color as RGBA values (0-1 range). */
     backgroundColor: [number, number, number, number];
-    /** The base layer configuration (visibility, opacity, offset). */
-    baseLayer: TextmodeLayer;
-    /** The array of user layers to composite on top of the base. */
-    layers: readonly TextmodeLayer[];
     /** Canvas width in pixels. */
     canvasWidth: number;
     /** Canvas height in pixels. */
     canvasHeight: number;
-    /** Grid width in pixels (layer size). */
-    gridWidth: number;
-    /** Grid height in pixels (layer size). */
-    gridHeight: number;
-    /** X offset to center the grid within the canvas. */
-    baseOffsetX: number;
-    /** Y offset to center the grid within the canvas. */
-    baseOffsetY: number;
+}
+export interface CompositeLayerPlacement {
+    layer: TextmodeLayer;
+    texture: WebGLTexture;
+    width: number;
+    height: number;
+    offsetX: number;
+    offsetY: number;
 }
 /**
  * Handles the compositing of multiple layers using shader-based blending.
@@ -49,15 +47,10 @@ export declare class Layer2DCompositor {
     /**
      * Create a new LayerCompositor.
      * @param renderer The WebGL renderer instance.
-     */
-    constructor(renderer: GLRenderer);
-    /**
-     * Initialize the compositor's framebuffers.
      * @param canvasWidth The canvas width in pixels.
      * @param canvasHeight The canvas height in pixels.
-     * @ignore
      */
-    $initialize(canvasWidth: number, canvasHeight: number): void;
+    constructor(renderer: GLRenderer, canvasWidth: number, canvasHeight: number);
     /**
      * Composite all layers onto the target framebuffer.
      * @param params The composite parameters.

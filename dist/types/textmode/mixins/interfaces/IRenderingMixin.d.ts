@@ -1,8 +1,7 @@
-import type { GLFramebuffer, GLShader, TextmodeFramebufferOptions, UniformValue } from "../../../rendering/webgl";
-import type { TextmodeSource } from '../../loadables/TextmodeSource';
+import type { GLFramebuffer, GLShader, TextmodeFramebufferOptions, UniformValue } from '../../../rendering/webgl';
 import type { TextmodeImage } from '../../loadables/TextmodeImage';
-import type { TextmodeVideo, TextmodeVideoOptions } from "../../loadables/video/TextmodeVideo";
-import type { TextmodeColor } from "../../TextmodeColor";
+import type { TextmodeColor } from '../../TextmodeColor';
+import type { TextmodeVideo } from '../../loadables';
 /**
  * Interface for rendering capabilities that will be mixed into Textmodifier
  */
@@ -12,13 +11,13 @@ export interface IRenderingMixin {
      * @param shader The custom shader to use
      *
      * @example
-    * ```javascript
-    * const t = textmode.create({ width: 800, height: 600 });
-    *
-    * let glitchShader;
-    *
-    * t.setup(async() => {
-    *     glitchShader = await t.createFilterShader(`#version 300 es
+     * ```javascript
+     * const t = textmode.create({ width: 800, height: 600 });
+     *
+     * let glitchShader;
+     *
+     * t.setup(async() => {
+     *     glitchShader = await t.createFilterShader(`#version 300 es
      *   precision highp float;
      *   in vec2 v_uv;
      *   uniform float u_intensity;
@@ -36,55 +35,55 @@ export interface IRenderingMixin {
      *   }
      * `);
      *
-    * t.draw(() => {
-    *     t.shader(glitchShader);
-    *     t.setUniform('u_intensity', Math.sin(t.frameCount * 0.1) * 0.02);
-    *     t.rect(t.grid.cols, t.grid.rows);
-    * });
+     * t.draw(() => {
+     *     t.shader(glitchShader);
+     *     t.setUniform('u_intensity', Math.sin(t.frameCount * 0.1) * 0.02);
+     *     t.rect(t.grid.cols, t.grid.rows);
+     * });
      * ```
      */
     shader(shader: GLShader): void;
     /**
      * Create a new framebuffer for offscreen rendering.
      *
-    * The framebuffer uses the same MRT structure as the main rendering pipeline.
-    * By default it allocates 4 attachments (character + color data).
+     * The framebuffer uses the same MRT structure as the main rendering pipeline.
+     * By default it allocates 4 attachments (character + color data).
      *
      * @param options Configuration options for the framebuffer.
      * @returns A new Framebuffer instance.
      *
-    * @example
-    * ```javascript
-    * const t = textmode.create({
-    *   width: 800,
-    *   height: 600,
-    * });
-    *
-    * // Create a framebuffer with 50x30 grid cells
-    * const fb = t.createFramebuffer({
-    *   width: 50,
-    *   height: 30
-    * });
-    *
-    * t.draw(() => {
-    *   // Render to framebuffer
-    *   fb.begin();
-    *   t.background(255, 0, 0);
-    *   t.charColor(255);
-    *   t.char('A');
-    *   t.rect(20, 10);
-    *   fb.end();
-    *
-    *   // Render framebuffer to main canvas
-    *   t.background(0);
-    *   t.rotateZ(t.frameCount * 2);
-    *   t.image(fb);
-    * });
-    * ```
+     * @example
+     * ```javascript
+     * const t = textmode.create({
+     *   width: 800,
+     *   height: 600,
+     * });
+     *
+     * // Create a framebuffer with 50x30 grid cells
+     * const fb = t.createFramebuffer({
+     *   width: 50,
+     *   height: 30
+     * });
+     *
+     * t.draw(() => {
+     *   // Render to framebuffer
+     *   fb.begin();
+     *   t.background(255, 0, 0);
+     *   t.charColor(255);
+     *   t.char('A');
+     *   t.rect(20, 10);
+     *   fb.end();
+     *
+     *   // Render framebuffer to main canvas
+     *   t.background(0);
+     *   t.rotateZ(t.frameCount * 2);
+     *   t.image(fb);
+     * });
+     * ```
      */
     createFramebuffer(options: TextmodeFramebufferOptions): GLFramebuffer;
     /**
-     * Draw a TextmodeFramebuffer or TextmodeSource (TextmodeImage/TextmodeVideo) to the current render target.
+     * Draw a TextmodeFramebuffer, TextmodeImage, or TextmodeVideo to the current render target.
      *
      * @param source The TextmodeFramebuffer or TextmodeSource to render
      * @param x X position on the grid where to place the content *(top-left corner)*
@@ -121,7 +120,7 @@ export interface IRenderingMixin {
      * });
      * ```
      */
-    image(source: GLFramebuffer | TextmodeSource, width?: number, height?: number): void;
+    image(source: GLFramebuffer | TextmodeImage | TextmodeVideo, width?: number, height?: number): void;
     /**
      * Load an image and return a TextmodeImage that can be drawn with image().
      *
@@ -131,29 +130,27 @@ export interface IRenderingMixin {
      * @param src URL or existing HTMLImageElement
      * @returns A Promise that resolves to a TextmodeImage object
      *
-    * @example
-    * ```javascript
-    * const t = textmode.create({
-    *     width: 800,
-    *     height: 600,
-    * });
-    *
-    * let img;
-    *
-    * t.setup(async () => {
-    *     img = await t.loadImage('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80');
-    *     img.characters(" .:-=+*#%@");
-    * });
-    *
-    * t.draw(() => {
-    *     t.background(0);
-    *
-    *     if (img) {
-    *         // Draw the loaded image
-    *         t.image(img);
-    *     }
-    * });
-    * ```
+     * @example
+     * ```javascript
+     * const t = textmode.create({
+     *     width: 800,
+     *     height: 600,
+     * });
+     *
+     * let img;
+     *
+     * t.setup(async () => {
+     *     img = await t.loadImage('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80');
+     *     img.characters(" .:-=+*#%@");
+     * });
+     *
+     * t.draw(() => {
+     *     t.background(0);
+     *
+     *     // Draw the loaded image
+     *     t.image(img);
+     * });
+     * ```
      */
     loadImage(src: string | HTMLImageElement): Promise<TextmodeImage>;
     /**
@@ -182,14 +179,12 @@ export interface IRenderingMixin {
      * t.draw(() => {
      *     t.background(0);
      *
-     *     if (video) {
-     *         // Draw the loaded video
-     *         t.image(video);
-     *     }
+     *     // Draw the loaded video
+     *     t.image(video);
      * });
      * ```
      */
-    loadVideo(src: string | HTMLVideoElement, options?: TextmodeVideoOptions): Promise<TextmodeVideo>;
+    loadVideo(src: string | HTMLVideoElement): Promise<TextmodeVideo>;
     /**
      * Set a uniform value for the current custom shader.
      * @param name The name of the uniform variable
@@ -277,96 +272,50 @@ export interface IRenderingMixin {
      * @param fragmentSource The fragment shader source code or a file path (e.g., './shader.frag')
      * @returns A Promise that resolves to a compiled shader ready for use with {@link shader}
      *
-    * @example
-    * ```javascript
-    * const t = textmode.create({
-    *   width: 800,
-    *   height: 600,
-    * })
-    *
-    * let waveShader;
-    *
-    * t.setup(async () => {
-    *   // Load shader from file
-    *   waveShader = await t.createFilterShader('./shader.frag');
-    *
-    *   // Or create from inline source
-    *   // waveShader = await t.createFilterShader(`#version 300 es
-    *   //   precision highp float;
-    *   //
-    *   //   in vec2 v_uv;
-    *   //   in vec3 v_character;
-    *   //   in vec4 v_primaryColor;
-    *   //   in vec4 v_secondaryColor;
-    *   //
-    *   //   uniform float u_time;
-    *   //
-    *   //   layout(location = 0) out vec4 o_character;
-    *   //   layout(location = 1) out vec4 o_primaryColor;
-    *   //   layout(location = 2) out vec4 o_secondaryColor;
-    *   //
-    *   //   void main() {
-    *   //     // Shader code here
-    *   //   }
-    *   // `);
-    * });
-    *
-    * t.draw(() => {
-    *   if (waveShader) {
-    *     t.shader(waveShader);
-    *     t.setUniform('u_time', t.frameCount * 0.003);
-    *     t.rect(t.grid.cols, t.grid.rows);
-    *   }
-    * });
-    * ```
+     * @example
+     * ```javascript
+     * const t = textmode.create({
+     *   width: 800,
+     *   height: 600,
+     * })
+     *
+     * let waveShader;
+     *
+     * t.setup(async () => {
+     *   // Load shader from file
+     *   waveShader = await t.createFilterShader('./shader.frag');
+     *
+     *   // Or create from inline source
+     *   // waveShader = await t.createFilterShader(`#version 300 es
+     *   //   precision highp float;
+     *   //
+     *   //   in vec2 v_uv;
+     *   //   in vec3 v_character;
+     *   //   in vec4 v_primaryColor;
+     *   //   in vec4 v_secondaryColor;
+     *   //
+     *   //   uniform float u_time;
+     *   //
+     *   //   layout(location = 0) out vec4 o_character;
+     *   //   layout(location = 1) out vec4 o_primaryColor;
+     *   //   layout(location = 2) out vec4 o_secondaryColor;
+     *   //
+     *   //   void main() {
+     *   //     // Shader code here
+     *   //   }
+     *   // `);
+     * });
+     *
+     * t.draw(() => {
+     *   if (waveShader) {
+     *     t.shader(waveShader);
+     *     t.setUniform('u_time', t.frameCount * 0.003);
+     *     t.rect(t.grid.cols, t.grid.rows);
+     *   }
+     * });
+     * ```
      */
     createFilterShader(fragmentSource: string): Promise<GLShader>;
-    /**
-     * Create a custom shader from vertex and fragment shader source code or file paths.
-     * Both the vertex and fragment shaders can be provided as inline GLSL source code
-     * or as file paths (e.g., './vertex.vert', './fragment.frag').
-     * @param vertexSource The vertex shader source code or a file path (e.g., './shader.vert')
-     * @param fragmentSource The fragment shader source code or a file path (e.g., './shader.frag')
-     * @returns A Promise that resolves to a compiled shader ready for use with {@link shader}
-     *
-    * @example
-    * ```javascript
-    * const t = textmode.create({
-    *   width: 800,
-    *   height: 600,
-    * });
-    *
-    * let customShader;
-    *
-    * t.setup(async () => {
-    *   // Load shaders from files
-    *   customShader = await t.createShader('./vertex.vert', './fragment.frag');
-    *
-    *   // Or create from inline source
-    *   // customShader = await t.createShader(
-    *   //   `#version 300 es
-    *   //   in vec2 a_position;
-    *   //   void main() {
-    *   //     gl_Position = vec4(a_position, 0.0, 1.0);
-    *   //   }`,
-    *   //   `#version 300 es
-    *   //   precision highp float;
-    *   //   out vec4 fragColor;
-    *   //   void main() {
-    *   //     fragColor = vec4(1.0, 0.0, 0.0, 1.0);
-    *   //   }`
-    *   // );
-    * });
-    *
-    * t.draw(() => {
-    *   if (customShader) {
-    *     t.shader(customShader);
-    *     t.rect(t.grid.cols, t.grid.rows);
-    *   }
-    * });
-    * ```
-     */
-    createShader(vertexSource: string, fragmentSource: string): Promise<GLShader>;
     /**
      * Sets the rotation angles for subsequent shape rendering operations.
      *
@@ -610,45 +559,45 @@ export interface IRenderingMixin {
      * @param value Grayscale value, hex string, single character, or an existing color
      * @param g Optional green component, or `value` when using grayscale form
      * @param b Optional blue component, or `value` when using grayscale form
-    * @param a Optional alpha component when using RGB form
-    *
-    * Example usage of the {@link color} helper.
-    *
-    * @example
-    * ```javascript
-    * const t = textmode.create({ width: 800, height: 600 });
-    *
-    * // Grayscale (0 = black, 255 = white)
-    * const gray = t.color(128);
-    *
-    * // RGB
-    * const hotPink = t.color(255, 105, 180);
-    *
-    * // RGBA (alpha 0-255)
-    * const semiTransparentRed = t.color(255, 0, 0, 128);
-    *
-    * // Hex string
-    * const dusk = t.color('#203040');
-    *
-    * t.draw(() => {
-    *     // Using colors with other drawing APIs
-    *     t.background(gray);
-    *     t.charColor(hotPink);
-    *     t.char('A');
-    *     t.rect(5, 5);
-    *
-    *     t.translate(5, 0);
-    *     t.cellColor(dusk);
-    *     t.char('*');
-    *     t.rect(5, 5);
-    *
-    *     t.translate(5, 0);
-    *     t.charColor("#FF00FF");
-    *     t.char("B");
-    *     t.rect(5, 5);
-    * });
-    * ```
-    */
+     * @param a Optional alpha component when using RGB form
+     *
+     * Example usage of the {@link color} helper.
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({ width: 800, height: 600 });
+     *
+     * // Grayscale (0 = black, 255 = white)
+     * const gray = t.color(128);
+     *
+     * // RGB
+     * const hotPink = t.color(255, 105, 180);
+     *
+     * // RGBA (alpha 0-255)
+     * const semiTransparentRed = t.color(255, 0, 0, 128);
+     *
+     * // Hex string
+     * const dusk = t.color('#203040');
+     *
+     * t.draw(() => {
+     *     // Using colors with other drawing APIs
+     *     t.background(gray);
+     *     t.charColor(hotPink);
+     *     t.char('A');
+     *     t.rect(5, 5);
+     *
+     *     t.translate(5, 0);
+     *     t.cellColor(dusk);
+     *     t.char('*');
+     *     t.rect(5, 5);
+     *
+     *     t.translate(5, 0);
+     *     t.charColor("#FF00FF");
+     *     t.char("B");
+     *     t.rect(5, 5);
+     * });
+     * ```
+     */
     color(value: number | string | TextmodeColor, g?: number, b?: number, a?: number): TextmodeColor;
     /**
      * Draw a rectangle with the current settings.
@@ -680,42 +629,42 @@ export interface IRenderingMixin {
      * Draw a 1x1 rectangle with the current settings.
      *
      * @example
-    * ```javascript
-    * const t = textmode.create({ width: 800, height: 600 });
-    *
-    * t.draw(() => {
-    *   t.background(0);
-    *
-    *   const angle = t.frameCount * 0.06;
-    *   const radius = Math.min(t.grid.cols, t.grid.rows) * 0.35;
-    *
-    *   // Draw a short trail of points behind the leading point
-    *   for (let i = 0; i < 10; i++) {
-    *     const a = angle - i * 0.18;
-    *     const r = radius * (1 - i * 0.08);
-    *     const x = Math.round(Math.cos(a) * r);
-    *     const y = Math.round(Math.sin(a) * r);
-    *
-    *     // Color and brightness fade across the trail
-    *     const brightness = Math.max(40, 255 - i * 20);
-    *     const blue = Math.max(60, 255 - i * 25);
-    *     const green = 120 + i * 8;
-    *
-    *     t.push();
-    *     t.translate(x, y);
-    *     t.char('*');
-    *     t.charColor(brightness, green, blue);
-    *     t.point();
-    *
-    *     t.pop();
-    *   }
-    *
-    *   // Leading point drawn with highest brightness
-    *   t.char('@');
-    *   t.charColor(255, 255, 160);
-    *   t.translate(Math.round(Math.cos(angle) * radius), Math.round(Math.sin(angle) * radius));
-    *   t.point();
-    * });
+     * ```javascript
+     * const t = textmode.create({ width: 800, height: 600 });
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     *
+     *   const angle = t.frameCount * 0.06;
+     *   const radius = Math.min(t.grid.cols, t.grid.rows) * 0.35;
+     *
+     *   // Draw a short trail of points behind the leading point
+     *   for (let i = 0; i < 10; i++) {
+     *     const a = angle - i * 0.18;
+     *     const r = radius * (1 - i * 0.08);
+     *     const x = Math.round(Math.cos(a) * r);
+     *     const y = Math.round(Math.sin(a) * r);
+     *
+     *     // Color and brightness fade across the trail
+     *     const brightness = Math.max(40, 255 - i * 20);
+     *     const blue = Math.max(60, 255 - i * 25);
+     *     const green = 120 + i * 8;
+     *
+     *     t.push();
+     *     t.translate(x, y);
+     *     t.char('*');
+     *     t.charColor(brightness, green, blue);
+     *     t.point();
+     *
+     *     t.pop();
+     *   }
+     *
+     *   // Leading point drawn with highest brightness
+     *   t.char('@');
+     *   t.charColor(255, 255, 160);
+     *   t.translate(Math.round(Math.cos(angle) * radius), Math.round(Math.sin(angle) * radius));
+     *   t.point();
+     * });
      * ```
      */
     point(): void;
@@ -726,33 +675,36 @@ export interface IRenderingMixin {
      * @param x2 X-coordinate of the line end point
      * @param y2 Y-coordinate of the line end point
      *
-    * @example
-    * ```javascript
-    * const t = textmode.create({
-    *   width: 800,
-    *   height: 600,
-    * })
-    *
-    * t.draw(() => {
-    *   t.background(0);
-    *
-    *   t.char('*');
-    *   t.charColor(255, 100, 255); // Magenta
-    *   t.lineWeight(2);
-    *
-    *   const halfWidth = 5;
-    *   const halfHeight = 7.5;
-    *
-    *   t.push();
-    *   t.rotateZ(t.frameCount * 2);
-    *   t.line(-halfWidth, halfHeight, halfWidth, -halfHeight);
-    *   t.pop();
-    * });
-    * ```
+     * @example
+     * ```javascript
+     * const t = textmode.create({
+     *   width: 800,
+     *   height: 600,
+     * })
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     *
+     *   t.char('*');
+     *   t.charColor(255, 100, 255); // Magenta
+     *   t.lineWeight(2);
+     *
+     *   const halfWidth = 5;
+     *   const halfHeight = 7.5;
+     *
+     *   t.push();
+     *   t.rotateZ(t.frameCount * 2);
+     *   t.line(-halfWidth, halfHeight, halfWidth, -halfHeight);
+     *   t.pop();
+     * });
+     * ```
      */
     line(x1: number, y1: number, x2: number, y2: number): void;
     /**
-     * Set the background color for the canvas.
+     * Set the background color of the layer currently drawing to.
+     *
+     * Used to clear the layer to a specific color at the start of its drawing cycle.
+     *
      * @param value A {@link TextmodeColor}, hex string, grayscale value, or single RGB channel
      * @param g Optional green component when providing RGB channels or alpha when used with grayscale
      * @param b Optional blue component when providing RGB channels
@@ -785,7 +737,9 @@ export interface IRenderingMixin {
      */
     background(value: number | string | TextmodeColor, g?: number, b?: number, a?: number): void;
     /**
-     * Clear the canvas.
+     * Clear the layer currently drawing to.
+     *
+     * Used to clear the layer at the start of its drawing cycle.
      *
      * @example
      * ```javascript
@@ -805,39 +759,39 @@ export interface IRenderingMixin {
      * Update the line weight (thickness) for subsequent {@link line} and {@link bezierCurve} calls.
      * @param weight The line weight (thickness) to set.
      *
-    * @example
-    * ```javascript
-    * const t = textmode.create({
-    *     width: 800,
-    *     height: 600,
-    * })
-    *
-    * t.draw(() => {
-    *     t.background('#050810');
-    *
-    *     // Animate the weight so every line breathes differently
-    *     const layers = 6;
-    *     const halfCols = t.grid.cols / 2;
-    *     const spacing = 4;
-    *
-    *     for (let i = 0; i < layers; i++) {
-    *         const phase = t.frameCount * 0.03 + i * 0.8;
-    *         const pulse = 0.75 + 3.25 * (0.5 + 0.5 * Math.sin(phase));
-    *         const wobble = Math.sin(phase * 1.6) * 4;
-    *         const centeredRow = (i - (layers - 1) / 2) * spacing;
-    *
-    *         t.lineWeight(Math.round(pulse));
-    *         t.charColor(160 + i * 12, 200 - i * 8, 255);
-    *         t.char('-');
-    *         t.line(
-    *             -halfCols + 2,
-    *             centeredRow + wobble,
-    *             halfCols - 2,
-    *             centeredRow - wobble,
-    *         );
-    *     }
-    * });
-    * ```
+     * @example
+     * ```javascript
+     * const t = textmode.create({
+     *     width: 800,
+     *     height: 600,
+     * })
+     *
+     * t.draw(() => {
+     *     t.background('#050810');
+     *
+     *     // Animate the weight so every line breathes differently
+     *     const layers = 6;
+     *     const halfCols = t.grid.cols / 2;
+     *     const spacing = 4;
+     *
+     *     for (let i = 0; i < layers; i++) {
+     *         const phase = t.frameCount * 0.03 + i * 0.8;
+     *         const pulse = 0.75 + 3.25 * (0.5 + 0.5 * Math.sin(phase));
+     *         const wobble = Math.sin(phase * 1.6) * 4;
+     *         const centeredRow = (i - (layers - 1) / 2) * spacing;
+     *
+     *         t.lineWeight(Math.round(pulse));
+     *         t.charColor(160 + i * 12, 200 - i * 8, 255);
+     *         t.char('-');
+     *         t.line(
+     *             -halfCols + 2,
+     *             centeredRow + wobble,
+     *             halfCols - 2,
+     *             centeredRow - wobble,
+     *         );
+     *     }
+     * });
+     * ```
      */
     lineWeight(weight: number): void;
     /**
@@ -852,40 +806,40 @@ export interface IRenderingMixin {
      * @param x2 End point X coordinate
      * @param y2 End point Y coordinate
      *
-    * @example
-    * ```javascript
-    * const t = textmode.create({
-    *   width: 800,
-    *   height: 600,
-    * })
-    *
-    * t.draw(() => {
-    *   t.background(0);
-    *   t.translate(-t.grid.cols / 2, -t.grid.rows / 2);
-    *
-    *   // Draw a smooth S-curve
-    *   t.char('*');
-    *   t.charColor(255, 100, 255); // Magenta
-    *   t.lineWeight(2);
-    *
-    *   // Rotate the curve around its geometric center
-    *   // The bezier's control points: (5,20), (15,5), (25,35), (35,20)
-    *   // Center = average of points; translate to center then draw with local coordinates
-    *   const cx = (5 + 15 + 25 + 35) / 4;
-    *   const cy = (20 + 5 + 35 + 20) / 4;
-    *
-    *   t.translate(cx, cy);
-    *   t.rotateZ(t.frameCount * 2);
-    *   t.bezierCurve(5 - cx, 20 - cy, 15 - cx, 5 - cy, 25 - cx, 35 - cy, 35 - cx, 20 - cy);
-    * });
-    * ```
+     * @example
+     * ```javascript
+     * const t = textmode.create({
+     *   width: 800,
+     *   height: 600,
+     * })
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     *   t.translate(-t.grid.cols / 2, -t.grid.rows / 2);
+     *
+     *   // Draw a smooth S-curve
+     *   t.char('*');
+     *   t.charColor(255, 100, 255); // Magenta
+     *   t.lineWeight(2);
+     *
+     *   // Rotate the curve around its geometric center
+     *   // The bezier's control points: (5,20), (15,5), (25,35), (35,20)
+     *   // Center = average of points; translate to center then draw with local coordinates
+     *   const cx = (5 + 15 + 25 + 35) / 4;
+     *   const cy = (20 + 5 + 35 + 20) / 4;
+     *
+     *   t.translate(cx, cy);
+     *   t.rotateZ(t.frameCount * 2);
+     *   t.bezierCurve(5 - cx, 20 - cy, 15 - cx, 5 - cy, 25 - cx, 35 - cy, 35 - cx, 20 - cy);
+     * });
+     * ```
      */
     bezierCurve(x1: number, y1: number, cp1x: number, cp1y: number, cp2x: number, cp2y: number, x2: number, y2: number): void;
     /**
      * Set the character to be used for subsequent rendering operations.
-     * Accepts a single character string or a
-     * {@link TextmodeColor} produced via {@link color}. When a color is provided,
-     * the encoded glyph information is applied if available.
+     * Accepts a single character string.
+     *
+     * @param character The character to set for rendering
      *
      * @example
      * ```javascript
@@ -905,7 +859,7 @@ export interface IRenderingMixin {
      * });
      * ```
      */
-    char(character: string | TextmodeColor): void;
+    char(character: string): void;
     /**
      * Set the character color for subsequent rendering operations.
      * Accepts channel values, hex strings, or a {@link TextmodeColor} instance.
@@ -1116,55 +1070,4 @@ export interface IRenderingMixin {
      * ```
      */
     arc(width: number, height: number, startAngle: number, endAngle: number): void;
-    /**
-     * Enable orthographic projection for the current frame.
-     *
-     * By default, textmode.js uses perspective projection. Calling this function
-     * switches to orthographic projection for all geometries drawn in the current frame.
-     * Orthographic projection renders objects without perspective distortion - parallel
-     * lines remain parallel regardless of depth, and objects don't appear smaller as
-     * they move away from the camera.
-     *
-     * **Note**: The projection mode resets to perspective at the start of each frame,
-     * so `ortho()` must be called in every frame where you want orthographic projection.
-     *
-    * @example
-    * ```javascript
-    * const t = textmode.create({
-    *   width: 800,
-    *   height: 600,
-    * });
-    *
-    * let useOrtho = false;
-    *
-    * // Toggle between ortho and perspective with spacebar
-    * t.keyPressed((data) => {
-    *   if (data.key === ' ') {
-    *     useOrtho = !useOrtho;
-    *   }
-    * });
-    *
-    * t.draw(() => {
-    *   t.background(0);
-    *
-    *   // Enable orthographic projection if toggled on
-    *   if (useOrtho) {
-    *     t.ortho();
-    *   }
-    *
-    *   // Animate the rectangle back and forth on the z-axis
-    *   const zPos = Math.sin(t.frameCount * 0.01) * 50;
-    *
-    *   t.push();
-    *   t.translate(0, 0, zPos);
-    *   t.rotateZ(t.frameCount * 2);
-    *   t.rotateX(t.frameCount * 1.5);
-    *   t.char('A');
-    *   t.charColor(255, 100, 200);
-    *   t.rect(16, 16);
-    *   t.pop();
-    * });
-    * ```
-     */
-    ortho(): void;
 }

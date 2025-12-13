@@ -1,6 +1,7 @@
 import type { Textmodifier } from '../Textmodifier';
 import type { RGBA } from '../utils/cssColor';
-import type { LoadingPhaseHandle, LoadingScreenOptions } from './types';
+import { LoadingPhase } from './LoadingPhase';
+import type { LoadingScreenOptions } from './types';
 /**
  * Manages the loading screen display and state. Can be accessed via {@link Textmodifier.loading}.
  */
@@ -11,11 +12,8 @@ export declare class LoadingScreenManager {
     private readonly _phaseTracker;
     private readonly _transition;
     private readonly _loadingAnimationController;
-    private _loadingFont;
-    private _loadingGrid;
-    private _loadingDrawFramebuffer;
-    private _loadingFramebuffer;
-    private _renderer;
+    private _loadingLayer;
+    private _customRenderer;
     private _palette;
     private _theme;
     private _startTime;
@@ -31,12 +29,12 @@ export declare class LoadingScreenManager {
      */
     constructor(textmodifier: Textmodifier, opts: LoadingScreenOptions | undefined, canvasBackground: RGBA | null);
     /**
-     * Initialize loading screen resources (font, grid, framebuffers).
+     * Initialize loading screen resources using a TextmodeLayer.
      * Must be called after the renderer is ready.
      * @param fontSource Optional font source for the loading screen
      * @ignore
      */
-    $initialize(fontSource?: string): Promise<void>;
+    $initialize(): Promise<void>;
     /**
      * Indicates whether the loading screen should render this frame.
      * @ignore
@@ -55,7 +53,7 @@ export declare class LoadingScreenManager {
     $stop(): void;
     /**
      * Handle canvas resize during loading.
-     * Updates grid and framebuffers to match new canvas dimensions.
+     * Delegates to the loading layer which handles grid and framebuffer resizing.
      * @ignore
      */
     $resize(): void;
@@ -66,84 +64,84 @@ export declare class LoadingScreenManager {
     $dispose(): void;
     /**
      * Get the current overall loading progress (0-1).
-    *
-    * @example
-    * ```javascript
-    * const t = textmode.create({
-    *   width: 800,
-    *   height: 600,
-    *   loadingScreen: { message: 'starting...' }
-    * });
-    *
-    * // In setup we can start a phase and read the overall progress
-    * t.setup(async () => {
-    *   const phase = t.loading.beginPhase('assets', 1);
-    *   phase.report(0.5); // half complete for the phase
-    *
-    *   // The `progress` accessor reports the global progress across all phases
-    *   console.log(`Loading: ${Math.round(t.loading.progress * 100)}%`);
-    * });
-    * ```
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({
+     *   width: 800,
+     *   height: 600,
+     *   loadingScreen: { message: 'starting...' }
+     * });
+     *
+     * // In setup we can start a phase and read the overall progress
+     * t.setup(async () => {
+     *   const phase = t.loading.beginPhase('assets', 1);
+     *   phase.report(0.5); // half complete for the phase
+     *
+     *   // The `progress` accessor reports the global progress across all phases
+     *   console.log(`Loading: ${Math.round(t.loading.progress * 100)}%`);
+     * });
+     * ```
      */
     get progress(): number;
     /**
      * Get or set the loading screen message.
      * @param next Optional new message to set.
      * @returns The current loading screen message.
-    *
-    * @example
-    * ```javascript
-    * const t = textmode.create({
-    *   width: 800,
-    *   height: 600,
-    *   loadingScreen: { message: 'loading...' }
-    * });
-    *
-    * t.setup(() => {
-    *   // Update the message visible on the loading screen
-    *   t.loading.message('preloading video...');
-    *
-    *   // Read the current message (useful in custom renderers)
-    *   const msg = t.loading.message();
-    *   console.log(msg);
-    * });
-    * ```
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({
+     *   width: 800,
+     *   height: 600,
+     *   loadingScreen: { message: 'loading...' }
+     * });
+     *
+     * t.setup(() => {
+     *   // Update the message visible on the loading screen
+     *   t.loading.message('preloading video...');
+     *
+     *   // Read the current message (useful in custom renderers)
+     *   const msg = t.loading.message();
+     *   console.log(msg);
+     * });
+     * ```
      */
     message(next?: string): string | undefined;
     /**
      * Begin a new loading phase.
      *
-     * With the returned {@link LoadingPhaseHandle} you can report progress,
+     * With the returned {@link LoadingPhase} you can report progress,
      * track asynchronous work, and manage the phase lifecycle.
      *
      * @param label Label for the loading phase.
      * @param weight Weight of the loading phase (default is 1).
      * @returns A handle to the created loading phase.
-    *
-    * @example
-    * ```javascript
-    * const t = textmode.create({
-    *   width: 800,
-    *   height: 600,
-    *   loadingScreen: { message: 'preparing...' }
-    * });
-    *
-    * // In setup we start a phase and then track work in that phase
-    * t.setup(async () => {
-    *   const phase = t.loading.beginPhase('video preload', 2);
-    *
-    *   // Example: report progress from a loader callback
-    *   await phase.track(async () => {
-    *     // Simulated work
-    *     for (let i = 0; i <= 10; i++) {
-    *       phase.report(i / 10);
-    *       await new Promise((r) => setTimeout(r, 30));
-    *     }
-    *   });
-    * });
-    * ```
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({
+     *   width: 800,
+     *   height: 600,
+     *   loadingScreen: { message: 'preparing...' }
+     * });
+     *
+     * // In setup we start a phase and then track work in that phase
+     * t.setup(async () => {
+     *   const phase = t.loading.beginPhase('video preload', 2);
+     *
+     *   // Example: report progress from a loader callback
+     *   await phase.track(async () => {
+     *     // Simulated work
+     *     for (let i = 0; i <= 10; i++) {
+     *       phase.report(i / 10);
+     *       await new Promise((r) => setTimeout(r, 30));
+     *     }
+     *   });
+     * });
+     * ```
      */
-    addPhase(label: string, weight?: number): LoadingPhaseHandle;
+    addPhase(label: string, weight?: number): LoadingPhase;
     /**
      * Finish the loading process.
      * @ignore
@@ -160,28 +158,28 @@ export declare class LoadingScreenManager {
     /**
      * Report an error that occurred during loading.
      * @param error The error message or `Error` object.
-    *
-    * @example
-    * ```javascript
-    * const t = textmode.create({
-    *   width: 800,
-    *   height: 600,
-    *   loadingScreen: { message: 'starting...' }
-    * });
-    *
-    * t.setup(async () => {
-    *   const phase = t.loading.beginPhase('remote fetch', 1);
-    *   try {
-    *     await phase.track(async () => {
-    *       // Failing call
-    *       throw new Error('server down');
-    *     });
-    *   } catch (err) {
-    *     // This will put the loading manager into an error state
-    *     t.loading.error(err instanceof Error ? err : String(err));
-    *   }
-    * });
-    * ```
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({
+     *   width: 800,
+     *   height: 600,
+     *   loadingScreen: { message: 'starting...' }
+     * });
+     *
+     * t.setup(async () => {
+     *   const phase = t.loading.beginPhase('remote fetch', 1);
+     *   try {
+     *     await phase.track(async () => {
+     *       // Failing call
+     *       throw new Error('server down');
+     *     });
+     *   } catch (err) {
+     *     // This will put the loading manager into an error state
+     *     t.loading.error(err instanceof Error ? err : String(err));
+     *   }
+     * });
+     * ```
      */
     error(error: Error | string): void;
     /**

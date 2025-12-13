@@ -145,7 +145,7 @@ export type LoadingScreenRenderer = (context: LoadingScreenRendererContext) => v
 /**
  * Handle for managing a loading phase.
  */
-export interface LoadingPhaseHandle {
+export interface ILoadingPhase {
     /**
      * The unique identifier of the loading phase.
      */
@@ -157,77 +157,77 @@ export interface LoadingPhaseHandle {
     /**
      * Update the progress of the loading phase.
      * @param progress A number between 0 and 1 representing the phase's progress.
-    *
-    * @example
-    * ```ts
-    * const t = textmode.create({ width: 800, height: 600, loadingScreen: { message: 'prepping...' } });
-    *
-    * // Create a phase and report progress as work proceeds
-    * t.setup(async () => {
-    *   const phase = t.loading.beginPhase('assets', 1);
-    *   phase.report(0.25);
-    *   // ...load assets...
-    *   phase.report(0.75);
-    *   phase.complete();
-    * });
-    * ```
+     *
+     * @example
+     * ```ts
+     * const t = textmode.create({ width: 800, height: 600, loadingScreen: { message: 'prepping...' } });
+     *
+     * // Create a phase and report progress as work proceeds
+     * t.setup(async () => {
+     *   const phase = t.loading.beginPhase('assets', 1);
+     *   phase.report(0.25);
+     *   // ...load assets...
+     *   phase.report(0.75);
+     *   phase.complete();
+     * });
+     * ```
      */
     report(progress: number): void;
     /**
      * Mark the loading phase as complete.
-    *
-    * @example
-    * ```ts
-    * const t = textmode.create({ width: 800, height: 600, loadingScreen: { message: 'prepping...' } });
-    *
-    * t.setup(() => {
-    *   const phase = t.loading.beginPhase('init', 1);
-    *   // Finish phase when work is done
-    *   phase.complete();
-    * });
-    * ```
+     *
+     * @example
+     * ```ts
+     * const t = textmode.create({ width: 800, height: 600, loadingScreen: { message: 'prepping...' } });
+     *
+     * t.setup(() => {
+     *   const phase = t.loading.beginPhase('init', 1);
+     *   // Finish phase when work is done
+     *   phase.complete();
+     * });
+     * ```
      */
     complete(): void;
     /**
      * Mark the loading phase as failed.
      * @param error An optional error object describing the failure.
-    *
-    * @example
-    * ```ts
-    * const t = textmode.create({ width: 800, height: 600 });
-    *
-    * t.setup(async () => {
-    *   const phase = t.loading.beginPhase('fetch', 1);
-    *   try {
-    *     // simulate failure
-    *     throw new Error('network error');
-    *   } catch (err) {
-    *     phase.fail(err instanceof Error ? err : String(err));
-    *   }
-    * });
-    * ```
+     *
+     * @example
+     * ```ts
+     * const t = textmode.create({ width: 800, height: 600 });
+     *
+     * t.setup(async () => {
+     *   const phase = t.loading.beginPhase('fetch', 1);
+     *   try {
+     *     // simulate failure
+     *     throw new Error('network error');
+     *   } catch (err) {
+     *     phase.fail(err instanceof Error ? err : String(err));
+     *   }
+     * });
+     * ```
      */
     fail(error?: Error): void;
     /**
      * Track a task within this loading phase.
      * @param task A promise or function representing the task to track.
      * @returns A promise that resolves with the task's result.
-    *
-    * @example
-    * ```ts
-    * const t = textmode.create({ width: 800, height: 600, loadingScreen: { message: 'loading...' } });
-    *
-    * t.setup(async () => {
-    *   const phase = t.loading.beginPhase('video', 2);
-    *   await phase.track(async () => {
-    *     // do async work and report updates
-    *     for (let i = 0; i <= 10; i++) {
-    *       phase.report(i / 10);
-    *       await new Promise((r) => setTimeout(r, 30));
-    *     }
-    *   });
-    * });
-    * ```
+     *
+     * @example
+     * ```ts
+     * const t = textmode.create({ width: 800, height: 600, loadingScreen: { message: 'loading...' } });
+     *
+     * t.setup(async () => {
+     *   const phase = t.loading.beginPhase('video', 2);
+     *   await phase.track(async () => {
+     *     // do async work and report updates
+     *     for (let i = 0; i <= 10; i++) {
+     *       phase.report(i / 10);
+     *       await new Promise((r) => setTimeout(r, 30));
+     *     }
+     *   });
+     * });
+     * ```
      */
     track<T>(task: Promise<T> | (() => Promise<T> | T)): Promise<T>;
 }

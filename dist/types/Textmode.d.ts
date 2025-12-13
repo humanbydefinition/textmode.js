@@ -13,17 +13,17 @@ export declare class Textmode {
      * @param opts Configuration options for the Textmodifier instance
      * @returns A new Textmodifier instance
      *
-    * @example
-    * ```javascript
-    * const t = textmode.create({ width: 800, height: 600, fontSize: 16 });
-    *
-    * t.draw(() => {
-    *     t.background(0);
-    *     t.char("x");
-    *     t.rotateZ(t.frameCount);
-    *     t.rect(10, 10);
-    * });
-    * ```
+     * @example
+     * ```javascript
+     * const t = textmode.create({ width: 800, height: 600, fontSize: 16 });
+     *
+     * t.draw(() => {
+     *     t.background(0);
+     *     t.char("x");
+     *     t.rotateZ(t.frameCount);
+     *     t.rect(10, 10);
+     * });
+     * ```
      */
     static create(opts?: TextmodeOptions): Textmodifier;
     /**

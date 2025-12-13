@@ -3,7 +3,7 @@ import type { TyprFont } from './typr/types.ts';
  * Handles extraction of characters from font cmap tables.
  * This class encapsulates the complex logic for reading different cmap table formats.
  */
-export declare class CharacterExtraction {
+export declare class CharacterExtractor {
     /**
      * Extracts all available characters from a font's cmap tables.
      * @param font The parsed font object from Typr

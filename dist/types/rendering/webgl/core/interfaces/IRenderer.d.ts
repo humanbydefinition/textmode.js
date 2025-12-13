@@ -1,6 +1,6 @@
-import type { GLFramebuffer, FramebufferOptions } from "../Framebuffer";
-import type { GLShader } from "../Shader";
-import type { RenderState } from "../../state/RenderState";
+import type { GLFramebuffer, FramebufferOptions } from '../Framebuffer';
+import type { GLShader } from '../Shader';
+import type { RenderState } from '../../state/RenderState';
 /**
  * Interface for the core WebGL renderer that manages the WebGL context and provides high-level rendering operations.
  *

@@ -1,7 +1,5 @@
 /**
- * Manages the grid of a {@link Textmodifier} instance.
- *
- * Can be accessed via {@link Textmodifier.grid}.
+ * Manages the grid of each `TextmodeLayer` instance.
  */
 export declare class TextmodeGrid {
     /** The number of columns in the grid. */
@@ -22,6 +20,12 @@ export declare class TextmodeGrid {
     private _cellWidth;
     /** The height of each cell in the grid. */
     private _cellHeight;
+    /** Tracks whether cols/rows were manually overridden. */
+    private _manualDimensionsSet;
+    /** Hooks to notify listeners when grid dimensions change. */
+    private _dimensionChangeListeners;
+    /** Updates derived metrics (width/height/offset) from current cols/rows. */
+    private _syncDerivedDimensions;
     /**
      * Create a new grid instance.
      * @param canvas The canvas element used to determine the grid dimensions.
@@ -30,6 +34,18 @@ export declare class TextmodeGrid {
      * @ignore
      */
     constructor(canvas: HTMLCanvasElement, cellWidth: number, cellHeight: number);
+    /**
+     * Register a listener invoked whenever grid dimensions change.
+     * @param handler The callback function to invoke on dimension changes.
+     * @ignore
+     */
+    $addOnDimensionsChange(handler: () => void): void;
+    /**
+     * Remove a previously registered dimensions change listener.
+     * @param handler The callback function to remove.
+     * @ignore
+     */
+    $removeOnDimensionsChange(handler: () => void): void;
     /**
      * Reset the grid to the default number of columns and rows based on the current canvas dimensions, and the grid cell dimensions.
      * @ignore
@@ -48,8 +64,12 @@ export declare class TextmodeGrid {
     get cellHeight(): number;
     /** Returns the number of columns in the grid. */
     get cols(): number;
+    /** Sets the number of columns and locks grid sizing until `responsive()` is called. */
+    set cols(newCols: number);
     /** Returns the number of rows in the grid. */
     get rows(): number;
+    /** Sets the number of rows and locks grid sizing until `responsive()` is called. */
+    set rows(newRows: number);
     /** Returns the total width of the grid. */
     get width(): number;
     /** Returns the total height of the grid. */
@@ -58,4 +78,13 @@ export declare class TextmodeGrid {
     get offsetX(): number;
     /** Returns the offset to the outer canvas borders on the y-axis when centering the grid. */
     get offsetY(): number;
+    /**
+     * Restores responsive sizing so subsequent `t.resizeCanvas` calls recompute cols/rows.
+     */
+    responsive(): void;
+    /**
+     * Dispose the grid and remove all listeners.
+     * @ignore
+     */
+    $dispose(): void;
 }

@@ -1,22 +1,22 @@
 import type { TextmodeGrid } from '../Grid';
 import type { TextmodeFont } from '../loadables/font';
 import type { TextmodeImage } from '../loadables/TextmodeImage';
-import type { TextmodeSource } from '../loadables/TextmodeSource';
 import type { TextmodeCanvas } from '../Canvas';
 import type { AnimationController } from '../AnimationController';
-import type { GLFramebuffer, GLShader } from '../../rendering';
+import type { GLShader } from '../../rendering';
 import type { GLRenderer } from '../../rendering/webgl/core/Renderer';
 import type { MouseManager } from '../managers/MouseManager';
 import type { KeyboardManager } from '../managers/KeyboardManager';
 import type { TouchManager } from '../managers/TouchManager';
 import type { IRenderingMixin } from '../mixins/interfaces/IRenderingMixin';
-import type { IFontMixin } from '../mixins/interfaces/IFontMixin';
 import type { IKeyboardMixin } from '../mixins/interfaces/IKeyboardMixin';
 import type { ITouchMixin } from '../mixins/interfaces/ITouchMixin';
 import type { IMouseMixin } from '../mixins/interfaces/IMouseMixin';
 import type { IAnimationMixin } from '../mixins/interfaces/IAnimationMixin';
 import type { LoadingScreenManager } from '../loading/LoadingScreenManager';
 import type { TextmodeLayerManager } from '../layers';
+import type { BuiltInFilterName, BuiltInFilterParams, TextmodeFilterManager, FilterName } from '../filters';
+import type { TextmodeConversionManager } from '../conversion';
 /**
  * Manages textmode rendering on a [`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) and provides methods for drawing,
  * exporting, font management, event handling, and animation control.
@@ -25,15 +25,11 @@ import type { TextmodeLayerManager } from '../layers';
  * it creates a new `HTMLCanvasElement` to draw on using the `textmode.js` drawing API.
  * If a canvas is provided, it will use that canvas instead.
  */
-export interface ITextmodifier extends IRenderingMixin, IFontMixin, IAnimationMixin, IMouseMixin, ITouchMixin, IKeyboardMixin {
+export interface ITextmodifier extends IRenderingMixin, IAnimationMixin, IMouseMixin, ITouchMixin, IKeyboardMixin {
     /** Core WebGL renderer @ignore */
     readonly _renderer: GLRenderer;
-    /** Font management @ignore */
-    readonly _font: TextmodeFont;
     /** Canvas management @ignore */
     readonly _canvas: TextmodeCanvas;
-    /** Grid management @ignore */
-    readonly _grid: TextmodeGrid;
     /** Animation controller for managing rendering loop @ignore */
     readonly _animationController: AnimationController;
     /** Mouse interaction manager @ignore */
@@ -42,24 +38,110 @@ export interface ITextmodifier extends IRenderingMixin, IFontMixin, IAnimationMi
     readonly _touchManager: TouchManager;
     /** Keyboard interaction manager @ignore */
     readonly _keyboardManager: KeyboardManager;
-    /** Framebuffer used for offscreen rendering @ignore */
-    readonly _textmodeDrawFramebuffer: GLFramebuffer;
     /** Shader used for converting pixels to textmode grid format @ignore */
     readonly _textmodeConversionShader: GLShader;
-    /** Framebuffer used for textmode conversion @ignore */
-    readonly _textmodeFramebuffer: GLFramebuffer;
     /** Shader used for final presentation to the screen @ignore */
     readonly _presentShader: GLShader;
     /** Loading screen manager for boot-time UX @ignore */
     readonly _loading: LoadingScreenManager;
-    /** Sources registered for rendering @ignore */
-    readonly _sources: Set<TextmodeSource>;
+    /** Conversion manager for image-to-ASCII conversion @ignore */
+    readonly _conversionManager: TextmodeConversionManager;
+    /** Filter manager for applying post-processing effects @ignore */
+    readonly _filterManager: TextmodeFilterManager;
     /** Layer manager for handling multiple layers @ignore */
     readonly _layerManager: TextmodeLayerManager;
-    /** @ignore */
-    $registerSource(source: TextmodeSource): void;
+    /** Active font based on layer, or loading screen font override @ignore */
+    _activeFont?: TextmodeFont;
+    /** Active grid based on layer currently being rendered @ignore */
+    _activeGrid?: TextmodeGrid;
     /** Main render method @ignore */
     $render(): void;
+    /**
+     * Load a font for the base layer and return it.
+     *
+     * The returned font can be reused on other layers via {@link TextmodeLayer.loadFont}.
+     *
+     * @param fontSource The URL of the font to load.
+     * @returns The loaded TextmodeFont instance (base layer font).
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create();
+     *
+     * t.setup(async () => {
+     *   // Load font for the base layer
+     *   const font = await t.loadFont('./fonts/myfont.ttf');
+     *   // const font = await t.layers.base.loadFont('./fonts/myfont.ttf'); // Equivalent
+     *
+     *   // Use the same font on another layer
+     *   const layer = t.layers.add();
+     *   await layer.loadFont(font);
+     *
+     *   // Or load a different font for a layer
+     *   await layer.loadFont('./fonts/otherfont.ttf');
+     * });
+     * ```
+     */
+    loadFont(fontSource: string): Promise<TextmodeFont>;
+    /**
+     * Set the font size used for rendering.
+     * @param size The font size to set.
+     *
+     * @example
+     * ```javascript
+     * // Create a Textmodifier instance
+     * const t = textmode.create();
+     *
+     * t.setup(() => {
+     *  // Set the font size to 32
+     *  t.fontSize(32);
+     * });
+     *
+     * t.draw(() => {
+     *  t.background(0);
+     *  t.char('A');
+     *  t.rect(5, 5);
+     * });
+     * ```
+     */
+    fontSize(size: number): void;
+    /**
+     * Get or set the grid used for mouse and touch input coordinate mapping.
+     *
+     * By default, input coordinates are mapped to the topmost visible layer's grid,
+     * which changes dynamically as layers are shown/hidden. Use this method to lock
+     * input mapping to a specific grid or layer, or to return to responsive mode.
+     *
+     * When called without arguments, returns the current input grid mode:<br/>
+     * - `'topmost'` if using responsive mode (default)<br/>
+     * - The specific `TextmodeGrid` if locked
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create();
+     *
+     * // Add a UI layer on top
+     * const uiLayer = t.layers.add({ fontSize: 16 });
+     *
+     * t.setup(() => {
+     *   // Lock input to the base layer's grid for game controls
+     *   // even though the UI layer is rendered on top
+     *   t.inputGrid(t.layers.base.grid);
+     * });
+     *
+     * t.draw(() => {
+     *   // Mouse positions now always use base layer's grid
+     *   t.text(`Mouse: ${t.mouseX}, ${t.mouseY}`, 0, 0);
+     * });
+     *
+     * // Switch back to responsive mode
+     * // t.inputGrid('topmost');
+     *
+     * // Or check current mode
+     * // const current = t.inputGrid(); // 'topmost' or the locked grid
+     * ```
+     */
+    inputGrid(target?: 'topmost' | TextmodeGrid): 'topmost' | TextmodeGrid | void;
     /**
      * Set a setup callback function that will be executed once when initialization is complete.
      *
@@ -102,8 +184,14 @@ export interface ITextmodifier extends IRenderingMixin, IFontMixin, IAnimationMi
      *
      * This callback function is where all drawing commands should be placed for textmode rendering on the main layer.
      *
-     * If multiple layers are added via {@link Textmodifier.layers}, each layer can have its own draw callback set via {@link TextmodeLayer.draw}.
+     * If multiple layers are added via {@link Textmodifier.layers}, each layer has its own draw callback set via {@link TextmodeLayer.draw}.
      * This allows for complex multi-layered compositions with independent rendering logic per layer.
+     *
+     * Calling this method is equivalent to setting the draw callback on the base layer,
+     * while the direct layer callback has precedence if both are set.
+     * ```javascript
+     * textmodifier.layers.base.draw(callback);
+     * ```
      *
      * @param callback The function to call before each render
      *
@@ -207,9 +295,45 @@ export interface ITextmodifier extends IRenderingMixin, IFontMixin, IAnimationMi
      * ```
      */
     destroy(): void;
-    /** Get the current grid object used for rendering. */
-    readonly grid: TextmodeGrid;
-    /** Get the current font object used for rendering. */
+    /**
+     * Apply a filter to the final composited output.
+     *
+     * Filters are applied after all layers are composited but before
+     * the result is presented to the canvas. Multiple filters can be
+     * queued per frame and will be applied in order.
+     *
+     * @param name The name of the filter to apply (built-in or custom)
+     * @param params Optional parameters for the filter
+     *
+     * @example
+     * ```typescript
+     * t.draw(() => {
+     *     t.background(0);
+     *     t.charColor(255);
+     *     t.char('A');
+     *     t.rect(10, 10);
+     *
+     *     // Apply built-in filters
+     *     t.filter('grayscale', 0.5);
+     *     t.filter('invert');
+     *
+     *     // Chain multiple filters
+     *     t.filter('sepia', { amount: 0.3 });
+     *     t.filter('threshold', 0.5);
+     * });
+     * ```
+     */
+    filter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
+    filter(name: FilterName, params?: unknown): void;
+    filter(name: FilterName, params?: unknown): void;
+    /**
+     * Get the grid whose layer is currently being drawn to.
+     * If called outside of a layers draw callback, returns the base layer's grid.
+     *
+     * If no grid is set (e.g., before user setup()), returns `undefined`.
+     */
+    readonly grid: TextmodeGrid | undefined;
+    /** Get the current font object used for rendering the base layer. */
     readonly font: TextmodeFont;
     /** Get the width of the canvas in pixels. */
     readonly width: number;
@@ -217,10 +341,49 @@ export interface ITextmodifier extends IRenderingMixin, IFontMixin, IAnimationMi
     readonly height: number;
     /** Get the textmodifier canvas containing the rendered output. */
     readonly canvas: HTMLCanvasElement;
-    /** Get the WebGL framebuffer used for drawing operations in {@link Textmodifier.draw}. */
-    readonly drawFramebuffer: GLFramebuffer;
     /** Check if the instance has been disposed/destroyed. */
     readonly isDisposed: boolean;
+    /**
+     * Access the filter manager for this Textmodifier instance.
+     *
+     * Use this to register custom filters that can be applied both globally
+     * (via {@link filter}) and on individual layers (via {@link TextmodeLayer.filter}).
+     *
+     * @example
+     * ```typescript
+     * // Register a custom filter once
+     * await t.filters.register('vignette', vignetteShader, {
+     *     u_intensity: ['intensity', 0.5]
+     * });
+     *
+     * t.draw(() => {
+     *     t.background(0);
+     *     t.char('A');
+     *     t.rect(10, 10);
+     *
+     *     // Apply filter globally to final output
+     *     t.filter('vignette', { intensity: 0.8 });
+     *
+     *     // Or apply to a specific layer
+     *     t.layers.base.filter('vignette', 0.5);
+     * });
+     * ```
+     */
+    readonly filters: TextmodeFilterManager;
+    /**
+     * Access the layer manager for this Textmodifier instance.
+     *
+     * Use this to create and manage multiple layers within the textmode rendering context.
+     * Each layer has its own grid, font, draw callback, and filters.
+     */
+    readonly layers: TextmodeLayerManager;
+    /**
+     * Access the conversion manager for this Textmodifier instance.
+     *
+     * Use this to register custom conversion strategies that can be used
+     * when converting images/videos/canvases into textmode representations.
+     */
+    readonly conversions: TextmodeConversionManager;
     /**
      * If in overlay mode, returns the {@link TextmodeImage} instance capturing the target canvas/video content,
      * allowing further configuration of the conversion parameters.
@@ -252,35 +415,35 @@ export interface ITextmodifier extends IRenderingMixin, IFontMixin, IAnimationMi
      * Provides access to the loading screen manager to control boot-time loading UX.
      *
      * @example
-    * ```javascript
-    * const t = textmode.create({ width: 800, height: 600, loadingScreen: { message: 'loading...' } });
-    *
-    * t.setup(async () => {
-    *   // Initialize two loading phases
-    *   const phase1 = t.loading.addPhase('Loading assets');
-    *   const phase2 = t.loading.addPhase('Initializing game');
-    *
-    *   // Start the first phase and simulate asset loading
-    *   await phase1.track(async () => {
-    *     for (let i = 0; i <= 5; i++) {
-    *       phase1.report(i / 5);
-    *       // Small delay — increases visibility of the loading animation
-    *       await new Promise((r) => setTimeout(r, 200));
-    *     }
-    *   });
-    *
-    *   // Start the second phase and simulate initialization
-    *   await phase2.track(async () => {
-    *     for (let i = 0; i <= 5; i++) {
-    *       phase2.report(i / 5);
-    *       await new Promise((r) => setTimeout(r, 150));
-    *     }
-    *   });
-    *
-    *   // Optionally set a final message before the screen transitions away
-    *   t.loading.message('Ready - enjoy!');
-    * });
-    * ```
+     * ```javascript
+     * const t = textmode.create({ width: 800, height: 600, loadingScreen: { message: 'loading...' } });
+     *
+     * t.setup(async () => {
+     *   // Initialize two loading phases
+     *   const phase1 = t.loading.addPhase('Loading assets');
+     *   const phase2 = t.loading.addPhase('Initializing game');
+     *
+     *   // Start the first phase and simulate asset loading
+     *   await phase1.track(async () => {
+     *     for (let i = 0; i <= 5; i++) {
+     *       phase1.report(i / 5);
+     *       // Small delay - increases visibility of the loading animation
+     *       await new Promise((r) => setTimeout(r, 200));
+     *     }
+     *   });
+     *
+     *   // Start the second phase and simulate initialization
+     *   await phase2.track(async () => {
+     *     for (let i = 0; i <= 5; i++) {
+     *       phase2.report(i / 5);
+     *       await new Promise((r) => setTimeout(r, 150));
+     *     }
+     *   });
+     *
+     *   // Optionally set a final message before the screen transitions away
+     *   t.loading.message('Ready - enjoy!');
+     * });
+     * ```
      */
     readonly loading: LoadingScreenManager;
 }

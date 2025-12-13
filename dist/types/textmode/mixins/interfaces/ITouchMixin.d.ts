@@ -1,4 +1,4 @@
-import type { TouchEventHandler, TouchLongPressHandler, TouchPinchHandler, TouchPosition, TouchRotateHandler, TouchSwipeHandler, TouchTapHandler } from "../../managers/TouchManager";
+import type { TouchEventHandler, TouchLongPressHandler, TouchPinchHandler, TouchPosition, TouchRotateHandler, TouchSwipeHandler, TouchTapHandler } from '../../managers/TouchManager';
 /**
  * Capabilities exposed by the TouchMixin for handling touch interaction and gestures.
  */

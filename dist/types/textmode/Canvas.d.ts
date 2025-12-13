@@ -1,5 +1,5 @@
-import type { TextmodeOptions } from "./types";
-import { type RGBA } from "./utils/cssColor";
+import type { TextmodeOptions } from './types';
+import { type RGBA } from './utils/cssColor';
 /**
  * Manages a `HTMLCanvasElement` for textmode rendering.
  * @ignore

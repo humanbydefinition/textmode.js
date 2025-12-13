@@ -3,9 +3,11 @@ import type { Textmodifier } from '../Textmodifier';
 import { TextmodeLayer } from './TextmodeLayer';
 import type { TextmodeLayerOptions } from './types';
 import type { ILayerManager } from './interfaces/ILayerManager';
+import type { TextmodeOptions } from '../types';
+import type { TextmodeGrid } from '../Grid';
 /**
- * Manages all user-defined layers within a Textmodifier instance.
- *
+ * Manages all user-defined layers within a Textmodifier in *
+ * Th *
  * This manager is responsible for:
  * - Managing the collection of user layers (add, remove, move, swap)
  * - Coordinating layer rendering and compositing
@@ -19,36 +21,34 @@ export declare class LayerManager implements ILayerManager {
     private readonly _renderer;
     private readonly _conversionShader;
     private readonly _compositor2D;
-    private readonly _pendingLayers;
-    private readonly _layers;
+    private _pendingLayers;
+    private _layers;
     private readonly _baseLayer;
-    private _baseFramebuffer;
-    private _baseRawFramebuffer;
-    private _layerPingPongBuffers;
     private _isReady;
+    private readonly _gridDimensionChangeCallbacks;
     /**
      * Create a new LayerManager.
      * @param textmodifier The Textmodifier instance this manager belongs to.
      * @ignore
      */
-    constructor(textmodifier: Textmodifier);
+    constructor(textmodifier: Textmodifier, opts: TextmodeOptions);
+    /**
+     * Initialize all pending layers and the compositor.
+     * @ignore
+     */
+    $initialize(): Promise<void>;
     add(options?: TextmodeLayerOptions): TextmodeLayer;
     remove(layer: TextmodeLayer): void;
     move(layer: TextmodeLayer, newIndex: number): void;
     swap(layerA: TextmodeLayer, layerB: TextmodeLayer): void;
     clear(): void;
     /**
-     * Initialize all pending layers and the compositor.
-     * @ignore
-     */
-    $initialize(): void;
-    /**
      * Render all layers (base and user) and composite them to the target framebuffer.
      * @param targetFramebuffer The framebuffer to render the final composited result to.
      * @param backgroundColor The background color as RGBA values (0-1 range).
      * @ignore
      */
-    $renderAndComposite(targetFramebuffer: GLFramebuffer, backgroundColor: [number, number, number, number]): void;
+    $renderAndComposite(targetFramebuffer: GLFramebuffer, fallbackBaseDraw: () => void): void;
     /**
      * Render all user layers to their respective framebuffers.
      */
@@ -70,15 +70,27 @@ export declare class LayerManager implements ILayerManager {
     get all(): readonly TextmodeLayer[];
     get base(): TextmodeLayer;
     /**
+     * Get the grid of the topmost visible layer.
+     * Returns the topmost user layer's grid if any are visible, otherwise returns the base layer's grid.
+     * This is useful for input managers that need to map coordinates to the layer the user sees on top.
+     * @ignore
+     */
+    $getTopmostGrid(): TextmodeGrid | undefined;
+    /**
+     * Register a callback to be invoked whenever ANY layer's grid dimensions change.
+     * This includes the base layer and all user layers.
+     * @param callback The callback to invoke on dimension changes.
+     * @ignore
+     */
+    $onAnyGridDimensionChange(callback: () => void): void;
+    /**
+     * Notify all registered callbacks that a grid's dimensions have changed.
+     */
+    private _notifyGridDimensionChange;
+    /**
      * Initialize a single layer with required dependencies.
      */
     private _initializeLayer;
-    /**
-     * Initialize the base layer with external (shared) framebuffers.
-     * The base layer shares the main textmode draw framebuffer and uses
-     * the manager's base framebuffer for ASCII output.
-     */
-    private _initializeBaseLayer;
     /**
      * Remove a layer from a collection and dispose it.
      */

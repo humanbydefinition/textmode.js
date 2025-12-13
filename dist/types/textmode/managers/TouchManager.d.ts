@@ -1,15 +1,24 @@
 import type { TextmodeCanvas } from '../Canvas';
-import type { TextmodeGrid } from '../Grid';
-import type { MouseManager } from './MouseManager';
+import type { MouseManager, GridProvider } from './MouseManager';
 /**
- * Touch position expressed both in grid and client coordinates
+ * Touch position expressed both in grid and client coordinates.
+ *
+ * The grid coordinate system uses center-based coordinates matching the rendering space:
+ * - `(0, 0)` is the center cell of the grid
+ * - Negative X values are to the left of center
+ * - Positive X values are to the right of center
+ * - Negative Y values are above center
+ * - Positive Y values are below center
+ *
+ * When the touch is outside the grid bounds, `x` and `y` are set to
+ * `Number.NEGATIVE_INFINITY` to indicate an invalid/outside position.
  */
 export interface TouchPosition {
     /** Identifier provided by the browser for a touch point */
     id: number;
-    /** Grid X coordinate (column), -1 if touch is outside grid */
+    /** Grid X coordinate (column) in center-based coords. `Number.NEGATIVE_INFINITY` if outside grid. */
     x: number;
-    /** Grid Y coordinate (row), -1 if touch is outside grid */
+    /** Grid Y coordinate (row) in center-based coords. `Number.NEGATIVE_INFINITY` if outside grid. */
     y: number;
     /** Client X coordinate in CSS pixels */
     clientX: number;
@@ -27,10 +36,9 @@ export interface TouchPosition {
 /**
  * Touch event data.
  *
- * Unlike the main drawing logic, where `(0,0,0)` is the center cell,
- * the mouse coordinates use the top-left cell as `(0,0)`. This means
- * you'll need to adjust accordingly when using these coordinates
- * for drawing or other grid operations.
+ * The coordinate system uses center-based coordinates matching the main rendering space:
+ * - `(0, 0)` is the center cell of the grid
+ * - Coordinates can be used directly with `translate()` and other drawing functions
  */
 export interface TouchEventData {
     /** The touch point that triggered this event */
@@ -153,7 +161,7 @@ export type TouchRotateHandler = (data: TouchRotateEventData) => void;
 export declare class TouchManager {
     private readonly _canvas;
     private readonly _mouseManager?;
-    private _grid;
+    private readonly _getGrid;
     private _activeTouches;
     private _previousTouches;
     private _touchInfo;
@@ -187,9 +195,13 @@ export declare class TouchManager {
     private readonly _mouseSuppressionDuration;
     private _lastTapTime;
     private _lastTapPosition;
-    constructor(canvas: TextmodeCanvas, mouseManager?: MouseManager);
-    /** Initialise the manager with the active grid */
-    $initialize(grid: TextmodeGrid): void;
+    /**
+     * Create a new TouchManager.
+     * @param canvas The canvas to track touch events on.
+     * @param getGrid A function that returns the grid to use for coordinate calculations.
+     * @param mouseManager Optional mouse manager for suppressing mouse events during touch.
+     */
+    constructor(canvas: TextmodeCanvas, getGrid: GridProvider, mouseManager?: MouseManager);
     /** Install touch listeners onto the canvas */
     $setupListeners(): void;
     /** Remove all touch listeners */

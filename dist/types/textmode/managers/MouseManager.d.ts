@@ -1,17 +1,22 @@
 import type { TextmodeCanvas } from '../Canvas';
 import type { TextmodeGrid } from '../Grid';
 /**
- * Mouse coordinates in grid space.
+ * Mouse coordinates in grid space using center-based coordinates.
  *
- * Unlike the main drawing logic, where `(0,0,0)` is the center cell,
- * the mouse coordinates use the top-left cell as `(0,0)`. This means
- * you'll need to adjust accordingly when using these coordinates
- * for drawing or other grid operations.
+ * The coordinate system matches the main drawing/rendering space:
+ * - `(0, 0)` is the center cell of the grid
+ * - Negative X values are to the left of center
+ * - Positive X values are to the right of center
+ * - Negative Y values are above center
+ * - Positive Y values are below center
+ *
+ * When the mouse is outside the grid bounds, both `x` and `y` are set to
+ * `Number.NEGATIVE_INFINITY` to indicate an invalid/outside position.
  */
 export interface MousePosition {
-    /** Grid X coordinate (column), -1 if mouse is outside grid */
+    /** Grid X coordinate (column) in center-based coords. `Number.NEGATIVE_INFINITY` if outside grid. */
     x: number;
-    /** Grid Y coordinate (row), -1 if mouse is outside grid */
+    /** Grid Y coordinate (row) in center-based coords. `Number.NEGATIVE_INFINITY` if outside grid. */
     y: number;
 }
 /**
@@ -39,13 +44,17 @@ export interface MouseEventData {
  */
 export type MouseEventHandler = (data: MouseEventData) => void;
 /**
+ * Grid provider function type - returns the grid to use for coordinate calculations
+ */
+export type GridProvider = () => TextmodeGrid | undefined;
+/**
  * Manages all mouse interaction for a Textmodifier instance.
  * Handles event listeners, coordinate conversion, and event dispatching.
  * @ignore
  */
 export declare class MouseManager {
     private _canvas;
-    private _grid;
+    private _getGrid;
     private _mousePosition;
     private _previousMousePosition;
     private _lastClientCoordinates;
@@ -62,7 +71,12 @@ export declare class MouseManager {
     private _mouseReleasedCallback?;
     private _mouseMovedCallback?;
     private _mouseScrolledCallback?;
-    constructor(canvas: TextmodeCanvas);
+    /**
+     * Create a new MouseManager.
+     * @param canvas The canvas to track mouse events on.
+     * @param getGrid A function that returns the grid to use for coordinate calculations.
+     */
+    constructor(canvas: TextmodeCanvas, getGrid: GridProvider);
     /**
      * Temporarily suppress mouse event callbacks for a duration in milliseconds.
      * Used to prevent synthetic mouse events from touch interactions from firing twice.
@@ -77,10 +91,6 @@ export declare class MouseManager {
      * Reference: https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
      */
     $setCursor(cursor?: string): void;
-    /**
-     * Update the grid reference (useful when grid changes after font loading)
-     */
-    $initialize(grid: TextmodeGrid): void;
     /**
      * Setup mouse event listeners on the canvas.
      */
@@ -147,7 +157,7 @@ export declare class MouseManager {
     private _handleMouseScrolled;
     /**
      * Update mouse position based on mouse event.
-     * Converts pixel coordinates to grid coordinates.
+     * Converts pixel coordinates to center-based grid coordinates.
      */
     private _updateMousePosition;
 }

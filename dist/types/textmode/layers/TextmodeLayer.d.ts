@@ -1,8 +1,9 @@
-import type { GLFramebuffer, GLShader } from '../../rendering';
-import type { TextmodeGrid } from '../Grid';
-import type { Textmodifier } from '../Textmodifier';
+import type { GLFramebuffer, GLRenderer, GLShader } from '../../rendering';
+import { TextmodeGrid } from '../Grid';
+import { TextmodeFont } from '../loadables/font';
+import { Textmodifier } from '../Textmodifier';
 import type { TextmodeLayerBlendMode, TextmodeLayerOptions, LayerDependencies } from './types';
-import type { FilterName, BuiltInFilterName, BuiltInFilterParams, QueuedFilter } from '../filters';
+import type { FilterName, BuiltInFilterName, BuiltInFilterParams } from '../filters';
 import type { ITextmodeLayer } from './interfaces/ITextmodeLayer';
 /**
  * A single layer within a multi-layered textmode rendering context.
@@ -27,31 +28,37 @@ export declare class TextmodeLayer implements ITextmodeLayer {
     $offsetY: number;
     /** @ignore */
     $rotation: number;
+    /** @ignore */
+    $fontSize: number | undefined;
+    /** @ignore */
+    $fontSource: string | TextmodeFont | URL | undefined;
     private _deps?;
-    private _drawFramebuffer?;
-    private _asciiFramebuffer?;
+    private _grid?;
+    private _font;
+    private _drawFramebuffer;
+    private _asciiFramebuffer;
     private _rawAsciiFramebuffer?;
+    private _pingPongBuffers?;
     private _drawCallback;
     private _hasRenderableContent;
-    private _ownsFramebuffers;
     private _filterQueue;
     /**
      * Create a new TextmodeLayer with the given options.
      * @param options Layer configuration options.
      * @ignore
      */
-    constructor(options?: TextmodeLayerOptions);
+    constructor(renderer: GLRenderer, options?: TextmodeLayerOptions);
+    /**
+     * Attach necessary dependencies for this layer to function.
+     * @param deps Dependencies required by the layer.
+     * @ignore
+     */
+    $attachDependencies(deps: LayerDependencies): Promise<void>;
     /**
      * Return true when this layer has a user-provided draw callback.
      * @ignore
      */
     $hasDraw(): boolean;
-    /**
-     * Get and clear the filter queue. Used by LayerManager for base layer filter processing.
-     * @returns The current filter queue, which is then cleared.
-     * @ignore
-     */
-    $consumeFilterQueue(): QueuedFilter[];
     /**
      * Run the layer's draw callback in the calling context. This does NOT
      * manage framebuffer binding; the caller must ensure the correct
@@ -71,31 +78,55 @@ export declare class TextmodeLayer implements ITextmodeLayer {
     rotateZ(z?: number): number | void;
     filter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
     filter(name: FilterName, params?: unknown): void;
+    /** Get or set the font size for this layer's font. */
+    fontSize(size?: number): number | void;
     /**
-     * Attach necessary dependencies for this layer to function.
-     * @param deps Dependencies required by the layer.
-     * @ignore
+     * Load a font into this layer from a URL/path or reuse an existing {@link TextmodeFont} instance.
+     * Creates a new font instance for this layer and loads the font data when a string source is provided.
+     *
+     * @param fontSource The URL or path to the font file.
+     * @returns The loaded TextmodeFont instance.
+     *
+     * @example
+     * ```javascript
+     * const layer = t.layers.add();
+     *
+     * t.setup(async () => {
+     *   // Load a custom font for this layer
+     *   await layer.loadFont('./fonts/custom.ttf');
+     * });
+     * ```
      */
-    $attachDependencies(deps: LayerDependencies): void;
+    loadFont(fontSource: string | TextmodeFont): Promise<TextmodeFont>;
     /**
      * Render the layer's content into its ASCII framebuffer.
      * @param textmodifier The Textmodifier instance.
      * @param conversionShader The shader used for conversion.
      * @ignore
      */
-    $render(textmodifier: Textmodifier, conversionShader: GLShader): void;
+    $render(textmodifier: Textmodifier, conversionShader: GLShader, options?: {
+        fallbackDraw?: () => void;
+    }): void;
     /**
      * Resize the layer's framebuffers to match the given grid dimensions.
      * @param grid The TextmodeGrid instance.
      * @ignore
      */
-    $resize(grid: TextmodeGrid): void;
+    $resize(): void;
     /**
      * Dispose of the layer's resources.
      * @ignore
      */
     $dispose(): void;
+    /**
+     * Get the texture containing the rendered textmode output for this layer.
+     */
     get texture(): WebGLTexture | undefined;
+    /**
+     * Get the grid associated with this layer.
+     */
+    get grid(): TextmodeGrid | undefined;
+    get font(): TextmodeFont;
     get width(): number;
     get height(): number;
     /**
@@ -103,6 +134,13 @@ export declare class TextmodeLayer implements ITextmodeLayer {
      * @ignore
      */
     get $hasRenderableContent(): boolean;
+    /**
+     * Get the framebuffer used for drawing operations on this layer.
+     */
     get drawFramebuffer(): GLFramebuffer | undefined;
-    private _initializeFramebuffers;
+    /**
+     * Get the framebuffer containing the rendered textmode output for this layer.
+     */
+    get asciiFramebuffer(): GLFramebuffer | undefined;
+    private _syncGridToFont;
 }

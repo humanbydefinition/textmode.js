@@ -24,11 +24,11 @@ export interface IFramebuffer {
      *
      * Useful for binding textures for reading in shaders.
      *
-    * Textmode framebuffers allocate 4 attachments by default:
-    * - 0: Character data encoded in red and green channels
-    * - 1: Character colors
-    * - 2: Cell background colors
-    * - 3: Inversion, horizontal/flip flags, and rotation encoded in red, green, blue, alpha channels
+     * Textmode framebuffers allocate 4 attachments by default:
+     * - 0: Character data encoded in red and green channels
+     * - 1: Character colors
+     * - 2: Cell background colors
+     * - 3: Inversion, horizontal/flip flags, and rotation encoded in red, green, blue, alpha channels
      */
     readonly textures: WebGLTexture[];
     /**
@@ -59,7 +59,7 @@ export interface IFramebuffer {
      *                          0. Character data and transform info<br/>
      *                          1. Character colors<br/>
      *                          2. Cell background colors<br/>
-    * @returns A Uint8Array containing the pixel data in RGBA format
+     * @returns A Uint8Array containing the pixel data in RGBA format
      */
     readPixels(attachmentIndex: number): Uint8Array;
     /**

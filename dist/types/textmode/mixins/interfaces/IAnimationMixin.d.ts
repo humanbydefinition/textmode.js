@@ -30,57 +30,57 @@ export interface IAnimationMixin {
      * it to be resumed later with {@link loop}. This is useful for temporarily pausing
      * animation while maintaining the ability to continue it.
      *
-    * @example
-    * ```javascript
-    * const t = textmode.create({ width: 800, height: 600 });
-    *
-    * // Toggle loop on SPACE
-    * t.keyPressed((data) => {
-    *   if (data.key === ' ') {
-    *     if (t.isLooping()) {
-    *       t.noLoop();
-    *     } else {
-    *       t.loop();
-    *     }
-    *   }
-    * });
-    *
-    * t.draw(() => {
-    *   t.background(0);
-    *   t.char('A');
-    *   t.charColor(255, 255, 255);
-    *   t.rotateZ(t.frameCount * 2);
-    *   t.rect(16, 16);
-    * });
-    * ```
+     * @example
+     * ```javascript
+     * const t = textmode.create({ width: 800, height: 600 });
+     *
+     * // Toggle loop on SPACE
+     * t.keyPressed((data) => {
+     *   if (data.key === ' ') {
+     *     if (t.isLooping()) {
+     *       t.noLoop();
+     *     } else {
+     *       t.loop();
+     *     }
+     *   }
+     * });
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     *   t.char('A');
+     *   t.charColor(255, 255, 255);
+     *   t.rotateZ(t.frameCount * 2);
+     *   t.rect(16, 16);
+     * });
+     * ```
      */
     noLoop(): void;
     /**
      * Resume the rendering loop if it was stopped by {@link noLoop}.
      *
-    * @example
-    * ```javascript
-    * const t = textmode.create({ width: 800, height: 600 });
-    *
-    * // Toggle loop on SPACE
-    * t.keyPressed((data) => {
-    *   if (data.key === ' ') {
-    *     if (t.isLooping()) {
-    *       t.noLoop();
-    *     } else {
-    *       t.loop();
-    *     }
-    *   }
-    * });
-    *
-    * t.draw(() => {
-    *   t.background(0);
-    *   t.char('A');
-    *   t.charColor(255, 255, 255);
-    *   t.rotateZ(t.frameCount * 2);
-    *   t.rect(16, 16);
-    * });
-    * ```
+     * @example
+     * ```javascript
+     * const t = textmode.create({ width: 800, height: 600 });
+     *
+     * // Toggle loop on SPACE
+     * t.keyPressed((data) => {
+     *   if (data.key === ' ') {
+     *     if (t.isLooping()) {
+     *       t.noLoop();
+     *     } else {
+     *       t.loop();
+     *     }
+     *   }
+     * });
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     *   t.char('A');
+     *   t.charColor(255, 255, 255);
+     *   t.rotateZ(t.frameCount * 2);
+     *   t.rect(16, 16);
+     * });
+     * ```
      */
     loop(): void;
     /**
@@ -93,47 +93,47 @@ export interface IAnimationMixin {
      *
      * @example
      * ```javascript
-    * // Press SPACE to manually trigger single frames while loop is paused.
-    *
-    * const t = textmode.create({ width: 800, height: 600 });
-    *
-    * let rotation = 0;
-    *
-    * t.keyPressed((data) => {
-    *   if (data.key === ' ') {
-    *     rotation += 15; // Increment rotation
-    *     t.redraw(); // Manually trigger one frame
-    *   }
-    * });
-    *
-    * t.draw(() => {
-    *   if(t.frameCount === 1) {
-    *     t.noLoop();
-    *   }
-    *
-    *   t.background(0);
-    *
-    *   t.push();
-    *   t.char('A');
-    *   t.charColor(100, 200, 255);
-    *   t.rotateZ(rotation);
-    *   t.rect(13, 13);
-    *   t.pop();
-    *
-    *   // Show instruction text
-    *   t.push();
-    *   t.translate(-5, -10);
-    *   t.charColor(150);
-    *   const msg = 'PRESS SPACE';
-    *   [...msg].forEach((char, i) => {
-    *     t.push();
-    *     t.translate(i, 0);
-    *     t.char(char);
-    *     t.point();
-    *     t.pop();
-    *   });
-    *   t.pop();
-    * });
+     * // Press SPACE to manually trigger single frames while loop is paused.
+     *
+     * const t = textmode.create({ width: 800, height: 600 });
+     *
+     * let rotation = 0;
+     *
+     * t.keyPressed((data) => {
+     *   if (data.key === ' ') {
+     *     rotation += 15; // Increment rotation
+     *     t.redraw(); // Manually trigger one frame
+     *   }
+     * });
+     *
+     * t.draw(() => {
+     *   if(t.frameCount === 1) {
+     *     t.noLoop();
+     *   }
+     *
+     *   t.background(0);
+     *
+     *   t.push();
+     *   t.char('A');
+     *   t.charColor(100, 200, 255);
+     *   t.rotateZ(rotation);
+     *   t.rect(13, 13);
+     *   t.pop();
+     *
+     *   // Show instruction text
+     *   t.push();
+     *   t.translate(-5, -10);
+     *   t.charColor(150);
+     *   const msg = 'PRESS SPACE';
+     *   [...msg].forEach((char, i) => {
+     *     t.push();
+     *     t.translate(i, 0);
+     *     t.char(char);
+     *     t.point();
+     *     t.pop();
+     *   });
+     *   t.pop();
+     * });
      * ```
      */
     redraw(n?: number): void;

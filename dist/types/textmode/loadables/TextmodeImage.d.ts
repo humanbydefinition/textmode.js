@@ -1,6 +1,6 @@
 import type { GLRenderer } from '../../rendering/webgl/core/Renderer';
-import type { TextmodeFont } from './font/TextmodeFont';
 import { TextmodeSource } from './TextmodeSource';
+import type { TextmodeConversionManager } from '../conversion';
 /**
  * Represents an image uploaded for textmode rendering via {@link Textmodifier.loadImage}.
  *
@@ -29,10 +29,8 @@ import { TextmodeSource } from './TextmodeSource';
  * t.draw(() => {
  *     t.background(0);
  *
- *     if (img) {
- *         // Draw the loaded image
- *         t.image(img);
- *     }
+ *     // Draw the loaded image
+ *     t.image(img);
  * });
  * ```
  */
@@ -43,6 +41,6 @@ export declare class TextmodeImage extends TextmodeSource {
      * Texture parameters use NEAREST and CLAMP to align with grid sampling.
      * @ignore
      */
-    static $fromSource(renderer: GLRenderer, font: TextmodeFont, source: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement, gridCols: number, gridRows: number): TextmodeImage;
+    static $fromSource(renderer: GLRenderer, conversionManager: TextmodeConversionManager, source: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement, gridCols: number, gridRows: number): TextmodeImage;
     protected $getActiveTexture(): WebGLTexture;
 }

@@ -1,4 +1,4 @@
-import type { MouseEventHandler, MousePosition } from "../../managers/MouseManager";
+import type { MouseEventHandler, MousePosition } from '../../managers/MouseManager';
 /**
  * Capabilities provided by the MouseMixin
  */
@@ -19,11 +19,11 @@ export interface IMouseMixin {
      *
      * // Create a ripple at the clicked grid cell
      * t.mouseClicked((data) => {
-     *   // Convert top-left grid coords to center-based coords (matching draw-time origin)
-     *   const centerX = Math.round(data.position.x - (t.grid.cols - 1) / 2);
-     *   const centerY = Math.round(data.position.y - (t.grid.rows - 1) / 2);
+     *   // Skip if mouse is outside the grid
+     *   if (data.position.x === Number.NEGATIVE_INFINITY) return;
      *
-     *   ripples.push({ x: centerX, y: centerY, age: 0, maxAge: 20 });
+     *   // Coordinates are already center-based, matching the drawing coordinate system
+     *   ripples.push({ x: data.position.x, y: data.position.y, age: 0, maxAge: 20 });
      * });
      *
      * t.draw(() => {
@@ -64,14 +64,12 @@ export interface IMouseMixin {
      *     }
      *   }
      *
-     *   // Show crosshair for the current mouse cell. Convert t.mouse (top-left origin)
-     *   // to the center-based coordinates used for drawing just like above.
-     *   if (t.mouse.x !== -1 && t.mouse.y !== -1) {
-     *     const cx = Math.round(t.mouse.x - (t.grid.cols - 1) / 2);
-     *     const cy = Math.round(t.mouse.y - (t.grid.rows - 1) / 2);
+     *   // Show crosshair for the current mouse cell
+     *   // Mouse coordinates are center-based, matching the drawing coordinate system
+     *   if (t.mouse.x !== Number.NEGATIVE_INFINITY) {
      *     t.push();
      *     t.charColor(180);
-     *     t.translate(cx, cy);
+     *     t.translate(t.mouse.x, t.mouse.y);
      *     t.char('+');
      *     t.point();
      *     t.pop();
@@ -95,7 +93,7 @@ export interface IMouseMixin {
      * let pressing = false;
      *
      * t.mousePressed((data) => {
-     *   if (data.position.x === -1 || data.position.y === -1) return;
+     *   if (data.position.x === Number.NEGATIVE_INFINITY) return;
      *   pressing = true;
      * });
      *
@@ -106,10 +104,10 @@ export interface IMouseMixin {
      * t.draw(() => {
      *   t.background(0);
      *
-     *   // Spawn particles while pressing
-     *   if (pressing && t.mouse.x !== -1) {
-     *     const cx = Math.round(t.mouse.x - (t.grid.cols - 1) / 2);
-     *     const cy = Math.round(t.mouse.y - (t.grid.rows - 1) / 2);
+     *   // Spawn particles while pressing (mouse coords are center-based)
+     *   if (pressing && t.mouse.x !== Number.NEGATIVE_INFINITY) {
+     *     const cx = t.mouse.x;
+     *     const cy = t.mouse.y;
      *
      *     for (let i = 0; i < 3; i++) {
      *       particles.push({
@@ -165,16 +163,15 @@ export interface IMouseMixin {
      * let dragStart = null;
      *
      * t.mousePressed((data) => {
-     *   if (data.position.x === -1 || data.position.y === -1) return;
-     *   const cx = Math.round(data.position.x - (t.grid.cols - 1) / 2);
-     *   const cy = Math.round(data.position.y - (t.grid.rows - 1) / 2);
-     *   dragStart = { x: cx, y: cy };
+     *   if (data.position.x === Number.NEGATIVE_INFINITY) return;
+     *   // Coordinates are already center-based
+     *   dragStart = { x: data.position.x, y: data.position.y };
      * });
      *
      * t.mouseReleased((data) => {
-     *   if (!dragStart || data.position.x === -1) return;
-     *   const cx = Math.round(data.position.x - (t.grid.cols - 1) / 2);
-     *   const cy = Math.round(data.position.y - (t.grid.rows - 1) / 2);
+     *   if (!dragStart || data.position.x === Number.NEGATIVE_INFINITY) return;
+     *   const cx = data.position.x;
+     *   const cy = data.position.y;
      *
      *   // Calculate line center and local endpoints
      *   const centerX = (dragStart.x + cx) / 2;
@@ -215,10 +212,10 @@ export interface IMouseMixin {
      *     t.pop();
      *   }
      *
-     *   // Draw current drag line
-     *   if (dragStart && t.mouse.x !== -1) {
-     *     const cx = Math.round(t.mouse.x - (t.grid.cols - 1) / 2);
-     *     const cy = Math.round(t.mouse.y - (t.grid.rows - 1) / 2);
+     *   // Draw current drag line (mouse coords are center-based)
+     *   if (dragStart && t.mouse.x !== Number.NEGATIVE_INFINITY) {
+     *     const cx = t.mouse.x;
+     *     const cy = t.mouse.y;
      *     const centerX = (dragStart.x + cx) / 2;
      *     const centerY = (dragStart.y + cy) / 2;
      *     const dx = cx - dragStart.x;
@@ -252,11 +249,11 @@ export interface IMouseMixin {
      * let lastMouse = null;
      *
      * t.mouseMoved((data) => {
-     *   if (data.position.x === -1 || data.position.y === -1) return;
+     *   if (data.position.x === Number.NEGATIVE_INFINITY) return;
      *
-     *   // Convert to center-based coords
-     *   const cx = Math.round(data.position.x - (t.grid.cols - 1) / 2);
-     *   const cy = Math.round(data.position.y - (t.grid.rows - 1) / 2);
+     *   // Coordinates are already center-based, matching the drawing system
+     *   const cx = data.position.x;
+     *   const cy = data.position.y;
      *
      *   // Spawn multiple particles based on movement speed
      *   const dx = lastMouse ? cx - lastMouse.x : 0;
@@ -313,39 +310,40 @@ export interface IMouseMixin {
      *
      * @example
      * ```javascript
-    * // Scroll to create expanding rings.
+     * // Scroll to create expanding rings.
      *
      * const t = textmode.create({ width: 800, height: 600 });
      *
      * const rings = [];
      *
-    * t.mouseScrolled((data) => {
-    *   if (data.position.x === -1 || data.position.y === -1) return;
-    *
-    *   const cx = Math.round(data.position.x - (t.grid.cols - 1) / 2);
-    *   const cy = Math.round(data.position.y - (t.grid.rows - 1) / 2);
-    *
-    *   // Use scroll delta to determine ring intensity and direction
-    *   const scrollSpeed = 2;
-    *   const intensity = Math.min(scrollSpeed * 30, 255);
-    *   const scrollDown = (data.delta?.y || 0) > 0;
-    *
-    *   rings.push({
-    *     x: cx,
-    *     y: cy,
-    *     radius: 1,
-    *     maxRadius: 5 + scrollSpeed * 0.5,
-    *     color: intensity,
-    *     scrollDown: scrollDown,
-    *     age: 0,
-    *     maxAge: 20
-    *   });
-    * });
+     * t.mouseScrolled((data) => {
+     *   if (data.position.x === Number.NEGATIVE_INFINITY) return;
+     *
+     *   // Coordinates are already center-based
+     *   const cx = data.position.x;
+     *   const cy = data.position.y;
+     *
+     *   // Use scroll delta to determine ring intensity and direction
+     *   const scrollSpeed = 2;
+     *   const intensity = Math.min(scrollSpeed * 30, 255);
+     *   const scrollDown = (data.delta?.y || 0) > 0;
+     *
+     *   rings.push({
+     *     x: cx,
+     *     y: cy,
+     *     radius: 1,
+     *     maxRadius: 5 + scrollSpeed * 0.5,
+     *     color: intensity,
+     *     scrollDown: scrollDown,
+     *     age: 0,
+     *     maxAge: 20
+     *   });
+     * });
      *
      * t.draw(() => {
      *   t.background(0);
      *
-    *   // Update and draw rings
+     *   // Update and draw rings
      *   for (let i = rings.length - 1; i >= 0; i--) {
      *     const r = rings[i];
      *     r.age++;
@@ -359,13 +357,13 @@ export interface IMouseMixin {
      *     const life = 1 - (r.age / r.maxAge);
      *     const brightness = Math.round(r.color * life);
      *
-    *     t.push();
-    *     // Blue for scroll down, orange for scroll up
-    *     if (r.scrollDown) {
-    *       t.charColor(brightness * 0.5, brightness * 0.8, 255);
-    *     } else {
-    *       t.charColor(255, brightness * 0.6, brightness * 0.3);
-    *     }
+     *     t.push();
+     *     // Blue for scroll down, orange for scroll up
+     *     if (r.scrollDown) {
+     *       t.charColor(brightness * 0.5, brightness * 0.8, 255);
+     *     } else {
+     *       t.charColor(255, brightness * 0.6, brightness * 0.3);
+     *     }
      *     t.translate(r.x, r.y);
      *
      *     // Draw ring
@@ -385,12 +383,13 @@ export interface IMouseMixin {
      */
     mouseScrolled(callback: MouseEventHandler): void;
     /**
-     * Get the current mouse position in grid coordinates.
+     * Get the current mouse position in center-based grid coordinates.
      *
-     * Returns the mouse position as grid cell coordinates *(column, row)*.
+     * Returns the mouse position as grid cell coordinates where `(0, 0)` is the center cell.
+     * This matches the drawing coordinate system, so coordinates can be used directly with `translate()`.
      *
      * If the mouse is outside the grid or the instance is not ready,
-     * it returns `{ x: -1, y: -1 }`.
+     * it returns `{ x: Number.NEGATIVE_INFINITY, y: Number.NEGATIVE_INFINITY }`.
      *
      * @example
      * ```javascript
@@ -399,15 +398,14 @@ export interface IMouseMixin {
      * t.draw(() => {
      *     t.background(0);
      *
-     *     // Convert mouse position from top-left origin to center-based origin
-     *     const centerX = Math.round(t.mouse.x - (t.grid.cols - 1) / 2);
-     *     const centerY = Math.round(t.mouse.y - (t.grid.rows - 1) / 2);
-     *
-     *     t.translate(centerX, centerY);
-     *     t.char('*');
-     *     t.charColor(255, 0, 0);
-     *     t.cellColor(100);
-     *     t.point();
+     *     // Mouse coordinates are center-based, matching the drawing system
+     *     if (t.mouse.x !== Number.NEGATIVE_INFINITY) {
+     *         t.translate(t.mouse.x, t.mouse.y);
+     *         t.char('*');
+     *         t.charColor(255, 0, 0);
+     *         t.cellColor(100);
+     *         t.point();
+     *     }
      * });
      * ```
      */
@@ -421,37 +419,30 @@ export interface IMouseMixin {
      *
      * See MDN for all options: https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
      *
-    * @example
-    * ```javascript
-    * const t = textmode.create({ width: 800, height: 600 });
-    * const target = { width: 30, height: 15 };
-    *
-    * t.draw(() => {
-    *   t.background(0);
-    *   t.charColor(255); // keep char visible
-    *   t.char('*');
-    *   t.rect(target.width, target.height);
-    *
-    *   // Rectangle is centered at (0, 0) which is grid center
-    *   // Calculate bounds relative to grid center
-    *   const centerX = t.grid.cols / 2;
-    *   const centerY = t.grid.rows / 2;
-    *
-    *   const halfRectWidth = target.width / 2;
-    *   const halfRectHeight = target.height / 2;
-    *
-    *   const rectLeft = centerX - halfRectWidth;
-    *   const rectRight = centerX + halfRectWidth;
-    *   const rectTop = centerY - halfRectHeight;
-    *   const rectBottom = centerY + halfRectHeight;
-    *
-    *   const hovering =
-    *     t.mouse.x >= rectLeft && t.mouse.x < rectRight &&
-    *     t.mouse.y >= rectTop && t.mouse.y < rectBottom;
-    *
-    *   t.cursor(hovering ? 'pointer' : 'default');
-    * });
-    * ```
+     * @example
+     * ```javascript
+     * const t = textmode.create({ width: 800, height: 600 });
+     * const target = { width: 30, height: 15 };
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     *   t.charColor(255); // keep char visible
+     *   t.char('*');
+     *   t.rect(target.width, target.height);
+     *
+     *   // Rectangle is centered at (0, 0) which is grid center
+     *   // Mouse coordinates are also center-based, so we can compare directly
+     *   const halfRectWidth = target.width / 2;
+     *   const halfRectHeight = target.height / 2;
+     *
+     *   const hovering =
+     *     t.mouse.x !== Number.NEGATIVE_INFINITY &&
+     *     t.mouse.x >= -halfRectWidth && t.mouse.x < halfRectWidth &&
+     *     t.mouse.y >= -halfRectHeight && t.mouse.y < halfRectHeight;
+     *
+     *   t.cursor(hovering ? 'pointer' : 'default');
+     * });
+     * ```
      */
     cursor(cursor?: string): void;
 }

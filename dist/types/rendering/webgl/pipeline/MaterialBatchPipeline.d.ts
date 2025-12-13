@@ -53,7 +53,7 @@ export declare class MaterialBatchPipeline {
      * Render a single batch of commands with the same material and geometry type.
      * Uses instanced rendering for maximum efficiency.
      *
-    * @param batch - Batch to render
+     * @param batch - Batch to render
      */
     private _renderBatch;
     /**

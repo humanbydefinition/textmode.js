@@ -6,9 +6,17 @@ export { TextmodeCanvas } from './textmode/Canvas';
 export { TextmodeGrid } from './textmode/Grid';
 export type { TextmodeOptions } from './textmode/types';
 export type { TextmodeFramebufferOptions } from './rendering/webgl';
-export { registerConversionStrategy, unregisterConversionStrategy, getConversionStrategy, } from './textmode/conversion';
-export type { TextmodeConversionStrategy, TextmodeConversionContext, TextmodeConversionMode, } from './textmode/conversion';
-export type { TextmodePlugin, TextmodePluginAPI, } from './textmode/managers/PluginManager';
+/**
+ * All media conversion related modules and types.
+ *
+ * Responsible for converting images and videos into textmode-renderable formats,
+ * using various conversion strategies, like brightness- or edge-detection-based conversion.
+ *
+ * `textmode.js` only comes with a built-in `'brightness'`-based conversion strategy,
+ * but custom strategies can be registered via {@link TextmodeConversionManager.register}.
+ */
+export * as conversion from './textmode/conversion';
+export type { TextmodePlugin, TextmodePluginAPI } from './textmode/managers/PluginManager';
 /** All filter related modules and types. */
 export * as filters from './textmode/filters';
 export { TextmodeErrorLevel } from './errors/ErrorHandler';
