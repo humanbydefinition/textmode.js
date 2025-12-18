@@ -9,7 +9,7 @@
  * and most `textmode.js` functions will still throw errors if used incorrectly.
  *
  * @example
- * ```javascript
+ * ```js
  * // Set to `WARNING` level to log errors without stopping execution
  * textmode.setErrorLevel(TextmodeErrorLevel.WARNING);
  * ```

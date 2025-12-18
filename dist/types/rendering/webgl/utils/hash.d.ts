@@ -17,7 +17,7 @@
  * @returns 32-bit integer hash
  *
  * @example
- * ```typescript
+ * ```ts
  * hashString("hello") // → 99162322
  * hashString("world") // → 113318802
  * ```
@@ -31,7 +31,7 @@ export declare function hashString(str: string): number;
  * @returns Integer hash
  *
  * @example
- * ```typescript
+ * ```ts
  * hashNumber(42)    // → 42
  * hashNumber(3.14)  // → 3
  * hashNumber(true)  // → 1
@@ -47,7 +47,7 @@ export declare function hashNumber(value: number | boolean): number;
  * @returns Combined hash of all elements
  *
  * @example
- * ```typescript
+ * ```ts
  * hashArray([1, 2, 3])           // → computed hash
  * hashArray([[1, 2], [3, 4]])    // → computed hash (flattened)
  * ```
@@ -61,7 +61,7 @@ export declare function hashArray(arr: number[] | number[][]): number;
  * @returns Combined hash
  *
  * @example
- * ```typescript
+ * ```ts
  * const arr = new Float32Array([1.0, 2.0, 3.0]);
  * hashTypedArray(arr) // → computed hash
  * ```
@@ -77,7 +77,7 @@ export declare function hashObject(obj: any): number;
  * @returns Combined hash
  *
  * @example
- * ```typescript
+ * ```ts
  * const h1 = hashString("hello");
  * const h2 = hashString("world");
  * const combined = combineHashes(h1, h2);
@@ -93,7 +93,7 @@ export declare function combineHashes(hash1: number, hash2: number): number;
  * @returns Combined hash of all key-value pairs
  *
  * @example
- * ```typescript
+ * ```ts
  * const obj = { b: 2, a: 1, c: 3 };
  * const hash = hashRecord(obj, hashNumber);
  * // Keys are sorted: a, b, c → consistent hash

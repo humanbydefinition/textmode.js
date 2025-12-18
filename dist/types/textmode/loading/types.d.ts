@@ -164,7 +164,7 @@ export interface ILoadingPhase {
      *
      * // Create a phase and report progress as work proceeds
      * t.setup(async () => {
-     *   const phase = t.loading.beginPhase('assets', 1);
+     *   const phase = t.loading.addPhase('assets', 1);
      *   phase.report(0.25);
      *   // ...load assets...
      *   phase.report(0.75);
@@ -181,7 +181,7 @@ export interface ILoadingPhase {
      * const t = textmode.create({ width: 800, height: 600, loadingScreen: { message: 'prepping...' } });
      *
      * t.setup(() => {
-     *   const phase = t.loading.beginPhase('init', 1);
+     *   const phase = t.loading.addPhase('init', 1);
      *   // Finish phase when work is done
      *   phase.complete();
      * });
@@ -190,14 +190,18 @@ export interface ILoadingPhase {
     complete(): void;
     /**
      * Mark the loading phase as failed.
-     * @param error An optional error object describing the failure.
+     *
+     * This will put the loading manager into an error state, displaying the
+     * error on the loading screen.
+     *
+     * @param error An optional error object or message describing the failure.
      *
      * @example
      * ```ts
      * const t = textmode.create({ width: 800, height: 600 });
      *
      * t.setup(async () => {
-     *   const phase = t.loading.beginPhase('fetch', 1);
+     *   const phase = t.loading.addPhase('fetch', 1);
      *   try {
      *     // simulate failure
      *     throw new Error('network error');
@@ -207,7 +211,7 @@ export interface ILoadingPhase {
      * });
      * ```
      */
-    fail(error?: Error): void;
+    fail(error?: Error | string): void;
     /**
      * Track a task within this loading phase.
      * @param task A promise or function representing the task to track.
@@ -218,7 +222,7 @@ export interface ILoadingPhase {
      * const t = textmode.create({ width: 800, height: 600, loadingScreen: { message: 'loading...' } });
      *
      * t.setup(async () => {
-     *   const phase = t.loading.beginPhase('video', 2);
+     *   const phase = t.loading.addPhase('video', 2);
      *   await phase.track(async () => {
      *     // do async work and report updates
      *     for (let i = 0; i <= 10; i++) {

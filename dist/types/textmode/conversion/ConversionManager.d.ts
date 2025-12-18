@@ -9,7 +9,7 @@ import type { TextmodeConversionMode, TextmodeConversionStrategy } from './Conve
  * Used for image-to-ASCII conversion modes.
  *
  * @example
- * ```typescript
+ * ```ts
  * // Register a custom conversion strategy
  * t.conversions.register({
  *     id: 'custom',
@@ -35,7 +35,7 @@ export declare class TextmodeConversionManager {
      * @param strategy The conversion strategy to register
      *
      * @example
-     * ```typescript
+     * ```ts
      * t.conversions.register({
      *     id: 'custom',
      *     createShader: (ctx) => shader,

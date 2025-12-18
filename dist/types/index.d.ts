@@ -9,7 +9,7 @@ export type { TextmodeFramebufferOptions } from './rendering/webgl';
 /**
  * All media conversion related modules and types.
  *
- * Responsible for converting images and videos into textmode-renderable formats,
+ * Responsible for converting images and videos into textmode-renderable formats
  * using various conversion strategies, like brightness- or edge-detection-based conversion.
  *
  * `textmode.js` only comes with a built-in `'brightness'`-based conversion strategy,
@@ -17,7 +17,15 @@ export type { TextmodeFramebufferOptions } from './rendering/webgl';
  */
 export * as conversion from './textmode/conversion';
 export type { TextmodePlugin, TextmodePluginAPI } from './textmode/managers/PluginManager';
-/** All filter related modules and types. */
+/**
+ * All filter related modules and types.
+ *
+ * Provides various image processing filters that can be applied in sequence on a layer's textmode-converted output,
+ * such as blur, sharpen, edge detection, and color adjustments. Filters can also be applied globally to all layers as post-processing effects.
+ *
+ * While `textmode.js` only offers a basic set of filters, additional filters can be implemented and registered via the {@link TextmodeFilterManager},
+ * which is accessible through {@link Textmodifier.filters}.
+ */
 export * as filters from './textmode/filters';
 export { TextmodeErrorLevel } from './errors/ErrorHandler';
 export { Textmode as textmode } from './Textmode';

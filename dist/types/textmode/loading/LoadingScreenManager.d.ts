@@ -75,7 +75,7 @@ export declare class LoadingScreenManager {
      *
      * // In setup we can start a phase and read the overall progress
      * t.setup(async () => {
-     *   const phase = t.loading.beginPhase('assets', 1);
+     *   const phase = t.loading.addPhase('assets', 1);
      *   phase.report(0.5); // half complete for the phase
      *
      *   // The `progress` accessor reports the global progress across all phases
@@ -101,7 +101,7 @@ export declare class LoadingScreenManager {
      *   // Update the message visible on the loading screen
      *   t.loading.message('preloading video...');
      *
-     *   // Read the current message (useful in custom renderers)
+     *   // Read the current message (useful in custom loading screen implementations)
      *   const msg = t.loading.message();
      *   console.log(msg);
      * });
@@ -128,7 +128,7 @@ export declare class LoadingScreenManager {
      *
      * // In setup we start a phase and then track work in that phase
      * t.setup(async () => {
-     *   const phase = t.loading.beginPhase('video preload', 2);
+     *   const phase = t.loading.addPhase('video preload', 2);
      *
      *   // Example: report progress from a loader callback
      *   await phase.track(async () => {
@@ -168,7 +168,7 @@ export declare class LoadingScreenManager {
      * });
      *
      * t.setup(async () => {
-     *   const phase = t.loading.beginPhase('remote fetch', 1);
+     *   const phase = t.loading.addPhase('remote fetch', 1);
      *   try {
      *     await phase.track(async () => {
      *       // Failing call

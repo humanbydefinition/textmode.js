@@ -9,7 +9,7 @@ export type BuiltInConversionMode = 'brightness';
 /**
  * Type representing the available textmode conversion modes
  */
-export type TextmodeConversionMode = BuiltInConversionMode | (string & {});
+export type TextmodeConversionMode = BuiltInConversionMode | string;
 /**
  * Interface for the context provided to conversion strategies
  * @ignore
@@ -38,7 +38,7 @@ export interface TextmodeConversionStrategy {
  * conversion strategies to be scoped to a specific Textmodifier instance rather than registered globally.
  *
  * @example
- * ```typescript
+ * ```ts
  * // Register a custom conversion strategy
  * t.conversions.register(myCustomStrategy);
  *

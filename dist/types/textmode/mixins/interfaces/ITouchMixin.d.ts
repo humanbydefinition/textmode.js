@@ -13,7 +13,7 @@ export interface ITouchMixin {
      * @param callback The function to call when a touch starts.
      *
      * @example
-     * ```javascript
+     * ```js
      * t.touchStarted((data) => {
      *   console.log(`Touch ${data.touch.id} began at ${data.touch.x}, ${data.touch.y}`);
      * });
@@ -29,7 +29,7 @@ export interface ITouchMixin {
      * @param callback The function to call when a touch moves.
      *
      * @example
-     * ```javascript
+     * ```js
      * t.touchMoved((data) => {
      *   const { touch, previousTouch } = data;
      *   if (previousTouch) {
@@ -48,7 +48,7 @@ export interface ITouchMixin {
      * @param callback The function to call when a touch ends.
      *
      * @example
-     * ```javascript
+     * ```js
      * t.touchEnded((data) => {
      *   console.log(`Touch ${data.touch.id} finished at ${data.touch.x}, ${data.touch.y}`);
      * });
@@ -64,7 +64,7 @@ export interface ITouchMixin {
      * @param callback The function to call when a touch is cancelled.
      *
      * @example
-     * ```javascript
+     * ```js
      * t.touchCancelled((data) => {
      *   console.warn(`Touch ${data.touch.id} cancelled by the browser`);
      * });
@@ -80,7 +80,7 @@ export interface ITouchMixin {
      * @param callback The function to call when a tap gesture is detected.
      *
      * @example
-     * ```javascript
+     * ```js
      * t.tap((data) => {
      *   console.log(`Tapped at ${data.touch.x}, ${data.touch.y}`);
      * });
@@ -96,7 +96,7 @@ export interface ITouchMixin {
      * @param callback The function to call when a double tap is detected.
      *
      * @example
-     * ```javascript
+     * ```js
      * t.doubleTap((data) => {
      *   console.log('Double tap detected', data.touch);
      * });
@@ -112,7 +112,7 @@ export interface ITouchMixin {
      * @param callback The function to call when a long press gesture is detected.
      *
      * @example
-     * ```javascript
+     * ```js
      * t.longPress((data) => {
      *   console.log(`Long press for ${Math.round(data.duration)}ms`);
      * });
@@ -128,7 +128,7 @@ export interface ITouchMixin {
      * @param callback The function to call when a swipe gesture is detected.
      *
      * @example
-     * ```javascript
+     * ```js
      * t.swipe((data) => {
      *   console.log(`Swipe ${data.direction} with distance ${data.distance}`);
      * });
@@ -144,7 +144,7 @@ export interface ITouchMixin {
      * @param callback The function to call when a pinch gesture is detected.
      *
      * @example
-     * ```javascript
+     * ```js
      * t.pinch((data) => {
      *   console.log(`Pinch scale: ${data.scale.toFixed(2)}`);
      * });
@@ -160,7 +160,7 @@ export interface ITouchMixin {
      * @param callback The function to call when a rotation gesture is detected.
      *
      * @example
-     * ```javascript
+     * ```js
      * t.rotateGesture((data) => {
      *   console.log(`Rotated ${data.deltaRotation.toFixed(1)}°`);
      * });
@@ -174,7 +174,7 @@ export interface ITouchMixin {
      * available. Use this inside a draw loop to react to active multi-touch scenarios.
      *
      * @example
-     * ```javascript
+     * ```js
      * t.draw(() => {
      *   for (const touch of t.touches) {
      *     t.point();

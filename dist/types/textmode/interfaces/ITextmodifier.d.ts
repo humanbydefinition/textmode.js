@@ -189,7 +189,7 @@ export interface ITextmodifier extends IRenderingMixin, IAnimationMixin, IMouseM
      *
      * Calling this method is equivalent to setting the draw callback on the base layer,
      * while the direct layer callback has precedence if both are set.
-     * ```javascript
+     * ```js
      * textmodifier.layers.base.draw(callback);
      * ```
      *
@@ -282,7 +282,7 @@ export interface ITextmodifier extends IRenderingMixin, IAnimationMixin, IMouseM
      * After calling this method, the instance should not be used and will be eligible for garbage collection.
      *
      * @example
-     * ```javascript
+     * ```js
      * // Create a textmodifier instance
      * const textmodifier = textmode.create();
      *
@@ -306,7 +306,7 @@ export interface ITextmodifier extends IRenderingMixin, IAnimationMixin, IMouseM
      * @param params Optional parameters for the filter
      *
      * @example
-     * ```typescript
+     * ```ts
      * t.draw(() => {
      *     t.background(0);
      *     t.charColor(255);
@@ -350,7 +350,7 @@ export interface ITextmodifier extends IRenderingMixin, IAnimationMixin, IMouseM
      * (via {@link filter}) and on individual layers (via {@link TextmodeLayer.filter}).
      *
      * @example
-     * ```typescript
+     * ```ts
      * // Register a custom filter once
      * await t.filters.register('vignette', vignetteShader, {
      *     u_intensity: ['intensity', 0.5]
@@ -389,7 +389,7 @@ export interface ITextmodifier extends IRenderingMixin, IAnimationMixin, IMouseM
      * allowing further configuration of the conversion parameters.
      *
      * @example
-     * ```javascript
+     * ```js
      * // Create the textmode instance using the p5 canvas as input overlay
      * const t = textmode.create({ fontSize: 16, canvas: p.canvas, overlay: true });
      *

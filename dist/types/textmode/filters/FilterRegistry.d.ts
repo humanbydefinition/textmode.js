@@ -7,7 +7,7 @@ import type { TextmodeFilterStrategy, FilterName } from './types';
  * filters to be scoped to a specific context rather than registered globally.
  *
  * @example
- * ```typescript
+ * ```ts
  * // Define a simple filter with the declarative API
  * t.filters.register('blur', blurShader, { radius: 5.0 });
  *
@@ -37,7 +37,7 @@ export declare class FilterRegistry {
      * @param uniforms Default uniform values. Keys map uniform names to [paramName, defaultValue] tuples.
      *
      * @example
-     * ```typescript
+     * ```ts
      * // With pre-compiled shader (recommended for add-ons)
      * const shader = await t.createShader(vertSrc, fragSrc);
      * t.filters.register('brightness', shader, { u_amount: ['amount', 1.0] });

@@ -142,7 +142,7 @@ export interface IAnimationMixin {
      * @returns True if the render loop is currently active, false otherwise.
      *
      * @example
-     * ```javascript
+     * ```js
      * const textmodifier = textmode.create(canvas);
      *
      * // Check loop status in different states

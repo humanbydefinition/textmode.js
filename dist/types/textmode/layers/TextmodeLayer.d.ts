@@ -10,7 +10,7 @@ import type { ITextmodeLayer } from './interfaces/ITextmodeLayer';
  *
  * Layers are composited together using various blend modes
  * to create complex visual effects. Each layer can be independently
- * manipulated in terms of visibility, opacity, blend mode, and position.
+ * manipulated in terms of visibility, {@link opacity}, {@link blendMode}, {@link offset}, rotation, {@link TextmodeGrid}, and {@link TextmodeFont}.
  *
  * You can draw on each layer by providing a draw callback function,
  * like you would with the base layer's {@link Textmodifier.draw} method.
@@ -88,7 +88,7 @@ export declare class TextmodeLayer implements ITextmodeLayer {
      * @returns The loaded TextmodeFont instance.
      *
      * @example
-     * ```javascript
+     * ```js
      * const layer = t.layers.add();
      *
      * t.setup(async () => {

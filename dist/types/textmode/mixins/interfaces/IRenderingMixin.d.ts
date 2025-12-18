@@ -86,8 +86,6 @@ export interface IRenderingMixin {
      * Draw a TextmodeFramebuffer, TextmodeImage, or TextmodeVideo to the current render target.
      *
      * @param source The TextmodeFramebuffer or TextmodeSource to render
-     * @param x X position on the grid where to place the content *(top-left corner)*
-     * @param y Y position on the grid where to place the content *(top-left corner)*
      * @param width Width to potentially scale the content
      * @param height Height to potentially scale the content
      *

@@ -24,6 +24,18 @@ export declare class Textmode {
      *     t.rect(10, 10);
      * });
      * ```
+     * @exampleAuthor
+     * <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+     *   <img src="https://github.com/humanbydefinition.png" alt="@humanbydefinition avatar" width="72" height="72" style="border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.35);" />
+     *   <div style="display:flex;flex-direction:column;gap:0.25rem;">
+     *     <strong><a href="https://github.com/humanbydefinition">@humanbydefinition</a></strong>
+     *     <span style="font-size:0.95em;">
+     *       📷 <a href="https://instagram.com/humanbydefinition">Instagram</a>
+     *       &nbsp;•&nbsp; 🐘 <a href="https://mastodon.social/@humanbydefinition">Mastodon</a>
+     *       &nbsp;•&nbsp; 🦋 <a href="https://bsky.app/profile/humanbydefinition.bsky.social">BlueSky</a>
+     *     </span>
+     *   </div>
+     * </div>
      */
     static create(opts?: TextmodeOptions): Textmodifier;
     /**
@@ -32,7 +44,7 @@ export declare class Textmode {
      * @param level The error handling level to set.
      *
      * @example
-     * ```javascript
+     * ```js
      * // Set error level to WARNING
      * textmode.setErrorLevel(TextmodeErrorLevel.WARNING);
      * ```
@@ -42,7 +54,7 @@ export declare class Textmode {
      * Returns the version of `textmode.js` being used.
      *
      * @example
-     * ```javascript
+     * ```js
      * console.log(textmode.version); // "1.0.0"
      * ```
      */

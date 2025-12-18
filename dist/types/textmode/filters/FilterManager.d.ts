@@ -3,15 +3,10 @@ import type { QueuedFilter, FilterName } from './types';
 /**
  * Manages filter registration, shader compilation, and filter chain application.
  *
- * This class provides:
- * - A registry for custom and built-in filter strategies
- * - Lazy shader compilation and caching
- * - Ping-pong rendering for efficient multi-filter chains
- *
  * Used both for layer-level filters and global post-processing filters.
  *
  * @example
- * ```typescript
+ * ```ts
  * // Register a custom filter
  * await t.filters.register('brightness', brightnessShader, {
  *     u_amount: ['amount', 1.0]
@@ -45,7 +40,7 @@ export declare class TextmodeFilterManager {
      * @param uniformDefs Maps uniform names to [paramName, defaultValue] tuples
      *
      * @example
-     * ```typescript
+     * ```ts
      * // Register with inline shader source
      * await t.filters.register('blur', blurFragSource, {
      *     u_radius: ['radius', 5.0],

@@ -6,8 +6,8 @@ import type { ILayerManager } from './interfaces/ILayerManager';
 import type { TextmodeOptions } from '../types';
 import type { TextmodeGrid } from '../Grid';
 /**
- * Manages all user-defined layers within a Textmodifier in *
- * Th *
+ * Manages all user-defined layers within a Textmodifier in addition to the base layer.
+ *
  * This manager is responsible for:
  * - Managing the collection of user layers (add, remove, move, swap)
  * - Coordinating layer rendering and compositing

@@ -3,13 +3,13 @@ import type { GLFramebuffer } from '../../../rendering/webgl/core/Framebuffer.ts
 import type { TextmodeCharacter } from './types.ts';
 import type { TyprFont } from './typr/types.ts';
 /**
- * Manages the font used for rendering characters via {@link Textmodifier.loadFont}.
+ * Manages the font used for rendering characters via {@link TextmodeLayer.loadFont}.
  *
  * This class coordinates font loading, character extraction, texture atlas creation,
  * and provides character information.
  *
- * The font used by your {@link Textmodifier} instance is accessible via
- * the {@link Textmodifier.font} property.
+ * Each {@link TextmodeLayer} has its own instance of this class to allow for
+ * layer-specific font configurations.
  */
 export declare class TextmodeFont {
     private _font;

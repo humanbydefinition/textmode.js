@@ -51,7 +51,7 @@ export interface ITextmodeLayer {
      * @param callback The function to call when drawing this layer.
      *
      * @example
-     * ```typescript
+     * ```javascript
      * const t = textmode.create();
      *
      * // Create layers with different blend modes
@@ -130,7 +130,7 @@ export interface ITextmodeLayer {
      * @returns The loaded TextmodeFont instance.
      *
      * @example
-     * ```javascript
+     * ```js
      * const layer = t.layers.add();
      *
      * t.setup(async () => {
@@ -176,7 +176,7 @@ export interface ITextmodeLayer {
      * - `'exclusion'` - Softer difference effect
      *
      * @example
-     * ```typescript
+     * ```javascript
      * const t = textmode.create();
      *
      * // Create 5 layers with different blend modes
@@ -219,7 +219,7 @@ export interface ITextmodeLayer {
      * @returns The current offset if no parameters are provided.
      *
      * @example
-     * ```typescript
+     * ```javascript
      * const t = textmode.create();
      *
      * const LAYER_COUNT = 32;
@@ -301,9 +301,7 @@ export interface ITextmodeLayer {
      * @returns The current rotation in degrees if no parameter is provided.
      *
      * @example
-     * ```typescript
-     * import { textmode } from 'textmode.js';
-     *
+     * ```javascript
      * const t = textmode.create();
      *
      * const rotatingLayer = t.layers.add({ blendMode: 'difference', opacity: 1.0 });
@@ -344,7 +342,7 @@ export interface ITextmodeLayer {
      * @param params Optional parameters for the filter
      *
      * @example
-     * ```typescript
+     * ```javascript
      * const t = textmode.create();
      *
      * // Create a layer with filters applied
