@@ -7,8 +7,8 @@ import { AnimationController } from './AnimationController';
 import { MouseManager } from './managers/MouseManager';
 import { KeyboardManager } from './managers/KeyboardManager';
 import { TouchManager } from './managers/TouchManager';
+import { TextmodePluginManager } from './managers/PluginManager';
 import type { ITextmodifier } from './interfaces';
-import type { GLShader } from '../rendering';
 import type { TextmodeOptions } from './types';
 import type { IAnimationMixin } from './mixins/interfaces/IAnimationMixin';
 import type { IRenderingMixin } from './mixins/interfaces/IRenderingMixin';
@@ -17,8 +17,8 @@ import type { ITouchMixin } from './mixins/interfaces/ITouchMixin';
 import type { IMouseMixin } from './mixins/interfaces/IMouseMixin';
 import { LoadingScreenManager } from './loading/LoadingScreenManager';
 import { LayerManager } from './layers/LayerManager';
-import type { TextmodeLayerManager } from './layers';
-import { TextmodeFilterManager } from './filters';
+import type { TextmodeLayer, TextmodeLayerManager } from './layers';
+import type { TextmodeFilterManager } from './filters';
 import type { FilterName, BuiltInFilterName, BuiltInFilterParams } from './filters';
 import { TextmodeConversionManager } from './conversion';
 declare const Textmodifier_base: {
@@ -40,23 +40,16 @@ export declare class Textmodifier extends Textmodifier_base implements ITextmodi
     _touchManager: TouchManager;
     _keyboardManager: KeyboardManager;
     _loading: LoadingScreenManager;
-    _textmodeConversionShader: GLShader;
-    _presentShader: GLShader;
     _layerManager: TextmodeLayerManager;
-    _activeFont?: TextmodeFont;
-    _activeGrid?: TextmodeGrid;
-    _filterManager: TextmodeFilterManager;
+    _activeLayer?: TextmodeLayer;
     _conversionManager: TextmodeConversionManager;
-    private _globalFilterQueue;
-    private _preFilterFramebuffer;
-    private _postFilterFramebuffer;
-    private _pluginManager;
+    /** @ignore */
+    _pluginManager: TextmodePluginManager;
     private _destroyRequested;
     private _isRenderingFrame;
     private _isDisposed;
     private _setupComplete;
     private _setupCallback;
-    private _drawCallback;
     private _resizedCallback;
     private _windowResizeListener;
     private _resizeObserver?;
@@ -81,17 +74,16 @@ export declare class Textmodifier extends Textmodifier_base implements ITextmodi
     private _performDestroy;
     filter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
     filter(name: FilterName, params?: unknown): void;
+    draw(callback: () => void): void;
     loadFont(fontSource: string): Promise<TextmodeFont>;
     fontSize(size: number): void;
     inputGrid(target?: 'topmost' | TextmodeGrid): 'topmost' | TextmodeGrid | void;
     /**
      * Get the grid used for input coordinate mapping.
      * Returns the override grid/layer's grid if set, otherwise the topmost visible layer's grid.
-     * @ignore
      */
     private _getInputGrid;
     setup(callback: () => void | Promise<void>): Promise<void>;
-    draw(callback: () => void): void;
     windowResized(callback: () => void): void;
     get grid(): TextmodeGrid | undefined;
     get font(): TextmodeFont;
@@ -104,6 +96,7 @@ export declare class Textmodifier extends Textmodifier_base implements ITextmodi
     get layers(): LayerManager;
     get filters(): TextmodeFilterManager;
     get conversions(): TextmodeConversionManager;
+    get isRenderingFrame(): boolean;
 }
 export interface Textmodifier extends IRenderingMixin, IAnimationMixin, IMouseMixin, ITouchMixin, IKeyboardMixin {
 }

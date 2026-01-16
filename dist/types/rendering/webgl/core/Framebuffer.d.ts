@@ -81,7 +81,7 @@ export declare class GLFramebuffer implements IFramebuffer {
      * @ignore
      */
     private _updateMaterial;
-    $dispose(): void;
+    dispose(): void;
     /** Get the width of the framebuffer */
     get width(): number;
     /** Get the height of the framebuffer */

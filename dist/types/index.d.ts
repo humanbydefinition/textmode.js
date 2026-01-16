@@ -16,7 +16,40 @@ export type { TextmodeFramebufferOptions } from './rendering/webgl';
  * but custom strategies can be registered via {@link TextmodeConversionManager.register}.
  */
 export * as conversion from './textmode/conversion';
-export type { TextmodePlugin, TextmodePluginAPI } from './textmode/managers/PluginManager';
+/**
+ * Plugin system types for extending textmode.js functionality.
+ *
+ * Plugins can:
+ * - Add methods to TextmodeLayer instances (e.g., `.synth()`)
+ * - Hook into the render lifecycle (pre/post draw, per-layer rendering)
+ * - React to layer creation and disposal events
+ * - Access the WebGL renderer, framebuffers, and other internals
+ *
+ * @example
+ * ```ts
+ * import type { TextmodePlugin, TextmodePluginAPI } from 'textmode.js/plugins';
+ *
+ * const MyPlugin: TextmodePlugin = {
+ *   name: 'my-plugin',
+ *   version: '1.0.0',
+ *   install(textmodifier, api) {
+ *     // Extend layers with a new method
+ *     api.extendLayer('myMethod', function(value) {
+ *       this.setPluginState('my-plugin', { value });
+ *     });
+ *
+ *     // Hook into layer rendering
+ *     api.registerLayerPreRenderHook((layer, ctx) => {
+ *       const state = layer.getPluginState('my-plugin');
+ *       if (state) {
+ *         // Render plugin content to layer.drawFramebuffer
+ *       }
+ *     });
+ *   }
+ * };
+ * ```
+ */
+export * as plugins from './textmode/managers/PluginManager';
 /**
  * All filter related modules and types.
  *
@@ -28,6 +61,7 @@ export type { TextmodePlugin, TextmodePluginAPI } from './textmode/managers/Plug
  */
 export * as filters from './textmode/filters';
 export { TextmodeErrorLevel } from './errors/ErrorHandler';
+export { GLShader as TextmodeShader } from './rendering/webgl/core/Shader';
 export { Textmode as textmode } from './Textmode';
 /** All loading screen related modules and types. */
 export * as loading from './textmode/loading';

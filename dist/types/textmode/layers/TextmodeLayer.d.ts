@@ -14,6 +14,10 @@ import type { ITextmodeLayer } from './interfaces/ITextmodeLayer';
  *
  * You can draw on each layer by providing a draw callback function,
  * like you would with the base layer's {@link Textmodifier.draw} method.
+ *
+ * Plugins can extend TextmodeLayer with additional methods using the plugin API's
+ * `extendLayer` function. For example, the `textmode-synth` plugin adds a `.synth()`
+ * method for hydra-like procedural generation.
  */
 export declare class TextmodeLayer implements ITextmodeLayer {
     /** @ignore */
@@ -40,8 +44,8 @@ export declare class TextmodeLayer implements ITextmodeLayer {
     private _rawAsciiFramebuffer?;
     private _pingPongBuffers?;
     private _drawCallback;
-    private _hasRenderableContent;
     private _filterQueue;
+    private _pluginState;
     /**
      * Create a new TextmodeLayer with the given options.
      * @param options Layer configuration options.
@@ -54,18 +58,6 @@ export declare class TextmodeLayer implements ITextmodeLayer {
      * @ignore
      */
     $attachDependencies(deps: LayerDependencies): Promise<void>;
-    /**
-     * Return true when this layer has a user-provided draw callback.
-     * @ignore
-     */
-    $hasDraw(): boolean;
-    /**
-     * Run the layer's draw callback in the calling context. This does NOT
-     * manage framebuffer binding; the caller must ensure the correct
-     * framebuffer is bound before invoking this.
-     * @ignore
-     */
-    $runDraw(textmodifier: Textmodifier): void;
     draw(callback: () => void): void;
     show(): void;
     hide(): void;
@@ -78,25 +70,11 @@ export declare class TextmodeLayer implements ITextmodeLayer {
     rotateZ(z?: number): number | void;
     filter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
     filter(name: FilterName, params?: unknown): void;
-    /** Get or set the font size for this layer's font. */
-    fontSize(size?: number): number | void;
-    /**
-     * Load a font into this layer from a URL/path or reuse an existing {@link TextmodeFont} instance.
-     * Creates a new font instance for this layer and loads the font data when a string source is provided.
-     *
-     * @param fontSource The URL or path to the font file.
-     * @returns The loaded TextmodeFont instance.
-     *
-     * @example
-     * ```js
-     * const layer = t.layers.add();
-     *
-     * t.setup(async () => {
-     *   // Load a custom font for this layer
-     *   await layer.loadFont('./fonts/custom.ttf');
-     * });
-     * ```
-     */
+    setPluginState<T>(pluginName: string, state: T): void;
+    getPluginState<T>(pluginName: string): T | undefined;
+    hasPluginState(pluginName: string): boolean;
+    deletePluginState(pluginName: string): boolean;
+    fontSize(size?: number): void;
     loadFont(fontSource: string | TextmodeFont): Promise<TextmodeFont>;
     /**
      * Render the layer's content into its ASCII framebuffer.
@@ -104,9 +82,7 @@ export declare class TextmodeLayer implements ITextmodeLayer {
      * @param conversionShader The shader used for conversion.
      * @ignore
      */
-    $render(textmodifier: Textmodifier, conversionShader: GLShader, options?: {
-        fallbackDraw?: () => void;
-    }): void;
+    $render(textmodifier: Textmodifier, conversionShader: GLShader): void;
     /**
      * Resize the layer's framebuffers to match the given grid dimensions.
      * @param grid The TextmodeGrid instance.
@@ -118,29 +94,12 @@ export declare class TextmodeLayer implements ITextmodeLayer {
      * @ignore
      */
     $dispose(): void;
-    /**
-     * Get the texture containing the rendered textmode output for this layer.
-     */
     get texture(): WebGLTexture | undefined;
-    /**
-     * Get the grid associated with this layer.
-     */
     get grid(): TextmodeGrid | undefined;
     get font(): TextmodeFont;
     get width(): number;
     get height(): number;
-    /**
-     * Return true when this layer has renderable content.
-     * @ignore
-     */
-    get $hasRenderableContent(): boolean;
-    /**
-     * Get the framebuffer used for drawing operations on this layer.
-     */
     get drawFramebuffer(): GLFramebuffer | undefined;
-    /**
-     * Get the framebuffer containing the rendered textmode output for this layer.
-     */
     get asciiFramebuffer(): GLFramebuffer | undefined;
     private _syncGridToFont;
 }

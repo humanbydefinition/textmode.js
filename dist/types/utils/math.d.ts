@@ -1,4 +1,30 @@
 /**
+ * Convert degrees to radians.
+ *
+ * @param degrees Angle in degrees
+ * @returns Angle in radians
+ *
+ * @example
+ * ```ts
+ * degToRad(180); // Math.PI
+ * degToRad(90);  // Math.PI / 2
+ * ```
+ */
+export declare function degToRad(degrees: number): number;
+/**
+ * Convert radians to degrees.
+ *
+ * @param radians Angle in radians
+ * @returns Angle in degrees
+ *
+ * @example
+ * ```ts
+ * radToDeg(Math.PI);     // 180
+ * radToDeg(Math.PI / 2); // 90
+ * ```
+ */
+export declare function radToDeg(radians: number): number;
+/**
  * Calculate the angle in degrees between two points.
  * @param x1 - X coordinate of the first point
  * @param y1 - Y coordinate of the first point

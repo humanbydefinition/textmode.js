@@ -4,8 +4,13 @@ import { GLFramebuffer } from './Framebuffer';
  */
 export type UniformValue = number | boolean | number[] | number[][] | Float32Array | Int32Array | GLFramebuffer | WebGLTexture;
 /**
- * WebGL implementation of the shader abstraction.
- * Provides GPU shader program management with automatic uniform handling and minification support.
+ *
+ * Shader class for managing WebGL shader programs initialized via {@link Textmodifier.createFilterShader} or {@link Textmodifier.createShader}.
+ *
+ * Use shaders and set uniforms via {@link Textmodifier.shader}, {@link Textmodifier.setUniform}, and {@link Textmodifier.setUniforms}.
+ *
+ * With a shader active, the next {@link Textmodifier.rect} call will use the shader for rendering,
+ * and automatically unuse it afterwards.
  */
 export declare class GLShader {
     private _gl;
@@ -28,22 +33,31 @@ export declare class GLShader {
     private _createShader;
     /**
      * Use this shader program
+     * @ignore
      */
     $use(): void;
     /**
      * Reset texture unit counter and other state
      */
     private _resetState;
+    /**
+     * Set multiple uniform values at once.
+     * @param uniforms An object mapping uniform names to their values.
+     * @ignore
+     */
     $setUniforms(uniforms: Record<string, any>): void;
     /**
      * Set a single uniform value with automatic texture unit management and proper type detection
+     * @param name The name of the uniform variable in the shader
+     * @param value The value to set for the uniform
+     * @ignore
      */
     $setUniform(name: string, value: UniformValue): void;
     private _acquireTextureUnit;
     /**
      * Get the WebGL program
      */
-    get $glProgram(): WebGLProgram;
+    get program(): WebGLProgram;
     /**
      * Dispose of WebGL resources used by this shader.
      */

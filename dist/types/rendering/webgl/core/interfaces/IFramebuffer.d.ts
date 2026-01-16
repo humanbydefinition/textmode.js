@@ -89,15 +89,8 @@ export interface IFramebuffer {
     /**
      * Dispose of WebGL resources used by this framebuffer.
      *
-     * This releases:
-     * - The WebGL framebuffer object
-     * - All associated texture objects
-     * - Any cached pixel data
-     *
      * This method is idempotent and safe to call multiple times.
      * After disposal, the framebuffer should not be used for rendering.
-     *
-     * @ignore
      */
-    $dispose(): void;
+    dispose(): void;
 }

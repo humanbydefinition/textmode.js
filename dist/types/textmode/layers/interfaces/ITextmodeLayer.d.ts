@@ -2,6 +2,7 @@ import type { GLFramebuffer } from '../../../rendering';
 import type { TextmodeFont } from '../../loadables/font';
 import type { TextmodeLayerBlendMode } from '../types';
 import type { FilterName, BuiltInFilterName, BuiltInFilterParams } from '../../filters';
+import type { TextmodeGrid } from '../../Grid';
 /**
  * A single layer within a multi-layered textmode rendering context.
  *
@@ -11,6 +12,10 @@ import type { FilterName, BuiltInFilterName, BuiltInFilterParams } from '../../f
  *
  * You can draw on each layer by providing a draw callback function,
  * like you would with the base layer's {@link Textmodifier.draw} method.
+ *
+ * Plugins can extend TextmodeLayer with additional methods using the plugin API's
+ * `extendLayer` function. For example, the `textmode-synth` plugin adds a `.synth()`
+ * method for hydra-like procedural generation.
  *
  * You can also apply a sequence of post-processing filters to each layer's
  * rendered output using the {@link ITextmodeLayer.filter} method.
@@ -24,6 +29,10 @@ export interface ITextmodeLayer {
      * If the layer is not yet initialized, returns undefined.
      */
     readonly texture: WebGLTexture | undefined;
+    /**
+     * Get the grid associated with this layer.
+     */
+    readonly grid: TextmodeGrid | undefined;
     /**
      * Returns the width of the final ASCII framebuffer in pixels.
      * If the layer is not yet initialized, returns 0.
@@ -39,7 +48,13 @@ export interface ITextmodeLayer {
      * If the layer is not yet initialized, returns undefined.
      */
     readonly drawFramebuffer: GLFramebuffer | undefined;
-    /** The font used by this layer. */
+    /**
+     * Get the framebuffer containing the rendered textmode output for this layer.
+     */
+    readonly asciiFramebuffer: GLFramebuffer | undefined;
+    /**
+     * The font used by this layer.
+     */
     readonly font: TextmodeFont;
     /**
      * Define this layer's draw callback. The callback is executed each frame
@@ -121,10 +136,37 @@ export interface ITextmodeLayer {
      * ```
      */
     draw(callback: () => void): void;
+    /**
+     * Store plugin-specific state on this layer.
+     * Plugins can use this to attach their own data to layer instances.
+     *
+     * @param pluginName Unique identifier for the plugin.
+     * @param state The state object to store.
+     */
+    setPluginState<T>(pluginName: string, state: T): void;
+    /**
+     * Retrieve plugin-specific state stored on this layer.
+     *
+     * @param pluginName Unique identifier for the plugin.
+     * @returns The stored state object, or undefined if not set.
+     */
+    getPluginState<T>(pluginName: string): T | undefined;
+    /** Check if plugin-specific state exists on this layer.
+     *
+     * @param pluginName Unique identifier for the plugin.
+     * @returns True if state exists, false otherwise.
+     */
+    hasPluginState(pluginName: string): boolean;
+    /** Delete plugin-specific state from this layer.
+     *
+     * @param pluginName Unique identifier for the plugin.
+     */
+    deletePluginState(pluginName: string): void;
     /** Get or set the font size for this layer. */
     fontSize(size?: number): number | void;
     /**
-     * Load a font from the given source into this layer.
+     * Load a font into this layer from a URL/path or reuse an existing {@link TextmodeFont} instance.
+     * Creates a new font instance for this layer and loads the font data when a string source is provided.
      *
      * @param fontSource The URL or path to the font file.
      * @returns The loaded TextmodeFont instance.
@@ -134,6 +176,7 @@ export interface ITextmodeLayer {
      * const layer = t.layers.add();
      *
      * t.setup(async () => {
+     *   // Load a custom font for this layer
      *   await layer.loadFont('./fonts/custom.ttf');
      * });
      * ```

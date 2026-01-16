@@ -5,12 +5,14 @@ import type { TextmodeLayerOptions } from './types';
 import type { ILayerManager } from './interfaces/ILayerManager';
 import type { TextmodeOptions } from '../types';
 import type { TextmodeGrid } from '../Grid';
+import { type FilterName, type BuiltInFilterName, type BuiltInFilterParams, TextmodeFilterManager } from '../filters';
 /**
  * Manages all user-defined layers within a Textmodifier in addition to the base layer.
  *
- * This manager is responsible for:
+ * Responsibilities:
  * - Managing the collection of user layers (add, remove, move, swap)
  * - Coordinating layer rendering and compositing
+ * - Owning the global post-processing pipeline (global filters + present to screen)
  *
  * The instance of this class can be accessed via {@link Textmodifier.layers}.
  *
@@ -19,13 +21,17 @@ import type { TextmodeGrid } from '../Grid';
 export declare class LayerManager implements ILayerManager {
     private readonly _textmodifier;
     private readonly _renderer;
-    private readonly _conversionShader;
     private readonly _compositor2D;
-    private _pendingLayers;
-    private _layers;
+    private readonly _filterManager;
+    private readonly _textmodeConversionShader;
+    private readonly _presentShader;
+    private readonly _layers;
     private readonly _baseLayer;
     private _isReady;
     private readonly _gridDimensionChangeCallbacks;
+    private _globalFilterQueue;
+    private _preFilterFramebuffer;
+    private _postFilterFramebuffer;
     /**
      * Create a new LayerManager.
      * @param textmodifier The Textmodifier instance this manager belongs to.
@@ -33,42 +39,64 @@ export declare class LayerManager implements ILayerManager {
      */
     constructor(textmodifier: Textmodifier, opts: TextmodeOptions);
     /**
-     * Initialize all pending layers and the compositor.
+     * Initialize all pending layers, compositor, and global post-processing resources.
      * @ignore
      */
     $initialize(): Promise<void>;
+    /**
+     * Queue a global filter to be applied after all layers are composited.
+     * Intended to be called by Textmodifier.filter().
+     * @ignore
+     */
+    $queueGlobalFilter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
+    $queueGlobalFilter(name: FilterName, params?: unknown): void;
+    /**
+     * Clear any queued global filters for the current frame.
+     * @ignore
+     */
+    $clearGlobalFilterQueue(): void;
     add(options?: TextmodeLayerOptions): TextmodeLayer;
     remove(layer: TextmodeLayer): void;
     move(layer: TextmodeLayer, newIndex: number): void;
     swap(layerA: TextmodeLayer, layerB: TextmodeLayer): void;
+    /**
+     * Remove and dispose all user layers (keeps base layer intact).
+     */
     clear(): void;
     /**
-     * Render all layers (base and user) and composite them to the target framebuffer.
+     * Render all layers (base and user) and composite them to the provided target framebuffer.
+     * This performs ONLY layer rendering + compositing (no global filters, no present).
+     *
      * @param targetFramebuffer The framebuffer to render the final composited result to.
-     * @param backgroundColor The background color as RGBA values (0-1 range).
      * @ignore
      */
-    $renderAndComposite(targetFramebuffer: GLFramebuffer, fallbackBaseDraw: () => void): void;
+    $renderAndComposite(targetFramebuffer: GLFramebuffer): void;
     /**
-     * Render all user layers to their respective framebuffers.
+     * Render, composite, apply global filters, present to screen, run post-draw hooks.
+     * This replaces the removed "Pass 3/4 + post hooks" section from Textmodifier.$render().
+     *
+     * @param fallbackBaseDraw Fallback draw callback for the base layer if it has no own draw callback.
+     * @ignore
      */
-    private _renderUserLayers;
+    $renderAndPresent(): void;
     /**
-     * Composite all layers onto the target framebuffer.
+     * Composite base + user layers onto the target framebuffer.
      */
     private _compositeLayers;
     /**
-     * Resize all layers and the compositor to match the current grid dimensions.
+     * Resize all layers, compositor, and global post-processing buffers.
      * @ignore
      */
     $resize(): void;
     /**
-     * Dispose of the layer manager, all layers, and the compositor.
+     * Dispose of the layer manager, all layers, compositor, and global post-processing resources.
      * @ignore
      */
     $dispose(): void;
     get all(): readonly TextmodeLayer[];
     get base(): TextmodeLayer;
+    get filters(): TextmodeFilterManager;
+    get resultFramebuffer(): GLFramebuffer;
     /**
      * Get the grid of the topmost visible layer.
      * Returns the topmost user layer's grid if any are visible, otherwise returns the base layer's grid.
@@ -91,16 +119,4 @@ export declare class LayerManager implements ILayerManager {
      * Initialize a single layer with required dependencies.
      */
     private _initializeLayer;
-    /**
-     * Remove a layer from a collection and dispose it.
-     */
-    private _removeFromCollection;
-    /**
-     * Move a layer to a new index within a collection.
-     */
-    private _moveInCollection;
-    /**
-     * Swap two layers within a collection.
-     */
-    private _swapInCollection;
 }

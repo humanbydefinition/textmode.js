@@ -315,6 +315,14 @@ export interface IRenderingMixin {
      */
     createFilterShader(fragmentSource: string): Promise<GLShader>;
     /**
+     * Create a shader from vertex and fragment source code or file paths.
+     * Accepts inline shader source or file paths (e.g. './shader.frag', './shader.vert', '.frag', '.vert').
+     * @param vertexSource The vertex shader source code or a file path
+     * @param fragmentSource The fragment shader source code or a file path
+     * @returns A Promise that resolves to a compiled shader
+     */
+    createShader(vertexSource: string, fragmentSource: string): Promise<GLShader>;
+    /**
      * Sets the rotation angles for subsequent shape rendering operations.
      *
      * All geometries rotate around the center of the shape.

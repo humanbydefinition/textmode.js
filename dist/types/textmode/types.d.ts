@@ -1,7 +1,7 @@
 import type { TextmodePlugin } from './managers/PluginManager';
 import type { LoadingScreenOptions } from './loading/';
 /**
- * Options for creating a {@link Textmodifier} instance.
+ * Options when creating a {@link Textmodifier} instance.
  */
 export type TextmodeOptions = {
     /**
@@ -34,8 +34,9 @@ export type TextmodeOptions = {
      *
      * Useful for applying textmode conversion to p5.js sketches, YouTube videos, and sooo much more.
      *
-     * All functionality of `textmode.js` remains available. Resizing the `textmode.js` canvas is not recommended though, since the overlay target defines the size.
-     *
+     * All functionality of `textmode.js` remains available.
+     * Resizing the `textmode.js` canvas is not recommended though,
+     * since the overlay target automatically updates the size.
      */
     overlay?: boolean;
     /** List of plugins to install when the Textmodifier instance is created. */

@@ -4,6 +4,7 @@
  */
 export declare class AnimationController {
     private _frameInterval;
+    private _targetFrameRate;
     private _animationFrameId;
     private _lastFrameTime;
     private _isLooping;
@@ -11,7 +12,9 @@ export declare class AnimationController {
     private _lastRenderTime;
     private _frameTimeHistory;
     private _frameTimeHistorySize;
+    private _deltaTime;
     private _frameCount;
+    private _millisStart;
     /**
      * Creates an AnimationController instance.
      * @param frameRateLimit Maximum frames per second. Defaults to 60.
@@ -56,6 +59,15 @@ export declare class AnimationController {
      */
     get $currentFrameRate(): number;
     /**
+     * Get the target frame rate limit.
+     */
+    get $targetFrameRate(): number;
+    /**
+     * Set the target frame rate limit.
+     * @param value The new target frame rate in frames per second
+     */
+    set $targetFrameRate(value: number);
+    /**
      * Get the current frame count.
      */
     get $frameCount(): number;
@@ -68,4 +80,31 @@ export declare class AnimationController {
      * Should be called on each render to track total frames rendered.
      */
     $incrementFrame(): void;
+    /**
+     * Get the number of milliseconds since the animation started.
+     * Returns 0 if the animation has not started yet.
+     */
+    get $millis(): number;
+    /**
+     * Set the elapsed milliseconds by adjusting the start time.
+     * This allows seeking/scrubbing in animations.
+     * @param value The new elapsed time in milliseconds
+     */
+    set $millis(value: number);
+    /**
+     * Get the number of seconds since the animation started.
+     * Returns 0 if the animation has not started yet.
+     */
+    get $secs(): number;
+    /**
+     * Set the elapsed seconds by adjusting the start time.
+     * This allows seeking/scrubbing in animations.
+     * @param value The new elapsed time in seconds
+     */
+    set $secs(value: number);
+    /**
+     * Get the time in milliseconds between the current frame and the last frame.
+     * Useful for frame-rate-independent animations.
+     */
+    get $deltaTime(): number;
 }

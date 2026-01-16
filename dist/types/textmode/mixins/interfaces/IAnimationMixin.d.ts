@@ -3,7 +3,7 @@
  */
 export interface IAnimationMixin {
     /**
-     * Set the maximum frame rate. If called without arguments, returns the current measured frame rate.
+     * Set the target frame rate. If called without arguments, returns the current measured frame rate.
      * @param fps The maximum frames per second for rendering.
      *
      * @example
@@ -23,6 +23,158 @@ export interface IAnimationMixin {
      * ```
      */
     frameRate(fps?: number): number | void;
+    /**
+     * Set or get the target frame rate limit.
+     *
+     * Works similarly to {@link frameRate}, but gets the target frame rate instead of the current measured frame rate.
+     *
+     * @param fps Optional new target frame rate. If not provided, returns current target frame rate.
+     * @returns Current target frame rate when getting, void when setting
+     *
+     * @example
+     * ```js
+     * const t = textmode.create({ width: 800, height: 600 });
+     *
+     * // Set target frame rate to 24 FPS
+     * t.targetFrameRate(24);
+     *
+     * console.log(`Target Frame Rate: ${t.targetFrameRate()} FPS`);
+     * ```
+     */
+    targetFrameRate(fps?: number): number | void;
+    /**
+     * Get the number of milliseconds since the sketch started running.
+     *
+     * `millis` keeps track of how long a sketch has been running in milliseconds
+     * (thousandths of a second). This information is often helpful for timing events
+     * and animations.
+     *
+     * Time tracking begins before the code in {@link setup} runs. If loading screen is
+     * enabled, `millis` begins tracking as soon as the loading screen starts.
+     *
+     * This property is connected to {@link secs} - setting one will affect the other.
+     *
+     * @returns Number of milliseconds since starting the sketch.
+     *
+     * @example
+     * ```js
+     * const t = textmode.create({ width: 800, height: 600 });
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     *
+     *   // Get the number of seconds the sketch has run
+     *   const seconds = t.millis / 1000;
+     *
+     *   console.log(`Running time: ${seconds.toFixed(1)} sec(s)`);
+     * });
+     * ```
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({ width: 800, height: 600 });
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     *
+     *   // Use millis for smooth animation
+     *   const time = t.millis / 1000;
+     *   const x = Math.sin(time) * 20 + 40;
+     *
+     *   t.char('O', Math.floor(x), 10);
+     * });
+     * ```
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({ width: 800, height: 600 });
+     *
+     * // Seek to a specific time in the animation
+     * t.millis = 5000; // Jump to 5 seconds
+     * ```
+     */
+    get millis(): number;
+    /**
+     * Set the elapsed milliseconds by adjusting the internal start time.
+     *
+     * This allows seeking/scrubbing in animations. Setting `millis` will also
+     * affect the value returned by {@link secs} since they are connected.
+     *
+     * @param value The new elapsed time in milliseconds
+     */
+    set millis(value: number);
+    /**
+     * Get the number of seconds since the sketch started running.
+     *
+     * `secs` is a convenience property that returns the elapsed time in seconds
+     * instead of milliseconds. Equivalent to `millis / 1000`.
+     *
+     * Time tracking begins before the code in {@link setup} runs. If loading screen is
+     * enabled, `secs` begins tracking as soon as the loading screen starts.
+     *
+     * This property is connected to {@link millis} - setting one will affect the other.
+     *
+     * @returns Number of seconds since starting the sketch.
+     *
+     * @example
+     * ```js
+     * const t = textmode.create({ width: 800, height: 600 });
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     *
+     *   // Use secs for smooth time-based animations
+     *   const angle = t.secs * Math.PI;
+     *   const x = Math.sin(angle) * 10;
+     *
+     *   console.log(`X: ${x.toFixed(2)}`);
+     * });
+     * ```
+     *
+     * @example
+     * ```js
+     * const t = textmode.create({ width: 800, height: 600 });
+     *
+     * // Seek to a specific time in the animation
+     * t.secs = 10; // Jump to 10 seconds (equivalent to t.millis = 10000)
+     * ```
+     */
+    get secs(): number;
+    /**
+     * Set the elapsed seconds by adjusting the internal start time.
+     *
+     * This allows seeking/scrubbing in animations. Setting `secs` will also
+     * affect the value returned by {@link millis} since they are connected.
+     *
+     * @param value The new elapsed time in seconds
+     */
+    set secs(value: number);
+    /**
+     * Returns the time in milliseconds between the current frame and the previous frame.
+     *
+     * `deltaTime()` is useful for creating frame-rate-independent animations. By multiplying
+     * velocities and movements by `deltaTime()`, animations will run at consistent speeds
+     * regardless of the actual frame rate.
+     *
+     * @returns Time elapsed between current and previous frame in milliseconds.
+     *
+     * @example
+     * ```js
+     * const t = textmode.create({ width: 800, height: 600 });
+     * let x = 0;
+     * const speed = 0.1; // units per millisecond
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     *
+     *   // Move at consistent speed regardless of frame rate
+     *   x += speed * t.deltaTime();
+     *
+     *   console.log(`X: ${x.toFixed(2)}`);
+     * });
+     * ```
+     */
+    deltaTime(): number;
     /**
      * Stop the automatic rendering loop.
      *

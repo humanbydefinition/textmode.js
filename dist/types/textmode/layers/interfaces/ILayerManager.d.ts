@@ -1,6 +1,7 @@
 import type { TextmodeLayer } from '../TextmodeLayer';
 import type { TextmodeLayerOptions } from '../types';
 import type { TextmodeGrid } from '../../Grid';
+import type { GLFramebuffer } from '../../../rendering/webgl/core/Framebuffer';
 export interface ILayerManager {
     /**
      * Get all user layers as a readonly array.
@@ -11,6 +12,10 @@ export interface ILayerManager {
      * This layer represents the main drawing content before any user layers are composited.
      */
     readonly base: TextmodeLayer;
+    /**
+     * The framebuffer containing the final composited result after all layers and filters have been applied.
+     */
+    readonly resultFramebuffer: GLFramebuffer;
     /**
      * Add a new layer to the manager.
      * @param options Layer configuration options.

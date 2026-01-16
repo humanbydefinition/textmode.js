@@ -3,7 +3,6 @@ import type { TextmodeFont } from '../loadables/font';
 import type { TextmodeImage } from '../loadables/TextmodeImage';
 import type { TextmodeCanvas } from '../Canvas';
 import type { AnimationController } from '../AnimationController';
-import type { GLShader } from '../../rendering';
 import type { GLRenderer } from '../../rendering/webgl/core/Renderer';
 import type { MouseManager } from '../managers/MouseManager';
 import type { KeyboardManager } from '../managers/KeyboardManager';
@@ -15,6 +14,7 @@ import type { IMouseMixin } from '../mixins/interfaces/IMouseMixin';
 import type { IAnimationMixin } from '../mixins/interfaces/IAnimationMixin';
 import type { LoadingScreenManager } from '../loading/LoadingScreenManager';
 import type { TextmodeLayerManager } from '../layers';
+import type { TextmodeLayer } from '../layers/TextmodeLayer';
 import type { BuiltInFilterName, BuiltInFilterParams, TextmodeFilterManager, FilterName } from '../filters';
 import type { TextmodeConversionManager } from '../conversion';
 /**
@@ -38,22 +38,14 @@ export interface ITextmodifier extends IRenderingMixin, IAnimationMixin, IMouseM
     readonly _touchManager: TouchManager;
     /** Keyboard interaction manager @ignore */
     readonly _keyboardManager: KeyboardManager;
-    /** Shader used for converting pixels to textmode grid format @ignore */
-    readonly _textmodeConversionShader: GLShader;
-    /** Shader used for final presentation to the screen @ignore */
-    readonly _presentShader: GLShader;
     /** Loading screen manager for boot-time UX @ignore */
     readonly _loading: LoadingScreenManager;
     /** Conversion manager for image-to-ASCII conversion @ignore */
     readonly _conversionManager: TextmodeConversionManager;
-    /** Filter manager for applying post-processing effects @ignore */
-    readonly _filterManager: TextmodeFilterManager;
     /** Layer manager for handling multiple layers @ignore */
     readonly _layerManager: TextmodeLayerManager;
-    /** Active font based on layer, or loading screen font override @ignore */
-    _activeFont?: TextmodeFont;
-    /** Active grid based on layer currently being rendered @ignore */
-    _activeGrid?: TextmodeGrid;
+    /** Active layer currently being rendered @ignore */
+    _activeLayer?: TextmodeLayer;
     /** Main render method @ignore */
     $render(): void;
     /**
@@ -117,7 +109,7 @@ export interface ITextmodifier extends IRenderingMixin, IAnimationMixin, IMouseM
      * - The specific `TextmodeGrid` if locked
      *
      * @example
-     * ```javascript
+     * ```js
      * const t = textmode.create();
      *
      * // Add a UI layer on top
@@ -131,7 +123,7 @@ export interface ITextmodifier extends IRenderingMixin, IAnimationMixin, IMouseM
      *
      * t.draw(() => {
      *   // Mouse positions now always use base layer's grid
-     *   t.text(`Mouse: ${t.mouseX}, ${t.mouseY}`, 0, 0);
+     *   console.log(`Mouse: ${t.mouseX}, ${t.mouseY}`);
      * });
      *
      * // Switch back to responsive mode
@@ -446,4 +438,8 @@ export interface ITextmodifier extends IRenderingMixin, IAnimationMixin, IMouseM
      * ```
      */
     readonly loading: LoadingScreenManager;
+    /**
+     * Check if rendering is currently in progress for this frame.
+     */
+    readonly isRenderingFrame: boolean;
 }

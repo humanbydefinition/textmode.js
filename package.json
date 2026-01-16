@@ -1,6 +1,6 @@
 {
   "name": "textmode.js",
-  "version": "0.8.1",
+  "version": "0.8.5",
   "description": "textmode.js is a lightweight creative coding library for creating real-time ASCII art on the web.",
   "type": "module",
   "types": "./dist/types/index.d.ts",
@@ -9,6 +9,41 @@
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
+      "import": "./dist/textmode.esm.js",
+      "require": "./dist/textmode.umd.js"
+    },
+    "./loadables": {
+      "types": "./dist/types/exports/loadables.d.ts",
+      "import": "./dist/textmode.esm.js",
+      "require": "./dist/textmode.umd.js"
+    },
+    "./conversion": {
+      "types": "./dist/types/exports/conversion.d.ts",
+      "import": "./dist/textmode.esm.js",
+      "require": "./dist/textmode.umd.js"
+    },
+    "./filters": {
+      "types": "./dist/types/exports/filters.d.ts",
+      "import": "./dist/textmode.esm.js",
+      "require": "./dist/textmode.umd.js"
+    },
+    "./loading": {
+      "types": "./dist/types/exports/loading.d.ts",
+      "import": "./dist/textmode.esm.js",
+      "require": "./dist/textmode.umd.js"
+    },
+    "./input": {
+      "types": "./dist/types/exports/input.d.ts",
+      "import": "./dist/textmode.esm.js",
+      "require": "./dist/textmode.umd.js"
+    },
+    "./layering": {
+      "types": "./dist/types/exports/layering.d.ts",
+      "import": "./dist/textmode.esm.js",
+      "require": "./dist/textmode.umd.js"
+    },
+    "./plugins": {
+      "types": "./dist/types/exports/plugins.d.ts",
       "import": "./dist/textmode.esm.js",
       "require": "./dist/textmode.umd.js"
     }
@@ -60,7 +95,7 @@
     "design",
     "graphics"
   ],
-  "author": "humanbydefinition",
+  "author": "humanbydefinition <hello@textmode.art> (https://code.textmode.art)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/humanbydefinition/textmode.js/issues"
