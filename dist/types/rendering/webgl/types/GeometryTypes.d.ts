@@ -2,6 +2,7 @@
  * Core interfaces and types for the instanced geometry system
  */
 import type { InstanceBatch } from '../batching/InstanceBatch';
+import type { IRenderState } from '../state/RenderState';
 /**
  * Geometry types supported by the instanced rendering system
  */
@@ -44,36 +45,6 @@ export interface UnitGeometryData {
             offset: number;
         };
     };
-}
-/**
- * Interface for instanced geometry implementations
- */
-export interface IGeometry {
-    /** The geometry type identifier */
-    readonly type: GeometryType;
-    /** The unit geometry data for this geometry type */
-    readonly unitGeometry: UnitGeometryData;
-    /** The instance batch for managing instances of this geometry */
-    readonly batch: InstanceBatch;
-    /**
-     * Add a new instance of this geometry to the batch
-     * @param params Geometry-specific parameters
-     * @param renderState Current render state
-     * @returns Index of the added instance
-     */
-    $addInstance(params: any, renderState: any): number;
-    /**
-     * Clear all instances from the batch
-     */
-    $clearInstances(): void;
-    /**
-     * Check if the geometry has any instances to render
-     */
-    $hasInstances(): boolean;
-    /**
-     * Dispose of geometry resources
-     */
-    $dispose(): void;
 }
 /**
  * Parameters for rectangle geometry
@@ -142,3 +113,35 @@ export interface BezierCurveParams {
  * Union type for all geometry parameters
  */
 export type GeometryParams = RectangleParams | LineParams | EllipseParams | ArcParams | TriangleParams | BezierCurveParams;
+/**
+ * Interface for instanced geometry implementations
+ */
+export interface IGeometry<P = GeometryParams> {
+    /** The geometry type identifier */
+    readonly type: GeometryType;
+    /** The unit geometry data for this geometry type */
+    readonly unitGeometry: UnitGeometryData;
+    /** The WebGL buffer containing unit geometry vertices */
+    readonly unitBuffer: WebGLBuffer;
+    /** The instance batch for managing instances of this geometry */
+    readonly batch: InstanceBatch;
+    /**
+     * Add a new instance of this geometry to the batch
+     * @param params Geometry-specific parameters
+     * @param renderState Current render state
+     * @returns Index of the added instance
+     */
+    $addInstance(params: P, renderState: IRenderState): number;
+    /**
+     * Clear all instances from the batch
+     */
+    $clearInstances(): void;
+    /**
+     * Check if the geometry has any instances to render
+     */
+    $hasInstances(): boolean;
+    /**
+     * Dispose of geometry resources
+     */
+    $dispose(): void;
+}

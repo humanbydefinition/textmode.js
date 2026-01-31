@@ -4,9 +4,9 @@
  * Determines how validation failures and errors are processed throughout the library.
  * Each level provides different behavior for error reporting and execution flow control.
  *
- * @note
- * This feature is currently not fully implemented across all modules,
- * and most `textmode.js` functions will still throw errors if used incorrectly.
+ * > [!NOTE]
+ * > This feature is currently not fully implemented across all modules,
+ * > and most `textmode.js` functions will still throw errors if used incorrectly.
  *
  * @example
  * ```js
@@ -64,7 +64,7 @@ export declare class TextmodeErrorHandler {
      * @param context Additional context for debugging
      * @returns true if validation passed, false if validation failed and was handled
      */
-    $validate(condition: boolean, message: string, context?: any): boolean;
+    $validate(condition: boolean, message: string, context?: Record<string, unknown>): boolean;
     /**
      * Set global error level
      */

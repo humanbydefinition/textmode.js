@@ -1,4 +1,5 @@
 import type { GLShader } from '../../rendering';
+import type { UniformValue } from '../../rendering/webgl/types/UniformTypes';
 import type { GLRenderer } from '../../rendering/webgl/core/Renderer';
 /**
  * Built-in filter names provided by textmode.js
@@ -34,9 +35,9 @@ export interface BuiltInFilterParams {
  * A queued filter operation to be applied during rendering
  * @ignore
  */
-export interface QueuedFilter {
+export interface QueuedFilter<TParams = unknown> {
     name: FilterName;
-    params: unknown;
+    params: TParams;
 }
 /**
  * Context provided to filter strategies for shader creation
@@ -56,7 +57,7 @@ export interface FilterContext {
  * Interface for implementing custom filter strategies.
  * @ignore
  */
-export interface TextmodeFilterStrategy {
+export interface TextmodeFilterStrategy<TParams = unknown> {
     /** Unique identifier for this filter */
     readonly id: FilterName;
     /**
@@ -73,5 +74,5 @@ export interface TextmodeFilterStrategy {
      * @param context The filter context containing dimensions
      * @returns An object mapping uniform names to values
      */
-    createUniforms(params: unknown, context: FilterContext): Record<string, unknown>;
+    createUniforms(params: TParams, context: FilterContext): Record<string, UniformValue>;
 }

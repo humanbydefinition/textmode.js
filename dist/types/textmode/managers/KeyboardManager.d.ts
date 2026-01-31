@@ -114,6 +114,10 @@ export declare class KeyboardManager {
      */
     private _handleKeyDown;
     /**
+     * Create normalized keyboard event data.
+     */
+    private _createEventData;
+    /**
      * Handle key up events
      */
     private _handleKeyUp;

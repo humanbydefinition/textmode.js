@@ -11,11 +11,11 @@
  * It's purely a CPU-side memory manager.
  */
 export declare class InstanceBuffer {
-    private _buffer;
-    private _capacity;
+    _buffer: Float32Array;
+    _capacity: number;
     private _growthFactor;
-    private _writeIndex;
-    private _instanceCount;
+    _writeIndex: number;
+    _instanceCount: number;
     /**
      * Create a new instance buffer.
      * @param initialCapacity Initial capacity in number of instances
@@ -29,16 +29,6 @@ export declare class InstanceBuffer {
      * @param requiredInstances Number of instances that need to fit
      */
     $ensureCapacity(requiredInstances: number): void;
-    /**
-     * Get write pointer for direct buffer writing.
-     * Returns the current buffer and offset for zero-allocation writes.
-     *
-     * @returns Object containing buffer reference and current write offset
-     */
-    $getWritePointer(): {
-        buffer: Float32Array;
-        offset: number;
-    };
     /**
      * Commit a write operation, advancing the write pointer.
      * Call this after writing floats to the buffer obtained from getWritePointer().

@@ -1,5 +1,6 @@
 import type { GLFramebuffer, FramebufferOptions } from '../Framebuffer';
 import type { GLShader } from '../Shader';
+import type { UniformValue } from '../../types/UniformTypes';
 import type { RenderState } from '../../state/RenderState';
 /**
  * Interface for the core WebGL renderer that manages the WebGL context and provides high-level rendering operations.
@@ -17,7 +18,7 @@ export interface IRenderer {
      * Get the WebGL rendering context.
      * Provides direct access to the underlying WebGL2 context for advanced operations.
      */
-    readonly context: WebGLRenderingContext;
+    readonly context: WebGL2RenderingContext;
     /**
      * Get the current render state.
      * The render state tracks the current rendering configuration including blend modes,
@@ -44,11 +45,17 @@ export interface IRenderer {
     /**
      * Set a custom user shader for subsequent rendering operations.
      * This shader will be used for primitive rendering instead of the default shader.
-     * Pass null to reset to the default shader.
+     * The shader persists until explicitly reset via $resetShader() or by passing null.
      *
      * @param shader - The custom shader to use, or null to reset to default
      */
     $setUserShader(shader: GLShader | null): void;
+    /**
+     * Reset the current user shader to the default solid color shader.
+     * This clears both the active shader and any accumulated uniforms.
+     * Equivalent to calling $setUserShader(null).
+     */
+    $resetShader(): void;
     /**
      * Set a uniform value for the current user shader.
      * The uniform must exist in the shader for this to have any effect.
@@ -56,14 +63,14 @@ export interface IRenderer {
      * @param name - The name of the uniform variable in the shader
      * @param value - The value to set (type must match the uniform type in the shader)
      */
-    $setUniform(name: string, value: any): void;
+    $setUniform(name: string, value: UniformValue): void;
     /**
      * Set multiple uniform values for the current user shader.
      * This is a convenience method for setting multiple uniforms at once.
      *
      * @param uniforms - A record mapping uniform names to their values
      */
-    $setUserUniforms(uniforms: Record<string, any>): void;
+    $setUniforms(uniforms: Record<string, UniformValue>): void;
     /**
      * Create a filter shader using the standard instanced vertex shader.
      * Filter shaders are commonly used for post-processing effects and only require
@@ -88,13 +95,12 @@ export interface IRenderer {
     /**
      * Draw a rectangle.
      * The rectangle is rendered using the current shader and render state.
+     * Positioning is controlled via the render state transform stack.
      *
-     * @param x - X coordinate of the top-left corner
-     * @param y - Y coordinate of the top-left corner
      * @param width - Width of the rectangle
      * @param height - Height of the rectangle
      */
-    $rect(x: number, y: number, width: number, height: number): void;
+    $rect(width: number, height: number): void;
     /**
      * Draw a line from one point to another.
      * The line is rendered with the current stroke settings from the render state.
@@ -107,14 +113,13 @@ export interface IRenderer {
     $line(x1: number, y1: number, x2: number, y2: number): void;
     /**
      * Draw an ellipse.
-     * The ellipse is centered at (x, y) with the specified width and height.
+     * The ellipse is centered at (0, 0) in the current local coordinate system.
+     * Positioning is controlled via the render state transform stack.
      *
-     * @param x - X coordinate of the center
-     * @param y - Y coordinate of the center
      * @param width - Width of the ellipse
      * @param height - Height of the ellipse
      */
-    $ellipse(x: number, y: number, width: number, height: number): void;
+    $ellipse(width: number, height: number): void;
     /**
      * Draw a triangle.
      * The triangle is defined by three vertices and rendered with the current render state.
@@ -143,17 +148,16 @@ export interface IRenderer {
     $bezierCurve(x1: number, y1: number, cp1x: number, cp1y: number, cp2x: number, cp2y: number, x2: number, y2: number): void;
     /**
      * Draw an arc (a portion of an ellipse).
-     * The arc is part of an ellipse centered at (x, y) with the specified dimensions,
+     * The arc is part of an ellipse centered at (0, 0) in the current local coordinate system,
      * drawn from the start angle to the stop angle.
+     * Positioning is controlled via the render state transform stack.
      *
-     * @param x - X coordinate of the center
-     * @param y - Y coordinate of the center
      * @param width - Width of the ellipse
      * @param height - Height of the ellipse
      * @param start - Start angle in radians
      * @param stop - Stop angle in radians
      */
-    $arc(x: number, y: number, width: number, height: number, start: number, stop: number): void;
+    $arc(width: number, height: number, start: number, stop: number): void;
     /**
      * Create a new framebuffer for off-screen rendering.
      * Framebuffers can be used for render-to-texture operations, post-processing,

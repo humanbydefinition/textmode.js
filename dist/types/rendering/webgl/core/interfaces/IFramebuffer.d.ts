@@ -12,11 +12,11 @@
  */
 export interface IFramebuffer {
     /**
-     * Get the current framebuffer width in pixels/cells.
+     * Get the current framebuffer width in grid cells.
      */
     readonly width: number;
     /**
-     * Get the current framebuffer height in pixels/cells.
+     * Get the current framebuffer height in grid cells.
      */
     readonly height: number;
     /**
@@ -24,11 +24,10 @@ export interface IFramebuffer {
      *
      * Useful for binding textures for reading in shaders.
      *
-     * Textmode framebuffers allocate 4 attachments by default:
-     * - 0: Character data encoded in red and green channels
-     * - 1: Character colors
-     * - 2: Cell background colors
-     * - 3: Inversion, horizontal/flip flags, and rotation encoded in red, green, blue, alpha channels
+     * Textmode framebuffers allocate 3 attachments by default:
+     * - 0: Character data (RG), flags (B), and rotation (A)
+     * - 1: Character colors (RGBA)
+     * - 2: Cell background colors (RGBA)
      */
     readonly textures: WebGLTexture[];
     /**
@@ -43,8 +42,8 @@ export interface IFramebuffer {
      * Resize the framebuffer to new dimensions.
      * This recreates the internal textures with the new size and invalidates any cached pixel data.
      *
-     * @param width - New width in pixels/cells
-     * @param height - New height in pixels/cells
+     * @param width - New width in grid cells
+     * @param height - New height in grid cells
      */
     resize(width: number, height: number): void;
     /**
@@ -94,3 +93,9 @@ export interface IFramebuffer {
      */
     dispose(): void;
 }
+/**
+ * Type guard to check if a value implements the IFramebuffer interface.
+ * @param value The value to check
+ * @returns True if value is an IFramebuffer
+ */
+export declare function isFramebuffer(value: unknown): value is IFramebuffer;

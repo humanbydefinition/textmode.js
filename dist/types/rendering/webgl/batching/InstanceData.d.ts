@@ -30,14 +30,6 @@ export interface InstanceData {
 export declare class PackedInstanceData {
     static readonly BYTES_PER_INSTANCE = 144;
     static readonly FLOATS_PER_INSTANCE = 36;
-    /**
-     * Pack instance data into a Float32Array for efficient GPU upload.
-     */
-    static $pack(instance: InstanceData, target?: Float32Array, offset?: number): Float32Array;
-    /**
-     * Pack multiple instances into a single Float32Array for batch upload.
-     */
-    static $packBatch(instances: InstanceData[], targetBuffer?: Float32Array): Float32Array;
 }
 /**
  * WebGL attribute configuration for instance data.
@@ -52,9 +44,13 @@ export interface InstanceAttributeConfig {
     divisor: number;
 }
 /**
+ * Valid attribute names for instance data.
+ */
+export type InstanceAttributeName = 'a_offset' | 'a_scale' | 'a_glyphIndex' | 'a_glyphColor' | 'a_cellColor' | 'a_glyphFlags' | 'a_translation' | 'a_rotation' | 'a_geomParams0' | 'a_geomParams1' | 'a_geomDepthType';
+/**
  * Pre-configured attribute layouts for efficient WebGL setup.
  */
 export declare class InstanceAttributeLayout {
     static readonly STRIDE = 144;
-    static readonly ATTRIBUTES: Record<string, InstanceAttributeConfig>;
+    static readonly ATTRIBUTES: Record<InstanceAttributeName, InstanceAttributeConfig>;
 }

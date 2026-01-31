@@ -9,7 +9,7 @@ import type { IRenderState } from '../../state/RenderState';
  * Instanced rectangle geometry renderer.
  * Batches all rectangle draw calls for efficient GPU rendering.
  */
-export declare class Rectangle extends BaseGeometry {
+export declare class Rectangle extends BaseGeometry<RectangleParams> {
     constructor(gl: WebGL2RenderingContext, batch: InstanceBatch);
     /**
      * Add a rectangle instance to the batch

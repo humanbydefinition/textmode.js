@@ -1,4 +1,4 @@
-import type { GLRenderer, GLShader, GLFramebuffer } from '../../rendering';
+import type { GLRenderer, GLShader, GLFramebuffer, UniformValue } from '../../rendering';
 import type { QueuedFilter, FilterName } from './types';
 /**
  * Manages filter registration, shader compilation, and filter chain application.
@@ -21,11 +21,11 @@ import type { QueuedFilter, FilterName } from './types';
  */
 export declare class TextmodeFilterManager {
     private readonly _renderer;
+    private readonly _filters;
     private readonly _shaderCache;
     private readonly _copyShader;
     private _pingPongBuffers;
     private _isInitialized;
-    private _filterRegistry;
     /**
      * Create a new TextmodeFilterManager.
      * @param renderer The WebGL renderer instance
@@ -53,7 +53,7 @@ export declare class TextmodeFilterManager {
      * });
      * ```
      */
-    register(id: FilterName, shader: GLShader | string, uniformDefs?: Record<string, [paramName: string, defaultValue: unknown]>): Promise<void>;
+    register(id: FilterName, shader: GLShader | string, uniformDefs?: Record<string, [paramName: string, defaultValue: UniformValue]>): Promise<void>;
     /**
      * Unregister a filter by its ID.
      *
@@ -125,4 +125,8 @@ export declare class TextmodeFilterManager {
      * @ignore
      */
     $dispose(): void;
+    /**
+     * Register all built-in filters.
+     */
+    private _registerBuiltInFilters;
 }

@@ -16,6 +16,8 @@ export declare class InstanceAttributeBinder {
     private _glBuffer;
     private _bufferCapacity;
     private _attributeLocationCache;
+    private _version;
+    private _programSetupCache;
     /**
      * Create a new attribute binder.
      * @param gl WebGL2 rendering context
@@ -74,12 +76,6 @@ export declare class InstanceAttributeBinder {
      * @param shader The shader program to bind attributes for
      */
     $bindAttributes(shader: GLShader): void;
-    /**
-     * Unbind instance attributes to clean up WebGL state.
-     *
-     * @param shader The shader program to unbind attributes for
-     */
-    $unbindAttributes(shader: GLShader): void;
     /**
      * Dispose of WebGL resources.
      */

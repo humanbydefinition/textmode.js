@@ -9,7 +9,7 @@ import type { IRenderState } from '../../state/RenderState';
  * Instanced ellipse geometry renderer.
  * Batches all ellipse draw calls for efficient GPU rendering.
  */
-export declare class Ellipse extends BaseGeometry {
+export declare class Ellipse extends BaseGeometry<EllipseParams> {
     constructor(gl: WebGL2RenderingContext, batch: InstanceBatch);
     /**
      * Add an ellipse instance to the batch

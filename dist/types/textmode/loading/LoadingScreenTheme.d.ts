@@ -1,6 +1,6 @@
 import type { LoadingScreenTheme, LoadingScreenOptions } from './types';
 import type { Textmodifier } from '../Textmodifier';
-import type { TextmodeColor } from '../TextmodeColor';
+import { TextmodeColor } from '../TextmodeColor';
 /**
  * Resolves the loading screen theme based on options and background color.
  * @param options Loading screen options.

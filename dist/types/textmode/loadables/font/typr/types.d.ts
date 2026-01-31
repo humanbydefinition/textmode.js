@@ -164,13 +164,13 @@ export interface GlyphData {
     /** Y coordinates of all points */
     ys: number[];
     /** Composite glyph parts (for composite glyphs) */
-    parts?: any[];
+    parts?: unknown[];
 }
 /**
  * Font table parser interface
  * Each table parser implements this interface
  */
-export interface TableParser<T = any> {
+export interface TableParser<T = unknown> {
     parseTab: (data: Uint8Array, offset: number, length: number, font: TyprFont) => T;
 }
 /**
@@ -219,9 +219,12 @@ export interface TyprFont {
     loca: LocaTable;
     /** Glyph data table - stores parsed glyph data (populated on demand) */
     glyf: (GlyphData | null)[];
-    /** Additional font tables that may be present */
-    [tableName: string]: any;
 }
+/**
+ * Union type of all valid font table values
+ * Derived from the TyprFont interface to ensure consistency with parser keys
+ */
+export type TyprTableValue = TyprFont[keyof TyprTableParsers];
 /**
  * Main Typr interface
  * Provides font parsing and table lookup functionality

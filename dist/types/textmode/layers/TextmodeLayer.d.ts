@@ -1,7 +1,7 @@
 import type { GLFramebuffer, GLRenderer, GLShader } from '../../rendering';
 import { TextmodeGrid } from '../Grid';
 import { TextmodeFont } from '../loadables/font';
-import { Textmodifier } from '../Textmodifier';
+import type { Textmodifier } from '../Textmodifier';
 import type { TextmodeLayerBlendMode, TextmodeLayerOptions, LayerDependencies } from './types';
 import type { FilterName, BuiltInFilterName, BuiltInFilterParams } from '../filters';
 import type { ITextmodeLayer } from './interfaces/ITextmodeLayer';
@@ -48,6 +48,7 @@ export declare class TextmodeLayer implements ITextmodeLayer {
     private _pluginState;
     /**
      * Create a new TextmodeLayer with the given options.
+     * @param renderer The TextmodeRenderer instance.
      * @param options Layer configuration options.
      * @ignore
      */
@@ -62,19 +63,19 @@ export declare class TextmodeLayer implements ITextmodeLayer {
     show(): void;
     hide(): void;
     opacity(opacity?: number): number | void;
-    blendMode(mode: TextmodeLayerBlendMode): TextmodeLayerBlendMode | void;
+    blendMode(mode?: TextmodeLayerBlendMode): TextmodeLayerBlendMode | void;
     offset(x?: number, y?: number): {
         x: number;
         y: number;
     } | void;
     rotateZ(z?: number): number | void;
     filter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
-    filter(name: FilterName, params?: unknown): void;
+    filter<TParams = unknown>(name: FilterName, params?: TParams): void;
     setPluginState<T>(pluginName: string, state: T): void;
     getPluginState<T>(pluginName: string): T | undefined;
     hasPluginState(pluginName: string): boolean;
     deletePluginState(pluginName: string): boolean;
-    fontSize(size?: number): void;
+    fontSize(size?: number): number | void;
     loadFont(fontSource: string | TextmodeFont): Promise<TextmodeFont>;
     /**
      * Render the layer's content into its ASCII framebuffer.
@@ -85,7 +86,6 @@ export declare class TextmodeLayer implements ITextmodeLayer {
     $render(textmodifier: Textmodifier, conversionShader: GLShader): void;
     /**
      * Resize the layer's framebuffers to match the given grid dimensions.
-     * @param grid The TextmodeGrid instance.
      * @ignore
      */
     $resize(): void;

@@ -7,24 +7,21 @@ import type { TextmodeOptions } from '../types';
 import type { TextmodeGrid } from '../Grid';
 import { type FilterName, type BuiltInFilterName, type BuiltInFilterParams, TextmodeFilterManager } from '../filters';
 /**
- * Manages all user-defined layers within a Textmodifier in addition to the base layer.
+ * Manages the stack of layers within a {@link Textmodifier} instance.
  *
- * Responsibilities:
- * - Managing the collection of user layers (add, remove, move, swap)
- * - Coordinating layer rendering and compositing
- * - Owning the global post-processing pipeline (global filters + present to screen)
+ * This interface provides methods to create, manage, and organize multiple textmode layers.
+ * Layers allow for complex compositing, independent rendering passes, and post-processing effects.
  *
- * The instance of this class can be accessed via {@link Textmodifier.layers}.
+ * The `base` layer is always present at the bottom of the stack. User-created layers are added
+ * on top of the base layer.
  *
- * The {@link base} layer is not part of the public layer stack, but is instead managed internally.
+ * Access this manager via `textmodifier.layers`.
  */
 export declare class LayerManager implements ILayerManager {
     private readonly _textmodifier;
     private readonly _renderer;
     private readonly _compositor2D;
     private readonly _filterManager;
-    private readonly _textmodeConversionShader;
-    private readonly _presentShader;
     private readonly _layers;
     private readonly _baseLayer;
     private _isReady;
@@ -49,7 +46,7 @@ export declare class LayerManager implements ILayerManager {
      * @ignore
      */
     $queueGlobalFilter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
-    $queueGlobalFilter(name: FilterName, params?: unknown): void;
+    $queueGlobalFilter<TParams = unknown>(name: FilterName, params?: TParams): void;
     /**
      * Clear any queued global filters for the current frame.
      * @ignore
@@ -59,9 +56,6 @@ export declare class LayerManager implements ILayerManager {
     remove(layer: TextmodeLayer): void;
     move(layer: TextmodeLayer, newIndex: number): void;
     swap(layerA: TextmodeLayer, layerB: TextmodeLayer): void;
-    /**
-     * Remove and dispose all user layers (keeps base layer intact).
-     */
     clear(): void;
     /**
      * Render all layers (base and user) and composite them to the provided target framebuffer.
@@ -75,7 +69,6 @@ export declare class LayerManager implements ILayerManager {
      * Render, composite, apply global filters, present to screen, run post-draw hooks.
      * This replaces the removed "Pass 3/4 + post hooks" section from Textmodifier.$render().
      *
-     * @param fallbackBaseDraw Fallback draw callback for the base layer if it has no own draw callback.
      * @ignore
      */
     $renderAndPresent(): void;

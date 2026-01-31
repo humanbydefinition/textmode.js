@@ -1,22 +1,19 @@
-import { GLFramebuffer } from './Framebuffer';
-/**
- * Supported uniform value types
- */
-export type UniformValue = number | boolean | number[] | number[][] | Float32Array | Int32Array | GLFramebuffer | WebGLTexture;
+import { type UniformValue } from '../types/UniformTypes';
+import { Disposable } from '../../../utils/Disposable';
 /**
  *
  * Shader class for managing WebGL shader programs initialized via {@link Textmodifier.createFilterShader} or {@link Textmodifier.createShader}.
  *
  * Use shaders and set uniforms via {@link Textmodifier.shader}, {@link Textmodifier.setUniform}, and {@link Textmodifier.setUniforms}.
  *
- * With a shader active, the next {@link Textmodifier.rect} call will use the shader for rendering,
- * and automatically unuse it afterwards.
+ * After using a custom shader, you can revert to the default textmode shader with {@link Textmodifier.resetShader}.
  */
-export declare class GLShader {
+export declare class GLShader extends Disposable {
     private _gl;
     private _program;
     private _uniformLocations;
     private _uniformTypes;
+    private _uniformCache;
     private _textureUnitCounter;
     private _textureUnitAssignments;
     private _maxTextureUnits;
@@ -45,7 +42,7 @@ export declare class GLShader {
      * @param uniforms An object mapping uniform names to their values.
      * @ignore
      */
-    $setUniforms(uniforms: Record<string, any>): void;
+    $setUniforms(uniforms: Record<string, UniformValue>): void;
     /**
      * Set a single uniform value with automatic texture unit management and proper type detection
      * @param name The name of the uniform variable in the shader

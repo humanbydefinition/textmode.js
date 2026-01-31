@@ -21,11 +21,15 @@ import type { DrawCommand } from '../types/DrawCommand';
  * - Best case: All commands use same material → 1 draw call
  * - Worst case: Alternating materials → same as unbatched
  * - Real-world: 50-70% reduction in draw calls
+ * - Optimized to avoid per-frame allocations
  */
 export declare class MaterialBatchPipeline {
     private _gl;
     private _geometries;
     private _geometryAttributeCache;
+    private _currentShader;
+    private _shaderViewportState;
+    private _lastFlushedMaterial;
     constructor(gl: WebGL2RenderingContext);
     /**
      * Execute all queued draw commands in strict order.
@@ -35,27 +39,14 @@ export declare class MaterialBatchPipeline {
      */
     $execute(commands: Iterable<DrawCommand>): void;
     /**
-     * Group consecutive commands with the same material + geometry type.
-     * Preserves draw order by never reordering commands.
+     * Flush and render the current batch of instances.
      *
-     * Algorithm:
-     * 1. Start with first command as current batch
-     * 2. For each subsequent command:
-     *    - If material OR type differs: flush current batch, start new one
-     *    - Otherwise: add to current batch
-     * 3. Flush final batch
-     *
-     * @param commands - Input draw commands in order
-     * @returns Array of batches to render sequentially
+     * @param geometry - The geometry instance containing accumulated instances
+     * @param material - The material to use for rendering
+     * @param type - The geometry type
+     * @param useOrtho - Whether to use orthographic projection
      */
-    private _batchConsecutive;
-    /**
-     * Render a single batch of commands with the same material and geometry type.
-     * Uses instanced rendering for maximum efficiency.
-     *
-     * @param batch - Batch to render
-     */
-    private _renderBatch;
+    private _flushBatch;
     /**
      * Dispose of pipeline resources (including all geometries).
      */

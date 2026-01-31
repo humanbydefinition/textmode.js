@@ -1,17 +1,21 @@
 import type { InstanceBatch } from '../batching/InstanceBatch';
-import type { InstanceData } from '../batching/InstanceData';
-import type { IGeometry, GeometryType, UnitGeometryData } from '../types/GeometryTypes';
+import { type InstanceData } from '../batching/InstanceData';
+import { type InstanceWriteData } from '../batching/InstanceWriter';
+import type { IGeometry, GeometryType, UnitGeometryData, GeometryParams } from '../types/GeometryTypes';
 import type { IRenderState } from '../state/RenderState';
 /**
  * Abstract base class for all instanced geometries.
  * Provides common functionality for instance data creation and batch management.
  */
-export declare abstract class BaseGeometry implements IGeometry {
+export declare abstract class BaseGeometry<P = GeometryParams> implements IGeometry<P> {
     protected readonly _gl: WebGL2RenderingContext;
     protected readonly _batch: InstanceBatch;
     protected readonly _type: GeometryType;
     protected readonly _unitGeometry: UnitGeometryData;
     private _unitBuffer;
+    protected _tempCurveParams0: [number, number, number, number];
+    protected _tempCurveParams1: [number, number, number, number];
+    protected _tempWriteData: InstanceWriteData;
     constructor(gl: WebGL2RenderingContext, batch: InstanceBatch, type: GeometryType, unitGeometry: UnitGeometryData);
     get type(): GeometryType;
     get unitGeometry(): UnitGeometryData;
@@ -20,7 +24,7 @@ export declare abstract class BaseGeometry implements IGeometry {
     $clearInstances(): void;
     $hasInstances(): boolean;
     $dispose(): void;
-    abstract $addInstance(params: any, renderState: any): number;
+    abstract $addInstance(params: P, renderState: IRenderState): number;
     protected _addInstance(instanceData: InstanceData, _rotationCenterX: number, _rotationCenterY: number): number;
     /**
      * Write instance data directly to batch buffer (zero-allocation helper).

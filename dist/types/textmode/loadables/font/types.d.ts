@@ -1,27 +1,11 @@
+import type { GlyphData as TyprGlyphData } from './typr/types.ts';
 /**
  * Glyph outline data for a character
  */
-export type GlyphData = {
-    /** Number of contours (-1 for composite glyphs) */
-    noc: number;
-    /** Bounding box coordinates */
-    xMin: number;
-    yMin: number;
-    xMax: number;
-    yMax: number;
-    /** End points of each contour */
-    endPts: number[];
-    /** Point flags indicating curve/line segments */
-    flags: number[];
-    /** X coordinates of all points */
-    xs: number[];
-    /** Y coordinates of all points */
-    ys: number[];
+export type GlyphData = (TyprGlyphData & {
     /** Advance width of the character */
     advanceWidth: number;
-    /** Composite glyph parts (for composite glyphs) */
-    parts?: any[];
-} | null;
+}) | null;
 /**
  * Represents a single character in the {@link TextmodeFont.characters} array.
  */

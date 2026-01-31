@@ -1,5 +1,6 @@
 import type { GLRenderer } from '../../../rendering/webgl/core/Renderer.ts';
 import type { GLFramebuffer } from '../../../rendering/webgl/core/Framebuffer.ts';
+import { Disposable } from '../../../utils/Disposable.ts';
 import type { TextmodeCharacter } from './types.ts';
 import type { TyprFont } from './typr/types.ts';
 /**
@@ -10,15 +11,30 @@ import type { TyprFont } from './typr/types.ts';
  *
  * Each {@link TextmodeLayer} has its own instance of this class to allow for
  * layer-specific font configurations.
+ *
+ * @example
+ * ```javascript
+ * const t = textmode.create({ width: 800, height: 600 });
+ *
+ * t.setup(async () => {
+ *   // Load a custom font
+ *   const font = await t.loadFont('./fonts/retro.ttf', false);
+ *
+ *   // Get info about the loaded font
+ *   console.log(`Loaded ${font.characters.length} characters`);
+ *   console.log(`Max glyph size: ${font.maxGlyphDimensions.width}x${font.maxGlyphDimensions.height}`);
+ *
+ *   // Use it on a specific layer
+ *   const layer = t.layers.add();
+ *   await layer.loadFont(font);
+ * });
+ * ```
  */
-export declare class TextmodeFont {
+export declare class TextmodeFont extends Disposable {
     private _font;
     private _characters;
     private _characterMap;
-    private _fontFramebuffer;
     private _fontSize;
-    private _textureColumns;
-    private _textureRows;
     private _maxGlyphDimensions;
     private _fontFace;
     private _characterExtractor;
@@ -46,6 +62,7 @@ export declare class TextmodeFont {
      * @ignore
      */
     $setFontSize(size: number | undefined): void | number;
+    private _rebuildAtlas;
     /**
      * Loads a new font from a file path.
      * @param fontPath Path to the .otf or .ttf font file
@@ -53,6 +70,8 @@ export declare class TextmodeFont {
      * @ignore
      */
     $loadFont(fontPath: string): Promise<void>;
+    private _fetchFont;
+    private _loadFromBuffer;
     /**
      * Loads a FontFace from a font buffer.
      * @param fontBuffer ArrayBuffer containing font data
@@ -79,27 +98,78 @@ export declare class TextmodeFont {
     $getCharacterColors(characters: string): [number, number, number][];
     /**
      * Dispose of all resources used by this font manager.
-     * @ignore
      */
-    $dispose(): void;
+    dispose(): void;
     /** Returns whether this font has been initialized. @ignore */
     get $isInitialized(): boolean;
     /** Returns the WebGL framebuffer containing the font texture atlas. */
     get fontFramebuffer(): GLFramebuffer;
     /** Returns the character map for O(1) lookups. */
     get characterMap(): Map<string, TextmodeCharacter>;
-    /** Returns the array of {@link TextmodeCharacter} objects in the font. */
+    /**
+     * Returns the array of {@link TextmodeCharacter} objects in the font.
+     *
+     * @example
+     * ```javascript
+     * // Interactive Character Map
+     * const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+     *
+     * t.draw(() => {
+     *   t.background(10, 10, 20);
+     *
+     *   const chars = t.font.characters;
+     *   const cols = 32;
+     *   const rows = Math.ceil(chars.length / cols);
+     *
+     *   // Center the grid in the viewport
+     *   const startX = -(cols) / 2;
+     *   const startY = -(rows) / 2;
+     *
+     *   // Calculate mouse position in "map space"
+     *   const mx = Math.floor(t.mouse.x - startX);
+     *   const my = Math.floor(t.mouse.y - startY);
+     *
+     *   for (let i = 0; i < chars.length; i++) {
+     *     const x = i % cols;
+     *     const y = Math.floor(i / cols);
+     *     const isHovered = mx === x && my === y;
+     *
+     *     t.push();
+     *     t.translate(startX + x, startY + y);
+     *
+     *     // Highlight hovered character
+     *     if (isHovered) {
+     *       t.cellColor(50, 100, 200);
+     *       t.charColor(255);
+     *       t.translateZ(5); // Pop out
+     *     } else {
+     *       // Gradient based on index
+     *       const hue = (i / chars.length) * 255;
+     *       t.charColor(hue, 150, 255 - hue);
+     *     }
+     *
+     *     t.char(chars[i].character);
+     *     t.point();
+     *     t.pop();
+     *   }
+     * });
+     *
+     * t.windowResized(() => {
+     *   t.resizeCanvas(window.innerWidth, window.innerHeight);
+     * });
+     * ```
+     */
     get characters(): TextmodeCharacter[];
     /** Returns the number of columns in the texture atlas. */
     get textureColumns(): number;
     /** Returns the number of rows in the texture atlas. */
     get textureRows(): number;
-    /** Returns the maximum dimensions of a glyph in the font. */
+    /** Returns the maximum dimensions of a glyph in the font in pixels. */
     get maxGlyphDimensions(): {
         width: number;
         height: number;
     };
-    /** Returns the font size used for rendering. */
+    /** Returns the font size used for the texture atlas. */
     get fontSize(): number;
     /** Returns the Typr.js font object. @ignore */
     get font(): TyprFont;

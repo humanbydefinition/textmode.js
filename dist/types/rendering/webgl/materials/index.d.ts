@@ -1,2 +1,2 @@
-export type { Material, UniformValue } from './Material';
+export type { Material } from './Material';
 export { MaterialManager } from './MaterialManager';

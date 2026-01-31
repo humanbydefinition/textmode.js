@@ -1,5 +1,6 @@
 import type { TextmodeCanvas } from '../Canvas';
-import type { MouseManager, GridProvider } from './MouseManager';
+import type { MouseManager } from './MouseManager';
+import type { GridProvider, GridPosition } from '../Grid';
 /**
  * Touch position expressed both in grid and client coordinates.
  *
@@ -13,13 +14,9 @@ import type { MouseManager, GridProvider } from './MouseManager';
  * When the touch is outside the grid bounds, `x` and `y` are set to
  * `Number.NEGATIVE_INFINITY` to indicate an invalid/outside position.
  */
-export interface TouchPosition {
+export interface TouchPosition extends GridPosition {
     /** Identifier provided by the browser for a touch point */
     id: number;
-    /** Grid X coordinate (column) in center-based coords. `Number.NEGATIVE_INFINITY` if outside grid. */
-    x: number;
-    /** Grid Y coordinate (row) in center-based coords. `Number.NEGATIVE_INFINITY` if outside grid. */
-    y: number;
     /** Client X coordinate in CSS pixels */
     clientX: number;
     /** Client Y coordinate in CSS pixels */

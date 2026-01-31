@@ -1,5 +1,5 @@
 import type { TextmodeCanvas } from '../Canvas';
-import type { TextmodeGrid } from '../Grid';
+import type { GridPosition, GridProvider } from '../Grid';
 /**
  * Mouse coordinates in grid space using center-based coordinates.
  *
@@ -13,11 +13,7 @@ import type { TextmodeGrid } from '../Grid';
  * When the mouse is outside the grid bounds, both `x` and `y` are set to
  * `Number.NEGATIVE_INFINITY` to indicate an invalid/outside position.
  */
-export interface MousePosition {
-    /** Grid X coordinate (column) in center-based coords. `Number.NEGATIVE_INFINITY` if outside grid. */
-    x: number;
-    /** Grid Y coordinate (row) in center-based coords. `Number.NEGATIVE_INFINITY` if outside grid. */
-    y: number;
+export interface MousePosition extends GridPosition {
 }
 /**
  * Mouse event data passed to event handlers
@@ -43,10 +39,6 @@ export interface MouseEventData {
  * Mouse event handler function type
  */
 export type MouseEventHandler = (data: MouseEventData) => void;
-/**
- * Grid provider function type - returns the grid to use for coordinate calculations
- */
-export type GridProvider = () => TextmodeGrid | undefined;
 /**
  * Manages all mouse interaction for a Textmodifier instance.
  * Handles event listeners, coordinate conversion, and event dispatching.
@@ -135,6 +127,10 @@ export declare class MouseManager {
      * Returns a copy to prevent external modification.
      */
     $getPosition(): MousePosition;
+    /**
+     * Create normalized mouse event data.
+     */
+    private _createEventData;
     /**
      * Handle mouse moved events
      */

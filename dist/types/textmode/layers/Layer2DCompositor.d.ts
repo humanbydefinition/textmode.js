@@ -17,12 +17,22 @@ export interface CompositeParams {
     /** Canvas height in pixels. */
     canvasHeight: number;
 }
+/**
+ * Represents the placement and sizing of a single layer within the composite operation.
+ * Used to position layers relative to the base canvas during compositing.
+ */
 export interface CompositeLayerPlacement {
+    /** The {@link TextmodeLayer} instance being composited. */
     layer: TextmodeLayer;
+    /** The WebGL texture containing the layer's rendered content. */
     texture: WebGLTexture;
+    /** The width of the layer's texture in pixels. */
     width: number;
+    /** The height of the layer's texture in pixels. */
     height: number;
+    /** The horizontal offset from the canvas origin in pixels. */
     offsetX: number;
+    /** The vertical offset from the canvas origin in pixels. */
     offsetY: number;
 }
 /**

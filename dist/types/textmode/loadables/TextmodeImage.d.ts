@@ -42,5 +42,4 @@ export declare class TextmodeImage extends TextmodeSource {
      * @ignore
      */
     static $fromSource(renderer: GLRenderer, conversionManager: TextmodeConversionManager, source: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement, gridCols: number, gridRows: number): TextmodeImage;
-    protected $getActiveTexture(): WebGLTexture;
 }

@@ -11,7 +11,13 @@ export type TextmodeOptions = {
      * If using `overlay` mode, this should be the target canvas or video element to overlay on.
      * `textmode.js` will create its own canvas applied on top of the target element, always matching its size and position.
      */
-    canvas?: HTMLCanvasElement;
+    canvas?: HTMLCanvasElement | HTMLVideoElement;
+    /**
+     * Use an external WebGL2 context instead of creating a new one.
+     * Useful for integrating with three.js, Babylon.js, hydra-synth, or other WebGL libraries
+     * that share the same canvas.
+     */
+    gl?: WebGL2RenderingContext;
     /** The font size to use for text rendering. Defaults to 16. */
     fontSize?: number;
     /** Maximum frames per second for auto rendering. Defaults to 60. */

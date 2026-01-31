@@ -1,5 +1,6 @@
-import type { Material, UniformValue } from './Material';
+import type { Material } from './Material';
 import { GLShader } from '../core/Shader';
+import type { UniformValue } from '../types/UniformTypes';
 /**
  * Manages material creation, deduplication, and lifecycle.
  *
@@ -17,6 +18,7 @@ import { GLShader } from '../core/Shader';
 export declare class MaterialManager {
     private _nextMaterialId;
     private readonly _shader;
+    private readonly _copyShader;
     private readonly _solidColorMaterial;
     private _materialCache;
     constructor(gl: WebGL2RenderingContext);
@@ -26,17 +28,9 @@ export declare class MaterialManager {
      */
     get $solidColorMaterial(): Material;
     /**
-     * Create a new material or return an existing one with identical properties.
-     *
-     * Materials are deduplicated based on shader and uniform values.
-     * If a material with the same shader and uniforms already exists, it will be reused.
-     *
-     * @param shader - The shader program to use
-     * @param uniforms - Uniform values to set (will be frozen for immutability)
-     * @param isBuiltIn - Whether this is a built-in system material
-     * @returns A material instance (new or deduplicated)
+     * Get the shared copy shader for MRT framebuffers.
      */
-    $createMaterial(shader: GLShader, uniforms?: Record<string, UniformValue>, isBuiltIn?: boolean): Material;
+    get $copyShader(): GLShader;
     /**
      * Create a transient material that won't be cached.
      * Useful for one-off materials with dynamic uniforms that change every frame.

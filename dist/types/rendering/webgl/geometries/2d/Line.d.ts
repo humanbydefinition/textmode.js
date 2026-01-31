@@ -9,7 +9,7 @@ import type { IRenderState } from '../../state/RenderState';
  * Instanced line geometry renderer.
  * Batches all line draw calls for efficient GPU rendering.
  */
-export declare class Line extends BaseGeometry {
+export declare class Line extends BaseGeometry<LineParams> {
     constructor(gl: WebGL2RenderingContext, batch: InstanceBatch);
     /**
      * Add a line instance to the batch

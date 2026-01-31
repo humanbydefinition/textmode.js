@@ -31,6 +31,12 @@ export declare function radToDeg(radians: number): number;
  * @param x2 - X coordinate of the second point
  * @param y2 - Y coordinate of the second point
  * @returns The angle in degrees
+ *
+ * @example
+ * ```ts
+ * angleBetweenPoints(0, 0, 10, 10); // 45
+ * angleBetweenPoints(0, 0, 0, 10);  // 90
+ * ```
  */
 export declare function angleBetweenPoints(x1: number, y1: number, x2: number, y2: number): number;
 /**
@@ -40,6 +46,12 @@ export declare function angleBetweenPoints(x1: number, y1: number, x2: number, y
  * @param x2 - X coordinate of the second point
  * @param y2 - Y coordinate of the second point
  * @returns The distance between the two points
+ *
+ * @example
+ * ```ts
+ * distanceBetweenPoints(0, 0, 3, 4); // 5
+ * distanceBetweenPoints(10, 10, 20, 10); // 10
+ * ```
  */
 export declare function distanceBetweenPoints(x1: number, y1: number, x2: number, y2: number): number;
 /**
@@ -48,8 +60,38 @@ export declare function distanceBetweenPoints(x1: number, y1: number, x2: number
  * @param min Minimum allowable value
  * @param max Maximum allowable value
  * @returns Clamped value
+ *
+ * @example
+ * ```ts
+ * clamp(15, 0, 10);  // 10
+ * clamp(-5, 0, 10);  // 0
+ * clamp(5, 0, 10);   // 5
+ * ```
  */
 export declare function clamp(value: number, min: number, max: number): number;
+/**
+ * Calculate dimensions to fit a source within a target while preserving aspect ratio (contain).
+ *
+ * @param srcWidth Source width
+ * @param srcHeight Source height
+ * @param targetWidth Target container width
+ * @param targetHeight Target container height
+ * @returns Object containing the calculated width, height, and scale factor
+ *
+ * @example
+ * ```ts
+ * // Fit a 100x50 image into a 200x200 container
+ * const fit = calculateAspectFit(100, 50, 200, 200);
+ * // fit.width = 200
+ * // fit.height = 100
+ * // fit.scale = 2
+ * ```
+ */
+export declare function calculateAspectFit(srcWidth: number, srcHeight: number, targetWidth: number, targetHeight: number): {
+    width: number;
+    height: number;
+    scale: number;
+};
 /**
  * Encode a rotation angle (in degrees) into a single normalized channel for GPU.
  *
@@ -74,22 +116,3 @@ export declare function clamp(value: number, min: number, max: number): number;
  * ```
  */
 export declare function encodeRotation(degrees: number): number;
-/**
- * Convert rotation angles from degrees to radians for 3D transformations.
- *
- * @param rotationXDegrees - Rotation around X-axis in degrees
- * @param rotationYDegrees - Rotation around Y-axis in degrees
- * @param rotationZDegrees - Rotation around Z-axis in degrees
- * @returns Object containing rotation values in radians for each axis
- *
- * @example
- * ```ts
- * calculateRotationParams(90, 0, 45);
- * // { radiansX: -1.571, radiansY: 0, radiansZ: -0.785 }
- * ```
- */
-export declare function calculateRotationParams(rotationXDegrees: number, rotationYDegrees: number, rotationZDegrees: number): {
-    radiansX: number;
-    radiansY: number;
-    radiansZ: number;
-};

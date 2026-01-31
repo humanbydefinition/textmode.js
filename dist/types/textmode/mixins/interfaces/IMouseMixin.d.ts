@@ -10,70 +10,63 @@ export interface IMouseMixin {
      *
      * @example
      * ```javascript
-     * // Click to spawn ripples.
+     * const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
      *
-     * const t = textmode.create({ width: 800, height: 600 });
+     * const echoes = [];
      *
-     * // Store ripples as { x, y } in center-based coordinates
-     * const ripples = [];
-     *
-     * // Create a ripple at the clicked grid cell
      * t.mouseClicked((data) => {
-     *   // Skip if mouse is outside the grid
      *   if (data.position.x === Number.NEGATIVE_INFINITY) return;
-     *
-     *   // Coordinates are already center-based, matching the drawing coordinate system
-     *   ripples.push({ x: data.position.x, y: data.position.y, age: 0, maxAge: 20 });
+     *   // Add a new sonar echo at the clicked position (center-based coords)
+     *   echoes.push({ x: data.position.x, y: data.position.y, age: 0 });
      * });
      *
      * t.draw(() => {
      *   t.background(0);
      *
-     *   // Update and draw ripples (iterate backwards when removing)
-     *   for (let i = ripples.length - 1; i >= 0; i--) {
-     *     const r = ripples[i];
-     *     r.age++;
-     *     const life = r.age / r.maxAge;                    // 0..1
-     *     const radius = 1 + life * 7;                      // expands from ~1 to ~8
-     *     const intensity = Math.round(255 * (1 - life));   // fades out
+     *   // Render all active echoes
+     *   for (let i = 0; i < echoes.length; i++) {
+     *     const e = echoes[i];
+     *     e.age += 1;
+     *     const maxAge = 60;
      *
-     *     // Keep cells dark so characters stand out
-     *     t.charColor(intensity, intensity, 255);
-     *     t.cellColor(0);
+     *     if (e.age > maxAge) {
+     *       echoes.splice(i, 1);
+     *       continue;
+     *     }
      *
      *     t.push();
-     *     // position already in center-based coordinates
-     *     t.translate(r.x, r.y);
+     *     t.translate(e.x, e.y);
      *
-     *     // Draw a ring by sampling points around the circle
-     *     for (let a = 0; a < Math.PI * 2; a += Math.PI / 8) {
-     *       const ox = Math.round(Math.cos(a) * radius);
-     *       const oy = Math.round(Math.sin(a) * radius);
-     *       t.push();
-     *       t.translate(ox, oy);
-     *       t.char('*');
-     *       t.point();
-     *       t.pop();
+     *     const progress = e.age / maxAge;
+     *     const radius = progress * 30;
+     *     const alpha = 255 * (1 - progress);
+     *
+     *     t.charColor(100, 200, 255, alpha);
+     *     t.char('○');
+     *     t.ellipse(radius, radius);
+     *
+     *     // Inner after-shock
+     *     if (progress > 0.2) {
+     *       t.charColor(50, 100, 255, alpha * 0.5);
+     *       t.char('·');
+     *       t.ellipse(radius * 0.6, radius * 0.6);
      *     }
-     *
      *     t.pop();
-     *
-     *     // Remove finished ripples
-     *     if (r.age > r.maxAge) {
-     *       ripples.splice(i, 1);
-     *     }
      *   }
      *
-     *   // Show crosshair for the current mouse cell
-     *   // Mouse coordinates are center-based, matching the drawing coordinate system
+     *   // Crosshair at mouse
      *   if (t.mouse.x !== Number.NEGATIVE_INFINITY) {
      *     t.push();
-     *     t.charColor(180);
      *     t.translate(t.mouse.x, t.mouse.y);
      *     t.char('+');
+     *     t.charColor(255);
      *     t.point();
      *     t.pop();
      *   }
+     * });
+     *
+     * t.windowResized(() => {
+     *   t.resizeCanvas(window.innerWidth, window.innerHeight);
      * });
      * ```
      */
@@ -85,65 +78,56 @@ export interface IMouseMixin {
      *
      * @example
      * ```javascript
-     * // Hold mouse to spray particles that fall with gravity.
+     * const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
      *
-     * const t = textmode.create({ width: 800, height: 600 });
-     *
+     * let isPressing = false;
      * const particles = [];
-     * let pressing = false;
      *
-     * t.mousePressed((data) => {
-     *   if (data.position.x === Number.NEGATIVE_INFINITY) return;
-     *   pressing = true;
-     * });
-     *
-     * t.mouseReleased(() => {
-     *   pressing = false;
-     * });
+     * t.mousePressed(() => isPressing = true);
+     * t.mouseReleased(() => isPressing = false);
      *
      * t.draw(() => {
      *   t.background(0);
      *
-     *   // Spawn particles while pressing (mouse coords are center-based)
-     *   if (pressing && t.mouse.x !== Number.NEGATIVE_INFINITY) {
-     *     const cx = t.mouse.x;
-     *     const cy = t.mouse.y;
-     *
-     *     for (let i = 0; i < 3; i++) {
+     *   // Emit particles while mouse is held
+     *   if (isPressing && t.mouse.x !== Number.NEGATIVE_INFINITY) {
+     *     for(let k=0; k<5; k++) { // Spawn rate
+     *       const angle = Math.random() * Math.PI * 2;
+     *       const speed = Math.random() * 0.5 + 0.2;
      *       particles.push({
-     *         x: cx,
-     *         y: cy,
-     *         vx: (Math.random() - 0.5) * 0.8,
-     *         vy: Math.random() * -0.5 - 0.2,
-     *         age: 0,
-     *         maxAge: 30 + Math.random() * 20
+     *         x: t.mouse.x,
+     *         y: t.mouse.y,
+     *         vx: Math.cos(angle) * speed,
+     *         vy: Math.sin(angle) * speed,
+     *         life: 1.0
      *       });
      *     }
      *   }
      *
-     *   // Update and draw particles
+     *   // Update and draw
      *   for (let i = particles.length - 1; i >= 0; i--) {
      *     const p = particles[i];
-     *     p.age++;
-     *     p.vy += 0.08; // gravity
      *     p.x += p.vx;
      *     p.y += p.vy;
+     *     p.life -= 0.02;
      *
-     *     if (p.age >= p.maxAge) {
+     *     if (p.life <= 0) {
      *       particles.splice(i, 1);
      *       continue;
      *     }
      *
-     *     const life = 1 - (p.age / p.maxAge);
-     *     const brightness = Math.round(255 * life);
-     *
      *     t.push();
-     *     t.charColor(brightness, brightness * 0.7, 100);
-     *     t.translate(Math.round(p.x), Math.round(p.y));
-     *     t.char(life > 0.5 ? 'o' : '.');
+     *     t.translate(p.x, p.y);
+     *     const chars = ['.', 'o', '*', '@'];
+     *     t.char(chars[Math.floor(p.life * 3.99)]);
+     *     t.charColor(255, p.life * 255, 100); // Yellow to Red fade
      *     t.point();
      *     t.pop();
      *   }
+     * });
+     *
+     * t.windowResized(() => {
+     *   t.resizeCanvas(window.innerWidth, window.innerHeight);
      * });
      * ```
      */
@@ -240,65 +224,58 @@ export interface IMouseMixin {
      *
      * @example
      * ```javascript
-     * // Trail of particles following the mouse.
-     *
-     * const t = textmode.create({ width: 800, height: 600 });
+     * const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
      *
      * const trail = [];
-     * const maxTrail = 120;
-     * let lastMouse = null;
+     * let prev = null;
      *
      * t.mouseMoved((data) => {
      *   if (data.position.x === Number.NEGATIVE_INFINITY) return;
      *
-     *   // Coordinates are already center-based, matching the drawing system
-     *   const cx = data.position.x;
-     *   const cy = data.position.y;
+     *   const x = data.position.x;
+     *   const y = data.position.y;
      *
-     *   // Spawn multiple particles based on movement speed
-     *   const dx = lastMouse ? cx - lastMouse.x : 0;
-     *   const dy = lastMouse ? cy - lastMouse.y : 0;
-     *   const speed = Math.sqrt(dx * dx + dy * dy);
-     *   const count = Math.max(1, Math.ceil(speed * 1.5));
+     *   // Calculate velocity
+     *   const dx = prev ? x - prev.x : 0;
+     *   const dy = prev ? y - prev.y : 0;
+     *   prev = { x, y };
      *
-     *   for (let i = 0; i < count; i++) {
-     *     trail.push({
-     *       x: cx,
-     *       y: cy,
-     *       age: 0,
-     *       maxAge: 15 + Math.random() * 10
-     *     });
-     *   }
-     *
-     *   lastMouse = { x: cx, y: cy };
-     *   if (trail.length > maxTrail) trail.splice(0, trail.length - maxTrail);
+     *   // Spawn particle with inertia
+     *   trail.push({
+     *     x: x, y: y,
+     *     vx: dx * 0.2 + (Math.random() - 0.5),
+     *     vy: dy * 0.2 + (Math.random() - 0.5),
+     *     life: 1.0,
+     *     char: ['+', '*', '.', '·'][Math.floor(Math.random() * 4)]
+     *   });
      * });
      *
      * t.draw(() => {
      *   t.background(0);
      *
-     *   // Draw and age particles
      *   for (let i = trail.length - 1; i >= 0; i--) {
      *     const p = trail[i];
-     *     p.age++;
+     *     p.x += p.vx;
+     *     p.y += p.vy;
+     *     p.life -= 0.02;
      *
-     *     if (p.age >= p.maxAge) {
+     *     if (p.life <= 0) {
      *       trail.splice(i, 1);
      *       continue;
      *     }
      *
-     *     const life = 1 - (p.age / p.maxAge);
-     *     const brightness = Math.round(255 * life);
-     *     const chars = ['.', '*', 'o', '@'];
-     *     const idx = Math.floor(life * chars.length);
-     *
      *     t.push();
-     *     t.charColor(brightness, brightness * 0.6, 255);
      *     t.translate(p.x, p.y);
-     *     t.char(chars[Math.min(idx, chars.length - 1)]);
+     *     // Color shifts from hot to cool based on life
+     *     t.charColor(255 * p.life, 100 + 155 * (1-p.life), 255);
+     *     t.char(p.char);
      *     t.point();
      *     t.pop();
      *   }
+     * });
+     *
+     * t.windowResized(() => {
+     *   t.resizeCanvas(window.innerWidth, window.innerHeight);
      * });
      * ```
      */

@@ -1,8 +1,11 @@
 {
   "name": "textmode.js",
-  "version": "0.8.5",
+  "version": "0.9.0-beta.6",
   "description": "textmode.js is a lightweight creative coding library for creating real-time ASCII art on the web.",
   "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "types": "./dist/types/index.d.ts",
   "main": "./dist/textmode.umd.js",
   "module": "./dist/textmode.esm.js",
@@ -50,8 +53,7 @@
   },
   "scripts": {
     "dev": "vite --port 5177 --host",
-    "build": "vite build && tsc",
-    "build:full": "vite build && tsc",
+    "build": "tsc && vite build",
     "build:docs": "typedoc",
     "dev:docs": "typedoc --watch",
     "preview": "vite preview",
@@ -60,29 +62,77 @@
     "test:run": "vitest run",
     "test:coverage": "vitest --coverage",
     "format": "prettier --write \"src/**/*.{ts,js}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,js}\""
+    "format:check": "prettier --check \"src/**/*.{ts,js}\"",
+    "typecheck": "tsc --noEmit",
+    "lint:md": "markdownlint-cli2",
+    "lint:md:fix": "markdownlint-cli2 --fix",
+    "lint:jsdoc": "eslint src --config eslint.config.js",
+    "lint": "npm run format:check && npm run lint:md",
+    "verify": "npm run format:check && npm run lint:md && npm run build && npm run test:run",
+    "size": "size-limit",
+    "prepare": "husky"
   },
+  "size-limit": [
+    {
+      "name": "ESM (gzip)",
+      "path": "dist/textmode.esm.js",
+      "gzip": true,
+      "limit": "50 kB"
+    },
+    {
+      "name": "ESM (uncompressed)",
+      "path": "dist/textmode.esm.js",
+      "brotli": false,
+      "limit": "160 kB"
+    },
+    {
+      "name": "UMD (gzip)",
+      "path": "dist/textmode.umd.js",
+      "gzip": true,
+      "limit": "50 kB"
+    },
+    {
+      "name": "UMD (uncompressed)",
+      "path": "dist/textmode.umd.js",
+      "brotli": false,
+      "limit": "125 kB"
+    }
+  ],
   "devDependencies": {
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
     "@mapwhit/glsl-minify": "^1.0.0",
     "@rollup/plugin-terser": "^0.4.4",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/git": "^10.0.1",
+    "@size-limit/file": "^12.0.0",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^24.0.13",
     "@vitest/ui": "^3.1.2",
+    "eslint": "^9.39.2",
+    "eslint-plugin-jsdoc": "^62.4.1",
+    "globals": "^17.1.0",
+    "husky": "^9.1.7",
     "jsdom": "^26.1.0",
+    "markdownlint-cli2": "^0.20.0",
     "prettier": "^3.7.4",
+    "semantic-release": "^24.2.9",
+    "size-limit": "^12.0.0",
     "terser": "^5.43.1",
     "tslib": "^2.8.1",
     "typedoc": "^0.28.13",
     "typedoc-plugin-markdown": "^4.7.0",
     "typedoc-vitepress-theme": "^1.1.2",
     "typescript": "^5.9.2",
+    "typescript-eslint": "^8.53.1",
     "vite": "^6.3.4",
     "vite-plugin-glsl": "^1.5.1",
     "vitest": "^3.1.2"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/humanbydefinition/textmode.js.git"
+    "url": "git+https://github.com/humanbydefinition/textmode.js-dev.git"
   },
   "keywords": [
     "ascii",

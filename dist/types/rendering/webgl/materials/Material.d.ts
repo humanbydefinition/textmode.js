@@ -1,8 +1,5 @@
 import type { GLShader } from '../core/Shader';
-/**
- * Uniform value types supported by materials
- */
-export type UniformValue = number | boolean | number[] | number[][] | Float32Array | Int32Array | WebGLTexture;
+import type { UniformValue } from '../types/UniformTypes';
 /**
  * Material defines how geometry should be rendered.
  * Combines a shader program with uniform parameters.

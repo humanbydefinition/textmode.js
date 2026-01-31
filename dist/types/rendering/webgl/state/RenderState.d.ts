@@ -1,6 +1,7 @@
 /**
  * Represents a snapshot of the current rendering state
  */
+import type { RGB, RGBA } from '../../../utils/color';
 export interface IRenderState {
     _lineWeight: number;
     _translationX: number;
@@ -9,9 +10,10 @@ export interface IRenderState {
     _rotationX: number;
     _rotationY: number;
     _rotationZ: number;
-    _character: [number, number, number];
-    _charColor: [number, number, number, number];
-    _cellColor: [number, number, number, number];
+    _character: RGB;
+    _characterString: string;
+    _charColor: RGBA;
+    _cellColor: RGBA;
     _flipX: boolean;
     _flipY: boolean;
     _invert: boolean;
@@ -28,13 +30,14 @@ export interface IRenderState {
  */
 export declare class RenderState {
     private _currentLineWeight;
-    private _currentTranslationX;
-    private _currentTranslationY;
-    private _currentTranslationZ;
+    private _translationX;
+    private _translationY;
+    private _translationZ;
     private _rotationX;
     private _rotationY;
     private _rotationZ;
     private _currentCharacter;
+    private _currentCharacterString;
     private _currentCharColor;
     private _currentCellColor;
     private _flipHorizontally;
@@ -122,7 +125,8 @@ export declare class RenderState {
     $setTranslationX(pixels: number): void;
     $setTranslationY(pixels: number): void;
     $setTranslationZ(pixels: number): void;
-    $setCharacter(character: [number, number, number]): void;
+    $setCharacter(character: RGB): void;
+    $setCharacterString(char: string): void;
     $setCharColor(r: number, g?: number, b?: number, a?: number): void;
     $setCellColor(r: number, g?: number, b?: number, a?: number): void;
     $setFlipHorizontally(flip: boolean): void;
@@ -131,7 +135,12 @@ export declare class RenderState {
     $setCharRotation(rotation: number): void;
     $setCanvasBackground(r: number, g: number, b: number, a: number): void;
     $setUseOrtho(useOrtho: boolean): void;
-    get canvasBackgroundColor(): [number, number, number, number];
+    get canvasBackgroundColor(): RGBA;
+    get charColor(): RGBA;
+    get cellColor(): RGBA;
+    get lineWeight(): number;
+    get character(): RGB;
+    get characterString(): string;
     get useOrtho(): boolean;
     /**
      * Get the current transformation matrix.
@@ -140,4 +149,11 @@ export declare class RenderState {
     get rotationX(): number;
     get rotationY(): number;
     get rotationZ(): number;
+    get translationX(): number;
+    get translationY(): number;
+    get translationZ(): number;
+    get charRotation(): number;
+    get flipX(): boolean;
+    get flipY(): boolean;
+    get invert(): boolean;
 }

@@ -1,6 +1,7 @@
 import type { GLRenderer } from './Renderer';
 import type { Material } from '../materials/Material';
 import type { IFramebuffer } from './interfaces/IFramebuffer';
+import { Disposable } from '../../../utils/Disposable';
 export type FramebufferOptions = {
     /** Texture filtering mode */
     filter?: 'nearest' | 'linear';
@@ -39,7 +40,7 @@ export type TextmodeFramebufferOptions = {
  * - Attachment 1: Primary color data *(RGBA)*
  * - Attachment 2: Secondary color data *(RGBA)*
  */
-export declare class GLFramebuffer implements IFramebuffer {
+export declare class GLFramebuffer extends Disposable implements IFramebuffer {
     protected _width: number;
     protected _height: number;
     protected _options: FramebufferOptions;
@@ -51,7 +52,6 @@ export declare class GLFramebuffer implements IFramebuffer {
     private _renderer;
     private _material;
     private _pixelCache;
-    private static _copyShader;
     /**
      * Create a new GLFramebuffer instance.
      * @param gl WebGL2 rendering context
@@ -64,8 +64,10 @@ export declare class GLFramebuffer implements IFramebuffer {
      */
     constructor(gl: WebGL2RenderingContext, width: number, height: number | undefined, attachmentCount: number | undefined, options: FramebufferOptions | undefined, renderer: GLRenderer);
     private _createTextures;
+    private _updateTextureStorage;
     private _attachTextures;
     private _createDepthRenderbuffer;
+    private _updateDepthStorage;
     $update(source: HTMLCanvasElement | HTMLVideoElement): void;
     resize(width: number, height: number): void;
     readPixels(attachmentIndex: number): Uint8Array;
@@ -82,11 +84,10 @@ export declare class GLFramebuffer implements IFramebuffer {
      */
     private _updateMaterial;
     dispose(): void;
-    /** Get the width of the framebuffer */
     get width(): number;
-    /** Get the height of the framebuffer */
     get height(): number;
-    /** Get the WebGL textures associated with this framebuffer */
+    /** Get the WebGLFramebuffer object */
+    get framebuffer(): WebGLFramebuffer | null;
     get textures(): WebGLTexture[];
     /** Get the number of color attachments in this framebuffer */
     get attachmentCount(): number;

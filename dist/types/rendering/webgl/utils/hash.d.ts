@@ -67,7 +67,7 @@ export declare function hashArray(arr: number[] | number[][]): number;
  * ```
  */
 export declare function hashTypedArray(arr: Float32Array | Int32Array): number;
-export declare function hashObject(obj: any): number;
+export declare function hashObject(obj: object | null | undefined): number;
 /**
  * Combine two hash values into a single hash.
  * Uses a simple but effective combination strategy.

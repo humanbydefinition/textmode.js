@@ -14,7 +14,7 @@ import type { IRenderState } from '../../state/RenderState';
  *
  * This maintains true instanced rendering: one draw call for all curves.
  */
-export declare class BezierCurve extends BaseGeometry {
+export declare class BezierCurve extends BaseGeometry<BezierCurveParams> {
     constructor(gl: WebGL2RenderingContext, batch: InstanceBatch);
     /**
      * Add a bezier curve instance to the batch - TRUE INSTANCED APPROACH

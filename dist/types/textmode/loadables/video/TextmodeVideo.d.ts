@@ -1,6 +1,5 @@
 import type { GLRenderer } from '../../../rendering/webgl/core/Renderer';
-import type { Material } from '../../../rendering/webgl/materials/Material';
-import { TextmodeSource } from '../TextmodeSource';
+import { TextmodeTexture } from '../TextmodeTexture';
 import type { ITextmodeVideo } from './ITextmodeVideo';
 import type { TextmodeConversionManager } from '../../conversion';
 /**
@@ -11,6 +10,8 @@ import type { TextmodeConversionManager } from '../../conversion';
  * A video uploaded currently runs through an adjustable brightness-converter that converts
  * the video frames into a textmode representation using characters.
  * Those adjustable options are available via chainable methods on this interface.
+ *
+ * @example
  * ```javascript
  * const t = textmode.create({
  *     width: 800,
@@ -38,8 +39,7 @@ import type { TextmodeConversionManager } from '../../conversion';
  * });
  * ```
  */
-export declare class TextmodeVideo extends TextmodeSource implements ITextmodeVideo {
-    private _videoElement;
+export declare class TextmodeVideo extends TextmodeTexture implements ITextmodeVideo {
     /**
      * Create a TextmodeVideo from an HTML video element.
      * @param gl WebGL context
@@ -53,21 +53,8 @@ export declare class TextmodeVideo extends TextmodeSource implements ITextmodeVi
      * @param gridRows Grid rows
      */
     private constructor();
-    /**
-     * Dispose of this TextmodeVideo and free its resources.
-     * @ignore
-     */
-    $dispose(): void;
+    dispose(): void;
     $updateTexture(): void;
-    protected $getActiveTexture(): WebGLTexture;
-    /**
-     * Get or create the material for rendering this video.
-     * Always updates the material to ensure the latest video frame is used.
-     * @returns Material
-     * @ignore
-     */
-    $getMaterial(): Material;
-    protected $beforeMaterialUpdate(): void;
     /**
      * Create a TextmodeVideo from a video URL.
      * @param renderer GLRenderer instance
@@ -90,4 +77,5 @@ export declare class TextmodeVideo extends TextmodeSource implements ITextmodeVi
     get currentTime(): number;
     get duration(): number;
     get isPlaying(): boolean;
+    private get _el();
 }

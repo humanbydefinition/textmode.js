@@ -34,15 +34,16 @@ export * as conversion from './textmode/conversion';
  *   version: '1.0.0',
  *   install(textmodifier, api) {
  *     // Extend layers with a new method
- *     api.extendLayer('myMethod', function(value) {
+ *     api.extendLayer('setMyState', function(value: number) {
+ *       // `this` is bound to the TextmodeLayer instance
  *       this.setPluginState('my-plugin', { value });
  *     });
  *
  *     // Hook into layer rendering
- *     api.registerLayerPreRenderHook((layer, ctx) => {
- *       const state = layer.getPluginState('my-plugin');
- *       if (state) {
- *         // Render plugin content to layer.drawFramebuffer
+ *     api.registerLayerPreRenderHook((layer) => {
+ *       const state = layer.getPluginState<{ value: number }>('my-plugin');
+ *       if (state && state.value > 0.5) {
+ *         // Render custom content based on plugin state
  *       }
  *     });
  *   }
@@ -61,6 +62,7 @@ export * as plugins from './textmode/managers/PluginManager';
  */
 export * as filters from './textmode/filters';
 export { TextmodeErrorLevel } from './errors/ErrorHandler';
+export { TextmodeError } from './errors/Error';
 export { GLShader as TextmodeShader } from './rendering/webgl/core/Shader';
 export { Textmode as textmode } from './Textmode';
 /** All loading screen related modules and types. */

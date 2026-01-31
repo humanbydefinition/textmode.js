@@ -1,12 +1,24 @@
 /**
- * Update a WebGL texture from a canvas or video source.
+ * Update a WebGL texture from a canvas, video, or image source.
  * Handles binding, pixel storage, upload, and unbinding.
  *
  * @param gl WebGL2 rendering context
  * @param texture Target texture to update
- * @param source Canvas or video element to upload
+ * @param source Source element to upload
  */
-export declare function updateTextureFromSource(gl: WebGL2RenderingContext, texture: WebGLTexture, source: HTMLCanvasElement | HTMLVideoElement): void;
+export declare function updateTextureFromSource(gl: WebGL2RenderingContext, texture: WebGLTexture, source: HTMLCanvasElement | HTMLVideoElement | HTMLImageElement): void;
+/**
+ * Create a new WebGL texture from a source element.
+ * Sets default parameters (NEAREST/CLAMP) suitable for textmode pixel art.
+ *
+ * @param gl WebGL2 rendering context
+ * @param source Source element to upload
+ * @param minFilter Minification filter (default: gl.NEAREST)
+ * @param magFilter Magnification filter (default: gl.NEAREST)
+ * @param wrapS Horizontal wrapping mode (default: gl.CLAMP_TO_EDGE)
+ * @param wrapT Vertical wrapping mode (default: gl.CLAMP_TO_EDGE)
+ */
+export declare function createTextureFromSource(gl: WebGL2RenderingContext, source: HTMLCanvasElement | HTMLVideoElement | HTMLImageElement, minFilter?: number, magFilter?: number, wrapS?: number, wrapT?: number): WebGLTexture;
 /**
  * Configure texture parameters for filtering and wrapping modes.
  * Must be called with texture already bound to gl.TEXTURE_2D.
@@ -43,3 +55,14 @@ export declare function setupVertexAttribute(gl: WebGL2RenderingContext, locatio
  * @param usage Usage hint (gl.STATIC_DRAW, gl.DYNAMIC_DRAW, etc.)
  */
 export declare function uploadBufferData(gl: WebGL2RenderingContext, target: number, buffer: WebGLBuffer, data: AllowSharedBufferSource | number, usage: number): void;
+/**
+ * Extract dimensions from a source element (Image, Canvas, or Video).
+ * Handles differences in property names (naturalWidth vs width vs videoWidth).
+ *
+ * @param source The source element
+ * @returns Object containing width and height
+ */
+export declare function getSourceDimensions(source: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement): {
+    width: number;
+    height: number;
+};

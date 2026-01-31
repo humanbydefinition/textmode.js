@@ -12,24 +12,23 @@ export declare class TextureAtlas {
     private _textureCanvas;
     private _textureContext;
     private _renderer;
+    private _framebuffer;
+    private _columns;
+    private _rows;
     /**
      * Creates a new TextureAtlasCreation instance.
      * @param renderer The WebGL renderer instance
      */
     constructor(renderer: GLRenderer);
     /**
-     * Creates a texture atlas from the given characters.
+     * Creates or updates the texture atlas from the given characters.
+     * Reuses the existing framebuffer if possible, resizing if dimensions change.
      * @param characters Array of TextmodeCharacter objects
      * @param maxGlyphDimensions Maximum dimensions of glyphs
      * @param fontSize Font size for rendering
-     * @param font Either Typr.js font data object for path rendering, or font family name string for fillText rendering
-     * @returns Object containing framebuffer, columns, and rows
+     * @param font Typr.js font data object for path rendering
      */
-    $createTextureAtlas(characters: TextmodeCharacter[], maxGlyphDimensions: GlyphDimensions, fontSize: number, font: TyprFont): {
-        framebuffer: GLFramebuffer;
-        columns: number;
-        rows: number;
-    };
+    $createTextureAtlas(characters: TextmodeCharacter[], maxGlyphDimensions: GlyphDimensions, fontSize: number, font: TyprFont): void;
     /**
      * Sets up the canvas for rendering.
      * @param width Canvas buffer width
@@ -53,4 +52,15 @@ export declare class TextureAtlas {
      * @param scale Scale factor
      */
     private _renderGlyphToCanvas;
+    /**
+     * Disposes of the texture atlas resources.
+     * @ignore
+     */
+    $dispose(): void;
+    /** Returns the WebGL framebuffer containing the texture atlas. */
+    get framebuffer(): GLFramebuffer | null;
+    /** Returns the number of columns in the texture atlas. */
+    get columns(): number;
+    /** Returns the number of rows in the texture atlas. */
+    get rows(): number;
 }

@@ -36,6 +36,14 @@ export interface InstanceWriteData {
     geometryType: number;
 }
 /**
+ * Create a default InstanceWriteData object.
+ *
+ * @param curveParams0 Reference to the first curve parameters array
+ * @param curveParams1 Reference to the second curve parameters array
+ * @returns Initialized InstanceWriteData
+ */
+export declare function createDefaultInstanceWriteData(curveParams0: [number, number, number, number], curveParams1: [number, number, number, number]): InstanceWriteData;
+/**
  * High-performance instance writer for zero-allocation rendering.
  *
  * Responsibilities:

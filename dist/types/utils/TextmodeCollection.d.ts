@@ -1,37 +1,3 @@
-/**
- * A generic, managed collection for objects that require lifecycle management.
- *
- * This class provides CRUD operations (Create/Read/Update/Delete) with support for:
- * - Adding and removing items
- * - Reordering items (move, swap)
- * - Deferred initialization via pending items
- * - Automatic disposal of removed items
- * - Event callbacks for lifecycle events
- *
- * @typeParam T - The type of items stored in the collection
- *
- * @example
- * ```ts
- * // Create a collection with a disposal callback
- * const layers = new TextmodeCollection<TextmodeLayer>({
- *   onDispose: (layer) => layer.$dispose(),
- *   onAdd: (layer) => pluginManager.notifyLayerCreated(layer),
- *   onRemove: (layer) => pluginManager.notifyLayerDisposed(layer),
- * });
- *
- * // Add items
- * const layer = new TextmodeLayer();
- * layers.add(layer);
- *
- * // Iterate
- * for (const layer of layers) {
- *   layer.draw();
- * }
- *
- * // Remove all
- * layers.clear();
- * ```
- */
 export declare class TextmodeCollection<T> implements Iterable<T> {
     private _items;
     private _pendingItems;
@@ -170,62 +136,6 @@ export declare class TextmodeCollection<T> implements Iterable<T> {
      */
     [Symbol.iterator](): Iterator<T>;
     /**
-     * Execute a callback for each active item.
-     *
-     * @param callback Function to execute for each item
-     */
-    forEach(callback: (item: T, index: number) => void): void;
-    /**
-     * Map active items to a new array.
-     *
-     * @param callback Function to transform each item
-     * @returns New array with transformed items
-     */
-    map<U>(callback: (item: T, index: number) => U): U[];
-    /**
-     * Filter active items.
-     *
-     * @param predicate Function to test each item
-     * @returns New array with items that pass the test
-     */
-    filter(predicate: (item: T, index: number) => boolean): T[];
-    /**
-     * Find an item matching a predicate.
-     *
-     * @param predicate Function to test each item
-     * @returns The first matching item, or undefined
-     */
-    find(predicate: (item: T, index: number) => boolean): T | undefined;
-    /**
-     * Find the index of an item matching a predicate.
-     *
-     * @param predicate Function to test each item
-     * @returns The index of the first matching item, or -1
-     */
-    findIndex(predicate: (item: T, index: number) => boolean): number;
-    /**
-     * Check if any item matches a predicate.
-     *
-     * @param predicate Function to test each item
-     * @returns true if any item matches
-     */
-    some(predicate: (item: T, index: number) => boolean): boolean;
-    /**
-     * Check if all items match a predicate.
-     *
-     * @param predicate Function to test each item
-     * @returns true if all items match
-     */
-    every(predicate: (item: T, index: number) => boolean): boolean;
-    /**
-     * Reduce active items to a single value.
-     *
-     * @param callback Reducer function
-     * @param initialValue Initial accumulator value
-     * @returns The final accumulated value
-     */
-    reduce<U>(callback: (accumulator: U, item: T, index: number) => U, initialValue: U): U;
-    /**
      * Dispose a single item using the configured disposal callback.
      */
     private _disposeItem;
@@ -233,7 +143,7 @@ export declare class TextmodeCollection<T> implements Iterable<T> {
 /**
  * Configuration options for TextmodeCollection.
  *
- * @typeParam T - The type of items stored in the collection
+ * @template T - The type of items stored in the collection
  */
 export interface TextmodeCollectionOptions<T> {
     /**

@@ -1,5 +1,5 @@
 import type { TextmodeOptions } from './types';
-import { type RGBA } from './utils/cssColor';
+import { type RGBA } from '../utils/color';
 /**
  * Manages a `HTMLCanvasElement` for textmode rendering.
  * @ignore
@@ -9,6 +9,9 @@ export declare class TextmodeCanvas {
     private _targetCanvas;
     private _isOverlay;
     private _canvasCreatedByUs;
+    private _externalGL;
+    private _ownsContext;
+    private _gl;
     /**
      * Creates a new TextmodeCanvas instance.
      * @param opts Options for creating or using an existing canvas
@@ -35,7 +38,8 @@ export declare class TextmodeCanvas {
      */
     $resize(width?: number, height?: number): void;
     /**
-     * Get the WebGL context for the overlay canvas
+     * Get the WebGL context for the canvas.
+     * Returns external context if provided, otherwise creates a new one.
      * @ignore
      */
     $getWebGLContext(): WebGL2RenderingContext;
@@ -50,4 +54,5 @@ export declare class TextmodeCanvas {
     get targetCanvas(): HTMLCanvasElement | HTMLVideoElement | null;
     get width(): number;
     get height(): number;
+    get ownsContext(): boolean;
 }

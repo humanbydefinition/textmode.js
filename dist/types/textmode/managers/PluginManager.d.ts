@@ -7,6 +7,11 @@ import type { TextmodeCanvas } from '../Canvas';
 import type { TextmodeLayer } from '../layers/TextmodeLayer';
 import type { TextmodeLayerManager } from '../layers';
 /**
+ * Type for layer extension method implementations.
+ * The `this` context is bound to the `TextmodeLayer` instance.
+ */
+export type LayerExtensionImplementation = (this: TextmodeLayer, ...args: any[]) => unknown;
+/**
  * Callback type for simple plugin hooks without parameters.
  */
 export type TextmodePluginHook = () => void;
@@ -103,7 +108,7 @@ export interface TextmodePluginAPI {
      * @param implementation The implementation function. `this` will be bound to the TextmodeLayer instance.
      *
      * @example
-     * ```typescript
+     * ```ts
      * api.extendLayer('synth', function(source: SynthSource) {
      *   // `this` is the TextmodeLayer instance
      *   this.setPluginState('synth', { source, compiled: compile(source) });
@@ -120,12 +125,7 @@ export interface TextmodePluginAPI {
 /**
  * A plugin interface for extending the functionality of a {@link Textmodifier} instance.
  *
- * Users can create plugins by implementing this interface.
- *
- * @note
- * Plugins are currently experimental and the API may change in future releases.
- * The documentation is still lacking, but there are some add-on libraries already available,
- * all of which are fully open source and can be used as references for creating your own plugins.
+ * Create plugins by implementing this interface.
  */
 export interface TextmodePlugin {
     /** Unique name for the plugin. */
@@ -212,13 +212,7 @@ export declare class TextmodePluginManager {
     private _registerHook;
     private _removePluginHooks;
     private _runHooks;
-    private _runLayerLifecycleHooks;
-    private _runLayerRenderHooks;
-    /**
-     * Run setup lifecycle hooks in plugin installation order.
-     * Supports both synchronous and async hooks.
-     */
-    private _runSetupHooks;
+    private _runHooksAsync;
     private _addLayerExtension;
     private _removeLayerExtension;
     private _addMethodToLayerPrototype;

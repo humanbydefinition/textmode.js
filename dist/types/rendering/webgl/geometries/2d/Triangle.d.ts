@@ -9,7 +9,7 @@ import type { IRenderState } from '../../state/RenderState';
  * Instanced triangle geometry renderer.
  * Batches all triangle draw calls for efficient GPU rendering.
  */
-export declare class Triangle extends BaseGeometry {
+export declare class Triangle extends BaseGeometry<TriangleParams> {
     constructor(gl: WebGL2RenderingContext, batch: InstanceBatch);
     /**
      * Add a triangle instance to the batch

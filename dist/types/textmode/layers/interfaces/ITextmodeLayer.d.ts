@@ -21,7 +21,7 @@ import type { TextmodeGrid } from '../../Grid';
  * rendered output using the {@link ITextmodeLayer.filter} method.
  *
  * The base layer, which is always present at the bottom of the layer stack,
- * can be accessed via {@link Textmodifier.baseLayer}.
+ * can be accessed via {@link Textmodifier.layers.base}.
  */
 export interface ITextmodeLayer {
     /**
@@ -31,6 +31,66 @@ export interface ITextmodeLayer {
     readonly texture: WebGLTexture | undefined;
     /**
      * Get the grid associated with this layer.
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 32 });
+     * const rainLayer = t.layers.add({ fontSize: 16, blendMode: 'screen' });
+     *
+     * t.draw(() => {
+     *   // Base Layer: The "Construct" (Low Res, Abstract)
+     *   t.background(0);
+     *   const time = t.frameCount * 0.02;
+     *
+     *   // Rotating abstract structure
+     *   const points = [[-1,-1], [1,-1], [1,1], [-1,1]];
+     *   points.forEach(([px, py]) => {
+     *      const rotX = px * Math.cos(time) - py * Math.sin(time);
+     *      const rotY = px * Math.sin(time) + py * Math.cos(time);
+     *      t.push();
+     *      t.translate(rotX * 6, rotY * 6);
+     *      t.char('■');
+     *      t.charColor(40);
+     *      t.point();
+     *      t.pop();
+     *   });
+     * });
+     *
+     * rainLayer.draw(() => {
+     *   t.clear();
+     *   const g = rainLayer.grid; // Access layer-specific grid
+     *
+     *   // Digital Rain Effect on the high-res layer grid
+     *   // We loop using the layer's grid dimensions (g.cols), not the global t.grid
+     *   for (let x = -g.cols/2; x < g.cols/2; x+=2) {
+     *      // Deterministic randomness for rain columns
+     *      const speed = 0.5 + Math.abs(Math.sin(x * 132.1)) * 0.5;
+     *      const offset = Math.abs(Math.cos(x * 54.3)) * g.rows;
+     *      const y = Math.floor(((t.frameCount * speed + offset) % g.rows) - g.rows/2);
+     *
+     *      t.push();
+     *      t.translate(x, y);
+     *
+     *      // Head of the drop
+     *      t.char(String.fromCharCode(0x30A0 + Math.random() * 96));
+     *      t.charColor(150, 255, 200);
+     *      t.point();
+     *
+     *      // Trail
+     *      for(let j=1; j<5; j++) {
+     *         t.translate(0, -1);
+     *         t.charColor(0, 255 - j*50, 100 - j*20);
+     *         t.char(j % 2 ? ':' : '.');
+     *         t.point();
+     *      }
+     *      t.pop();
+     *   }
+     * });
+     *
+     * t.windowResized(() => {
+     *   t.resizeCanvas(window.innerWidth, window.innerHeight);
+     * });
+     * ```
      */
     readonly grid: TextmodeGrid | undefined;
     /**
@@ -41,6 +101,74 @@ export interface ITextmodeLayer {
     /**
      * Returns the height of the final ASCII framebuffer in pixels.
      * If the layer is not yet initialized, returns 0.
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+     * const waveLayer = t.layers.add({ blendMode: 'lighten' });
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     *   // Background Grid Dots
+     *   t.charColor(30);
+     *   t.char('|');
+     *   for (let x = -t.grid.cols/2; x < t.grid.cols/2; x+=4) {
+     *       for (let y = -t.grid.rows/2; y < t.grid.rows/2; y+=4) {
+     *           t.push();
+     *           t.translate(x, y);
+     *           t.point();
+     *           t.pop();
+     *       }
+     *   }
+     * });
+     *
+     * waveLayer.draw(() => {
+     *   t.clear();
+     *   const h = waveLayer.height; // Property being demonstrated
+     *
+     *   // Draw an oscilloscope waveform scaled to the layer height
+     *   const time = t.frameCount * 0.1;
+     *   const amplitude = (h / t.grid.cellHeight) * 0.4; // Use 40% of layer height
+     *
+     *   for (let x = -t.grid.cols/2; x < t.grid.cols/2; x++) {
+     *       // Combine multiple sine waves for a rich signal
+     *       const yNorm = Math.sin(x * 0.1 + time) * 0.5 + Math.sin(x * 0.3 - time * 2) * 0.25;
+     *       const y = Math.round(yNorm * amplitude);
+     *
+     *       // Color based on height (heat map)
+     *       const intensity = Math.abs(yNorm);
+     *       t.push();
+     *       t.translate(x, y);
+     *       t.char('-'); // Waveform line
+     *       t.charColor(255 * intensity, 100, 255 * (1-intensity));
+     *       t.point();
+     *
+     *       // Echo/Shadow effect
+     *       if (x % 2 === 0) {
+     *           t.translate(0, -Math.sign(y));
+     *           t.char('.');
+     *           t.charColor(100, 100, 100);
+     *           t.point();
+     *       }
+     *       t.pop();
+     *   }
+     *
+     *   // Display Height Value in top-left
+     *   const label = `MAX_AMP: ${h}px`;
+     *   t.charColor(255);
+     *   for(let i=0; i<label.length; i++) {
+     *      t.push();
+     *      t.translate(i - t.grid.cols/2 + 2, -t.grid.rows/2 + 1);
+     *      t.char(label[i]);
+     *      t.point();
+     *      t.pop();
+     *   }
+     * });
+     *
+     * t.windowResized(() => {
+     *   t.resizeCanvas(window.innerWidth, window.innerHeight);
+     * });
+     * ```
      */
     readonly height: number;
     /**
@@ -54,6 +182,62 @@ export interface ITextmodeLayer {
     readonly asciiFramebuffer: GLFramebuffer | undefined;
     /**
      * The font used by this layer.
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+     * const layer = t.layers.add({ fontSize: 32, blendMode: 'additive' });
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     *   t.char('#');
+     *   t.charColor(255, 100, 150);
+     *   t.rect(t.grid.cols, t.grid.rows);
+     * });
+     *
+     * layer.draw(() => {
+     *   t.clear();
+     *
+     *   // Access the font object from the layer
+     *   const font = layer.font;
+     *   const chars = font.characters;
+     *
+     *   // Display the first 64 characters of the font in a spiral
+     *   const count = Math.min(chars.length, 64);
+     *   const time = t.frameCount * 0.05;
+     *
+     *   for(let i=0; i<count; i++) {
+     *      const angle = i * 0.5 + time;
+     *      const radius = i * 0.6 + 2;
+     *
+     *      const x = Math.cos(angle) * radius;
+     *      const y = Math.sin(angle) * radius * 0.5;
+     *
+     *      t.push();
+     *      t.translate(Math.round(x), Math.round(y));
+     *      t.char(chars[i].character);
+     *      // Color based on character index
+     *      t.charColor(100 + i*2, 200 - i, 150 + i);
+     *      t.point();
+     *      t.pop();
+     *   }
+     *
+     *   // Display font info
+     *   const info = `FONT SIZE: ${font.fontSize}`;
+     *   t.charColor(255);
+     *   for(let i=0; i<info.length; i++) {
+     *      t.push();
+     *      t.translate(i - info.length/2, -10);
+     *      t.char(info[i]);
+     *      t.point();
+     *      t.pop();
+     *   }
+     * });
+     *
+     * t.windowResized(() => {
+     *   t.resizeCanvas(window.innerWidth, window.innerHeight);
+     * });
+     * ```
      */
     readonly font: TextmodeFont;
     /**
@@ -142,6 +326,59 @@ export interface ITextmodeLayer {
      *
      * @param pluginName Unique identifier for the plugin.
      * @param state The state object to store.
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+     *
+     * const layers = [];
+     *
+     * t.setup(() => {
+     *   // Create layers with independent state
+     *   for(let i=0; i<64; i++) {
+     *     const layer = t.layers.add();
+     *
+     *     // Store physics state directly on the layer
+     *     layer.setPluginState('my-physics', {
+     *       x: 0,
+     *       y: 0,
+     *       vx: (Math.random() - 0.5) * 2,
+     *       vy: (Math.random() - 0.5) * 2,
+     *       color: t.color(Math.random()*255, 200, 255)
+     *     });
+     *
+     *     layer.draw(() => {
+     *     t.clear();
+     *
+     *     // Retrieve state
+     *     const state = layer.getPluginState('my-physics');
+     *
+     *     // Update physics
+     *     state.x += state.vx;
+     *     state.y += state.vy;
+     *
+     *     // Bounce off edges
+     *     if (Math.abs(state.x) > t.grid.cols/2) state.vx *= -1;
+     *     if (Math.abs(state.y) > t.grid.rows/2) state.vy *= -1;
+     *
+     *     t.push();
+     *     t.translate(state.x, state.y);
+     *     t.char('O');
+     *     t.charColor(state.color);
+     *     t.point();
+     *     t.pop();
+     *   });
+     *   }
+     * });
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     * });
+     *
+     * t.windowResized(() => {
+     *   t.resizeCanvas(window.innerWidth, window.innerHeight);
+     * });
+     * ```
      */
     setPluginState<T>(pluginName: string, state: T): void;
     /**
@@ -149,6 +386,45 @@ export interface ITextmodeLayer {
      *
      * @param pluginName Unique identifier for the plugin.
      * @returns The stored state object, or undefined if not set.
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+     * const layer = t.layers.add();
+     *
+     * // Initialize a shared state object on the layer
+     * layer.setPluginState('anim', { angle: 0, speed: 0.05 });
+     *
+     * layer.draw(() => {
+     *   t.clear();
+     *
+     *   // Retrieve the typed state
+     *   const state = layer.getPluginState('anim');
+     *
+     *   if (state) {
+     *     state.angle += state.speed;
+     *
+     *     const r = 8;
+     *     const x = Math.cos(state.angle) * r;
+     *     const y = Math.sin(state.angle) * r;
+     *
+     *     t.push();
+     *     t.translate(Math.round(x), Math.round(y));
+     *     t.char('O');
+     *     t.charColor(255, 200, 0);
+     *     t.point();
+     *     t.pop();
+     *   }
+     * });
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     * });
+     *
+     * t.windowResized(() => {
+     *   t.resizeCanvas(window.innerWidth, window.innerHeight);
+     * });
+     * ```
      */
     getPluginState<T>(pluginName: string): T | undefined;
     /** Check if plugin-specific state exists on this layer.
@@ -160,9 +436,95 @@ export interface ITextmodeLayer {
     /** Delete plugin-specific state from this layer.
      *
      * @param pluginName Unique identifier for the plugin.
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+     * const layer = t.layers.add();
+     *
+     * t.mousePressed(() => {
+     *   // Reset the 'boom' state when mouse is clicked
+     *   if (layer.hasPluginState('boom')) {
+     *     layer.deletePluginState('boom');
+     *   }
+     * });
+     *
+     * layer.draw(() => {
+     *   t.clear();
+     *
+     *   if (!layer.hasPluginState('boom')) {
+     *     layer.setPluginState('boom', { frame: 0 });
+     *   }
+     *
+     *   const state = layer.getPluginState('boom');
+     *   if (state) {
+     *     state.frame++;
+     *     const radius = state.frame;
+     *     if (radius > 10) return; // Explosion finished
+     *
+     *     // Draw explosion ring
+     *     for(let i=0; i<12; i++) {
+     *       const angle = (i / 12) * Math.PI * 2;
+     *       const x = Math.cos(angle) * radius;
+     *       const y = Math.sin(angle) * radius * 0.5;
+     *
+     *       t.push();
+     *       t.translate(Math.round(x), Math.round(y));
+     *       t.char('*');
+     *       t.charColor(255, 100 + radius * 10, 0);
+     *       t.point();
+     *       t.pop();
+     *     }
+     *   }
+     * });
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     * });
+     *
+     * t.windowResized(() => {
+     *   t.resizeCanvas(window.innerWidth, window.innerHeight);
+     * });
+     * ```
      */
     deletePluginState(pluginName: string): void;
-    /** Get or set the font size for this layer. */
+    /**
+     * Get or set the font size for this layer.
+     *
+     * Changing the font size will re-initialize the layer's grid based on the new character dimensions.
+     *
+     * @param size The font size to set.
+     * @returns The current font size if called without arguments.
+     *
+     * @example
+     * ```javascript
+     * const t = textmode.create({ width: 800, height: 600, fontSize: 16 });
+     *
+     * // Add a high-resolution layer (small font) for details
+     * const detailLayer = t.layers.add({ fontSize: 8 });
+     *
+     * t.draw(() => {
+     *   t.background(0);
+     *   t.charColor(100);
+     *   t.char('X');
+     *   t.rect(10, 10);
+     * });
+     *
+     * detailLayer.draw(() => {
+     *   // Render fine details on the high-res layer
+     *   t.clear();
+     *   t.charColor(255, 200, 100);
+     *   t.char('.');
+     *   const time = t.frameCount * 0.05;
+     *   for(let i=0; i<50; i++) {
+     *      t.push();
+     *      t.translate(Math.cos(time+i)*30, Math.sin(time+i)*20);
+     *      t.point();
+     *      t.pop();
+     *   }
+     * });
+     * ```
+     */
     fontSize(size?: number): number | void;
     /**
      * Load a font into this layer from a URL/path or reuse an existing {@link TextmodeFont} instance.
@@ -184,16 +546,52 @@ export interface ITextmodeLayer {
     loadFont(fontSource: string | TextmodeFont): Promise<TextmodeFont>;
     /**
      * Show this layer for rendering.
+     *
+     * @example
+     * ```js
+     * const t = textmode.create();
+     * const hiddenLayer = t.layers.add({ visible: false });
+     *
+     * // Show the layer after 2 seconds
+     * t.draw(() => {
+     *   if (t.secs > 2) {
+     *     hiddenLayer.show();
+     *   }
+     * });
+     * ```
      */
     show(): void;
     /**
      * Hide this layer from rendering.
+     *
+     * @example
+     * ```js
+     * const t = textmode.create();
+     * const layer = t.layers.add();
+     *
+     * // Hide the layer when mouse is pressed
+     * t.mousePressed(() => {
+     *   layer.hide();
+     * });
+     * ```
      */
     hide(): void;
     /**
      * Define or retrieve the layer's opacity.
      * @param opacity The opacity value to set (between 0 and 1).
      * @returns The current opacity if no parameter is provided.
+     *
+     * @example
+     * ```js
+     * const t = textmode.create();
+     * const fadeLayer = t.layers.add();
+     *
+     * t.draw(() => {
+     *   // Fade layer in and out over time
+     *   const opacity = 0.5 + 0.5 * Math.sin(t.frameCount * 0.05);
+     *   fadeLayer.opacity(opacity);
+     * });
+     * ```
      */
     opacity(opacity?: number): number | void;
     /**
@@ -413,7 +811,7 @@ export interface ITextmodeLayer {
      * });
      * ```
      */
-    filter<T extends BuiltInFilterName>(name: FilterName, params?: BuiltInFilterParams[T]): void;
+    filter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
     /**
      * Apply a custom filter registered via `t.layers.filters.register()`.
      * @param name The name of the custom filter

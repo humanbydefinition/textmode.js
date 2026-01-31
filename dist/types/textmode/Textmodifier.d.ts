@@ -9,6 +9,7 @@ import { KeyboardManager } from './managers/KeyboardManager';
 import { TouchManager } from './managers/TouchManager';
 import { TextmodePluginManager } from './managers/PluginManager';
 import type { ITextmodifier } from './interfaces';
+import type { IDisposable } from './interfaces/IDisposable';
 import type { TextmodeOptions } from './types';
 import type { IAnimationMixin } from './mixins/interfaces/IAnimationMixin';
 import type { IRenderingMixin } from './mixins/interfaces/IRenderingMixin';
@@ -21,6 +22,7 @@ import type { TextmodeLayer, TextmodeLayerManager } from './layers';
 import type { TextmodeFilterManager } from './filters';
 import type { FilterName, BuiltInFilterName, BuiltInFilterParams } from './filters';
 import { TextmodeConversionManager } from './conversion';
+import { GLShader } from '../rendering';
 declare const Textmodifier_base: {
     new (): {};
 };
@@ -34,6 +36,10 @@ declare const Textmodifier_base: {
  */
 export declare class Textmodifier extends Textmodifier_base implements ITextmodifier {
     _renderer: GLRenderer;
+    /** @ignore */
+    _conversionShader: GLShader;
+    /** @ignore */
+    _presentShader: GLShader;
     _canvas: TextmodeCanvas;
     _animationController: AnimationController;
     _mouseManager: MouseManager;
@@ -43,6 +49,7 @@ export declare class Textmodifier extends Textmodifier_base implements ITextmodi
     _layerManager: TextmodeLayerManager;
     _activeLayer?: TextmodeLayer;
     _conversionManager: TextmodeConversionManager;
+    private _managedDisposables;
     /** @ignore */
     _pluginManager: TextmodePluginManager;
     private _destroyRequested;
@@ -52,6 +59,7 @@ export declare class Textmodifier extends Textmodifier_base implements ITextmodi
     private _setupCallback;
     private _resizedCallback;
     private _windowResizeListener;
+    private _windowBlurListener;
     private _resizeObserver?;
     private _isOverlay;
     private _targetCanvasImage?;
@@ -62,6 +70,8 @@ export declare class Textmodifier extends Textmodifier_base implements ITextmodi
      * @ignore
      */
     constructor(opts?: TextmodeOptions);
+    /** @ignore */
+    $trackDisposable(disposable: IDisposable): void;
     private _initialize;
     /**
      * Setup event listeners for window resize and input handling.
@@ -73,10 +83,10 @@ export declare class Textmodifier extends Textmodifier_base implements ITextmodi
     destroy(): void;
     private _performDestroy;
     filter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
-    filter(name: FilterName, params?: unknown): void;
+    filter<TParams = unknown>(name: FilterName, params?: TParams): void;
     draw(callback: () => void): void;
-    loadFont(fontSource: string): Promise<TextmodeFont>;
-    fontSize(size: number): void;
+    loadFont(fontSource: string | TextmodeFont, setActive?: boolean): Promise<TextmodeFont>;
+    fontSize(size?: number): number | void;
     inputGrid(target?: 'topmost' | TextmodeGrid): 'topmost' | TextmodeGrid | void;
     /**
      * Get the grid used for input coordinate mapping.

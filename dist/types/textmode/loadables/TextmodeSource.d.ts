@@ -1,14 +1,19 @@
 import type { GLRenderer } from '../../rendering/webgl/core/Renderer';
 import type { Material } from '../../rendering/webgl/materials/Material';
+import type { UniformValue } from '../../rendering/webgl/types/UniformTypes';
 import { TextmodeColor } from '../TextmodeColor';
 import type { TextmodeFont } from './font/TextmodeFont';
 import type { ITextmodeSource } from './ITextmodeSource';
+import { Disposable } from '../../utils/Disposable';
 import type { TextmodeConversionMode, TextmodeConversionManager } from '../conversion';
-type GlyphColor = [number, number, number];
-export declare abstract class TextmodeSource implements ITextmodeSource {
+import type { RGB, RGBA } from '../../utils/color';
+/**
+ * Abstract base class representing a textmode source asset (image, video, texture).
+ */
+export declare abstract class TextmodeSource extends Disposable implements ITextmodeSource {
     protected _gl: WebGL2RenderingContext;
     protected _renderer: GLRenderer;
-    protected _texture: WebGLTexture;
+    protected _texture: WebGLTexture | null;
     protected _originalWidth: number;
     protected _originalHeight: number;
     protected _width: number;
@@ -24,14 +29,14 @@ export declare abstract class TextmodeSource implements ITextmodeSource {
     protected _charRotation: number;
     protected _charColorMode: 'sampled' | 'fixed';
     protected _cellColorMode: 'sampled' | 'fixed';
-    protected _charColor: [number, number, number, number];
-    protected _cellColor: [number, number, number, number];
-    protected _backgroundColor: [number, number, number, number];
-    protected _glyphColors: GlyphColor[];
+    protected _charColor: RGBA;
+    protected _cellColor: RGBA;
+    protected _backgroundColor: RGBA;
+    protected _glyphColors: RGB[];
     private _characterString;
-    protected constructor(gl: WebGL2RenderingContext, renderer: GLRenderer, texture: WebGLTexture, conversionManager: TextmodeConversionManager, originalWidth: number, originalHeight: number, width: number, height: number);
+    protected constructor(gl: WebGL2RenderingContext, renderer: GLRenderer, texture: WebGLTexture, conversionManager: TextmodeConversionManager, originalWidth: number, originalHeight: number, gridCols: number, gridRows: number);
     conversionMode(mode: TextmodeConversionMode): this;
-    $dispose(): void;
+    dispose(): void;
     invert(v?: boolean | number): this;
     flipX(v?: boolean | number): this;
     flipY(v?: boolean | number): this;
@@ -42,12 +47,6 @@ export declare abstract class TextmodeSource implements ITextmodeSource {
     cellColor(colorOrGray: number | string | TextmodeColor, g?: number, b?: number, a?: number): this;
     background(colorOrGray: number | TextmodeColor | string, g?: number, b?: number, a?: number): this;
     characters(chars: string): this;
-    /**
-     * Set the active font for the current render pass.
-     * Called by the renderer before getMaterial() to ensure the source uses the correct layer's font.
-     * @param font The font to use for this render
-     * @ignore
-     */
     $setActiveFont(font: TextmodeFont): void;
     get texture(): WebGLTexture;
     get width(): number;
@@ -56,12 +55,11 @@ export declare abstract class TextmodeSource implements ITextmodeSource {
     get originalHeight(): number;
     $getMaterial(): Material;
     protected $beforeMaterialUpdate(): void;
-    protected abstract $getActiveTexture(): WebGLTexture;
+    protected $getActiveTexture(): WebGLTexture;
     private _updateMaterial;
     private _setColor;
     private _applyCharacterPalette;
-    createBaseConversionUniforms(): Record<string, any>;
+    createBaseConversionUniforms(): Record<string, UniformValue>;
     private _getActiveConversionStrategy;
     private _createConversionContext;
 }
-export {};

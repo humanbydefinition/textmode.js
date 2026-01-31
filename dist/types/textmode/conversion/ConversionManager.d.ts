@@ -1,4 +1,5 @@
-import type { TextmodeConversionMode, TextmodeConversionStrategy } from './ConversionRegistry';
+import type { TextmodeConversionMode, TextmodeConversionStrategy, TextmodeConversionContext } from './ConversionRegistry';
+import type { GLShader } from '../../rendering/webgl/core/Shader';
 /**
  * Manages conversion strategy registration and retrieval.
  *
@@ -7,6 +8,8 @@ import type { TextmodeConversionMode, TextmodeConversionStrategy } from './Conve
  * - Instance-scoped conversion strategies per Textmodifier
  *
  * Used for image-to-ASCII conversion modes.
+ *
+ * Access via {@link Textmodifier.conversions}.
  *
  * @example
  * ```ts
@@ -22,7 +25,8 @@ import type { TextmodeConversionMode, TextmodeConversionStrategy } from './Conve
  * ```
  */
 export declare class TextmodeConversionManager {
-    private readonly _conversionRegistry;
+    private readonly _strategies;
+    private readonly _shaderCache;
     /**
      * Create a new TextmodeConversionManager.
      * @param renderer The WebGL renderer instance
@@ -66,8 +70,20 @@ export declare class TextmodeConversionManager {
      */
     $get(id: TextmodeConversionMode): TextmodeConversionStrategy | undefined;
     /**
+     * Get or create a shader for a conversion strategy.
+     * @param id The conversion strategy ID
+     * @param context The conversion context
+     * @returns The compiled GLShader
+     * @ignore
+     */
+    $getShader(id: TextmodeConversionMode, context: TextmodeConversionContext): GLShader;
+    /**
      * Dispose of all resources.
      * @ignore
      */
     $dispose(): void;
+    /**
+     * Register all built-in conversion strategies.
+     */
+    private _registerBuiltInStrategies;
 }

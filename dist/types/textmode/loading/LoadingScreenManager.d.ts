@@ -1,5 +1,5 @@
 import type { Textmodifier } from '../Textmodifier';
-import type { RGBA } from '../utils/cssColor';
+import type { RGBA } from '../../utils/color';
 import { LoadingPhase } from './LoadingPhase';
 import type { LoadingScreenOptions } from './types';
 /**
@@ -31,7 +31,6 @@ export declare class LoadingScreenManager {
     /**
      * Initialize loading screen resources using a TextmodeLayer.
      * Must be called after the renderer is ready.
-     * @param fontSource Optional font source for the loading screen
      * @ignore
      */
     $initialize(): Promise<void>;

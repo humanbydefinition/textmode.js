@@ -1,6 +1,7 @@
 import { GLFramebuffer } from './Framebuffer';
 import type { FramebufferOptions } from './Framebuffer';
 import { GLShader } from './Shader';
+import type { UniformValue } from '../types/UniformTypes';
 import { RenderState } from '../state/RenderState';
 import type { TextmodeSource } from '../../../textmode/loadables/TextmodeSource';
 import type { TextmodeFont } from '../../../textmode/loadables/font/TextmodeFont';
@@ -22,6 +23,7 @@ export declare class GLRenderer implements IRenderer {
     private _currentFramebuffer;
     private _currentViewport;
     private _currentAttachmentCount;
+    private readonly _tempClearBuffer;
     constructor(gl: WebGL2RenderingContext);
     /**
      * Push current framebuffer and viewport state onto the stack.
@@ -43,8 +45,9 @@ export declare class GLRenderer implements IRenderer {
     $shader(shader: GLShader): void;
     $createShader(vertexSource: string, fragmentSource: string): GLShader;
     $setUserShader(shader: GLShader | null): void;
-    $setUniform(name: string, value: any): void;
-    $setUserUniforms(uniforms: Record<string, any>): void;
+    $resetShader(): void;
+    $setUniform(name: string, value: UniformValue): void;
+    $setUniforms(uniforms: Record<string, UniformValue>): void;
     $createFilterShader(fragmentSource: string): GLShader;
     $image(source: GLFramebuffer | TextmodeSource, width?: number, height?: number, activeFont?: TextmodeFont): void;
     $quad(x: number, y: number, width: number, height: number): void;

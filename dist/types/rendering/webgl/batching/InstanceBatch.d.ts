@@ -1,6 +1,7 @@
-import type { InstanceData } from './InstanceData';
+import { type InstanceData } from './InstanceData';
 import { GLShader } from '../core/Shader';
-import { type InstanceWriteData } from './InstanceWriter';
+import { InstanceBuffer } from './InstanceBuffer';
+import { InstanceWriter, type InstanceWriteData } from './InstanceWriter';
 export type { InstanceWriteData };
 /**
  * High-performance instance batch manager for WebGL instanced rendering.
@@ -41,11 +42,20 @@ export declare class InstanceBatch {
      */
     $addInstance(instance: InstanceData): number;
     /**
-     * Write instance data directly to the buffer (zero-allocation fast path).
-     * @param data Instance write data
-     * @returns Index of the written instance
+     * Synchronize GPU buffer capacity with CPU buffer capacity.
+     * Must be called after writing directly to the instance buffer.
      */
-    $writeInstance(data: InstanceWriteData): number;
+    $syncGPUBuffer(): void;
+    /**
+     * Get the underlying instance buffer for direct write access.
+     * @internal Performance optimization for BaseGeometry
+     */
+    get instanceBuffer(): InstanceBuffer;
+    /**
+     * Get the underlying instance writer for direct write access.
+     * @internal Performance optimization for BaseGeometry
+     */
+    get writer(): InstanceWriter;
     /**
      * Get the current number of instances in the batch.
      */
@@ -63,11 +73,6 @@ export declare class InstanceBatch {
      * @param shader The shader program to bind attributes for
      */
     $bindAttributes(shader: GLShader): void;
-    /**
-     * Unbind instance attributes to clean up WebGL state.
-     * @param shader The shader program to unbind attributes for
-     */
-    $unbindAttributes(shader: GLShader): void;
     /**
      * Execute instanced draw call for all instances in the batch.
      * @param primitiveType WebGL primitive type (e.g., gl.TRIANGLES)
