@@ -2,13 +2,6 @@ import type { Material } from '../../../rendering/webgl/materials/Material';
 import type { ITextmodeSource } from '../ITextmodeSource';
 export interface ITextmodeVideo extends ITextmodeSource {
     /**
-     * Update the texture with the current video frame if needed.
-     * For preloaded videos, this returns the appropriate frame texture.
-     * For live videos, this updates the texture with current video data.
-     * @ignore
-     */
-    $updateTexture(): void;
-    /**
      * Get or create the material for rendering this video.
      * Always updates the material to ensure the latest video frame is used.
      * @ignore

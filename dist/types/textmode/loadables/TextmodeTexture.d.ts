@@ -75,7 +75,7 @@ export declare class TextmodeTexture extends TextmodeSource {
      * @ignore
      */
     static $fromElement(renderer: GLRenderer, conversionManager: TextmodeConversionManager, source: HTMLCanvasElement | HTMLVideoElement, gridCols: number, gridRows: number): TextmodeTexture;
-    protected _updateSourceTexture(): void;
+    update(): void;
     /**
      * Get or create the material for rendering this texture.
      * Forces material refresh each frame to capture latest source content.

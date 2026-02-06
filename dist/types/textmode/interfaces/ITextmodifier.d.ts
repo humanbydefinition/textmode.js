@@ -43,6 +43,8 @@ export interface ITextmodifier extends IRenderingMixin, IAnimationMixin, IMouseM
     readonly _loading: LoadingScreenManager;
     /** Conversion manager for image-to-ASCII conversion @ignore */
     readonly _conversionManager: TextmodeConversionManager;
+    /** Promise resolved when core renderer and base grid are ready @ignore */
+    readonly _coreReady: Promise<void>;
     /** Layer manager for handling multiple layers @ignore */
     readonly _layerManager: TextmodeLayerManager;
     /** Active layer currently being rendered @ignore */

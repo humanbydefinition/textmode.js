@@ -54,7 +54,24 @@ export declare class TextmodeVideo extends TextmodeTexture implements ITextmodeV
      */
     private constructor();
     dispose(): void;
-    $updateTexture(): void;
+    /**
+     * Create and load a video element from a URL.
+     * @param source Video URL
+     * @returns Promise resolving to a loaded HTMLVideoElement
+     * @ignore
+     */
+    static $loadElement(source: string): Promise<HTMLVideoElement>;
+    /**
+     * Create a TextmodeVideo from a preloaded HTMLVideoElement.
+     * @param renderer GLRenderer instance
+     * @param conversionManager Conversion manager
+     * @param videoElement HTMLVideoElement source
+     * @param gridCols Number of grid columns
+     * @param gridRows Number of grid rows
+     * @returns TextmodeVideo instance
+     * @ignore
+     */
+    static $fromElement(renderer: GLRenderer, conversionManager: TextmodeConversionManager, videoElement: HTMLVideoElement, gridCols: number, gridRows: number): TextmodeVideo;
     /**
      * Create a TextmodeVideo from a video URL.
      * @param renderer GLRenderer instance

@@ -20,6 +20,23 @@ export declare function updateTextureFromSource(gl: WebGL2RenderingContext, text
  */
 export declare function createTextureFromSource(gl: WebGL2RenderingContext, source: HTMLCanvasElement | HTMLVideoElement | HTMLImageElement, minFilter?: number, magFilter?: number, wrapS?: number, wrapT?: number): WebGLTexture;
 /**
+ * Create a texture from a source element and return both the texture and source dimensions.
+ * Reduces duplication in higher-level helpers that need both values together.
+ *
+ * @param gl WebGL2 rendering context
+ * @param source Source element to upload
+ * @param minFilter Minification filter (default: gl.NEAREST)
+ * @param magFilter Magnification filter (default: gl.NEAREST)
+ * @param wrapS Horizontal wrapping mode (default: gl.CLAMP_TO_EDGE)
+ * @param wrapT Vertical wrapping mode (default: gl.CLAMP_TO_EDGE)
+ * @returns Object containing the texture and its source dimensions
+ */
+export declare function createTextureWithDimensions(gl: WebGL2RenderingContext, source: HTMLCanvasElement | HTMLVideoElement | HTMLImageElement, minFilter?: number, magFilter?: number, wrapS?: number, wrapT?: number): {
+    texture: WebGLTexture;
+    width: number;
+    height: number;
+};
+/**
  * Configure texture parameters for filtering and wrapping modes.
  * Must be called with texture already bound to gl.TEXTURE_2D.
  *

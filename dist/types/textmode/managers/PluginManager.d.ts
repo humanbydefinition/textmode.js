@@ -8,6 +8,7 @@ import type { TextmodeLayer } from '../layers/TextmodeLayer';
 import type { TextmodeLayerManager } from '../layers';
 /**
  * Type for layer extension method implementations.
+ *
  * The `this` context is bound to the `TextmodeLayer` instance.
  */
 export type LayerExtensionImplementation = (this: TextmodeLayer, ...args: any[]) => unknown;
@@ -17,6 +18,7 @@ export type LayerExtensionImplementation = (this: TextmodeLayer, ...args: any[])
 export type TextmodePluginHook = () => void;
 /**
  * Callback type for setup lifecycle hooks.
+ *
  * Can be synchronous or return a Promise for async operations.
  */
 export type SetupLifecycleHook = () => void | Promise<void>;

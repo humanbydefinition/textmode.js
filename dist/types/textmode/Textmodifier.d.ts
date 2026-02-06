@@ -52,6 +52,9 @@ export declare class Textmodifier extends Textmodifier_base implements ITextmodi
     private _managedDisposables;
     /** @ignore */
     _pluginManager: TextmodePluginManager;
+    /** @ignore */
+    _coreReady: Promise<void>;
+    private _resolveCoreReady;
     private _destroyRequested;
     private _isRenderingFrame;
     private _isDisposed;
@@ -72,6 +75,7 @@ export declare class Textmodifier extends Textmodifier_base implements ITextmodi
     constructor(opts?: TextmodeOptions);
     /** @ignore */
     $trackDisposable(disposable: IDisposable): void;
+    private _resizeSourcesForGrid;
     private _initialize;
     /**
      * Setup event listeners for window resize and input handling.

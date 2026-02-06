@@ -23,7 +23,11 @@ export declare class GLRenderer implements IRenderer {
     private _currentFramebuffer;
     private _currentViewport;
     private _currentAttachmentCount;
+    private _depthTestEnabled;
+    private _depthMaskEnabled;
+    private _isRenderingFrame;
     private readonly _tempClearBuffer;
+    private _frameOverrideSources;
     constructor(gl: WebGL2RenderingContext);
     /**
      * Push current framebuffer and viewport state onto the stack.
@@ -43,6 +47,16 @@ export declare class GLRenderer implements IRenderer {
      */
     $bindFramebuffer(framebuffer: WebGLFramebuffer | null, width: number, height: number, attachmentCount?: number): void;
     $shader(shader: GLShader): void;
+    /**
+     * Update per-frame rendering state for draw-scoped overrides.
+     * @internal
+     */
+    $setRenderingFrame(isRendering: boolean): void;
+    /**
+     * Query per-frame rendering state for draw-scoped overrides.
+     * @internal
+     */
+    $getRenderingFrame(): boolean;
     $createShader(vertexSource: string, fragmentSource: string): GLShader;
     $setUserShader(shader: GLShader | null): void;
     $resetShader(): void;
@@ -70,6 +84,26 @@ export declare class GLRenderer implements IRenderer {
      */
     private _clearMRT;
     $resetViewport(): void;
+    /**
+     * Enable or disable depth testing with CPU-side state tracking.
+     * @internal
+     */
+    $setDepthTestEnabled(enabled: boolean): void;
+    /**
+     * Enable or disable depth buffer writes with CPU-side state tracking.
+     * @internal
+     */
+    $setDepthMaskEnabled(enabled: boolean): void;
+    /**
+     * Get current depth test enabled state (CPU-tracked).
+     * @internal
+     */
+    $getDepthTestEnabled(): boolean;
+    /**
+     * Get current depth mask enabled state (CPU-tracked).
+     * @internal
+     */
+    $getDepthMaskEnabled(): boolean;
     $flushInstances(): void;
     $dispose(): void;
     get context(): WebGL2RenderingContext;
