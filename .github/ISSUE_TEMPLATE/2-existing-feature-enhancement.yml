@@ -1,0 +1,48 @@
+name: Existing Feature Enhancement
+description: Suggest an improvement to an existing textmode.js feature.
+labels: [Enhancement]
+body:
+  - type: textarea
+    id: access
+    attributes:
+      label: Access and usability impact
+      description: How would this improve the library for artists, designers, learners, or contributors? If unsure, say so.
+    validations:
+      required: true
+  - type: checkboxes
+    id: area
+    attributes:
+      label: Most relevant area
+      description: You may select more than one.
+      options:
+        - label: Core API / Textmodifier
+        - label: Rendering / WebGL
+        - label: Layers / compositing
+        - label: Filters / shaders
+        - label: Images / video / conversion
+        - label: Fonts / typography
+        - label: Input / interaction
+        - label: Plugin system
+        - label: Build / types / packaging
+        - label: Documentation / examples
+        - label: Other
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behavior
+      description: Describe the existing feature and what is limiting about it today.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed enhancement
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Workarounds, competing API shapes, or reasons to avoid the change.
+    validations:
+      required: false

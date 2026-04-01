@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://code.textmode.art/
+    about: Start with the API reference, guides, and examples before opening a usage question.
+  - name: Web Editor
+    url: https://editor.textmode.art/
+    about: Reproduce rendering and API issues in a minimal sketch you can share.
+  - name: Discord
+    url: https://discord.gg/sjrw8QXNks
+    about: Ask usage questions, sanity-check ideas, or discuss behavior before filing an issue.

@@ -1,0 +1,48 @@
+name: New Feature Request
+description: Request a new capability to be added to textmode.js.
+labels: [Feature Request]
+body:
+  - type: textarea
+    id: access
+    attributes:
+      label: Access and usability impact
+      description: How would this improve creative coding or make the library easier to use, learn, or extend?
+    validations:
+      required: true
+  - type: checkboxes
+    id: area
+    attributes:
+      label: Most relevant area
+      description: You may select more than one.
+      options:
+        - label: Core API / Textmodifier
+        - label: Rendering / WebGL
+        - label: Layers / compositing
+        - label: Filters / shaders
+        - label: Images / video / conversion
+        - label: Fonts / typography
+        - label: Input / interaction
+        - label: Plugin system
+        - label: Build / types / packaging
+        - label: Documentation / examples
+        - label: Other
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: What are you unable to do today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed feature
+    validations:
+      required: true
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples or prior art
+      description: Similar APIs in p5.js, Processing, shaders, creative-coding tools, or your own sketches.
+    validations:
+      required: false

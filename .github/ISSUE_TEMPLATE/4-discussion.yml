@@ -1,0 +1,18 @@
+name: Discussion
+description: Start a broader discussion about API direction, architecture, or project decisions.
+labels: [Discussion]
+body:
+  - type: textarea
+    id: topic
+    attributes:
+      label: Topic
+      description: What do you want to discuss?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Include examples, prior discussion, or concrete tradeoffs if relevant.
+    validations:
+      required: false
