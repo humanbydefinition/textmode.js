@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>textmode.js - sketch</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./style.css" />
+	</head>
+	<body>
+		<script type="module">
+			import * as textmodeModule from '../dist/textmode.esm.js';
+
+			const params = new URLSearchParams(window.location.search);
+			const rawPath = params.get('path');
+			const group = params.get('group');
+			const entry = params.get('entry');
+			const validSegment = /^[A-Za-z0-9_.-]+$/;
+
+			function resolveExamplePath() {
+				if (rawPath) {
+					return rawPath;
+				}
+
+				if (group && entry) {
+					return `${group}/${entry}`;
+				}
+
+				return null;
+			}
+
+			function isValidPath(examplePath) {
+				const segments = examplePath.split('/');
+				return (
+					segments.length > 0 &&
+					segments.every(
+						(segment) =>
+							segment.length > 0 && segment !== '.' && segment !== '..' && validSegment.test(segment)
+					)
+				);
+			}
+
+			function showError(message) {
+				document.body.innerHTML = `
+					<div style="padding: 1rem; color: #e4e4e7; background: #09090b; min-height: 100vh; box-sizing: border-box;">
+						<p style="margin: 0; font-size: 0.9rem;">${message}</p>
+					</div>
+				`;
+			}
+
+			const examplePath = resolveExamplePath();
+
+			if (!examplePath || !isValidPath(examplePath)) {
+				showError('Invalid example path.');
+			} else {
+				document.title = `textmode.js - ${examplePath}`;
+
+				window.textmode = textmodeModule.textmode;
+				window.TextmodeErrorLevel = textmodeModule.TextmodeErrorLevel;
+				
+				const script = document.createElement('script');
+				script.src = `./${examplePath}/sketch.js`;
+				script.onerror = () => showError(`Unable to load ${examplePath}.`);
+				document.body.appendChild(script);
+			}
+		</script>
+	</body>
+</html>

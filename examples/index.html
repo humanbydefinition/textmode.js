@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>textmode.js - examples</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script>
+			tailwind.config = {
+				theme: {
+					extend: {
+						fontFamily: {
+							mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+						},
+					},
+				},
+			};
+		</script>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="./style.css" />
+	</head>
+
+	<body class="bg-[#09090b] text-zinc-100 min-h-screen">
+		<div class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+			<!-- Header -->
+			<header class="mb-10 pb-8 border-b border-zinc-800">
+				<div class="flex items-start justify-between flex-wrap gap-4">
+					<div>
+						<h1 class="text-xl font-semibold tracking-tight text-zinc-50">textmode.js</h1>
+						<p class="text-zinc-500 text-xs mt-1">// it's the only way to escape</p>
+					</div>
+					<nav class="flex items-center gap-4 text-xs text-zinc-500">
+						<a
+							href="https://github.com/humanbydefinition"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="hover:text-zinc-300 transition-colors"
+							>@humanbydefinition</a
+						>
+						<span class="text-zinc-700">·</span>
+						<a
+							href="https://github.com/humanbydefinition/textmode.js"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="hover:text-zinc-300 transition-colors"
+							>github</a
+						>
+						<span class="text-zinc-700">·</span>
+						<a
+							href="https://code.textmode.art"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="hover:text-zinc-300 transition-colors"
+							>docs</a
+						>
+					</nav>
+				</div>
+
+				<!-- Search -->
+				<div class="mt-6 relative">
+					<input
+						id="search"
+						type="text"
+						placeholder="filter examples..."
+						autocomplete="off"
+						spellcheck="false"
+						class="w-full max-w-sm bg-zinc-900 border border-zinc-800 rounded-md px-3 py-1.5 text-xs text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-zinc-600 focus:ring-1 focus:ring-zinc-700 transition-colors"
+					/>
+				</div>
+			</header>
+
+			<!-- Groups -->
+			<main id="examples" class="space-y-3"></main>
+
+			<!-- Footer -->
+			<footer class="mt-12 pt-8 border-t border-zinc-800 text-xs text-zinc-600">
+				<p>textmode.js - LGPL-2.1 license</p>
+			</footer>
+		</div>
+
+		<script>
+			const GROUPS = [
+				{
+					name: 'LayerManager',
+					description: 'User layer collection access and management',
+					entries: ['add', 'all', 'base', 'clear', 'filters', 'move', 'remove', 'swap'],
+				},
+				{
+					name: 'Textmode',
+					description: 'Core factory and static utilities',
+					entries: ['create', 'creation', 'setErrorLevel', 'version'],
+				},
+				{
+					name: 'TextmodeColor',
+					description: 'RGBA color creation and channel access',
+					entries: ['a', 'b', 'creation', 'g', 'normalized', 'r', 'rgb', 'rgba', 'withAlpha'],
+				},
+				{
+					name: 'TextmodeFont',
+					description: 'Font loading, atlas inspection, and glyph metadata',
+					entries: [
+						'characterMap',
+						'characters',
+						'creation',
+						'dispose',
+						'fontFramebuffer',
+						'fontSize',
+						'maxGlyphDimensions',
+						'textureColumns',
+						'textureRows',
+					],
+				},
+				{
+					name: 'TextmodeImage',
+					description: 'Loaded image sources and textmode conversion settings',
+					entries: ['creation'],
+				},
+				{
+					name: 'TextmodeCamera',
+					description: 'Mutable camera transforms, cloning, and state inspection',
+					entries: [
+						'copy',
+						'eyeX',
+						'eyeY',
+						'eyeZ',
+						'lookAt',
+						'move',
+						'setPosition',
+						'setUp',
+						'targetX',
+						'targetY',
+						'targetZ',
+						'upX',
+						'upY',
+						'upZ',
+					],
+				},
+				{
+					name: 'TextmodeGrid',
+					description: 'Grid layout, cell dimensions, and responsiveness',
+					entries: [
+						'cellHeight',
+						'cellWidth',
+						'cols',
+						'creation',
+						'height',
+						'offsetX',
+						'offsetY',
+						'reset',
+						'responsive',
+						'rows',
+						'setCols',
+						'setRows',
+						'width',
+					],
+				},
+				{
+					name: 'TextmodeLayer',
+					description: 'Layer composition, cameras, framebuffers, and plugin state',
+					entries: [
+						'asciiFramebuffer',
+						'blendMode',
+						'camera',
+						'createCamera',
+						'deletePluginState',
+						'draw',
+						'drawFramebuffer',
+						'filter',
+						'font',
+						'fontSize',
+						'getPluginState',
+						'grid',
+						'hasPluginState',
+						'height',
+						'hide',
+						'loadFont',
+						'lookAt',
+						'offset',
+						'opacity',
+						'ortho',
+						'perspective',
+						'resetCamera',
+						'rotateZ',
+						'setCamera',
+						'setPluginState',
+						'show',
+						'width',
+					],
+				},
+				{
+					name: 'TextmodeFramebuffer',
+					description: 'Offscreen framebuffer rendering, pixel reads, and lifecycle',
+					entries: ['begin', 'dispose', 'end', 'resize'],
+				},
+				{
+					name: 'TextmodeSource',
+					description: 'Source canvas conversion settings',
+					entries: [
+						'background',
+						'cellColor',
+						'cellColorMode',
+						'charColor',
+						'charColorMode',
+						'charRotation',
+						'characters',
+						'conversionMode',
+						'flipX',
+						'flipY',
+						'invert',
+					],
+				},
+				{
+					name: 'TextmodeVideo',
+					description: 'Video source loading and playback control',
+					entries: ['creation', 'loop', 'pause', 'play', 'speed', 'stop', 'time', 'volume'],
+				},
+				{
+					name: 'Textmodifier',
+					description: 'Main sketch drawing and animation API',
+					entries: [
+						'ambientLight',
+						'arc',
+						'background',
+						'background2',
+						'background3',
+						'background4',
+						'bezierCurve',
+						'box',
+						'camera',
+						'cellColor',
+						'cellColor2',
+						'cellColor3',
+						'cellColor4',
+						'char',
+						'char2',
+						'charColor',
+						'charColor2',
+						'charColor3',
+						'charColor4',
+						'charRotation',
+						'clear',
+						'color',
+						'color2',
+						'color3',
+						'cone',
+						'conversions',
+						'createCamera',
+						'createFilterShader',
+						'createFramebuffer',
+						'createShader',
+						'cursor',
+						'canvas',
+						'cylinder',
+						'deltaTime',
+						'destroy',
+						'doubleTap',
+						'draw',
+						'ellipsoid',
+						'ellipse',
+						'errors',
+						'filter',
+						'filters',
+						'flipX',
+						'flipY',
+						'font',
+						'fontSize',
+						'frameCount',
+						'frameCount2',
+						'frameRate',
+						'grid',
+						'height',
+						'image',
+						'inputGrid',
+						'invert',
+						'isDisposed',
+						'isKeyPressed',
+						'isLooping',
+						'isRenderingFrame',
+						'keyPressed',
+						'keyReleased',
+						'lastKeyPressed',
+						'lastKeyReleased',
+						'layers',
+						'lightFalloff',
+						'line',
+						'lineWeight',
+						'loadFont',
+						'loadImage',
+						'loadVideo',
+						'loading',
+						'longPress',
+						'lookAt',
+						'loop',
+						'millis',
+						'millis2',
+						'millis3',
+						'millis4',
+						'modifierState',
+						'mouse',
+						'mouseClicked',
+						'mouseMoved',
+						'mousePressed',
+						'mouseReleased',
+						'mouseScrolled',
+						'noLights',
+						'noLoop',
+						'overlay',
+						'ortho',
+						'perspective',
+						'pinch',
+						'point',
+						'pointLight',
+						'pop',
+						'pressedKeys',
+						'push',
+						'rect',
+						'redraw',
+						'resetCamera',
+						'resetShader',
+						'resizeCanvas',
+						'rotate',
+						'rotateGesture',
+						'rotateX',
+						'rotateY',
+						'rotateZ',
+						'secs',
+						'secs2',
+						'secs3',
+						'setCamera',
+						'setUniform',
+						'setUniforms',
+						'setup',
+						'shader',
+						'sphere',
+						'swipe',
+						'tap',
+						'targetFrameRate',
+						'touchCancelled',
+						'touchEnded',
+						'touchMoved',
+						'touchStarted',
+						'touches',
+						'torus',
+						'translate',
+						'translateX',
+						'translateX2',
+						'translateY',
+						'translateY2',
+						'translateZ',
+						'translateZ2',
+						'triangle',
+						'width',
+						'windowResized',
+					],
+				},
+			];
+
+			function getExampleHref(groupName, entryName) {
+				return `./sketch.html?path=${encodeURIComponent(`${groupName}/${entryName}`)}`;
+			}
+
+			function render(groups) {
+				const container = document.getElementById('examples');
+				container.innerHTML = '';
+
+				groups.forEach((group) => {
+					const section = document.createElement('div');
+					section.className = 'rounded-lg border border-zinc-800 bg-zinc-900/40 overflow-hidden';
+					section.dataset.group = group.name.toLowerCase();
+					section.dataset.groupName = group.name;
+
+					section.innerHTML = `
+            <div class="flex items-center gap-3 px-4 py-3 border-b border-zinc-800 bg-zinc-900/60">
+              <h2 class="text-sm font-medium text-zinc-100 tracking-tight">${group.name}</h2>
+              <span class="text-xs text-zinc-600 hidden sm:block">${group.description}</span>
+              <span class="ml-auto text-xs text-zinc-600 tabular-nums" data-count>${group.entries.length}</span>
+            </div>
+            <div class="px-4 py-3 flex flex-wrap gap-1.5" data-entries>
+              ${group.entries
+					.map(
+						(entry) =>
+							`<a href="${getExampleHref(group.name, entry)}" class="entry-badge" data-entry="${entry.toLowerCase()}" data-entry-name="${entry}" aria-expanded="false">${entry}</a>`
+					)
+					.join('')}
+            </div>
+            <div class="example-preview" data-preview hidden>
+              <div class="example-preview-toolbar">
+                <div class="example-preview-meta">
+                  <div class="example-preview-title" data-preview-title></div>
+                  <div class="example-preview-hint">click badge to toggle, cmd/ctrl-click to open standalone</div>
+                </div>
+                <div class="example-preview-actions">
+                  <a class="example-preview-link" data-preview-link target="_blank" rel="noopener noreferrer">open page</a>
+                  <button type="button" class="example-preview-close" data-preview-close>close</button>
+                </div>
+              </div>
+              <div class="example-preview-frame-wrap">
+                <iframe class="example-preview-frame" data-preview-frame loading="lazy" title="${group.name} example preview"></iframe>
+              </div>
+            </div>
+          `;
+
+					container.appendChild(section);
+				});
+			}
+
+			function closePreview(section) {
+				const preview = section.querySelector('[data-preview]');
+				const frame = section.querySelector('[data-preview-frame]');
+				const activeBadge = section.querySelector('.entry-badge.is-active');
+
+				if (activeBadge) {
+					activeBadge.classList.remove('is-active');
+					activeBadge.setAttribute('aria-expanded', 'false');
+				}
+
+				preview.hidden = true;
+				frame.src = 'about:blank';
+			}
+
+			function openPreview(section, badge) {
+				const preview = section.querySelector('[data-preview]');
+				const frame = section.querySelector('[data-preview-frame]');
+				const title = section.querySelector('[data-preview-title]');
+				const link = section.querySelector('[data-preview-link]');
+				const currentActive = section.querySelector('.entry-badge.is-active');
+				const href = badge.getAttribute('href');
+				const groupName = section.dataset.groupName;
+				const entryName = badge.dataset.entryName;
+
+				document.querySelectorAll('#examples > div').forEach((otherSection) => {
+					if (otherSection !== section) {
+						closePreview(otherSection);
+					}
+				});
+
+				if (currentActive && currentActive !== badge) {
+					currentActive.classList.remove('is-active');
+					currentActive.setAttribute('aria-expanded', 'false');
+				}
+
+				badge.classList.add('is-active');
+				badge.setAttribute('aria-expanded', 'true');
+				title.textContent = `${groupName}.${entryName}`;
+				link.href = href;
+				frame.src = href;
+				preview.hidden = false;
+			}
+
+			render(GROUPS);
+
+			document.getElementById('examples').addEventListener('click', (event) => {
+				const closeButton = event.target.closest('[data-preview-close]');
+				if (closeButton) {
+					closePreview(closeButton.closest('[data-group]'));
+					return;
+				}
+
+				const badge = event.target.closest('.entry-badge');
+				if (!badge) {
+					return;
+				}
+
+				if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+					return;
+				}
+
+				event.preventDefault();
+				const section = badge.closest('[data-group]');
+
+				if (badge.classList.contains('is-active')) {
+					closePreview(section);
+					return;
+				}
+
+				openPreview(section, badge);
+			});
+
+			// Search / filter
+			document.getElementById('search').addEventListener('input', function () {
+				const q = this.value.trim().toLowerCase();
+
+				document.querySelectorAll('#examples > div').forEach((section) => {
+					const badges = section.querySelectorAll('.entry-badge');
+					const groupName = section.dataset.group;
+					let visible = 0;
+
+					badges.forEach((badge) => {
+						const entryName = badge.dataset.entry;
+						const match = !q || entryName.includes(q) || groupName.includes(q);
+						badge.classList.toggle('hidden-entry', !match);
+						if (match) visible++;
+					});
+
+					const countEl = section.querySelector('[data-count]');
+					if (countEl) countEl.textContent = visible;
+
+					const activeBadge = section.querySelector('.entry-badge.is-active');
+					if (activeBadge && activeBadge.classList.contains('hidden-entry')) {
+						closePreview(section);
+					}
+
+					if (visible === 0) {
+						closePreview(section);
+					}
+
+					section.style.display = visible === 0 ? 'none' : '';
+				});
+			});
+		</script>
+	</body>
+</html>
