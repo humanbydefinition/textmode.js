@@ -17,5 +17,5 @@ export declare class Triangle extends BaseGeometry<TriangleParams> {
      * @param renderState Current render state
      * @returns Index of the added instance
      */
-    $addInstance(params: TriangleParams, renderState: IRenderState): number;
+    _addInstance(params: TriangleParams, renderState: IRenderState): number;
 }

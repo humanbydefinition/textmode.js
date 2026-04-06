@@ -14,7 +14,7 @@ import { GLShader } from '../core/Shader';
 export declare class InstanceAttributeBinder {
     private _gl;
     private _glBuffer;
-    private _bufferCapacity;
+    _bufferCapacity: number;
     private _attributeLocationCache;
     private _version;
     private _programSetupCache;
@@ -35,11 +35,7 @@ export declare class InstanceAttributeBinder {
      *
      * @param newCapacity New capacity in number of instances
      */
-    $recreateBuffer(newCapacity: number): void;
-    /**
-     * Get the current GPU buffer capacity in instances.
-     */
-    get $capacity(): number;
+    _recreateBuffer(newCapacity: number): void;
     /**
      * Upload instance data to GPU buffer.
      *
@@ -57,7 +53,7 @@ export declare class InstanceAttributeBinder {
      * @param data Float32Array containing instance data to upload
      * @param instanceCount Number of instances in the data
      */
-    $upload(data: Float32Array, instanceCount: number): void;
+    _upload(data: Float32Array, instanceCount: number): void;
     /**
      * Get cached attribute locations for a shader program.
      * Queries locations once per program and caches them for performance.
@@ -75,9 +71,9 @@ export declare class InstanceAttributeBinder {
      *
      * @param shader The shader program to bind attributes for
      */
-    $bindAttributes(shader: GLShader): void;
+    _bindAttributes(shader: GLShader): void;
     /**
      * Dispose of WebGL resources.
      */
-    $dispose(): void;
+    _dispose(): void;
 }

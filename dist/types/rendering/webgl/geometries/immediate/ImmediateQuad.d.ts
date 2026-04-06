@@ -25,9 +25,9 @@ export declare class ImmediateQuad {
      * @param width Width in pixels
      * @param height Height in pixels
      */
-    $draw(x: number, y: number, width: number, height: number): void;
+    _draw(x: number, y: number, width: number, height: number): void;
     /**
      * Dispose of WebGL resources.
      */
-    $dispose(): void;
+    _dispose(): void;
 }

@@ -1,11 +1,11 @@
 import type { TextmodePlugin } from './managers/PluginManager';
 import type { LoadingScreenOptions } from './loading/';
 /**
- * Options when creating a {@link Textmodifier} instance.
+ * Options when creating a {@link Textmodifier} instance via {@link textmode.create}.
  */
 export type TextmodeOptions = {
     /**
-     * An existing [HTMLCanvasElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) to use instead of creating a new one.
+     * An existing [HTMLCanvasElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) to use instead of letting `textmode.js` create its own canvas.
      *
      * **Note:**
      * If using `overlay` mode, this should be the target canvas or video element to overlay on.
@@ -27,7 +27,7 @@ export type TextmodeOptions = {
     /** The height of the canvas when creating a new canvas. Defaults to 600. */
     height?: number;
     /**
-     * URL or path to a custom font file *(.otf/.ttf)*.
+     * URL or path to a custom font file *(.otf/.ttf/.woff)*.
      */
     fontSource?: string;
     /**
@@ -36,7 +36,7 @@ export type TextmodeOptions = {
      * automatically resizing and positioning it to match the target element.
      *
      * In this mode `textmode.js` fetches the content of the target element and loads it into an adjustable {@link loadables.TextmodeImage},
-     * that can be accessed via {@link Textmodifier.overlay}, and drawn via {@link Textmodifier.image},
+     * that can be accessed via {@link Textmodifier.overlay}, and drawn via {@link Textmodifier.image}.
      *
      * Useful for applying textmode conversion to p5.js sketches, YouTube videos, and sooo much more.
      *

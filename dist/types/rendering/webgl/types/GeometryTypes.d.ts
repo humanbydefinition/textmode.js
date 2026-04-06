@@ -12,7 +12,13 @@ export declare enum GeometryType {
     ELLIPSE = "ellipse",
     ARC = "arc",
     TRIANGLE = "triangle",
-    BEZIER_CURVE = "bezier_curve"
+    BEZIER_CURVE = "bezier_curve",
+    BOX = "box",
+    SPHERE = "sphere",
+    TORUS = "torus",
+    CONE = "cone",
+    CYLINDER = "cylinder",
+    ELLIPSOID = "ellipsoid"
 }
 /**
  * Mapping from GeometryType to numeric shader constant.
@@ -30,6 +36,14 @@ export interface UnitGeometryData {
     _vertices: Float32Array;
     /** Number of vertices in the geometry */
     _vertexCount: number;
+    /** Optional index data for indexed instancing */
+    _indices?: Uint16Array | Uint32Array;
+    /** Number of indices when _indices is present */
+    _indexCount?: number;
+    /** WebGL index type (gl.UNSIGNED_SHORT or gl.UNSIGNED_INT) */
+    _indexType?: number;
+    /** Byte offset into index buffer (default: 0) */
+    _indexOffset?: number;
     /** WebGL primitive type (gl.TRIANGLES, gl.LINES, etc.) */
     _primitiveType: number;
     /** Stride in bytes between vertices */
@@ -110,9 +124,21 @@ export interface BezierCurveParams {
     segments?: number;
 }
 /**
+ * Parameters for all 3D mesh geometries (box, sphere, torus, cone, cylinder, ellipsoid).
+ */
+export interface Mesh3DParams {
+    width: number;
+    height: number;
+    depth: number;
+}
+/**
+ * The subset of GeometryType values that represent 3D mesh geometries.
+ */
+export type Mesh3DGeometryType = GeometryType.BOX | GeometryType.SPHERE | GeometryType.TORUS | GeometryType.CONE | GeometryType.CYLINDER | GeometryType.ELLIPSOID;
+/**
  * Union type for all geometry parameters
  */
-export type GeometryParams = RectangleParams | LineParams | EllipseParams | ArcParams | TriangleParams | BezierCurveParams;
+export type GeometryParams = RectangleParams | LineParams | EllipseParams | ArcParams | TriangleParams | BezierCurveParams | Mesh3DParams;
 /**
  * Interface for instanced geometry implementations
  */
@@ -123,6 +149,8 @@ export interface IGeometry<P = GeometryParams> {
     readonly unitGeometry: UnitGeometryData;
     /** The WebGL buffer containing unit geometry vertices */
     readonly unitBuffer: WebGLBuffer;
+    /** Optional WebGL element buffer for indexed geometries */
+    readonly unitIndexBuffer: WebGLBuffer | null;
     /** The instance batch for managing instances of this geometry */
     readonly batch: InstanceBatch;
     /**
@@ -131,17 +159,17 @@ export interface IGeometry<P = GeometryParams> {
      * @param renderState Current render state
      * @returns Index of the added instance
      */
-    $addInstance(params: P, renderState: IRenderState): number;
+    _addInstance(params: P, renderState: IRenderState): number;
     /**
      * Clear all instances from the batch
      */
-    $clearInstances(): void;
+    _clearInstances(): void;
     /**
      * Check if the geometry has any instances to render
      */
-    $hasInstances(): boolean;
+    _hasInstances(): boolean;
     /**
      * Dispose of geometry resources
      */
-    $dispose(): void;
+    _dispose(): void;
 }

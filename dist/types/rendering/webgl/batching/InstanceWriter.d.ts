@@ -70,9 +70,5 @@ export declare class InstanceWriter {
      * @param data Instance write data
      * @returns Index of the written instance
      */
-    $writeInstance(data: InstanceWriteData): number;
-    /**
-     * Get the current number of instances written.
-     */
-    get $instanceCount(): number;
+    _writeInstance(data: InstanceWriteData): number;
 }

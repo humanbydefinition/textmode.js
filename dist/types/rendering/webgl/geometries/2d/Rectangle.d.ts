@@ -17,5 +17,5 @@ export declare class Rectangle extends BaseGeometry<RectangleParams> {
      * @param renderState Current render state
      * @returns Index of the added instance
      */
-    $addInstance(params: RectangleParams, renderState: IRenderState): number;
+    _addInstance(params: RectangleParams, renderState: IRenderState): number;
 }

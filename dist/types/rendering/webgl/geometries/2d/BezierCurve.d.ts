@@ -19,5 +19,5 @@ export declare class BezierCurve extends BaseGeometry<BezierCurveParams> {
     /**
      * Add a bezier curve instance to the batch - TRUE INSTANCED APPROACH
      */
-    $addInstance(params: BezierCurveParams, renderState: IRenderState): number;
+    _addInstance(params: BezierCurveParams, renderState: IRenderState): number;
 }

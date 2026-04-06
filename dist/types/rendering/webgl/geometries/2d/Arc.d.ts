@@ -13,5 +13,5 @@ import type { IRenderState } from '../../state/RenderState';
 export declare class Arc extends BaseGeometry<ArcParams> {
     constructor(gl: WebGL2RenderingContext, batch: InstanceBatch);
     /** Add an arc instance (filled pie segment) */
-    $addInstance(params: ArcParams, renderState: IRenderState): number;
+    _addInstance(params: ArcParams, renderState: IRenderState): number;
 }

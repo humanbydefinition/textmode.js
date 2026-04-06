@@ -31,14 +31,6 @@ export interface IFramebuffer {
      */
     readonly textures: WebGLTexture[];
     /**
-     * Update the framebuffer texture with canvas or video content.
-     * Note: Only updates the first attachment in multi-attachment mode.
-     *
-     * @param source - The HTML canvas or video element to copy from
-     * @ignore
-     */
-    $update(source: HTMLCanvasElement | HTMLVideoElement): void;
-    /**
      * Resize the framebuffer to new dimensions.
      * This recreates the internal textures with the new size and invalidates any cached pixel data.
      *

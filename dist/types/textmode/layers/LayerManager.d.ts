@@ -1,11 +1,7 @@
 import type { GLFramebuffer } from '../../rendering';
-import type { Textmodifier } from '../Textmodifier';
 import { TextmodeLayer } from './TextmodeLayer';
 import type { TextmodeLayerOptions } from './types';
-import type { ILayerManager } from './interfaces/ILayerManager';
-import type { TextmodeOptions } from '../types';
-import type { TextmodeGrid } from '../Grid';
-import { type FilterName, type BuiltInFilterName, type BuiltInFilterParams, TextmodeFilterManager } from '../filters';
+import { type FilterName, TextmodeFilterManager } from '../filters';
 /**
  * Manages the stack of layers within a {@link Textmodifier} instance.
  *
@@ -17,7 +13,7 @@ import { type FilterName, type BuiltInFilterName, type BuiltInFilterParams, Text
  *
  * Access this manager via `textmodifier.layers`.
  */
-export declare class LayerManager implements ILayerManager {
+export declare class TextmodeLayerManager {
     private readonly _textmodifier;
     private readonly _renderer;
     private readonly _compositor2D;
@@ -29,81 +25,101 @@ export declare class LayerManager implements ILayerManager {
     private _globalFilterQueue;
     private _preFilterFramebuffer;
     private _postFilterFramebuffer;
+    private _lastPresentedFramebuffer;
+    private readonly _loadingController;
+    private readonly _errorController;
+    _queueGlobalFilter<TParams = unknown>(name: FilterName, params?: TParams): void;
     /**
-     * Create a new LayerManager.
-     * @param textmodifier The Textmodifier instance this manager belongs to.
-     * @ignore
+     * Create and add a new layer to the top of the layer stack.
+     *
+     * New layers are initialized with their own grid and font settings.
+     * Layers can be offset, rotated, and blended with layers below them.
+     *
+     * @param options Optional configuration for the new layer (visibility, opacity, blendMode, etc.)
+     * @returns The newly created TextmodeLayer instance.
+     *
+     * @example
+     * {@includeCode ../../../examples/LayerManager/add/sketch.js}
      */
-    constructor(textmodifier: Textmodifier, opts: TextmodeOptions);
-    /**
-     * Initialize all pending layers, compositor, and global post-processing resources.
-     * @ignore
-     */
-    $initialize(): Promise<void>;
-    /**
-     * Queue a global filter to be applied after all layers are composited.
-     * Intended to be called by Textmodifier.filter().
-     * @ignore
-     */
-    $queueGlobalFilter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
-    $queueGlobalFilter<TParams = unknown>(name: FilterName, params?: TParams): void;
-    /**
-     * Clear any queued global filters for the current frame.
-     * @ignore
-     */
-    $clearGlobalFilterQueue(): void;
     add(options?: TextmodeLayerOptions): TextmodeLayer;
+    /**
+     * Remove a layer from the manager.
+     * @param layer The layer to remove.
+     *
+     * @example
+     * {@includeCode ../../../examples/LayerManager/remove/sketch.js}
+     */
     remove(layer: TextmodeLayer): void;
+    /**
+     * Move a layer to a new index in the layer stack.
+     * @param layer The layer to move.
+     * @param newIndex The new index for the layer.
+     *
+     * @example
+     * {@includeCode ../../../examples/LayerManager/move/sketch.js}
+     */
     move(layer: TextmodeLayer, newIndex: number): void;
+    /**
+     * Swap the order of two layers if they exist in the same collection.
+     * @param layerA The first layer to swap.
+     * @param layerB The second layer to swap.
+     *
+     * @example
+     * {@includeCode ../../../examples/LayerManager/swap/sketch.js}
+     */
     swap(layerA: TextmodeLayer, layerB: TextmodeLayer): void;
+    /**
+     * Remove all user-created layers from the manager.
+     * The base layer is not affected by this operation.
+     * This is useful for integration into live-coding environments where code is re-evaluated
+     * and layers need to be recreated from scratch.
+     *
+     * @example
+     * {@includeCode ../../../examples/LayerManager/clear/sketch.js}
+     */
     clear(): void;
-    /**
-     * Render all layers (base and user) and composite them to the provided target framebuffer.
-     * This performs ONLY layer rendering + compositing (no global filters, no present).
-     *
-     * @param targetFramebuffer The framebuffer to render the final composited result to.
-     * @ignore
-     */
-    $renderAndComposite(targetFramebuffer: GLFramebuffer): void;
-    /**
-     * Render, composite, apply global filters, present to screen, run post-draw hooks.
-     * This replaces the removed "Pass 3/4 + post hooks" section from Textmodifier.$render().
-     *
-     * @ignore
-     */
-    $renderAndPresent(): void;
+    private _blendBackgroundColor;
+    _renderAndPresentWithOverlay(overlayLayer: TextmodeLayer, blendBackgroundWithOverlay?: boolean): void;
+    private _renderAndPresentPostComposite;
     /**
      * Composite base + user layers onto the target framebuffer.
      */
     private _compositeLayers;
     /**
-     * Resize all layers, compositor, and global post-processing buffers.
-     * @ignore
+     * Get all user layers as a readonly array.
+     *
+     * @example
+     * {@includeCode ../../../examples/LayerManager/all/sketch.js}
      */
-    $resize(): void;
-    /**
-     * Dispose of the layer manager, all layers, compositor, and global post-processing resources.
-     * @ignore
-     */
-    $dispose(): void;
     get all(): readonly TextmodeLayer[];
+    /**
+     * The base layer that is always rendered at the bottom of the layer stack.
+     * This layer represents the main drawing content before any user layers are composited.
+     *
+     * Use this when you want direct access to the main layer as a {@link TextmodeLayer},
+     * including layer-specific methods like {@link TextmodeLayer.draw}, {@link TextmodeLayer.filter},
+     * and {@link TextmodeLayer.offset}.
+     *
+     * The base layer cannot be removed or moved.
+     *
+     * @example
+     * {@includeCode ../../../examples/LayerManager/base/sketch.js}
+     */
     get base(): TextmodeLayer;
+    /**
+     * Access the filter manager used by this layer stack.
+     *
+     * Use this to register custom filters that can be applied to the base layer
+     * and any user-created layer via {@link TextmodeLayer.filter}.
+     *
+     * @example
+     * {@includeCode ../../../examples/LayerManager/filters/sketch.js}
+     */
     get filters(): TextmodeFilterManager;
+    /**
+     * The framebuffer containing the final composited result after all layers and filters have been applied.
+     */
     get resultFramebuffer(): GLFramebuffer;
-    /**
-     * Get the grid of the topmost visible layer.
-     * Returns the topmost user layer's grid if any are visible, otherwise returns the base layer's grid.
-     * This is useful for input managers that need to map coordinates to the layer the user sees on top.
-     * @ignore
-     */
-    $getTopmostGrid(): TextmodeGrid | undefined;
-    /**
-     * Register a callback to be invoked whenever ANY layer's grid dimensions change.
-     * This includes the base layer and all user layers.
-     * @param callback The callback to invoke on dimension changes.
-     * @ignore
-     */
-    $onAnyGridDimensionChange(callback: () => void): void;
     /**
      * Notify all registered callbacks that a grid's dimensions have changed.
      */

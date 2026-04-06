@@ -19,5 +19,5 @@ export declare class FontMetricsCalculator {
      * @param font Parsed TyprFont object containing font data
      * @returns Object containing width and height dimensions
      */
-    $calculateMaxGlyphDimensions(characters: string[], fontSize: number, font: TyprFont): GlyphDimensions;
+    _calculateMaxGlyphDimensions(characters: string[], fontSize: number, font: TyprFont): GlyphDimensions;
 }

@@ -14,7 +14,7 @@ export declare class CharacterColorMapper {
      * @param font The parsed font object from Typr
      * @returns Object containing both array and map of TextmodeCharacter objects
      */
-    $createCharacterObjects(characters: string[], font: TyprFont): {
+    _createCharacterObjects(characters: string[], font: TyprFont): {
         array: TextmodeCharacter[];
         map: Map<string, TextmodeCharacter>;
     };

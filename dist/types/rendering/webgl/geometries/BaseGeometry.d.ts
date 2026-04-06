@@ -1,5 +1,4 @@
 import type { InstanceBatch } from '../batching/InstanceBatch';
-import { type InstanceData } from '../batching/InstanceData';
 import { type InstanceWriteData } from '../batching/InstanceWriter';
 import type { IGeometry, GeometryType, UnitGeometryData, GeometryParams } from '../types/GeometryTypes';
 import type { IRenderState } from '../state/RenderState';
@@ -13,6 +12,7 @@ export declare abstract class BaseGeometry<P = GeometryParams> implements IGeome
     protected readonly _type: GeometryType;
     protected readonly _unitGeometry: UnitGeometryData;
     private _unitBuffer;
+    private _unitIndexBuffer;
     protected _tempCurveParams0: [number, number, number, number];
     protected _tempCurveParams1: [number, number, number, number];
     protected _tempWriteData: InstanceWriteData;
@@ -20,12 +20,12 @@ export declare abstract class BaseGeometry<P = GeometryParams> implements IGeome
     get type(): GeometryType;
     get unitGeometry(): UnitGeometryData;
     get unitBuffer(): WebGLBuffer;
+    get unitIndexBuffer(): WebGLBuffer | null;
     get batch(): InstanceBatch;
-    $clearInstances(): void;
-    $hasInstances(): boolean;
-    $dispose(): void;
-    abstract $addInstance(params: P, renderState: IRenderState): number;
-    protected _addInstance(instanceData: InstanceData, _rotationCenterX: number, _rotationCenterY: number): number;
+    _clearInstances(): void;
+    _hasInstances(): boolean;
+    _dispose(): void;
+    abstract _addInstance(params: P, renderState: IRenderState): number;
     /**
      * Write instance data directly to batch buffer (zero-allocation helper).
      * Handles all common instance data setup to eliminate code duplication.
@@ -34,8 +34,6 @@ export declare abstract class BaseGeometry<P = GeometryParams> implements IGeome
      * @param y - Y position
      * @param width - Width
      * @param height - Height
-     * @param centerX - Rotation center X (in pixels)
-     * @param centerY - Rotation center Y (in pixels)
      * @param renderState - Current render state
      * @param geometryData - Optional geometry-specific data (arc angles, bezier points, depth)
      * @returns Index of the written instance

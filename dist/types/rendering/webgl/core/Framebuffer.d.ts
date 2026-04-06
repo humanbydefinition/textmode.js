@@ -1,5 +1,3 @@
-import type { GLRenderer } from './Renderer';
-import type { Material } from '../materials/Material';
 import type { IFramebuffer } from './interfaces/IFramebuffer';
 import { Disposable } from '../../../utils/Disposable';
 export type FramebufferOptions = {
@@ -15,7 +13,7 @@ export type FramebufferOptions = {
     depth?: boolean;
 };
 /**
- * Options for creating a framebuffer. If not specified, width and height default to the current textmode grid size.
+ * Options for creating a framebuffer via {@link Textmodifier.createFramebuffer}. If not specified, width and height default to the current textmode grid size.
  */
 export type TextmodeFramebufferOptions = {
     /** Width of the framebuffer in grid cells */
@@ -52,37 +50,63 @@ export declare class GLFramebuffer extends Disposable implements IFramebuffer {
     private _renderer;
     private _material;
     private _pixelCache;
-    /**
-     * Create a new GLFramebuffer instance.
-     * @param gl WebGL2 rendering context
-     * @param width Framebuffer width
-     * @param height Framebuffer height
-     * @param attachmentCount Number of color attachments
-     * @param options Framebuffer options
-     * @param renderer Optional GLRenderer instance for state management
-     * @ignore
-     */
-    constructor(gl: WebGL2RenderingContext, width: number, height: number | undefined, attachmentCount: number | undefined, options: FramebufferOptions | undefined, renderer: GLRenderer);
     private _createTextures;
     private _updateTextureStorage;
     private _attachTextures;
     private _createDepthRenderbuffer;
     private _updateDepthStorage;
-    $update(source: HTMLCanvasElement | HTMLVideoElement): void;
+    _update(source: HTMLCanvasElement | HTMLVideoElement): void;
+    /**
+     * Resize the framebuffer and all attached textures.
+     *
+     * Existing pixel cache entries are cleared, and the optional depth renderbuffer
+     * is resized to match the new dimensions.
+     *
+     * @param width New framebuffer width in grid cells.
+     * @param height New framebuffer height in grid cells.
+     *
+     * @example
+     * {@includeCode ../../../../examples/TextmodeFramebuffer/resize/sketch.js}
+     */
     resize(width: number, height: number): void;
+    /**
+     * Read RGBA pixel data from one attachment.
+     *
+     * The returned data is vertically flipped so the first row matches the top row
+     * of the framebuffer when used from JavaScript.
+     *
+     * @param attachmentIndex Zero-based attachment index to read.
+     * @returns RGBA pixel data for the selected attachment.
+     */
     readPixels(attachmentIndex: number): Uint8Array;
+    /**
+     * Begin rendering into this framebuffer.
+     *
+     * This binds the framebuffer, updates the viewport, clears any cached pixel reads,
+     * and pushes renderer state so drawing commands are isolated from the previous target.
+     *
+     * @example
+     * {@includeCode ../../../../examples/TextmodeFramebuffer/begin/sketch.js}
+     */
     begin(): void;
+    /**
+     * Finish rendering into this framebuffer and restore the previous render target.
+     *
+     * This flushes pending instance batches before restoring the previous framebuffer
+     * and viewport state from the renderer stack.
+     *
+     * @example
+     * {@includeCode ../../../../examples/TextmodeFramebuffer/end/sketch.js}
+     */
     end(): void;
     /**
-     * Get or create the material for rendering this framebuffer.
-     * @ignore
+     * Dispose the framebuffer, attached textures, and optional depth renderbuffer.
+     *
+     * Call this when a custom framebuffer is no longer needed to release GPU resources early.
+     *
+     * @example
+     * {@includeCode ../../../../examples/TextmodeFramebuffer/dispose/sketch.js}
      */
-    $getMaterial(): Material;
-    /**
-     * Update the material with current framebuffer textures.
-     * @ignore
-     */
-    private _updateMaterial;
     dispose(): void;
     get width(): number;
     get height(): number;

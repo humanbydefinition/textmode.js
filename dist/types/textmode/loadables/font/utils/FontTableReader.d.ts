@@ -8,20 +8,20 @@ export declare class FontTableReader {
      * Gets the glyph index for a given Unicode code point.
      * Searches through all available cmap tables to find the character.
      */
-    $getGlyphIndex(font: TyprFont, codePoint: number): number;
+    _getGlyphIndex(font: TyprFont, codePoint: number): number;
     /**
      * Gets the glyph index for a character string.
      * Convenience method that extracts the code point first.
      */
-    $getGlyphIndexForCharacter(font: TyprFont, character: string): number;
+    _getGlyphIndexForCharacter(font: TyprFont, character: string): number;
     /**
      * Gets the advance width for a glyph from the horizontal metrics table.
      */
-    $getGlyphAdvanceWidth(font: TyprFont, glyphIndex: number): number;
+    _getGlyphAdvanceWidth(font: TyprFont, glyphIndex: number): number;
     /**
      * Gets font-level metrics scaled to the specified font size.
      */
-    $getFontMetrics(font: TyprFont, fontSize: number): {
+    _getFontMetrics(font: TyprFont, fontSize: number): {
         ascender: number;
         descender: number;
         lineGap: number;

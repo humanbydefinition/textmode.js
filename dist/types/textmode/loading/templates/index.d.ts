@@ -1,1 +1,0 @@
-export { spinnerTemplate } from './SpinnerTemplate';

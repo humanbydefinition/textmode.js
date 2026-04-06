@@ -17,5 +17,5 @@ export declare class Ellipse extends BaseGeometry<EllipseParams> {
      * @param renderState Current render state
      * @returns Index of the added instance
      */
-    $addInstance(params: EllipseParams, renderState: IRenderState): number;
+    _addInstance(params: EllipseParams, renderState: IRenderState): number;
 }

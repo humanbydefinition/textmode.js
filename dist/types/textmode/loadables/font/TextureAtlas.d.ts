@@ -28,7 +28,7 @@ export declare class TextureAtlas {
      * @param fontSize Font size for rendering
      * @param font Typr.js font data object for path rendering
      */
-    $createTextureAtlas(characters: TextmodeCharacter[], maxGlyphDimensions: GlyphDimensions, fontSize: number, font: TyprFont): void;
+    _createTextureAtlas(characters: TextmodeCharacter[], maxGlyphDimensions: GlyphDimensions, fontSize: number, font: TyprFont): void;
     /**
      * Sets up the canvas for rendering.
      * @param width Canvas buffer width
@@ -52,11 +52,6 @@ export declare class TextureAtlas {
      * @param scale Scale factor
      */
     private _renderGlyphToCanvas;
-    /**
-     * Disposes of the texture atlas resources.
-     * @ignore
-     */
-    $dispose(): void;
     /** Returns the WebGL framebuffer containing the texture atlas. */
     get framebuffer(): GLFramebuffer | null;
     /** Returns the number of columns in the texture atlas. */

@@ -116,3 +116,53 @@ export declare function calculateAspectFit(srcWidth: number, srcHeight: number, 
  * ```
  */
 export declare function encodeRotation(degrees: number): number;
+/**
+ * Create a 4x4 identity matrix.
+ *
+ * @param out Optional output matrix
+ * @returns Identity matrix
+ */
+export declare function mat4Identity(out?: Float32Array): Float32Array;
+/**
+ * Multiply two 4x4 matrices (column-major): out = a * b.
+ *
+ * @param a Left matrix
+ * @param b Right matrix
+ * @param out Optional output matrix
+ * @returns Result matrix
+ */
+export declare function mat4Multiply(a: Float32Array, b: Float32Array, out?: Float32Array): Float32Array;
+/**
+ * Build a perspective projection matrix.
+ *
+ * @param fovYRadians Vertical field of view in radians
+ * @param aspect Aspect ratio (width / height)
+ * @param near Near clipping plane (> 0)
+ * @param far Far clipping plane (> near)
+ * @param out Optional output matrix
+ * @returns Perspective matrix
+ */
+export declare function mat4Perspective(fovYRadians: number, aspect: number, near: number, far: number, out?: Float32Array): Float32Array;
+/**
+ * Build an orthographic projection matrix.
+ *
+ * @param left Left clipping plane
+ * @param right Right clipping plane
+ * @param bottom Bottom clipping plane
+ * @param top Top clipping plane
+ * @param near Near clipping plane
+ * @param far Far clipping plane
+ * @param out Optional output matrix
+ * @returns Orthographic matrix
+ */
+export declare function mat4Ortho(left: number, right: number, bottom: number, top: number, near: number, far: number, out?: Float32Array): Float32Array;
+/**
+ * Build a look-at view matrix.
+ *
+ * @param eye Camera position [x, y, z]
+ * @param center Look-at target [x, y, z]
+ * @param up Up direction [x, y, z]
+ * @param out Optional output matrix
+ * @returns View matrix
+ */
+export declare function mat4LookAt(eye: [number, number, number], center: [number, number, number], up: [number, number, number], out?: Float32Array): Float32Array;

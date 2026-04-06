@@ -1,5 +1,5 @@
 import { GeometryType } from './GeometryTypes';
-import type { GeometryParams, RectangleParams, LineParams, EllipseParams, ArcParams, TriangleParams, BezierCurveParams } from './GeometryTypes';
+import type { GeometryParams, RectangleParams, LineParams, EllipseParams, ArcParams, TriangleParams, BezierCurveParams, Mesh3DParams, Mesh3DGeometryType } from './GeometryTypes';
 import type { IRenderState } from '../state/RenderState';
 import type { Material } from '../materials/Material';
 export type DrawParams = GeometryParams;
@@ -26,4 +26,7 @@ export type DrawCommand = (BaseDrawCommand & {
 }) | (BaseDrawCommand & {
     type: GeometryType.BEZIER_CURVE;
     params: BezierCurveParams;
+}) | (BaseDrawCommand & {
+    type: Mesh3DGeometryType;
+    params: Mesh3DParams;
 });

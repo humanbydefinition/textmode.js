@@ -1,16 +1,14 @@
 import type { GLRenderer } from '../../rendering/webgl/core/Renderer';
 import type { Material } from '../../rendering/webgl/materials/Material';
-import type { UniformValue } from '../../rendering/webgl/types/UniformTypes';
 import { TextmodeColor } from '../TextmodeColor';
 import type { TextmodeFont } from './font/TextmodeFont';
-import type { ITextmodeSource } from './ITextmodeSource';
 import { Disposable } from '../../utils/Disposable';
 import type { TextmodeConversionMode, TextmodeConversionManager } from '../conversion';
 import type { RGB, RGBA } from '../../utils/color';
 /**
  * Abstract base class representing a textmode source asset (image, video, texture).
  */
-export declare abstract class TextmodeSource extends Disposable implements ITextmodeSource {
+export declare abstract class TextmodeSource extends Disposable {
     protected _gl: WebGL2RenderingContext;
     protected _renderer: GLRenderer;
     protected _texture: WebGLTexture | null;
@@ -46,53 +44,158 @@ export declare abstract class TextmodeSource extends Disposable implements IText
     private _frameBackgroundColor;
     private _frameGlyphColors;
     protected constructor(gl: WebGL2RenderingContext, renderer: GLRenderer, texture: WebGLTexture, conversionManager: TextmodeConversionManager, originalWidth: number, originalHeight: number, gridCols: number, gridRows: number);
-    private _setFrameOrBaseValue;
-    private _setFrameOrBaseValueWithStrategyReset;
     private _setFrameOrBaseColor;
+    /**
+     * Select the conversion mode for this source.
+     *
+     * `textmode.js` includes only a single built-in conversion strategy `'brightness'`.
+     *
+     * Additional conversion strategies may be provided via add-on libraries.
+     *
+     * @param mode Conversion mode to use.
+     * @returns This instance for chaining.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeSource/conversionMode/sketch.js}
+     */
     conversionMode(mode: TextmodeConversionMode): this;
+    /**
+     * Dispose of the resource and free associated WebGL textures.
+     *
+     * This should be called when the resource is no longer needed to prevent memory leaks.
+     * Resources created via {@link Textmodifier.loadImage}, {@link Textmodifier.loadVideo},
+     * and {@link Textmodifier.createTexture} are automatically disposed when the
+     * {@link Textmodifier} instance is destroyed, but you can call this manually to free memory earlier.
+     */
     dispose(): void;
+    /**
+     * Set the invert flag, swapping character and cell colors when enabled.
+     * @param v Invert flag
+     * @returns This instance for chaining.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeSource/invert/sketch.js}
+     */
     invert(v?: boolean | number): this;
+    /**
+     * Set horizontal flip indicator flag.
+     * @param v Flip flag
+     * @returns This instance for chaining.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeSource/flipX/sketch.js}
+     */
     flipX(v?: boolean | number): this;
+    /**
+     * Set vertical flip indicator flag.
+     * @param v Flip flag
+     * @returns This instance for chaining.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeSource/flipY/sketch.js}
+     */
     flipY(v?: boolean | number): this;
+    /**
+     * Set the character rotation in degrees (0-360).
+     * @param degrees Rotation in degrees
+     * @returns This instance for chaining.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeSource/charRotation/sketch.js}
+     */
     charRotation(degrees: number): this;
+    /**
+     * Set character color mode: `'sampled'` *(from source)* or `'fixed'`.
+     * @param mode The character color mode
+     * @returns This instance for chaining.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeSource/charColorMode/sketch.js}
+     */
     charColorMode(mode: 'sampled' | 'fixed'): this;
+    /**
+     * Set cell color mode: `'sampled'` *(from source)* or `'fixed'`.
+     * @param mode The cell color mode
+     * @returns This instance for chaining.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeSource/cellColorMode/sketch.js}
+     */
     cellColorMode(mode: 'sampled' | 'fixed'): this;
+    /**
+     * Defines the character color when {@link charColorMode} is `'fixed'`.
+     * @param colorOrGray A grayscale value (0-255), hex string ('#RGB', '#RRGGBB', '#RRGGBBAA'), or TextmodeColor instance
+     * @param g Optional green component (0-255) if using RGB format, or alpha (0-255) when using grayscale form
+     * @param b Optional blue component (0-255) if using RGB format
+     * @param a Optional alpha component (0-255) if using RGBA format
+     * @returns This instance for chaining.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeSource/charColor/sketch.js}
+     */
     charColor(colorOrGray: number | string | TextmodeColor, g?: number, b?: number, a?: number): this;
+    /**
+     * Defines the cell color when {@link cellColorMode} is `'fixed'`.
+     * @param colorOrGray A grayscale value (0-255), hex string ('#RGB', '#RRGGBB', '#RRGGBBAA'), or TextmodeColor instance
+     * @param g Optional green component (0-255) if using RGB format, or alpha (0-255) when using grayscale form
+     * @param b Optional blue component (0-255) if using RGB format
+     * @param a Optional alpha component (0-255) if using RGBA format
+     * @returns This instance for chaining.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeSource/cellColor/sketch.js}
+     */
     cellColor(colorOrGray: number | string | TextmodeColor, g?: number, b?: number, a?: number): this;
+    /**
+     * Defines the background color used for transparent pixels.
+     * @param colorOrGray A grayscale value (0-255), hex string ('#RGB', '#RRGGBB', '#RRGGBBAA'), or TextmodeColor instance
+     * @param g Optional green component (0-255) if using RGB format, or alpha (0-255) when using grayscale form
+     * @param b Optional blue component (0-255) if using RGB format
+     * @param a Optional alpha component (0-255) if using RGBA format
+     * @returns This instance for chaining.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeSource/background/sketch.js}
+     */
     background(colorOrGray: number | TextmodeColor | string, g?: number, b?: number, a?: number): this;
+    /**
+     * Define the characters to use for brightness mapping as a string.
+     * Maximum length is 255; excess characters are ignored.
+     * @param chars String of characters to map
+     * @returns This instance for chaining.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeSource/characters/sketch.js}
+     */
     characters(chars: string): this;
-    $setActiveFont(font: TextmodeFont): void;
+    /**
+     * Return the WebGL texture currently backing this source.
+     */
     get texture(): WebGLTexture;
+    /**
+     * Ideal width in grid cells.
+     */
     get width(): number;
+    /**
+     * Ideal height in grid cells.
+     */
     get height(): number;
+    /**
+     * Original pixel width.
+     */
     get originalWidth(): number;
+    /**
+     * Original pixel height.
+     */
     get originalHeight(): number;
-    /**
-     * Recalculate the ideal width/height based on the current grid dimensions.
-     * @ignore
-     */
-    $resize(gridCols: number, gridRows: number): void;
-    $getMaterial(): Material;
-    /**
-     * Check if any draw-scoped overrides are active.
-     * @internal
-     */
-    $hasFrameOverrides(): boolean;
-    /**
-     * Clear any draw-scoped overrides set during the current frame.
-     * @internal
-     */
-    $clearFrameOverrides(): void;
-    protected $beforeMaterialUpdate(): void;
-    protected $getActiveTexture(): WebGLTexture;
+    protected _beforeMaterialUpdate(): void;
     private _updateMaterial;
     private _createMaterial;
     private _setColor;
     private _applyCharacterPalette;
     private _getCharacterPalette;
     private _setIdealDimensions;
-    createBaseConversionUniforms(): Record<string, UniformValue>;
-    private _hasFrameOverrides;
+    _hasFrameOverrides(): boolean;
     private _getActiveConversionStrategy;
     private _setFrameColor;
     private _createConversionContext;

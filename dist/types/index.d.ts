@@ -1,7 +1,14 @@
-import { Textmode } from './Textmode';
+/**
+ * ~ travelling without arriving
+ *
+ * @packageDocumentation
+ */
 export { Textmodifier } from './textmode/Textmodifier';
+import './textmode/modules';
 export { GLFramebuffer as TextmodeFramebuffer } from './rendering';
 export { TextmodeColor } from './textmode/TextmodeColor';
+export { TextmodeCamera } from './textmode/TextmodeCamera';
+export { TextmodeErrorLevel } from './textmode/error';
 export { TextmodeCanvas } from './textmode/Canvas';
 export { TextmodeGrid } from './textmode/Grid';
 export type { TextmodeOptions } from './textmode/types';
@@ -55,14 +62,18 @@ export * as plugins from './textmode/managers/PluginManager';
  * All filter related modules and types.
  *
  * Provides various image processing filters that can be applied in sequence on a layer's textmode-converted output,
- * such as blur, sharpen, edge detection, and color adjustments. Filters can also be applied globally to all layers as post-processing effects.
+ * such as blur, sharpen, edge detection, and color adjustments.
+ * Filters can also be applied globally to all layers as post-processing effects.
  *
- * While `textmode.js` only offers a basic set of filters, additional filters can be implemented and registered via the {@link TextmodeFilterManager},
+ * While `textmode.js` only offers a basic set of filters,
+ * additional filters can be implemented and registered via the {@link TextmodeFilterManager},
  * which is accessible through {@link Textmodifier.filters}.
  */
 export * as filters from './textmode/filters';
-export { TextmodeErrorLevel } from './errors/ErrorHandler';
-export { TextmodeError } from './errors/Error';
+/**
+ * All error handling related modules and types.
+ */
+export * as errors from './textmode/error';
 export { GLShader as TextmodeShader } from './rendering/webgl/core/Shader';
 export { Textmode as textmode } from './Textmode';
 /** All loading screen related modules and types. */
@@ -73,13 +84,3 @@ export * as loadables from './textmode/loadables';
 export * as input from './textmode/managers';
 /** All modules and types related to multi-layered textmode rendering. */
 export * as layering from './textmode/layers';
-/**
- * Exports the create, setErrorLevel, and version functions from the Textmode class for UMD compatibility,
- * so calls like `textmode.create()` can be used.
- */
-/** @ignore */
-export declare const create: typeof Textmode.create;
-/** @ignore */
-export declare const setErrorLevel: typeof Textmode.setErrorLevel;
-/** @ignore */
-export declare const version: string;

@@ -18,19 +18,10 @@ import type { UniformValue } from '../types/UniformTypes';
 export declare class MaterialManager {
     private _nextMaterialId;
     private readonly _shader;
-    private readonly _copyShader;
-    private readonly _solidColorMaterial;
+    readonly _copyShader: GLShader;
+    readonly _solidColorMaterial: Material;
     private _materialCache;
     constructor(gl: WebGL2RenderingContext);
-    /**
-     * Get the default 2D solid-color material.
-     * This material uses the standard instanced MRT shader with per-instance colors.
-     */
-    get $solidColorMaterial(): Material;
-    /**
-     * Get the shared copy shader for MRT framebuffers.
-     */
-    get $copyShader(): GLShader;
     /**
      * Create a transient material that won't be cached.
      * Useful for one-off materials with dynamic uniforms that change every frame.
@@ -39,7 +30,7 @@ export declare class MaterialManager {
      * @param uniforms - Uniform values to set
      * @returns A new material instance (not cached)
      */
-    $createTransientMaterial(shader: GLShader, uniforms?: Record<string, UniformValue>): Material;
+    _createTransientMaterial(shader: GLShader, uniforms?: Record<string, UniformValue>): Material;
     /**
      * Compute a hash for a shader + uniforms combination.
      * Used for material deduplication.
@@ -52,5 +43,5 @@ export declare class MaterialManager {
     /**
      * Dispose of all shaders and materials managed by this manager.
      */
-    $dispose(): void;
+    _dispose(): void;
 }

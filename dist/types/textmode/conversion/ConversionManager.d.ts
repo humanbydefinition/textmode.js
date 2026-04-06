@@ -1,5 +1,4 @@
-import type { TextmodeConversionMode, TextmodeConversionStrategy, TextmodeConversionContext } from './ConversionRegistry';
-import type { GLShader } from '../../rendering/webgl/core/Shader';
+import type { TextmodeConversionMode, TextmodeConversionStrategy } from './ConversionRegistry';
 /**
  * Manages conversion strategy registration and retrieval.
  *
@@ -27,12 +26,6 @@ import type { GLShader } from '../../rendering/webgl/core/Shader';
 export declare class TextmodeConversionManager {
     private readonly _strategies;
     private readonly _shaderCache;
-    /**
-     * Create a new TextmodeConversionManager.
-     * @param renderer The WebGL renderer instance
-     * @ignore
-     */
-    constructor();
     /**
      * Register a custom conversion strategy.
      *
@@ -62,26 +55,6 @@ export declare class TextmodeConversionManager {
      * @returns true if the strategy exists
      */
     has(id: TextmodeConversionMode): boolean;
-    /**
-     * Get a registered conversion strategy by its ID.
-     * @param id The ID of the conversion strategy
-     * @returns The conversion strategy, or undefined if not found
-     * @ignore
-     */
-    $get(id: TextmodeConversionMode): TextmodeConversionStrategy | undefined;
-    /**
-     * Get or create a shader for a conversion strategy.
-     * @param id The conversion strategy ID
-     * @param context The conversion context
-     * @returns The compiled GLShader
-     * @ignore
-     */
-    $getShader(id: TextmodeConversionMode, context: TextmodeConversionContext): GLShader;
-    /**
-     * Dispose of all resources.
-     * @ignore
-     */
-    $dispose(): void;
     /**
      * Register all built-in conversion strategies.
      */

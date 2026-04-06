@@ -1,7 +1,3 @@
-import type { GLFramebuffer } from '../../rendering';
-import type { GLRenderer } from '../../rendering/webgl/core/Renderer';
-import type { TextmodeFilterManager } from '../filters';
-import type { TextmodeCanvas } from '../Canvas';
 import type { TextmodeFont } from '../loadables';
 /**
  * Blend modes available for {@link TextmodeLayer} compositing in 2D mode.
@@ -21,7 +17,8 @@ import type { TextmodeFont } from '../loadables';
  * - `'difference'`: `result = |base - blend|`. Creates inverted/solarized effects.
  * - `'exclusion'`: Softer version of difference. `result = base + blend - 2 * base * blend`.
  */
-export type TextmodeLayerBlendMode = 'normal' | 'additive' | 'multiply' | 'screen' | 'subtract' | 'darken' | 'lighten' | 'overlay' | 'softLight' | 'hardLight' | 'colorDodge' | 'colorBurn' | 'difference' | 'exclusion';
+export declare const TEXTMODE_LAYER_BLEND_MODES: readonly ["normal", "additive", "multiply", "screen", "subtract", "darken", "lighten", "overlay", "softLight", "hardLight", "colorDodge", "colorBurn", "difference", "exclusion"];
+export type TextmodeLayerBlendMode = (typeof TEXTMODE_LAYER_BLEND_MODES)[number];
 /**
  * Options for configuring a new TextmodeLayer via {@link TextmodeLayerManager.add}.
  */
@@ -58,21 +55,7 @@ export interface TextmodeLayerOptions {
      * Source for the font to use in this layer.
      *
      * Can be a URL/path to a font file, or an existing TextmodeFont instance.
+     * Existing TextmodeFont inputs are forked per layer to keep resources independent.
      */
     fontSource?: string | TextmodeFont;
-}
-/**
- * Dependencies required by a TextmodeLayer to function.
- * @internal
- */
-export interface LayerDependencies {
-    renderer: GLRenderer;
-    canvas: TextmodeCanvas;
-    createFramebuffer: (width: number, height: number, attachments?: number, options?: {
-        depth?: boolean;
-    }) => GLFramebuffer;
-    /**
-     * The shared filter manager for applying post-ASCII filters.
-     */
-    filterManager: TextmodeFilterManager;
 }

@@ -1,7 +1,7 @@
 import { RenderState } from '../state/RenderState';
 import type { DrawCommand } from '../types/DrawCommand';
 import type { Material } from '../materials/Material';
-import type { RectangleParams, LineParams, EllipseParams, ArcParams, TriangleParams, BezierCurveParams } from '../types/GeometryTypes';
+import type { RectangleParams, LineParams, EllipseParams, ArcParams, TriangleParams, BezierCurveParams, Mesh3DParams, Mesh3DGeometryType } from '../types/GeometryTypes';
 /**
  * Global draw queue preserving user-issued draw order across geometry types.
  *
@@ -26,7 +26,7 @@ export declare class DrawQueue implements Iterable<DrawCommand> {
      * @param material Material to use for rendering
      * @returns Command ID
      */
-    $enqueueRectangle(params: RectangleParams, renderState: RenderState, material: Material): number;
+    _enqueueRectangle(params: RectangleParams, renderState: RenderState, material: Material): number;
     /**
      * Enqueue a line draw command.
      * Zero-allocation in steady state (reuses pooled slots).
@@ -37,7 +37,7 @@ export declare class DrawQueue implements Iterable<DrawCommand> {
      * @param material Material to use for rendering
      * @returns Command ID
      */
-    $enqueueLine(params: LineParams, renderState: RenderState, material: Material): number;
+    _enqueueLine(params: LineParams, renderState: RenderState, material: Material): number;
     /**
      * Enqueue an ellipse draw command.
      * Zero-allocation in steady state (reuses pooled slots).
@@ -48,7 +48,7 @@ export declare class DrawQueue implements Iterable<DrawCommand> {
      * @param material Material to use for rendering
      * @returns Command ID
      */
-    $enqueueEllipse(params: EllipseParams, renderState: RenderState, material: Material): number;
+    _enqueueEllipse(params: EllipseParams, renderState: RenderState, material: Material): number;
     /**
      * Enqueue an arc draw command.
      * Zero-allocation in steady state (reuses pooled slots).
@@ -59,7 +59,7 @@ export declare class DrawQueue implements Iterable<DrawCommand> {
      * @param material Material to use for rendering
      * @returns Command ID
      */
-    $enqueueArc(params: ArcParams, renderState: RenderState, material: Material): number;
+    _enqueueArc(params: ArcParams, renderState: RenderState, material: Material): number;
     /**
      * Enqueue a triangle draw command.
      * Zero-allocation in steady state (reuses pooled slots).
@@ -70,7 +70,7 @@ export declare class DrawQueue implements Iterable<DrawCommand> {
      * @param material Material to use for rendering
      * @returns Command ID
      */
-    $enqueueTriangle(params: TriangleParams, renderState: RenderState, material: Material): number;
+    _enqueueTriangle(params: TriangleParams, renderState: RenderState, material: Material): number;
     /**
      * Enqueue a bezier curve draw command.
      * Zero-allocation in steady state (reuses pooled slots).
@@ -81,9 +81,14 @@ export declare class DrawQueue implements Iterable<DrawCommand> {
      * @param material Material to use for rendering
      * @returns Command ID
      */
-    $enqueueBezierCurve(params: BezierCurveParams, renderState: RenderState, material: Material): number;
+    _enqueueBezierCurve(params: BezierCurveParams, renderState: RenderState, material: Material): number;
+    /**
+     * Enqueue a 3D mesh geometry draw command (box, sphere, torus, cone, cylinder, ellipsoid).
+     * All 3D mesh types share the same params shape and enqueue logic.
+     */
+    _enqueue3D(type: Mesh3DGeometryType, params: Mesh3DParams, renderState: RenderState, material: Material): number;
     /** Clear all queued commands */
-    $clear(): void;
+    _clear(): void;
     /** Iterate in the exact order of insertion */
     [Symbol.iterator](): Iterator<DrawCommand>;
 }

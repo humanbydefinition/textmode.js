@@ -17,6 +17,7 @@ export declare class GLRenderer implements IRenderer {
     private readonly _immediateQuad;
     private _userShader;
     private _userUniforms;
+    private _userShaderStateStack;
     private _framebufferBindingStack;
     private _viewportStack;
     private _attachmentCountStack;
@@ -29,51 +30,30 @@ export declare class GLRenderer implements IRenderer {
     private readonly _tempClearBuffer;
     private _frameOverrideSources;
     constructor(gl: WebGL2RenderingContext);
-    /**
-     * Push current framebuffer and viewport state onto the stack.
-     * Used by framebuffer begin() to save state before binding.
-     * @internal
-     */
-    $pushFramebufferState(): void;
-    /**
-     * Pop framebuffer and viewport state from the stack.
-     * Used by framebuffer end() to restore previous state.
-     * @internal
-     */
-    $popFramebufferState(): void;
-    /**
-     * Bind a framebuffer and update CPU-side tracking.
-     * @internal
-     */
-    $bindFramebuffer(framebuffer: WebGLFramebuffer | null, width: number, height: number, attachmentCount?: number): void;
-    $shader(shader: GLShader): void;
-    /**
-     * Update per-frame rendering state for draw-scoped overrides.
-     * @internal
-     */
-    $setRenderingFrame(isRendering: boolean): void;
-    /**
-     * Query per-frame rendering state for draw-scoped overrides.
-     * @internal
-     */
-    $getRenderingFrame(): boolean;
-    $createShader(vertexSource: string, fragmentSource: string): GLShader;
-    $setUserShader(shader: GLShader | null): void;
-    $resetShader(): void;
-    $setUniform(name: string, value: UniformValue): void;
-    $setUniforms(uniforms: Record<string, UniformValue>): void;
-    $createFilterShader(fragmentSource: string): GLShader;
-    $image(source: GLFramebuffer | TextmodeSource, width?: number, height?: number, activeFont?: TextmodeFont): void;
-    $quad(x: number, y: number, width: number, height: number): void;
-    $rect(width: number, height: number): void;
-    $line(x1: number, y1: number, x2: number, y2: number): void;
-    $ellipse(width: number, height: number): void;
-    $triangle(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): void;
-    $bezierCurve(x1: number, y1: number, cp1x: number, cp1y: number, cp2x: number, cp2y: number, x2: number, y2: number): void;
-    $arc(width: number, height: number, start: number, stop: number): void;
-    $createFramebuffer(width: number, height: number, attachmentCount?: number, options?: FramebufferOptions): GLFramebuffer;
-    $background(r: number, g?: number, b?: number, a?: number): void;
-    $clear(r?: number, g?: number, b?: number, a?: number): void;
+    _shader(shader: GLShader): void;
+    _createShader(vertexSource: string, fragmentSource: string): GLShader;
+    _setUserShader(shader: GLShader | null): void;
+    _resetShader(): void;
+    _setUniform(name: string, value: UniformValue): void;
+    _setUniforms(uniforms: Record<string, UniformValue>): void;
+    _createFilterShader(fragmentSource: string): GLShader;
+    _image(source: GLFramebuffer | TextmodeSource, width?: number, height?: number, activeFont?: TextmodeFont): void;
+    _quad(x: number, y: number, width: number, height: number): void;
+    _rect(width: number, height: number): void;
+    _line(x1: number, y1: number, x2: number, y2: number): void;
+    _ellipse(width: number, height: number): void;
+    _triangle(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): void;
+    _bezierCurve(x1: number, y1: number, cp1x: number, cp1y: number, cp2x: number, cp2y: number, x2: number, y2: number): void;
+    _arc(width: number, height: number, start: number, stop: number): void;
+    _box(width: number, height: number, depth: number): void;
+    _sphere(radius: number): void;
+    _torus(radius: number, tubeRadius: number): void;
+    _cone(radius: number, height: number): void;
+    _cylinder(radius: number, height: number): void;
+    _ellipsoid(radiusX: number, radiusY: number, radiusZ: number): void;
+    _createFramebuffer(width: number, height: number, attachmentCount?: number, options?: FramebufferOptions): GLFramebuffer;
+    _background(r: number, g?: number, b?: number, a?: number): void;
+    _clear(r?: number, g?: number, b?: number, a?: number): void;
     /**
      * Internal MRT-aware clear implementation.
      * @param r Red component (0-1)
@@ -83,29 +63,9 @@ export declare class GLRenderer implements IRenderer {
      * @param preserveCharData If true, clears attachment 0 to (1, 1, 0, 0); if false, clears to (0, 0, 0, 0)
      */
     private _clearMRT;
-    $resetViewport(): void;
-    /**
-     * Enable or disable depth testing with CPU-side state tracking.
-     * @internal
-     */
-    $setDepthTestEnabled(enabled: boolean): void;
-    /**
-     * Enable or disable depth buffer writes with CPU-side state tracking.
-     * @internal
-     */
-    $setDepthMaskEnabled(enabled: boolean): void;
-    /**
-     * Get current depth test enabled state (CPU-tracked).
-     * @internal
-     */
-    $getDepthTestEnabled(): boolean;
-    /**
-     * Get current depth mask enabled state (CPU-tracked).
-     * @internal
-     */
-    $getDepthMaskEnabled(): boolean;
-    $flushInstances(): void;
-    $dispose(): void;
+    _resetViewport(): void;
+    _flushInstances(): void;
+    _dispose(): void;
     get context(): WebGL2RenderingContext;
     get state(): RenderState;
     get materialManager(): MaterialManager;

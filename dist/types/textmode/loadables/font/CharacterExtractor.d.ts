@@ -9,7 +9,7 @@ export declare class CharacterExtractor {
      * @param font The parsed font object from Typr
      * @returns Array of unique character strings
      */
-    $extractCharacters(font: TyprFont): string[];
+    _extractCharacters(font: TyprFont): string[];
     /**
      * Extracts characters from a Format 4 cmap table (Basic Multilingual Plane).
      */

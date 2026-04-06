@@ -17,5 +17,5 @@ export declare class Line extends BaseGeometry<LineParams> {
      * @param renderState Current render state
      * @returns Index of the added instance
      */
-    $addInstance(params: LineParams, renderState: IRenderState): number;
+    _addInstance(params: LineParams, renderState: IRenderState): number;
 }

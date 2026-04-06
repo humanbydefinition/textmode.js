@@ -1,5 +1,5 @@
-import type { GLRenderer, GLShader, GLFramebuffer, UniformValue } from '../../rendering';
-import type { QueuedFilter, FilterName } from './types';
+import type { GLShader, UniformValue } from '../../rendering';
+import type { FilterName } from './types';
 /**
  * Manages filter registration, shader compilation, and filter chain application.
  *
@@ -26,12 +26,6 @@ export declare class TextmodeFilterManager {
     private readonly _copyShader;
     private _pingPongBuffers;
     private _isInitialized;
-    /**
-     * Create a new TextmodeFilterManager.
-     * @param renderer The WebGL renderer instance
-     * @ignore
-     */
-    constructor(renderer: GLRenderer);
     /**
      * Register a custom filter with the given ID, shader, and uniform definitions.
      *
@@ -69,39 +63,6 @@ export declare class TextmodeFilterManager {
      */
     has(id: FilterName): boolean;
     /**
-     * Initialize ping-pong buffers for filter chain processing.
-     * @param width Buffer width in pixels
-     * @param height Buffer height in pixels
-     * @ignore
-     */
-    $initialize(width: number, height: number): void;
-    /**
-     * Apply a chain of filters to the source texture, outputting to target.
-     * Uses the manager's internal ping-pong buffers.
-     *
-     * @param sourceTexture The input texture
-     * @param targetFramebuffer The output framebuffer
-     * @param filters The queue of filters to apply in order
-     * @param width Framebuffer width
-     * @param height Framebuffer height
-     * @ignore
-     */
-    $applyFilters(sourceTexture: WebGLTexture, targetFramebuffer: GLFramebuffer, filters: QueuedFilter[], width: number, height: number): void;
-    /**
-     * Apply a chain of filters using external ping-pong buffers.
-     * This allows sharing the filter registry while using different buffer sizes
-     * (e.g., layer filters at grid dimensions vs global filters at canvas dimensions).
-     *
-     * @param sourceTexture The input texture
-     * @param targetFramebuffer The output framebuffer
-     * @param filters The queue of filters to apply in order
-     * @param width Framebuffer width
-     * @param height Framebuffer height
-     * @param pingPongBuffers External ping-pong buffers to use
-     * @ignore
-     */
-    $applyFiltersWithBuffers(sourceTexture: WebGLTexture, targetFramebuffer: GLFramebuffer, filters: QueuedFilter[], width: number, height: number, pingPongBuffers: [GLFramebuffer, GLFramebuffer]): void;
-    /**
      * Apply a single filter pass with explicit source buffer.
      */
     private _applyFilterWithBuffer;
@@ -113,18 +74,6 @@ export declare class TextmodeFilterManager {
      * Copy a texture to a framebuffer using the copy shader.
      */
     private _copyTexture;
-    /**
-     * Resize the ping-pong buffers.
-     * @param width New width in pixels
-     * @param height New height in pixels
-     * @ignore
-     */
-    $resize(width: number, height: number): void;
-    /**
-     * Dispose of all resources.
-     * @ignore
-     */
-    $dispose(): void;
     /**
      * Register all built-in filters.
      */
