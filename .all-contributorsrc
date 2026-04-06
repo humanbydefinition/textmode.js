@@ -1,0 +1,44 @@
+{
+  "projectName": "textmode.js",
+  "projectOwner": "humanbydefinition",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "contributorsPerLine": 7,
+  "commitConvention": "angular",
+  "commitType": "docs",
+  "skipCi": true,
+  "contributors": [
+    {
+      "login": "humanbydefinition",
+      "name": "humanbydefinition",
+      "avatar_url": "https://www.github.com/humanbydefinition.png",
+      "profile": "https://github.com/humanbydefinition",
+      "contributions": [
+        "code",
+        "doc",
+        "design",
+        "example",
+        "ideas",
+        "maintenance",
+        "infra",
+        "tool",
+        "plugin",
+        "review"
+      ]
+    },
+    {
+      "login": "trintlermint",
+      "name": "trintlermint",
+      "avatar_url": "https://www.github.com/trintlermint.png",
+      "profile": "https://github.com/trintlermint",
+      "contributions": [
+        "design",
+        "example"
+      ]
+    }
+  ]
+}
