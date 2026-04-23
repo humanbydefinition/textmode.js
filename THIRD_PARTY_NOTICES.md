@@ -4,7 +4,7 @@ This project includes third-party code and adaptations that remain subject to th
 
 ## Typr.js
 
-This project includes a TypeScript rewrite and adapted subset of functionality based on Typr.js by Photopea, located under `src/textmode/loadables/font/typr/`.
+This project includes a TypeScript rewrite and adapted subset of functionality based on Typr.js by Photopea, located under `src/textmode/fonts/typr/`.
 
 Upstream project:
 https://github.com/photopea/Typr.js
