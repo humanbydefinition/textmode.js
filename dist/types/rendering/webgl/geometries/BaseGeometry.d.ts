@@ -36,6 +36,18 @@ export declare abstract class BaseGeometry<P = GeometryParams> implements IGeome
      * @param height - Height
      * @param renderState - Current render state
      * @param geometryData - Optional geometry-specific data (arc angles, bezier points, depth)
+     * @param geometryData.arcStart - Optional arc start angle in radians
+     * @param geometryData.arcStop - Optional arc stop angle in radians
+     * @param geometryData.cp1x - Optional first Bezier control point X coordinate
+     * @param geometryData.cp1y - Optional first Bezier control point Y coordinate
+     * @param geometryData.cp2x - Optional second Bezier control point X coordinate
+     * @param geometryData.cp2y - Optional second Bezier control point Y coordinate
+     * @param geometryData.bezStartX - Optional Bezier start X coordinate
+     * @param geometryData.bezStartY - Optional Bezier start Y coordinate
+     * @param geometryData.bezEndX - Optional Bezier end X coordinate
+     * @param geometryData.bezEndY - Optional Bezier end Y coordinate
+     * @param geometryData.depth - Optional geometry depth
+     * @param geometryData.baseZ - Optional base Z coordinate
      * @returns Index of the written instance
      */
     protected _writeInstance(x: number, y: number, width: number, height: number, renderState: IRenderState, geometryData?: {

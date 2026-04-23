@@ -1,1 +1,1 @@
-export * from '../textmode/managers';
+export * from '../textmode/input';

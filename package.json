@@ -1,6 +1,6 @@
 {
   "name": "textmode.js",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "textmode.js is a lightweight creative coding library for creating real-time ASCII art on the web.",
   "type": "module",
   "engines": {
@@ -15,8 +15,13 @@
       "import": "./dist/textmode.esm.js",
       "require": "./dist/textmode.umd.js"
     },
-    "./loadables": {
-      "types": "./dist/types/exports/loadables.d.ts",
+    "./media": {
+      "types": "./dist/types/exports/media.d.ts",
+      "import": "./dist/textmode.esm.js",
+      "require": "./dist/textmode.umd.js"
+    },
+    "./fonts": {
+      "types": "./dist/types/exports/fonts.d.ts",
       "import": "./dist/textmode.esm.js",
       "require": "./dist/textmode.umd.js"
     },
@@ -59,25 +64,26 @@
   "scripts": {
     "dev": "vite --port 5177 --host",
     "build": "vite build && tsc -p tsconfig.build.json",
+    "check": "npm run format:check && npm run lint && npm run lint:md && npm run typecheck && npm run check:api-docs && npm run test && npm run build && npm run check:types:dist && npm run check:types:consumer",
     "build:docs": "typedoc",
+    "check:types:dist": "node ./scripts/check-dist-types.mjs",
+    "check:types:consumer": "node ./scripts/check-consumer-package.mjs",
     "check:api-docs": "node ./scripts/check-public-api-docs.mjs",
-    "check:api-docs:accessors": "node ./scripts/check-public-api-docs.mjs --include-accessors",
     "dev:docs": "typedoc --watch",
     "preview": "vite preview",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:ui": "vitest --ui",
-    "test:run": "vitest run",
     "test:coverage": "vitest --coverage",
     "format": "prettier --write \"src/**/*.{ts,js}\"",
     "format:check": "prettier --check \"src/**/*.{ts,js}\"",
     "typecheck": "tsc --noEmit",
     "lint:md": "markdownlint-cli2",
     "lint:md:fix": "markdownlint-cli2 --fix",
-    "lint:jsdoc": "eslint src --config eslint.config.js",
-    "lint": "npm run format:check && npm run lint:md",
+    "lint": "eslint src --config eslint.config.js",
+    "lint:jsdoc": "npm run lint",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "verify": "npm run format:check && npm run lint:md && npm run build && npm run test:run",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -85,37 +91,31 @@
     "@commitlint/config-conventional": "^20.3.1",
     "@mapwhit/glsl-minify": "^1.0.0",
     "@rollup/plugin-terser": "^0.4.4",
-    "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^7.1.0",
-    "@semantic-release/git": "^10.0.1",
-    "@types/jsdom": "^21.1.7",
     "@types/node": "^24.0.13",
     "@vitest/ui": "^3.1.2",
     "all-contributors-cli": "^6.26.1",
-    "eslint": "^9.39.2",
-    "eslint-plugin-jsdoc": "^62.4.1",
+    "eslint": "^9.39.4",
+    "eslint-plugin-jsdoc": "^62.9.0",
     "globals": "^17.1.0",
     "husky": "^9.1.7",
-    "jsdom": "^26.1.0",
+    "jsdom": "^27.4.0",
     "lint-staged": "^16.4.0",
     "markdownlint-cli2": "^0.20.0",
     "prettier": "^3.7.4",
-    "semantic-release": "^24.2.9",
-    "terser": "^5.43.1",
-    "tslib": "^2.8.1",
+    "semantic-release": "^25.0.3",
     "typedoc": "^0.28.13",
     "typedoc-plugin-frontmatter": "^1.3.1",
     "typedoc-plugin-markdown": "^4.9.0",
     "typedoc-vitepress-theme": "^1.1.2",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.53.1",
-    "vite": "^6.3.4",
-    "vite-plugin-glsl": "^1.5.1",
+    "vite": "^7.1.7",
     "vitest": "^3.1.2"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/humanbydefinition/textmode.js.git"
+    "url": "git+https://github.com/humanbydefinition/textmode.js-dev.git"
   },
   "keywords": [
     "ascii",
@@ -126,7 +126,8 @@
     "creative-coding",
     "art",
     "design",
-    "graphics"
+    "graphics",
+    "ascii-art"
   ],
   "author": "humanbydefinition <hello@textmode.art> (https://code.textmode.art)",
   "license": "LGPL-2.1",

@@ -1,1 +1,1 @@
-export * from '../textmode/loading';
+export * from '../textmode/layers/overlays/loading';

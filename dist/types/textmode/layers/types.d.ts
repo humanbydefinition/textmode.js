@@ -1,4 +1,4 @@
-import type { TextmodeFont } from '../loadables';
+import type { TextmodeFont } from '../fonts';
 /**
  * Blend modes available for {@link TextmodeLayer} compositing in 2D mode.
  *

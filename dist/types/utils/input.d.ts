@@ -1,4 +1,4 @@
-import type { TextmodeGrid, GridPosition } from '../textmode/Grid';
+import type { TextmodeGrid, GridPosition } from '../textmode/grid';
 /**
  * Projects a client coordinate to grid coordinates.
  * Returns invalid coordinates (-Infinity) if the grid is unavailable or coordinates are outside.

@@ -1,9 +1,10 @@
 import type { GLFramebuffer } from '../../rendering';
-import { TextmodeGrid } from '../Grid';
-import { TextmodeFont } from '../loadables/font';
+import { TextmodeGrid } from '../grid/TextmodeGrid';
+import { TextmodeFont, TextmodeTileset } from '../fonts';
+import type { TextmodeTilesetOptions } from '../fonts';
 import { type TextmodeLayerBlendMode } from './types';
-import type { FilterName, BuiltInFilterName, BuiltInFilterParams } from '../filters';
-import { TextmodeCamera } from '../TextmodeCamera';
+import type { FilterName, BuiltInFilterName, BuiltInFilterParams } from '../filters/types';
+import { TextmodeCamera } from '../camera';
 /**
  * A single layer within a multi-layered textmode rendering context.
  *
@@ -22,6 +23,7 @@ import { TextmodeCamera } from '../TextmodeCamera';
  * can be accessed via {@link Textmodifier.layers.base}.
  */
 export declare class TextmodeLayer {
+    private _renderer;
     private _deps?;
     private _grid?;
     private _font;
@@ -31,7 +33,9 @@ export declare class TextmodeLayer {
     private _pingPongBuffers?;
     private _drawCallback;
     private _filterQueue;
+    private _useTilesetColors;
     private _cameraController;
+    private _fontSizeWasExplicitlySet;
     private _pluginState;
     /**
      * Define this layer's draw callback. The callback is executed each frame
@@ -249,8 +253,21 @@ export declare class TextmodeLayer {
      */
     fontSize(size?: number): number | void;
     /**
+     * Get or set whether this layer should use authored tileset colors directly during the final ASCII pass.
+     *
+     * When disabled (default), tileset texels are remapped to the current character (`primary`)
+     * and cell (`secondary`) colors. Vector/font atlases always use character/cell recoloring
+     * regardless of this setting.
+     *
+     * @param enabled Whether this layer should use authored tileset colors directly.
+     * @returns The current layer tileset-color mode if called without arguments.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeLayer/loadTileset/sketch.js}
+     */
+    useTileColors(enabled?: boolean): boolean | void;
+    /**
      * Load a font into this layer from a URL/path or from an existing {@link TextmodeFont}.
-     * When a `TextmodeFont` is provided, the layer creates a layer-local fork with independent GPU resources.
      *
      * @param fontSource The URL/path to the font file, or an existing TextmodeFont to fork from.
      * @returns The loaded TextmodeFont instance.
@@ -260,8 +277,21 @@ export declare class TextmodeLayer {
      */
     loadFont(fontSource: string | TextmodeFont): Promise<TextmodeFont>;
     /**
+     * Load a tileset into this layer from load options or from an existing {@link TextmodeTileset}.
+     *
+     * @param tilesetSource Tileset load options or an existing TextmodeTileset to fork from.
+     * @returns The loaded TextmodeTileset instance.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeLayer/loadTileset/sketch.js}
+     */
+    loadTileset(tilesetSource: TextmodeTilesetOptions | TextmodeTileset): Promise<TextmodeTileset>;
+    /**
      * Returns the WebGL texture of the final ASCII framebuffer.
      * If the layer is not yet initialized, returns undefined.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeLayer/texture/sketch.js}
      */
     get texture(): WebGLTexture | undefined;
     /**
@@ -277,7 +307,7 @@ export declare class TextmodeLayer {
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/font/sketch.js}
      */
-    get font(): TextmodeFont;
+    get font(): TextmodeFont | TextmodeTileset;
     /**
      * Returns the width of the final ASCII framebuffer in pixels.
      * If the layer is not yet initialized, returns 0.
@@ -312,6 +342,7 @@ export declare class TextmodeLayer {
     private _syncGridToFont;
     private static _isValidBlendMode;
     private _replaceFont;
+    private _resolveNextGlyphSourceSize;
     private _applyCameraStateIfRendering;
     private _getCameraViewportDimensions;
 }

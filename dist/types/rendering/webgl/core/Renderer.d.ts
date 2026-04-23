@@ -3,8 +3,8 @@ import type { FramebufferOptions } from './Framebuffer';
 import { GLShader } from './Shader';
 import type { UniformValue } from '../types/UniformTypes';
 import { RenderState } from '../state/RenderState';
-import type { TextmodeSource } from '../../../textmode/loadables/TextmodeSource';
-import type { TextmodeFont } from '../../../textmode/loadables/font/TextmodeFont';
+import type { TextmodeSource } from '../../../textmode/media/TextmodeSource';
+import type { TextmodeGlyphAtlas } from '../../../textmode/fonts/types';
 import type { IRenderer } from './interfaces/IRenderer';
 import { MaterialManager } from '../materials/MaterialManager';
 export declare class GLRenderer implements IRenderer {
@@ -37,7 +37,7 @@ export declare class GLRenderer implements IRenderer {
     _setUniform(name: string, value: UniformValue): void;
     _setUniforms(uniforms: Record<string, UniformValue>): void;
     _createFilterShader(fragmentSource: string): GLShader;
-    _image(source: GLFramebuffer | TextmodeSource, width?: number, height?: number, activeFont?: TextmodeFont): void;
+    _image(source: GLFramebuffer | TextmodeSource, width?: number, height?: number, activeFont?: TextmodeGlyphAtlas): void;
     _quad(x: number, y: number, width: number, height: number): void;
     _rect(width: number, height: number): void;
     _line(x1: number, y1: number, x2: number, y2: number): void;
@@ -60,7 +60,8 @@ export declare class GLRenderer implements IRenderer {
      * @param g Green component (0-1)
      * @param b Blue component (0-1)
      * @param a Alpha component (0-1)
-     * @param preserveCharData If true, clears attachment 0 to (1, 1, 0, 0); if false, clears to (0, 0, 0, 0)
+     * @param preserveCharData If true, clears attachment 0 to the transparent-cell sentinel
+     * `(1, 1, 0, 0)` consumed by `ascii.frag`; if false, clears to `(0, 0, 0, 0)`.
      */
     private _clearMRT;
     _resetViewport(): void;

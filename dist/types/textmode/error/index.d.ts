@@ -1,4 +1,3 @@
-export { ErrorLayerController } from './ErrorLayerController';
-export type { ErrorScreenRendererContext, ErrorScreenState } from './types';
+export { ErrorLayerController } from '../layers/overlays/error';
 export { TextmodeError } from './Error';
-export { TextmodeErrorHandler, errorHandler, TextmodeErrorLevel, type ErrorHandlerOptions } from './ErrorHandler';
+export { TextmodeErrorLevel } from './ErrorHandler';

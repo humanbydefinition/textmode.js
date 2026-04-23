@@ -1,8 +1,8 @@
 import type { GLShader } from '../../rendering';
 import type { UniformValue } from '../../rendering/webgl/types/UniformTypes';
 import type { GLRenderer } from '../../rendering/webgl/core/Renderer';
-import type { TextmodeFont } from '../loadables/font/TextmodeFont';
-import type { TextmodeSource } from '../loadables/TextmodeSource';
+import type { TextmodeGlyphAtlas } from '../fonts/types';
+import type { TextmodeSource } from '../media/TextmodeSource';
 /**
  * Built-in conversion mode names provided by textmode.js
  */
@@ -28,10 +28,15 @@ export interface TextmodeConversionContext {
      */
     gl: WebGL2RenderingContext;
     /**
-     * The font currently being used for rendering.
-     * Useful for accessing font texture data or metrics.
+     * Backend-neutral glyph atlas currently being used for rendering.
+     * Prefer this in new code.
      */
-    font: TextmodeFont;
+    glyphAtlas: TextmodeGlyphAtlas;
+    /**
+     * Legacy alias for the active glyph atlas.
+     * Kept for backward compatibility with existing conversion strategies.
+     */
+    font: TextmodeGlyphAtlas;
     /**
      * The source asset (image, video, etc.) being converted.
      * Provides access to the source texture and dimensions.
@@ -63,6 +68,9 @@ export interface TextmodeConversionStrategy {
      *
      * @param context The conversion context containing renderer and source information.
      * @returns The compiled GLShader instance.
+     *
+     * @example
+     * {@includeCode ../../../examples/conversion/registry/sketch.js}
      */
     createShader(context: TextmodeConversionContext): GLShader;
     /**
@@ -73,6 +81,9 @@ export interface TextmodeConversionStrategy {
      *
      * @param context The conversion context containing renderer and source information.
      * @returns An object mapping uniform names to values.
+     *
+     * @example
+     * {@includeCode ../../../examples/conversion/registry/sketch.js}
      */
     createUniforms(context: TextmodeConversionContext): Record<string, UniformValue>;
 }

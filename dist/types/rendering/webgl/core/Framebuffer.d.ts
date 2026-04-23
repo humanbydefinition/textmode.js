@@ -77,6 +77,9 @@ export declare class GLFramebuffer extends Disposable implements IFramebuffer {
      *
      * @param attachmentIndex Zero-based attachment index to read.
      * @returns RGBA pixel data for the selected attachment.
+     *
+     * @example
+     * {@includeCode ../../../../examples/TextmodeFramebuffer/readPixels/sketch.js}
      */
     readPixels(attachmentIndex: number): Uint8Array;
     /**
@@ -108,11 +111,39 @@ export declare class GLFramebuffer extends Disposable implements IFramebuffer {
      * {@includeCode ../../../../examples/TextmodeFramebuffer/dispose/sketch.js}
      */
     dispose(): void;
+    /**
+     * Width of the framebuffer in pixels.
+     *
+     * @example
+     * {@includeCode ../../../../examples/TextmodeFramebuffer/framebuffer/sketch.js}
+     */
     get width(): number;
+    /**
+     * Height of the framebuffer in pixels.
+     *
+     * @example
+     * {@includeCode ../../../../examples/TextmodeFramebuffer/framebuffer/sketch.js}
+     */
     get height(): number;
-    /** Get the WebGLFramebuffer object */
+    /**
+     * The underlying WebGLFramebuffer handle.
+     *
+     * @example
+     * {@includeCode ../../../../examples/TextmodeFramebuffer/framebuffer/sketch.js}
+     */
     get framebuffer(): WebGLFramebuffer | null;
+    /**
+     * The color attachment textures owned by this framebuffer.
+     *
+     * @example
+     * {@includeCode ../../../../examples/TextmodeFramebuffer/framebuffer/sketch.js}
+     */
     get textures(): WebGLTexture[];
-    /** Get the number of color attachments in this framebuffer */
+    /**
+     * Number of color attachments available on this framebuffer.
+     *
+     * @example
+     * {@includeCode ../../../../examples/TextmodeFramebuffer/framebuffer/sketch.js}
+     */
     get attachmentCount(): number;
 }

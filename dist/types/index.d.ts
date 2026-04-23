@@ -4,13 +4,11 @@
  * @packageDocumentation
  */
 export { Textmodifier } from './textmode/Textmodifier';
-import './textmode/modules';
+import './textmode/extensions';
 export { GLFramebuffer as TextmodeFramebuffer } from './rendering';
-export { TextmodeColor } from './textmode/TextmodeColor';
-export { TextmodeCamera } from './textmode/TextmodeCamera';
-export { TextmodeErrorLevel } from './textmode/error';
-export { TextmodeCanvas } from './textmode/Canvas';
-export { TextmodeGrid } from './textmode/Grid';
+export { TextmodeColor } from './textmode/color';
+export { TextmodeCamera } from './textmode/camera';
+export { TextmodeGrid } from './textmode/grid/TextmodeGrid';
 export type { TextmodeOptions } from './textmode/types';
 export type { TextmodeFramebufferOptions } from './rendering/webgl';
 /**
@@ -34,20 +32,20 @@ export * as conversion from './textmode/conversion';
  *
  * @example
  * ```ts
- * import type { TextmodePlugin, TextmodePluginAPI } from 'textmode.js/plugins';
+ * import type { TextmodePlugin, TextmodePluginContext } from 'textmode.js/plugins';
  *
  * const MyPlugin: TextmodePlugin = {
  *   name: 'my-plugin',
  *   version: '1.0.0',
- *   install(textmodifier, api) {
+ *   install(textmodifier, context: TextmodePluginContext) {
  *     // Extend layers with a new method
- *     api.extendLayer('setMyState', function(value: number) {
+ *     context.extendLayer('setMyState', function(value: number) {
  *       // `this` is bound to the TextmodeLayer instance
  *       this.setPluginState('my-plugin', { value });
  *     });
  *
  *     // Hook into layer rendering
- *     api.registerLayerPreRenderHook((layer) => {
+ *     context.registerLayerPreRenderHook((layer) => {
  *       const state = layer.getPluginState<{ value: number }>('my-plugin');
  *       if (state && state.value > 0.5) {
  *         // Render custom content based on plugin state
@@ -57,7 +55,7 @@ export * as conversion from './textmode/conversion';
  * };
  * ```
  */
-export * as plugins from './textmode/managers/PluginManager';
+export * as plugins from './textmode/plugins';
 /**
  * All filter related modules and types.
  *
@@ -75,12 +73,14 @@ export * as filters from './textmode/filters';
  */
 export * as errors from './textmode/error';
 export { GLShader as TextmodeShader } from './rendering/webgl/core/Shader';
-export { Textmode as textmode } from './Textmode';
+export { Textmode as textmode } from './textmode/Textmode';
 /** All loading screen related modules and types. */
-export * as loading from './textmode/loading';
-/** All loadable assets related to textmode rendering. */
-export * as loadables from './textmode/loadables';
+export * as loading from './textmode/layers/overlays/loading';
+/** All media asset related modules and types. */
+export * as media from './textmode/media';
+/** All font rendering related modules and types. */
+export * as fonts from './textmode/fonts';
 /** All types and interfaces related to input event handling. */
-export * as input from './textmode/managers';
+export * as input from './textmode/input';
 /** All modules and types related to multi-layered textmode rendering. */
 export * as layering from './textmode/layers';

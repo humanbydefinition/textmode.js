@@ -33,3 +33,46 @@ export declare enum TextmodeErrorLevel {
      */
     THROW = 3
 }
+/**
+ * Options for configuring the error handler.
+ */
+export interface ErrorHandlerOptions {
+    /** Global error level */
+    globalLevel: TextmodeErrorLevel;
+}
+/**
+ * Singleton error handler for textmode.js
+ * This class handles errors based on the configured error level.
+ * It can log warnings, errors, or throw exceptions based on the global error level.
+ */
+export declare class TextmodeErrorHandler {
+    private static _instance;
+    private _options;
+    private _errorFingerprints;
+    private constructor();
+    static _getInstance(): TextmodeErrorHandler;
+    /**
+     * Handle an error based on the configured settings
+     * @returns true if execution should continue, false if error was handled
+     */
+    private _handle;
+    /**
+     * Validate a condition and handle errors if validation fails
+     * @param condition The condition to validate
+     * @param message Error message if validation fails
+     * @param context Additional context for debugging
+     * @returns true if validation passed, false if validation failed and was handled
+     */
+    _validate(condition: boolean, message: string, context?: Record<string, unknown>): boolean;
+    /**
+     * Set global error level
+     */
+    _setGlobalLevel(level: TextmodeErrorLevel): void;
+    private _shouldEmit;
+    private _createFingerprint;
+    private _stableStringify;
+}
+/**
+ * Singleton instance of the textmode.js error handler.
+ */
+export declare const errorHandler: TextmodeErrorHandler;

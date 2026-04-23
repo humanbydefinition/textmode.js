@@ -53,6 +53,9 @@ export declare class TextmodeFilterManager {
      *
      * @param id The filter ID to unregister
      * @returns true if the filter was unregistered, false if it wasn't found
+     *
+     * @example
+     * {@includeCode ../../../examples/filters/registry/sketch.js}
      */
     unregister(id: FilterName): boolean;
     /**
@@ -60,6 +63,9 @@ export declare class TextmodeFilterManager {
      *
      * @param id The filter ID to check
      * @returns true if the filter exists
+     *
+     * @example
+     * {@includeCode ../../../examples/filters/registry/sketch.js}
      */
     has(id: FilterName): boolean;
     /**

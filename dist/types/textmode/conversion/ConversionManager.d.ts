@@ -46,6 +46,9 @@ export declare class TextmodeConversionManager {
      *
      * @param id The conversion strategy ID to unregister
      * @returns true if the strategy was unregistered, false if it wasn't found
+     *
+     * @example
+     * {@includeCode ../../../examples/conversion/registry/sketch.js}
      */
     unregister(id: TextmodeConversionMode): boolean;
     /**
@@ -53,6 +56,9 @@ export declare class TextmodeConversionManager {
      *
      * @param id The conversion strategy ID to check
      * @returns true if the strategy exists
+     *
+     * @example
+     * {@includeCode ../../../examples/conversion/registry/sketch.js}
      */
     has(id: TextmodeConversionMode): boolean;
     /**

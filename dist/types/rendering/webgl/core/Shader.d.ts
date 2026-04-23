@@ -26,10 +26,16 @@ export declare class GLShader extends Disposable {
     private _acquireTextureUnit;
     /**
      * Get the WebGL program
+     *
+     * @example
+     * {@includeCode ../../../../examples/TextmodeShader/program/sketch.js}
      */
     get program(): WebGLProgram;
     /**
      * Dispose of WebGL resources used by this shader.
+     *
+     * @example
+     * {@includeCode ../../../../examples/TextmodeShader/dispose/sketch.js}
      */
     dispose(): void;
 }

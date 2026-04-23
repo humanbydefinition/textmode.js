@@ -1,1 +1,1 @@
-export type { TextmodePlugin, TextmodePluginAPI, TextmodePluginHook, LayerLifecycleHook, LayerRenderHook, SetupLifecycleHook, } from '../textmode/managers/PluginManager';
+export type { TextmodeCanvasHandle, TextmodePlugin, TextmodePluginContext, TextmodePluginHook, LayerLifecycleHook, LayerRenderHook, SetupLifecycleHook, } from '../textmode/plugins';

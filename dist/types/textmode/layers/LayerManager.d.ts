@@ -1,7 +1,8 @@
 import type { GLFramebuffer } from '../../rendering';
 import { TextmodeLayer } from './TextmodeLayer';
 import type { TextmodeLayerOptions } from './types';
-import { type FilterName, TextmodeFilterManager } from '../filters';
+import type { FilterName } from '../filters/types';
+import { TextmodeFilterManager } from '../filters';
 /**
  * Manages the stack of layers within a {@link Textmodifier} instance.
  *
@@ -117,7 +118,11 @@ export declare class TextmodeLayerManager {
      */
     get filters(): TextmodeFilterManager;
     /**
-     * The framebuffer containing the final composited result after all layers and filters have been applied.
+     * The framebuffer containing the most recent composited result, or the framebuffer that will receive
+     * the current frame's composited result if accessed mid-frame before presentation completes.
+     *
+     * @example
+     * {@includeCode ../../../examples/LayerManager/resultFramebuffer/sketch.js}
      */
     get resultFramebuffer(): GLFramebuffer;
     /**

@@ -1,5 +1,5 @@
-import type { TextmodePlugin } from './managers/PluginManager';
-import type { LoadingScreenOptions } from './loading/';
+import type { TextmodePlugin } from './plugins/contracts';
+import type { LoadingScreenOptions } from './layers/overlays/loading';
 /**
  * Options when creating a {@link Textmodifier} instance via {@link textmode.create}.
  */
@@ -35,7 +35,7 @@ export type TextmodeOptions = {
      * which sets up the textmode `<canvas>` on top of an existing HTMLCanvasElement or HTMLVideoElement,
      * automatically resizing and positioning it to match the target element.
      *
-     * In this mode `textmode.js` fetches the content of the target element and loads it into an adjustable {@link loadables.TextmodeImage},
+     * In this mode `textmode.js` fetches the content of the target element and loads it into an adjustable {@link media.TextmodeImage},
      * that can be accessed via {@link Textmodifier.overlay}, and drawn via {@link Textmodifier.image}.
      *
      * Useful for applying textmode conversion to p5.js sketches, YouTube videos, and sooo much more.

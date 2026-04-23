@@ -1,5 +1,5 @@
 import type { RenderState } from '../../rendering/webgl/state/RenderState';
-import { TextmodeCamera } from '../TextmodeCamera';
+import { TextmodeCamera } from '../camera';
 /**
  * Internal camera/projection state manager for TextmodeLayer.
  * Keeps layer-level camera behavior decoupled from rendering pipeline orchestration.

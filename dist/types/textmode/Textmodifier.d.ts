@@ -1,8 +1,9 @@
-import { TextmodeFont } from './loadables/font';
-import { TextmodeGrid } from './Grid';
-import { TextmodeImage } from './loadables/TextmodeImage';
-import { LoadingLayerController } from './loading/LoadingLayerController';
-import { ErrorLayerController } from './error/ErrorLayerController';
+import { TextmodeFont, TextmodeTileset } from './fonts';
+import type { TextmodeTilesetOptions } from './fonts';
+import { TextmodeGrid } from './grid/TextmodeGrid';
+import { TextmodeImage } from './media/TextmodeImage';
+import { LoadingLayerController } from './layers/overlays';
+import { ErrorLayerController } from './layers/overlays/error/ErrorLayerController';
 import { TextmodeLayerManager } from './layers';
 import type { TextmodeFilterManager } from './filters';
 import type { FilterName, BuiltInFilterName, BuiltInFilterParams } from './filters';
@@ -109,6 +110,26 @@ export declare class Textmodifier {
      */
     loadFont(fontSource: string | TextmodeFont, setActive?: boolean): Promise<TextmodeFont>;
     /**
+     * Load a tileset, optionally setting it as the base layer's active glyph source.
+     *
+     * Accepts either tileset load options or an existing {@link TextmodeTileset}
+     * instance to use as a reusable source.
+     *
+     * If `setActive` is true (default), the tileset is set as the base layer's glyph source.
+     * If `setActive` is false, the tileset is loaded/initialized and returned without modifying the layer.
+     *
+     * The returned tileset can be reused on other layers via {@link TextmodeLayer.loadTileset},
+     * which creates a layer-local fork rather than sharing a mutable instance by reference.
+     *
+     * @param tilesetSource Tileset load options or an existing TextmodeTileset instance.
+     * @param setActive Whether to set the tileset as the base layer's active glyph source. Defaults to `true`.
+     * @returns The loaded TextmodeTileset instance.
+     *
+     * @example
+     * {@includeCode ../../examples/Textmodifier/loadTileset/sketch.js}
+     */
+    loadTileset(tilesetSource: TextmodeTilesetOptions | TextmodeTileset, setActive?: boolean): Promise<TextmodeTileset>;
+    /**
      * Get or set the font size used for rendering.
      * @param size The font size to set.
      * @returns The current font size if called without arguments.
@@ -117,6 +138,22 @@ export declare class Textmodifier {
      * {@includeCode ../../examples/Textmodifier/fontSize/sketch.js}
      */
     fontSize(size?: number): number | void;
+    /**
+     * Get or set whether the base layer should use authored tileset colors directly during the final ASCII pass.
+     *
+     * This is equivalent to calling {@link TextmodeLayer.useTileColors} on
+     * {@link Textmodifier.layers base layer}.
+     *
+     * When disabled (default), tilesets on the base layer are recolored through the current
+     * character (`primary`) and cell (`secondary`) colors.
+     *
+     * @param enabled Whether the base layer should use authored tileset colors directly.
+     * @returns The current base-layer tileset-color mode if called without arguments.
+     *
+     * @example
+     * {@includeCode ../../examples/Textmodifier/useTileColors/sketch.js}
+     */
+    useTileColors(enabled?: boolean): boolean | void;
     /**
      * Get or set the grid used for mouse and touch input coordinate mapping.
      *
@@ -176,7 +213,7 @@ export declare class Textmodifier {
      * @example
      * {@includeCode ../../examples/Textmodifier/font/sketch.js}
      */
-    get font(): TextmodeFont;
+    get font(): TextmodeFont | TextmodeTileset;
     /**
      * Get the width of the canvas in pixels.
      *
