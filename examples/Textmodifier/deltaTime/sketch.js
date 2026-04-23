@@ -2,7 +2,7 @@
  * @title Textmodifier.deltaTime
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 let x = -40;
 const speed = 0.05;
@@ -39,4 +39,8 @@ t.draw(() => {
 	t.pop();
 
 	drawLabel(`deltaTime(): ${t.deltaTime().toFixed(2)} ms`, -12);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

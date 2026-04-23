@@ -2,7 +2,7 @@
  * @title Textmodifier.frameCount
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 function drawLabel(text, y) {
 	t.push();
@@ -40,4 +40,8 @@ t.draw(() => {
 	}
 
 	drawLabel(`frameCount: ${t.frameCount}`, -12);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

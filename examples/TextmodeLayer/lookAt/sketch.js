@@ -2,7 +2,7 @@
  * @title TextmodeLayer.lookAt
  * @author codex
  */
-const t = textmode.create({ width: 640, height: 480, fontSize: 16 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 const scene = t.layers.add();
 
 t.draw(() => {
@@ -11,6 +11,10 @@ t.draw(() => {
 	t.background(8, 10, 18);
 	scene.camera(0, 0, 46);
 	scene.lookAt(x, y, 0);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });
 
 scene.draw(() => {

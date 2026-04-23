@@ -2,13 +2,17 @@
  * @title TextmodeLayer.ortho
  * @author codex
  */
-const t = textmode.create({ width: 640, height: 480, fontSize: 16 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 const scene = t.layers.add();
 
 t.draw(() => {
 	t.background(8, 10, 18);
 	scene.ortho();
 	scene.camera(0, 0, 44);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });
 
 scene.draw(() => {

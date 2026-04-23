@@ -2,7 +2,7 @@
  * @title Textmodifier.mouseReleased
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 const lines = [];
 let dragStart = null;
@@ -64,4 +64,8 @@ t.draw(() => {
 		t.line(-dx / 2, -dy / 2, dx / 2, dy / 2);
 		t.pop();
 	}
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

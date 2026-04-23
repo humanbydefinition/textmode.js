@@ -2,7 +2,7 @@
  * @title TextmodeLayer.fontSize
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600, fontSize: 16 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 
 // Add a high-resolution layer (small font) for details
 const detailLayer = t.layers.add({ fontSize: 8 });
@@ -12,6 +12,10 @@ t.draw(() => {
   t.charColor(100);
   t.char('X');
   t.rect(10, 10);
+});
+
+t.windowResized(() => {
+	 t.resizeCanvas(window.innerWidth, window.innerHeight);
 });
 
 detailLayer.draw(() => {

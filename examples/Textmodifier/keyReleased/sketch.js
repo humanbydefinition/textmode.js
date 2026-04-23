@@ -2,7 +2,7 @@
  * @title Textmodifier.keyReleased
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 let lastRelease = '?';
 let fade = 0;
@@ -20,4 +20,8 @@ t.draw(() => {
 	t.charColor(color, color, 255);
 	t.char(lastRelease.length ? lastRelease[0] : '?');
 	t.point();
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

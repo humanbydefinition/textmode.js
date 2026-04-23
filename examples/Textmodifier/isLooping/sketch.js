@@ -2,7 +2,7 @@
  * @title Textmodifier.isLooping
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 function drawLabel(text, y) {
 	t.push();
@@ -41,4 +41,8 @@ t.draw(() => {
 
 	drawLabel(`isLooping(): ${t.isLooping()}`, -12);
 	drawLabel('click to toggle loop state', -9);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

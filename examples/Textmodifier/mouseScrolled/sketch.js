@@ -2,7 +2,7 @@
  * @title Textmodifier.mouseScrolled
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 const rings = [];
 
@@ -64,4 +64,8 @@ t.draw(() => {
 
 		t.pop();
 	}
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

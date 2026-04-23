@@ -2,7 +2,7 @@
  * @title Textmodifier.keyPressed
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 let lastKey = '?';
 let pulse = 0;
@@ -23,4 +23,8 @@ t.draw(() => {
 	t.char(lastKey.length ? lastKey[0] : '?');
 	t.point();
 	t.pop();
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

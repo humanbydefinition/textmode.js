@@ -2,7 +2,7 @@
  * @title Textmodifier.millis2
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 function drawLabel(text, y) {
 	t.push();
@@ -34,4 +34,8 @@ t.draw(() => {
 	t.pop();
 
 	drawLabel('millis / 1000 drives horizontal motion', -12);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

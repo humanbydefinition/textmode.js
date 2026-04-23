@@ -2,7 +2,7 @@
  * @title TextmodeLayer.width
  * @author codex
  */
-const t = textmode.create({ width: 640, height: 480, fontSize: 16 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 const detail = t.layers.add({ fontSize: 8 });
 
 function label(text, y, color = [220, 220, 220]) {
@@ -22,6 +22,10 @@ function label(text, y, color = [220, 220, 220]) {
 t.draw(() => {
 	t.background(8, 10, 18);
 	label(`detail.width: ${detail.width}px`, -2, [255, 220, 120]);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });
 
 detail.draw(() => {

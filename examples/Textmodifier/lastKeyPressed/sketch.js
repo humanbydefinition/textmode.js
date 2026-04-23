@@ -2,7 +2,7 @@
  * @title Textmodifier.lastKeyPressed
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 t.draw(() => {
 	t.background(0);
@@ -13,4 +13,8 @@ t.draw(() => {
 		t.charColor(255, 255, 255);
 		t.point();
 	}
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

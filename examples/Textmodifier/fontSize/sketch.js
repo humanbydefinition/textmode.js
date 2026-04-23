@@ -19,7 +19,7 @@ function drawLabel(label, y, color) {
 
 t.setup(() => {
   // Set the base layer font size.
-  t.fontSize(28);
+  t.fontSize(32);
 });
 
 t.draw(() => {

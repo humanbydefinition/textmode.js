@@ -2,7 +2,7 @@
  * @title TextmodeLayer.createCamera
  * @author codex
  */
-const t = textmode.create({ width: 640, height: 480, fontSize: 16 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 const scene = t.layers.add();
 let camera;
 
@@ -15,6 +15,10 @@ t.draw(() => {
 	t.background(8, 10, 18);
 	camera.setPosition(Math.sin(t.frameCount * 0.03) * 18, 8, 46);
 	camera.lookAt(0, 0, 0);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });
 
 scene.draw(() => {

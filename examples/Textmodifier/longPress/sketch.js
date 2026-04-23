@@ -2,7 +2,7 @@
  * @title Textmodifier.longPress
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 const bursts = [];
 
@@ -37,4 +37,8 @@ t.draw(() => {
 		t.char('?');
 		t.rect(1, 1);
 	}
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

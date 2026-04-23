@@ -2,7 +2,7 @@
  * @title TextmodeLayer.asciiFramebuffer
  * @author codex
  */
-const t = textmode.create({ width: 640, height: 480, fontSize: 16 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 const stamp = t.layers.add({ blendMode: 'screen' });
 
 stamp.draw(() => {
@@ -16,4 +16,8 @@ stamp.draw(() => {
 t.draw(() => {
 	t.background(8, 10, 18);
 	if (stamp.asciiFramebuffer) t.image(stamp.asciiFramebuffer, 20, 12);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

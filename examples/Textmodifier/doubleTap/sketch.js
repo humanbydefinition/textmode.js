@@ -2,7 +2,7 @@
  * @title Textmodifier.doubleTap
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 let pulse = 0;
 let activeColor = t.color(100, 200, 255);
@@ -28,4 +28,8 @@ t.draw(() => {
 		t.rect(size + 5, size + 5);
 		t.pop();
 	}
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

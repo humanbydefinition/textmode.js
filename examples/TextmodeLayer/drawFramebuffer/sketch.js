@@ -2,7 +2,7 @@
  * @title TextmodeLayer.drawFramebuffer
  * @author codex
  */
-const t = textmode.create({ width: 640, height: 480, fontSize: 16 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 const stamp = t.layers.add();
 
 stamp.draw(() => {
@@ -17,4 +17,8 @@ t.draw(() => {
 	const raw = stamp.drawFramebuffer;
 	t.background(8, 10, 18);
 	if (raw) t.image(raw, 20, 12);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

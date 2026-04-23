@@ -2,7 +2,7 @@
  * @title TextmodeLayer.hide
  * @author codex
  */
-const t = textmode.create({ width: 640, height: 480, fontSize: 16 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 const banner = t.layers.add({ blendMode: 'screen' });
 let hidden = false;
 
@@ -28,6 +28,10 @@ t.mousePressed(() => {
 t.draw(() => {
 	t.background(6, 10, 18);
 	label(hidden ? 'hide() removed the top layer' : 'click to hide the banner layer', -6, [255, 220, 120]);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });
 
 banner.draw(() => {

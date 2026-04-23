@@ -2,7 +2,7 @@
  * @title TextmodeLayer.hasPluginState
  * @author codex
  */
-const t = textmode.create({ width: 640, height: 480, fontSize: 16 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 const layer = t.layers.add();
 
 function label(text, y, color = [220, 220, 220]) {
@@ -26,4 +26,8 @@ t.draw(() => {
 	}
 	t.background(8, 10, 18);
 	label(`hasPluginState(): ${layer.hasPluginState('demo')}`, -2, [255, 220, 120]);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

@@ -5,7 +5,7 @@
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
-	fontSize: 10,
+	fontSize: 8,
 	frameRate: 60,
 });
 

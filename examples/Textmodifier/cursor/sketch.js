@@ -2,7 +2,7 @@
  * @title Textmodifier.cursor
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 const target = { width: 30, height: 15 };
 
 t.draw(() => {
@@ -22,4 +22,8 @@ t.draw(() => {
 		t.mouse.y < halfRectHeight;
 
 	t.cursor(hovering ? 'pointer' : 'default');
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

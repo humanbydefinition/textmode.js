@@ -2,7 +2,7 @@
  * @title TextmodeLayer.resetCamera
  * @author codex
  */
-const t = textmode.create({ width: 640, height: 480, fontSize: 16 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 const scene = t.layers.add();
 let custom = true;
 
@@ -17,6 +17,10 @@ t.draw(() => {
 	} else {
 		scene.resetCamera();
 	}
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });
 
 scene.draw(() => {

@@ -2,7 +2,7 @@
  * @title Textmodifier.isKeyPressed
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 let playerX = 0;
 let playerY = 0;
@@ -27,4 +27,8 @@ t.draw(() => {
 	t.charColor(255, 255, 0);
 	t.translate(playerX, playerY);
 	t.point();
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

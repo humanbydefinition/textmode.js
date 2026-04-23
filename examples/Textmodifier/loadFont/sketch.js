@@ -3,7 +3,7 @@
  * @author codex
  */
 const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
-const accentLayer = t.layers.add({ fontSize: 24, blendMode: 'additive' });
+const accentLayer = t.layers.add({ fontSize: 16, blendMode: 'additive' });
 
 function drawLabel(label, y, color) {
   const startX = -label.length / 2;

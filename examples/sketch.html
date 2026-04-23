@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<script type="module">
-			import * as textmodeModule from '../dist/textmode.esm.js';
+			import * as textmodeModule from 'textmode.js';
 
 			const params = new URLSearchParams(window.location.search);
 			const rawPath = params.get('path');
@@ -53,12 +53,16 @@
 				showError('Invalid example path.');
 			} else {
 				document.title = `textmode.js - ${examplePath}`;
+				const base = document.createElement('base');
+				base.href = `./${examplePath}/`;
+				document.head.appendChild(base);
 
 				window.textmode = textmodeModule.textmode;
 				window.TextmodeErrorLevel = textmodeModule.TextmodeErrorLevel;
-				
+				window.__TEXTMODE_EXAMPLE_PATH__ = examplePath;
+
 				const script = document.createElement('script');
-				script.src = `./${examplePath}/sketch.js`;
+				script.src = './sketch.js';
 				script.onerror = () => showError(`Unable to load ${examplePath}.`);
 				document.body.appendChild(script);
 			}

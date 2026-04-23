@@ -88,7 +88,7 @@
 				{
 					name: 'LayerManager',
 					description: 'User layer collection access and management',
-					entries: ['add', 'all', 'base', 'clear', 'filters', 'move', 'remove', 'swap'],
+					entries: ['add', 'all', 'base', 'clear', 'filters', 'move', 'remove', 'resultFramebuffer', 'swap'],
 				},
 				{
 					name: 'Textmode',
@@ -108,11 +108,39 @@
 						'characters',
 						'creation',
 						'dispose',
+						{ name: 'framebuffer', path: 'fontFramebuffer' },
+						'font',
 						'fontFramebuffer',
 						'fontSize',
 						'maxGlyphDimensions',
+						'cellDimensions',
+						{ name: 'cellWidth', path: 'cellDimensions' },
+						{ name: 'cellHeight', path: 'cellDimensions' },
+						{ name: 'columns', path: 'textureColumns' },
+						{ name: 'rows', path: 'textureRows' },
 						'textureColumns',
 						'textureRows',
+					],
+				},
+				{
+					name: 'TextmodeTileset',
+					description: 'Tileset atlas metadata, cell sizing, and lifecycle',
+					entries: [
+						'dispose',
+						'characters',
+						{ name: 'characterMap', path: 'atlas' },
+						{ name: 'framebuffer', path: 'atlas' },
+						{ name: 'fontFramebuffer', path: 'atlas' },
+						{ name: 'columns', path: 'atlas' },
+						{ name: 'rows', path: 'atlas' },
+						{ name: 'textureColumns', path: 'atlas' },
+						{ name: 'textureRows', path: 'atlas' },
+						'nativeCellDimensions',
+						{ name: 'maxGlyphDimensions', path: 'dimensions' },
+						{ name: 'cellDimensions', path: 'dimensions' },
+						{ name: 'cellWidth', path: 'dimensions' },
+						{ name: 'cellHeight', path: 'dimensions' },
+						{ name: 'fontSize', path: 'dimensions' },
 					],
 				},
 				{
@@ -179,6 +207,7 @@
 						'height',
 						'hide',
 						'loadFont',
+						'loadTileset',
 						'lookAt',
 						'offset',
 						'opacity',
@@ -189,17 +218,35 @@
 						'setCamera',
 						'setPluginState',
 						'show',
+						'texture',
+						{ name: 'useTileColors', path: 'loadTileset' },
 						'width',
 					],
 				},
 				{
 					name: 'TextmodeFramebuffer',
 					description: 'Offscreen framebuffer rendering, pixel reads, and lifecycle',
-					entries: ['begin', 'dispose', 'end', 'resize'],
+					entries: [
+						'begin',
+						'dispose',
+						'end',
+						'readPixels',
+						'resize',
+						'framebuffer',
+						{ name: 'width', path: 'framebuffer' },
+						{ name: 'height', path: 'framebuffer' },
+						{ name: 'textures', path: 'framebuffer' },
+						{ name: 'attachmentCount', path: 'framebuffer' },
+					],
+				},
+				{
+					name: 'TextmodeShader',
+					description: 'Custom shader program access and disposal',
+					entries: ['program', 'dispose'],
 				},
 				{
 					name: 'TextmodeSource',
-					description: 'Source canvas conversion settings',
+					description: 'Source canvas conversion settings and dimensions',
 					entries: [
 						'background',
 						'cellColor',
@@ -209,15 +256,74 @@
 						'charRotation',
 						'characters',
 						'conversionMode',
+						'dispose',
 						'flipX',
 						'flipY',
 						'invert',
+						'texture',
+						{ name: 'width', path: 'dimensions' },
+						{ name: 'height', path: 'dimensions' },
+						{ name: 'originalWidth', path: 'dimensions' },
+						{ name: 'originalHeight', path: 'dimensions' },
 					],
 				},
 				{
+					name: 'TextmodeTexture',
+					description: 'Dynamic canvas and video-backed texture capture',
+					entries: [{ name: 'source', path: 'Textmodifier/createTexture' }],
+				},
+				{
 					name: 'TextmodeVideo',
-					description: 'Video source loading and playback control',
-					entries: ['creation', 'loop', 'pause', 'play', 'speed', 'stop', 'time', 'volume'],
+					description: 'Video source loading, playback control, and state',
+					entries: [
+						'creation',
+						'dispose',
+						'loop',
+						'pause',
+						'play',
+						'speed',
+						'stop',
+						'time',
+						'volume',
+						{ name: 'videoElement', path: 'state' },
+						{ name: 'currentTime', path: 'state' },
+						{ name: 'duration', path: 'state' },
+						{ name: 'isPlaying', path: 'state' },
+					],
+				},
+				{
+					name: 'conversion',
+					description: 'Conversion strategy registration and lifecycle',
+					entries: [
+						{ name: 'has', path: 'conversion/registry' },
+						{ name: 'unregister', path: 'conversion/registry' },
+						{ name: 'createShader', path: 'conversion/registry' },
+						{ name: 'createUniforms', path: 'conversion/registry' },
+					],
+				},
+				{
+					name: 'filters',
+					description: 'Custom filter registry management',
+					entries: [
+						{ name: 'has', path: 'filters/registry' },
+						{ name: 'unregister', path: 'filters/registry' },
+					],
+				},
+				{
+					name: 'plugins',
+					description: 'Plugin install lifecycle, hooks, and layer extensions',
+					entries: [
+						{ name: 'install', path: 'plugins/lifecycle' },
+						{ name: 'uninstall', path: 'plugins/lifecycle' },
+						{ name: 'registerPreDrawHook', path: 'plugins/lifecycle' },
+						{ name: 'registerPostDrawHook', path: 'plugins/lifecycle' },
+						{ name: 'registerLayerDisposedHook', path: 'plugins/lifecycle' },
+						{ name: 'registerLayerPreRenderHook', path: 'plugins/lifecycle' },
+						{ name: 'registerLayerPostRenderHook', path: 'plugins/lifecycle' },
+						{ name: 'registerPreSetupHook', path: 'plugins/lifecycle' },
+						{ name: 'registerPostSetupHook', path: 'plugins/lifecycle' },
+						{ name: 'removeLayerExtension', path: 'plugins/removeLayerExtension' },
+					],
 				},
 				{
 					name: 'Textmodifier',
@@ -253,11 +359,13 @@
 						'createFilterShader',
 						'createFramebuffer',
 						'createShader',
+						'createTexture',
 						'cursor',
 						'canvas',
 						'cylinder',
 						'deltaTime',
 						'destroy',
+						'doubleClicked',
 						'doubleTap',
 						'draw',
 						'ellipsoid',
@@ -265,6 +373,7 @@
 						'errors',
 						'filter',
 						'filters',
+						'fill',
 						'flipX',
 						'flipY',
 						'font',
@@ -272,6 +381,15 @@
 						'frameCount',
 						'frameCount2',
 						'frameRate',
+						'gamepad',
+						'gamepadAxisChanged',
+						'gamepadButtonPressed',
+						'gamepadButtonReleased',
+						'gamepadConnected',
+						'gamepadDisconnected',
+						'gamepads',
+						'gamepadEvents',
+						'gamepadStandardMapping',
 						'grid',
 						'height',
 						'image',
@@ -282,6 +400,7 @@
 						'isLooping',
 						'isRenderingFrame',
 						'keyPressed',
+						'keyTyped',
 						'keyReleased',
 						'lastKeyPressed',
 						'lastKeyReleased',
@@ -291,6 +410,7 @@
 						'lineWeight',
 						'loadFont',
 						'loadImage',
+						'loadTileset',
 						'loadVideo',
 						'loading',
 						'longPress',
@@ -303,6 +423,8 @@
 						'modifierState',
 						'mouse',
 						'mouseClicked',
+						'mouseDragged',
+						'mouseIsPressed',
 						'mouseMoved',
 						'mousePressed',
 						'mouseReleased',
@@ -313,6 +435,7 @@
 						'ortho',
 						'perspective',
 						'pinch',
+						'pmouse',
 						'point',
 						'pointLight',
 						'pop',
@@ -321,13 +444,16 @@
 						'rect',
 						'redraw',
 						'resetCamera',
+						'resetMatrix',
 						'resetShader',
+						'requestPointerLock',
 						'resizeCanvas',
 						'rotate',
 						'rotateGesture',
 						'rotateX',
 						'rotateY',
 						'rotateZ',
+						'scale',
 						'secs',
 						'secs2',
 						'secs3',
@@ -337,6 +463,7 @@
 						'setup',
 						'shader',
 						'sphere',
+						'stroke',
 						'swipe',
 						'tap',
 						'targetFrameRate',
@@ -354,14 +481,26 @@
 						'translateZ',
 						'translateZ2',
 						'triangle',
+						'useTileColors',
 						'width',
 						'windowResized',
+						'applyMatrix',
 					],
 				},
 			];
 
-			function getExampleHref(groupName, entryName) {
-				return `./sketch.html?path=${encodeURIComponent(`${groupName}/${entryName}`)}`;
+			function normalizeEntry(groupName, entry) {
+				if (typeof entry === 'string') {
+					return { name: entry, path: `${groupName}/${entry}` };
+				}
+
+				const name = entry.name;
+				const path = entry.path.includes('/') ? entry.path : `${groupName}/${entry.path}`;
+				return { name, path };
+			}
+
+			function getExampleHref(examplePath) {
+				return `./sketch.html?path=${encodeURIComponent(examplePath)}`;
 			}
 
 			function render(groups) {
@@ -382,10 +521,10 @@
             </div>
             <div class="px-4 py-3 flex flex-wrap gap-1.5" data-entries>
               ${group.entries
-					.map(
-						(entry) =>
-							`<a href="${getExampleHref(group.name, entry)}" class="entry-badge" data-entry="${entry.toLowerCase()}" data-entry-name="${entry}" aria-expanded="false">${entry}</a>`
-					)
+					.map((entry) => {
+						const normalizedEntry = normalizeEntry(group.name, entry);
+						return `<a href="${getExampleHref(normalizedEntry.path)}" class="entry-badge" data-entry="${normalizedEntry.name.toLowerCase()}" data-entry-name="${normalizedEntry.name}" aria-expanded="false">${normalizedEntry.name}</a>`;
+					})
 					.join('')}
             </div>
             <div class="example-preview" data-preview hidden>

@@ -2,7 +2,7 @@
  * @title Textmodifier.loop
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600, fontSize: 16 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 
 let paused = false;
 let resumed = 0;
@@ -49,4 +49,8 @@ t.draw(() => {
 
 	drawLabel(paused ? 'click to call loop()' : 'auto-pause at frame 90', -12);
 	drawLabel(`loop() calls: ${resumed}`, -9, paused ? 255 : 140);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

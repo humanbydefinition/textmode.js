@@ -2,7 +2,7 @@
  * @title Textmodifier.createShader
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 let customShader;
 
@@ -45,4 +45,8 @@ t.draw(() => {
     t.shader(customShader);
     t.rect(10, 10);
   }
+});
+
+t.windowResized(() => {
+  t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

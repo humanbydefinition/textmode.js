@@ -2,7 +2,7 @@
  * @title Textmodifier.color2
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 // Create reusable colors
 const red = t.color(255, 50, 50);
@@ -33,4 +33,8 @@ t.draw(() => {
   // Center shape
   t.charColor(yellow);
   t.ellipse(12, 12);
+});
+
+t.windowResized(() => {
+  t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

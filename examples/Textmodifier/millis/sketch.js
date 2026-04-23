@@ -2,7 +2,7 @@
  * @title Textmodifier.millis
  * @author codex
  */
-const t = textmode.create({ width: 800, height: 600 });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 function drawLabel(text, y) {
 	t.push();
@@ -32,4 +32,8 @@ t.draw(() => {
 	t.rect(10 * scale, 10 * scale);
 
 	drawLabel(`millis: ${Math.floor(t.millis)}`, -12);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

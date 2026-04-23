@@ -3,8 +3,8 @@
  * @author codex
  */
 const t = textmode.create({
-	width: 720,
-	height: 420,
+	width: window.innerWidth,
+	height: window.innerHeight,
 	fontSize: 16,
 });
 
@@ -58,4 +58,8 @@ t.draw(() => {
 	t.pop();
 
 	writeLine('DISPOSE BEFORE REBUILDING', 8, [220, 230, 255]);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });
