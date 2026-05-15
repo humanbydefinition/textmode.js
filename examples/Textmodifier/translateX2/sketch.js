@@ -2,29 +2,52 @@
  * @title Textmodifier.translateX2
  * @author codex
  */
-// Horizontal oscillation field
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
+
+function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+	t.push();
+	t.translate(-Math.floor(text.length / 2), row);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+	for (let i = 0; i < text.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(text[i]);
+		t.point();
+		t.pop();
+	}
+	t.pop();
+}
 
 t.draw(() => {
-  t.background(0, 10, 0);
+	t.background(6, 10, 22);
 
-  const count = 64;
-  for (let i = 0; i < count; i++) {
-    t.push();
-    // Vertical position
-    t.translateY((i - (count - 1) / 2));
+	const time = t.frameCount * 0.04;
+	const count = 30;
 
-    // Oscillating horizontal position
-    const x = Math.sin(t.frameCount * 0.04 + i * 0.5) * 25;
-    t.translateX(x);
+	// Multiple elements oscillating in X
+	for (let i = 0; i < count; i++) {
+		const phase = i / count;
+		const y = (phase - 0.5) * 30;
+		const xOffset = Math.sin(time + phase * 6) * 20;
 
-    t.charColor(0, 255, 100);
-    t.char('█');
-    t.rect(4, 2);
-    t.pop();
-  }
+		t.push();
+		t.translateY(y);
+		t.translateX(xOffset);
+
+		t.charColor(120, 255, 180, (phase * 0.8 + 0.2) * 255);
+		t.char('█');
+		t.rect(4, 1);
+		t.pop();
+	}
+
+	drawCenteredText('Textmodifier.translateX (Field)', -16, [255, 255, 255]);
+	drawCenteredText('Applying individual X translations to multiple layers.', -14, [150, 170, 200]);
 });
 
 t.windowResized(() => {
-  t.resizeCanvas(window.innerWidth, window.innerHeight);
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

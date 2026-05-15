@@ -10,22 +10,12 @@ interface InternalLayerControllerContext {
  */
 export declare abstract class InternalLayerController<TContext extends InternalLayerControllerContext> {
     protected readonly _textmodifier: Textmodifier;
-    /**
-     * The internal layer instance managed by this controller.
-     * Guaranteed to be initialized and available after the controller's `_initialize` method resolves.
-     */
-    _layer: TextmodeLayer;
     private _drawCallback?;
-    /**
-     * Indicates whether the internal layer has been initialized and is ready for rendering.
-     * Prevents rendering and resource access before the layer is fully set up.
-     */
-    _isInitialized: boolean;
     constructor(textmodifier: Textmodifier);
     /**
      * Overridable method to set a custom draw callback for rendering the internal layer.
      * If not set, the layer will use the default template.
-     * @param callback
+     * @param callback Custom draw callback that receives the rendering context.
      */
     draw(callback?: (context: TContext) => void): void;
     /**

@@ -2,54 +2,62 @@
  * @title TextmodeCamera.lookAt
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let camera;
+const labelLayer = t.layers.add();
+let targetX = 0;
+let targetY = 0;
+let targetZ = 0;
 
-function label(text, y) {
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y, 0);
-	t.charColor(220);
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+
 	for (let i = 0; i < text.length; i++) {
 		t.push();
-		t.translate(i, 0, 0);
+		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
 		t.pop();
 	}
+
 	t.pop();
 }
 
+labelLayer.draw(() => {
+	t.clear();
+	drawCenteredText('TextmodeCamera.lookAt', -8, [240, 245, 255]);
+	drawCenteredText(
+		'target: ' + targetX.toFixed(1) + ', ' + targetY.toFixed(1) + ', ' + targetZ.toFixed(1),
+		6,
+		[180, 200, 220]
+	);
+});
+
 t.setup(() => {
 	t.perspective(58, 0.1, 4096);
-	camera = t.createCamera().setPosition(0, 14, 42);
 });
 
 t.draw(() => {
-	t.background(8, 10, 24);
+	t.background(6, 10, 22);
 
-	const time = t.frameCount * 0.03;
-	camera.lookAt(Math.cos(time) * 12, Math.sin(time * 0.7) * 8, Math.sin(time) * 14);
-	t.setCamera(camera);
+	const time = t.frameCount * 0.02;
+	targetX = Math.cos(time) * 8;
+	targetY = Math.sin(time * 0.7) * 5;
+	targetZ = Math.sin(time) * 8;
 
-	for (let i = 0; i < 4; i++) {
-		t.push();
-		t.translate((i - 1.5) * 10, -6 + i * 4, -i * 10);
-		t.rotateZ(t.frameCount * (0.8 + i * 0.1));
-		t.char(['A', 'B', 'C', 'D'][i]);
-		t.charColor(120 + i * 30, 150 + i * 20, 255 - i * 30);
-		t.triangle(0, -4, -4, 4, 4, 4);
-		t.pop();
-	}
+	const cam = t.createCamera().setPosition(0, 10, 30).lookAt(targetX, targetY, targetZ);
+	t.setCamera(cam);
 
-	t.push();
-	t.translate(camera.targetX, camera.targetY, camera.targetZ);
-	t.char('*');
-	t.charColor(255, 255, 120);
-	t.point();
-	t.pop();
-
-	label('lookAt() tracks the moving marker', Math.floor(t.grid.rows / 2) - 3);
+	t.char('+');
+	t.charColor(120, 180, 255);
+	t.line(-10, 0, 10, 0);
+	t.line(0, -5, 0, 5);
 });
 
 t.windowResized(() => {

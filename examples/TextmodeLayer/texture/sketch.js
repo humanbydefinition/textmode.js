@@ -26,7 +26,11 @@ t.draw(() => {
 
 	const textureMatches = layer.texture === layer.asciiFramebuffer.textures[0];
 	label('TextmodeLayer.texture', -Math.floor(t.grid.rows * 0.34), [255, 225, 140]);
-	label(textureMatches ? 'texture matches ascii framebuffer' : 'texture pending', Math.floor(t.grid.rows * 0.30), [120, 205, 255]);
+	label(
+		textureMatches ? 'texture matches ascii framebuffer' : 'texture pending',
+		Math.floor(t.grid.rows * 0.3),
+		[120, 205, 255]
+	);
 });
 
 layer.draw(() => {

@@ -99,7 +99,11 @@ t.draw(() => {
 
 	drawLabel('custom conversion strategy', -Math.floor(t.grid.rows * 0.34), [255, 225, 140]);
 	drawLabel(`has pulse ${t.conversions.has('pulse') ? 'yes' : 'no'}`, Math.floor(t.grid.rows * 0.28));
-	drawLabel(strategyActive ? 'click to unregister' : 'refresh to restore strategy', Math.floor(t.grid.rows * 0.36), [120, 205, 255]);
+	drawLabel(
+		strategyActive ? 'click to unregister' : 'refresh to restore strategy',
+		Math.floor(t.grid.rows * 0.36),
+		[120, 205, 255]
+	);
 });
 
 t.mouseClicked(() => {

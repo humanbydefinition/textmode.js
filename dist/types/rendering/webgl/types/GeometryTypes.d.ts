@@ -45,7 +45,7 @@ export interface UnitGeometryData {
     /** Byte offset into index buffer (default: 0) */
     _indexOffset?: number;
     /** WebGL primitive type (gl.TRIANGLES, gl.LINES, etc.) */
-    _primitiveType: number;
+    _primitiveType?: number;
     /** Stride in bytes between vertices */
     _stride: number;
     /** Attribute configuration for position and texCoord */

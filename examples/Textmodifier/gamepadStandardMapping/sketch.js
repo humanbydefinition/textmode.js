@@ -36,7 +36,6 @@ function drawButton(label, btn, x, y) {
 function drawStick(label, stick, cx, cy, r, g, b) {
 	drawText(label, cx - Math.floor(label.length / 2), cy - 3, 140, 140, 140);
 
-	// Border
 	for (let dx = -3; dx <= 3; dx++) {
 		drawText('.', cx + dx, cy - 2, 50, 50, 50);
 		drawText('.', cx + dx, cy + 2, 50, 50, 50);
@@ -46,7 +45,6 @@ function drawStick(label, stick, cx, cy, r, g, b) {
 		drawText('.', cx + 3, cy + dy, 50, 50, 50);
 	}
 
-	// Cursor
 	const px = Math.round(cx + stick.x * 3);
 	const py = Math.round(cy + stick.y * 2);
 
@@ -94,7 +92,6 @@ t.draw(() => {
 	drawButton('L2', s.shoulders.l2, -26, -11);
 	drawButton('R2', s.shoulders.r2, 8, -11);
 
-	// ── D-pad ──
 	drawText('D-PAD', -24, -8, 140, 140, 140);
 	drawButton('U', s.dpad.up, -22, -7);
 	drawButton('L', s.dpad.left, -24, -6);
@@ -108,7 +105,6 @@ t.draw(() => {
 	drawButton('E', s.faceButtons.east, 14, -6);
 	drawButton('S', s.faceButtons.south, 12, -5);
 
-	// ── Center ──
 	drawButton('SEL', s.center.select, -6, -8);
 	drawButton('START', s.center.start, -1, -8);
 	if (s.center.home) {
@@ -123,7 +119,6 @@ t.draw(() => {
 	drawStick('R-STICK', s.rightStick, 4, -1, 100, 220, 255);
 	drawButton('R3', s.center.rightStickPress, 3, 3);
 
-	// ── Raw button values bar ──
 	drawText('raw button values', -28, 7, 110, 110, 110);
 
 	for (let i = 0; i < Math.min(pad.buttons.length, 17); i++) {

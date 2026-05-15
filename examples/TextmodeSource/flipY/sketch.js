@@ -2,39 +2,18 @@
  * @title TextmodeSource.flipY
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let source;
+let sourceA, sourceB;
 
-function createArrowCanvas() {
-	const canvas = document.createElement('canvas');
-	canvas.width = 160;
-	canvas.height = 160;
-
-	const ctx = canvas.getContext('2d');
-	if (!ctx) return canvas;
-
-	ctx.fillStyle = '#101010';
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-	ctx.fillStyle = '#ffffff';
-	ctx.beginPath();
-	ctx.moveTo(80, 24);
-	ctx.lineTo(132, 104);
-	ctx.lineTo(100, 104);
-	ctx.lineTo(100, 136);
-	ctx.lineTo(60, 136);
-	ctx.lineTo(60, 104);
-	ctx.lineTo(28, 104);
-	ctx.closePath();
-	ctx.fill();
-
-	return canvas;
-}
-
-function drawLabel(text, x, y) {
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(x - Math.floor(text.length / 2), y);
-	t.charColor(255);
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
 		t.push();
@@ -47,32 +26,59 @@ function drawLabel(text, x, y) {
 	t.pop();
 }
 
+function createGradientCanvas() {
+	const canvas = document.createElement('canvas');
+	canvas.width = 128;
+	canvas.height = 128;
+	const ctx = canvas.getContext('2d');
+	if (!ctx) return canvas;
+
+	// Linear gray gradient from top-left to bottom-right
+	const grad = ctx.createLinearGradient(0, 0, 128, 128);
+	grad.addColorStop(0, '#000000');
+	grad.addColorStop(1, '#ffffff');
+	ctx.fillStyle = grad;
+	ctx.fillRect(0, 0, 128, 128);
+
+	return canvas;
+}
+
 t.setup(() => {
-	source = t.createTexture(createArrowCanvas());
-	source.characters(' .:-=+*#%@');
+	const canvas = createGradientCanvas();
+
+	// Source A: Normal orientation
+	sourceA = t.createTexture(canvas);
+	sourceA.characters(' .:-=+*#%@');
+	sourceA.flipY(false);
+
+	// Source B: Flipped vertically
+	sourceB = t.createTexture(canvas);
+	sourceB.characters(' .:-=+*#%@');
+	sourceB.flipY(true);
 });
 
 t.draw(() => {
-	t.background(0);
-	if (!source) return;
+	t.background(6, 10, 22);
 
-	const size = Math.min(source.width, source.height) * 0.7;
-	const offset = Math.floor(size * 0.7);
+	if (!sourceA || !sourceB) return;
 
-	source.flipY(false);
+	drawCenteredText('TextmodeSource.flipY', -12, [240, 245, 255]);
+	drawCenteredText('Mirroring the source texture vertically.', -10, [150, 170, 200]);
+
+	const imgW = 20;
+	const imgH = 12;
+
 	t.push();
-	t.translate(-offset, 0);
-	t.image(source, size, size);
+	t.translate(-12, 0);
+	t.image(sourceA, imgW, imgH);
 	t.pop();
+	drawCenteredText('NORMAL', 8, [140, 180, 255]);
 
-	source.flipY(true);
 	t.push();
-	t.translate(offset, 0);
-	t.image(source, size, size);
+	t.translate(12, 0);
+	t.image(sourceB, imgW, imgH);
 	t.pop();
-
-	drawLabel('flipY(false)', -offset, Math.floor(t.grid.rows / 2) - 2);
-	drawLabel('flipY(true)', offset, Math.floor(t.grid.rows / 2) - 2);
+	drawCenteredText('FLIP_Y', 12, [255, 180, 100]);
 });
 
 t.windowResized(() => {

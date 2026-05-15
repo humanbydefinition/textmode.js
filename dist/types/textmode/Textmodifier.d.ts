@@ -90,6 +90,64 @@ export declare class Textmodifier {
      */
     draw(callback: () => void): void;
     /**
+     * Set a post-draw callback function for the base layer.
+     *
+     * This callback runs after the base layer's draw callback, ASCII conversion, and
+     * any filters queued on the base layer during draw. Filters queued on
+     * `t.layers.base` inside this callback are applied to the base layer before
+     * other layers are composited on top.
+     *
+     * Calling this method is equivalent to setting the post-draw callback on the base layer:
+     * ```js
+     * textmodifier.layers.base.postDraw(callback);
+     * ```
+     *
+     * @param callback The function to call after the base layer has been drawn and filtered.
+     *
+     * @example
+     * ```js
+     * t.draw(() => {
+     * 	t.background(0);
+     * 	t.char('A');
+     * 	t.rect(12, 8);
+     * 	t.layers.base.filter('grayscale', 0.5);
+     * });
+     *
+     * t.postDraw(() => {
+     * 	t.layers.base.filter('invert');
+     * });
+     * ```
+     */
+    postDraw(callback: () => void): void;
+    /**
+     * Set a final draw callback function for the composited output.
+     *
+     * This callback runs after all visible layers have been composited and after
+     * global filters queued via {@link filter} during normal draw callbacks have
+     * been applied. Filters queued with `t.filter()` inside this callback are applied
+     * to the final composited texture before it is presented to the canvas.
+     *
+     * Use {@link postDraw} when you want to affect only the base layer. Use this
+     * method when you want to affect the final image made from all layers.
+     *
+     * @param callback The function to call before the final texture is presented.
+     *
+     * @example
+     * ```js
+     * t.draw(() => {
+     * 	t.background(0);
+     * 	t.char('A');
+     * 	t.rect(12, 8);
+     * 	t.filter('grayscale', 0.4);
+     * });
+     *
+     * t.finalDraw(() => {
+     * 	t.filter('invert');
+     * });
+     * ```
+     */
+    finalDraw(callback: () => void): void;
+    /**
      * Load a font, optionally setting it as the base layer's active font.
      *
      * Accepts either a URL string to load a new font, or an existing {@link TextmodeFont}

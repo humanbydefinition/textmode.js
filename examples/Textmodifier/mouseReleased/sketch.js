@@ -2,10 +2,28 @@
  * @title Textmodifier.mouseReleased
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-const lines = [];
 let dragStart = null;
+let lastRelease = null;
+
+function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+	t.push();
+	t.translate(-Math.floor(text.length / 2), row);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+	for (let i = 0; i < text.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(text[i]);
+		t.point();
+		t.pop();
+	}
+	t.pop();
+}
 
 t.mousePressed((data) => {
 	if (data.position.x === Number.NEGATIVE_INFINITY) return;
@@ -13,57 +31,50 @@ t.mousePressed((data) => {
 });
 
 t.mouseReleased((data) => {
-	if (!dragStart || data.position.x === Number.NEGATIVE_INFINITY) return;
-
-	const x = data.position.x;
-	const y = data.position.y;
-	const centerX = (dragStart.x + x) / 2;
-	const centerY = (dragStart.y + y) / 2;
-	const dx = x - dragStart.x;
-	const dy = y - dragStart.y;
-
-	lines.push({ cx: centerX, cy: centerY, dx, dy, age: 0, maxAge: 30 });
+	if (!dragStart) return;
+	lastRelease = {
+		x: data.position.x,
+		y: data.position.y,
+		sx: dragStart.x,
+		sy: dragStart.y,
+		time: t.secs,
+	};
 	dragStart = null;
 });
 
 t.draw(() => {
-	t.background(0);
-
-	for (let i = lines.length - 1; i >= 0; i--) {
-		const line = lines[i];
-		line.age += 1;
-
-		if (line.age >= line.maxAge) {
-			lines.splice(i, 1);
-			continue;
-		}
-
-		const life = 1 - line.age / line.maxAge;
-		const brightness = Math.round(150 * life);
-
-		t.push();
-		t.charColor(brightness, brightness, 255);
-		t.char('-');
-		t.lineWeight(2);
-		t.translate(line.cx, line.cy);
-		t.line(-line.dx / 2, -line.dy / 2, line.dx / 2, line.dy / 2);
-		t.pop();
-	}
+	t.background(6, 10, 22);
 
 	if (dragStart && t.mouse.x !== Number.NEGATIVE_INFINITY) {
-		const centerX = (dragStart.x + t.mouse.x) / 2;
-		const centerY = (dragStart.y + t.mouse.y) / 2;
-		const dx = t.mouse.x - dragStart.x;
-		const dy = t.mouse.y - dragStart.y;
-
 		t.push();
-		t.charColor(255, 200, 0);
-		t.char('o');
-		t.lineWeight(2);
-		t.translate(centerX, centerY);
-		t.line(-dx / 2, -dy / 2, dx / 2, dy / 2);
+		t.charColor(100, 200, 255);
+		t.char('.');
+		t.line(dragStart.x, dragStart.y, t.mouse.x, t.mouse.y);
+		t.translate(dragStart.x, dragStart.y);
+		t.char('O');
+		t.point();
 		t.pop();
 	}
+
+	if (lastRelease) {
+		const life = Math.max(0, 1.0 - (t.secs - lastRelease.time) * 1.5);
+		if (life > 0) {
+			t.push();
+			t.charColor(255, 140, 180, life * 255);
+			t.char('-');
+			t.line(lastRelease.sx, lastRelease.sy, lastRelease.x, lastRelease.y);
+			t.translate(lastRelease.x, lastRelease.y);
+			t.char('X');
+			t.point();
+			t.pop();
+		}
+	}
+
+	drawCenteredText('Textmodifier.mouseReleased', -22, [255, 255, 255]);
+	drawCenteredText('Triggers once when a button is let go.', -20, [150, 170, 200]);
+	drawCenteredText('Used to finalize drags or projectiles.', -18, [150, 170, 200]);
+
+	drawCenteredText('Click, Drag, and RELEASE to "slingshot"', 18, [255, 140, 180]);
 });
 
 t.windowResized(() => {

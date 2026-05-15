@@ -2,12 +2,16 @@
  * @title TextmodeFont.font
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-function label(text, y, color = [220, 220, 220]) {
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.push();
 	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
 		t.push();
@@ -21,14 +25,21 @@ function label(text, y, color = [220, 220, 220]) {
 }
 
 t.draw(() => {
-	const font = t.font.font;
-	const unitsPerEm = font?.head?.unitsPerEm ?? 0;
-	const ascender = font?.hhea?.ascender ?? 0;
+	t.background(6, 10, 22);
 
-	t.background(7, 10, 20);
-	label('TextmodeFont.font', -5, [255, 220, 120]);
-	label(`unitsPerEm ${unitsPerEm}`, -1);
-	label(`ascender ${ascender}`, 3, [120, 205, 255]);
+	const font = t.font.font;
+	const head = font.head;
+	const hhea = font.hhea;
+	const maxp = font.maxp;
+
+	drawCenteredText('TextmodeFont.font', -8, [240, 245, 255]);
+
+	if (head && hhea && maxp) {
+		drawCenteredText('unitsPerEm: ' + head.unitsPerEm, 0, [180, 200, 220]);
+		drawCenteredText('ascender: ' + hhea.ascender, 4, [150, 170, 200]);
+		drawCenteredText('descender: ' + hhea.descender, 8, [150, 170, 200]);
+		drawCenteredText('numGlyphs: ' + maxp.numGlyphs, 12, [80, 255, 140]);
+	}
 });
 
 t.windowResized(() => {

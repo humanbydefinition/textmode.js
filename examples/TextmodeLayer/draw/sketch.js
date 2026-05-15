@@ -2,69 +2,79 @@
  * @title TextmodeLayer.draw
  * @author codex
  */
-const t = textmode.create();
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-// Create layers with different blend modes
-const glowLayer = t.layers.add({ blendMode: 'additive', opacity: 0.7 });
-const particleLayer = t.layers.add({ blendMode: 'screen', opacity: 0.5 });
+const backLayer = t.layers.add({ opacity: 0.6 });
+const effectLayer = t.layers.add({ blendMode: 'additive' });
 
-// Base layer: animated background with subtle wave pattern
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+	t.push();
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+
+	for (let i = 0; i < text.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(text[i]);
+		t.point();
+		t.pop();
+	}
+
+	t.pop();
+}
+
 t.draw(() => {
-  const time = t.frameCount * 0.02;
-  t.background(8, 12, 24);
+	t.background(6, 10, 22);
+	drawCenteredText('TextmodeLayer.draw', -12, [240, 245, 255]);
 
-  // Draw undulating grid pattern
-  for (let y = -t.grid.rows / 2; y < t.grid.rows / 2; y++) {
-    for (let x = -t.grid.cols / 2; x < t.grid.cols / 2; x++) {
-      const wave = Math.sin(x * 0.3 + time) * Math.cos(y * 0.3 + time * 0.7);
-      const brightness = 20 + wave * 15;
-
-      t.push();
-      t.charColor(brightness, brightness + 5, brightness + 15);
-      t.char(wave > 0.3 ? '+' : wave > -0.3 ? '·' : '.');
-      t.translate(x, y);
-      t.point();
-      t.pop();
-    }
-  }
+	t.push();
+	t.charColor(40, 50, 80);
+	t.char('.');
+	for (let y = -4; y <= 4; y += 2) {
+		t.push();
+		t.translate(0, y);
+		t.rect(t.grid.cols, 1);
+		t.pop();
+	}
+	t.pop();
 });
 
-// Glow layer: pulsing orbital ring
-glowLayer.draw(() => {
-  t.clear();
-  const time = t.frameCount * 0.03;
-  const ringCount = 24;
+backLayer.draw(() => {
+	t.clear();
+	const time = t.frameCount * 0.03;
 
-  for (let i = 0; i < ringCount; i++) {
-    const angle = (i / ringCount) * Math.PI * 2 + time;
-    const pulse = Math.sin(time * 2 + i * 0.5) * 0.5 + 0.5;
-    const radius = 8 + Math.sin(time * 1.5) * 2;
-
-    t.push();
-    t.charColor(255, 180 + pulse * 75, 80 + pulse * 100);
-    t.char('#*+=-'[i % 5]);
-    t.translate(Math.round(Math.cos(angle) * radius), Math.round(Math.sin(angle) * radius * 0.6));
-    t.point();
-    t.pop();
-  }
+	// Floating data nodes circling the center
+	for (let i = 0; i < 6; i++) {
+		const angle = time + (i / 6) * Math.PI * 2;
+		const r = 10;
+		t.push();
+		t.translate(Math.round(Math.cos(angle) * r * 1.5), Math.round(Math.sin(angle) * r * 0.6));
+		t.charColor(100, 150, 255);
+		t.char('o');
+		t.point();
+		t.pop();
+	}
 });
 
-// Particle layer: floating sparkles
-particleLayer.draw(() => {
-  t.clear();
-  const time = t.frameCount * 0.015;
+effectLayer.draw(() => {
+	t.clear();
+	const time = t.frameCount * 0.05;
+	const pulse = 0.5 + 0.5 * Math.sin(time);
 
-  for (let i = 0; i < 12; i++) {
-    const seed = i * 137.5; // Golden angle for distribution
-    const x = Math.sin(seed + time) * (6 + i * 0.8);
-    const y = Math.cos(seed * 1.3 + time * 0.8) * (4 + i * 0.5);
-    const flicker = Math.sin(time * 4 + i) * 0.5 + 0.5;
+	// Central core pulsing shape
+	t.push();
+	t.charColor(255, 100 + pulse * 155, 100);
+	t.char('#');
+	t.rect(8, 4);
+	t.pop();
 
-    t.push();
-    t.charColor(200 + flicker * 55, 220, 255);
-    t.char('*');
-    t.translate(Math.round(x), Math.round(y));
-    t.point();
-    t.pop();
-  }
+	drawCenteredText('INDEPENDENT LAYER CONTEXTS', 10, [150, 170, 200]);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

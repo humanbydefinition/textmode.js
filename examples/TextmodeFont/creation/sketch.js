@@ -2,15 +2,17 @@
  * @title TextmodeFont.creation
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
-const accentLayer = t.layers.add({ fontSize: 8, offset: [0, 6] });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let customFont;
-
-function label(text, y, color = [220, 220, 220]) {
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.push();
 	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+
 	for (let i = 0; i < text.length; i++) {
 		t.push();
 		t.translate(i, 0);
@@ -18,24 +20,16 @@ function label(text, y, color = [220, 220, 220]) {
 		t.point();
 		t.pop();
 	}
+
 	t.pop();
 }
 
-t.setup(async () => {
-	customFont = await t.loadFont('../../primitives/FROGBLOCK-V2.1.ttf', false);
-	await accentLayer.loadFont(customFont);
-});
-
 t.draw(() => {
-	t.background(8, 10, 22);
-	label('TextmodeFont creation', -6, [255, 210, 90]);
-	label(`glyphs: ${customFont ? customFont.characters.length : 'loading'}`, -2);
-	label('base layer keeps its original font', 2, [150, 160, 190]);
-});
+	t.background(6, 10, 22);
 
-accentLayer.draw(() => {
-	t.clear();
-	label('custom font on another layer', 0, [120, 220, 255]);
+	drawCenteredText('TextmodeFont.creation', -6, [240, 245, 255]);
+	drawCenteredText('t.loadFont(path)', 0, [180, 200, 220]);
+	drawCenteredText('async font loading', 4, [150, 170, 200]);
 });
 
 t.windowResized(() => {

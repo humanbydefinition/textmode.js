@@ -29,7 +29,6 @@ function drawText(text, x, y, r = 220, g = r, b = r, a = 255) {
 	t.pop();
 }
 
-// Connection events
 t.on('gamepadConnected', (data) => {
 	pushLog('CONN', `slot ${data.gamepad.index} connected — ${data.gamepad.id.slice(0, 36)}`, 80, 220, 120);
 });
@@ -38,7 +37,6 @@ t.on('gamepadDisconnected', (data) => {
 	pushLog('DISC', `slot ${data.gamepad.index} disconnected`, 220, 80, 80);
 });
 
-// Button events
 t.on('gamepadButtonPressed', (data) => {
 	const name = data.standardButtonName || `btn[${data.buttonIndex}]`;
 	const val = data.button.value.toFixed(2);
@@ -50,7 +48,6 @@ t.on('gamepadButtonReleased', (data) => {
 	pushLog('REL', `slot ${data.gamepad.index}  ${name}`, 120, 160, 255);
 });
 
-// Axis events
 t.on('gamepadAxisChanged', (data) => {
 	const name = data.standardAxisName || `axis[${data.axisIndex}]`;
 	const val = (data.value >= 0 ? '+' : '') + data.value.toFixed(2);
@@ -65,14 +62,13 @@ t.draw(() => {
 	drawText('connect a controller and interact with it', -28, -16, 140, 140, 140);
 	drawText(`connected: ${t.gamepads.length}`, -28, -14, 160, 160, 160);
 
-	// Event log
 	drawText('event log', -28, -11, 200, 200, 200);
 	drawText('-----------------------------------------------------', -28, -10, 60, 60, 60);
 
 	for (let i = 0; i < log.length; i++) {
 		const entry = log[i];
 		entry.age++;
-		const fade = Math.max(0.25, 1 - (entry.age / 300));
+		const fade = Math.max(0.25, 1 - entry.age / 300);
 		const a = Math.round(255 * fade);
 		const tag = (entry.tag + '     ').slice(0, 5);
 

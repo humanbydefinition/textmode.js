@@ -2,13 +2,16 @@
  * @title Textmodifier.secs3
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-function drawLabel(text, y) {
+function drawCenteredText(text, row, rgb = [240, 245, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(200);
-
+	t.translate(-Math.floor(text.length / 2), row);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
 	for (let i = 0; i < text.length; i++) {
 		t.push();
 		t.translate(i, 0);
@@ -16,51 +19,56 @@ function drawLabel(text, y) {
 		t.point();
 		t.pop();
 	}
-
 	t.pop();
 }
 
 t.draw(() => {
-	t.background(0);
+	t.background(6, 10, 22);
 
-	if (t.isKeyPressed(' ')) {
-		const progress = (t.mouse.x + t.grid.cols / 2) / t.grid.cols;
-		t.secs = Math.max(0, Math.min(5, progress * 5));
+	const barWidth = 40;
+	const startX = -Math.floor(barWidth / 2);
+
+	// Scrubbing logic: Override t.secs while holding mouse button
+	if (t.mouseIsPressed && t.mouse.x !== Number.NEGATIVE_INFINITY) {
+		const progress = (t.mouse.x - startX) / barWidth;
+		const scrub = progress * 10;
+		t.secs = Math.max(0, Math.min(10, scrub));
 		t.cursor('grabbing');
 	} else {
 		t.cursor('default');
 	}
 
-	const length = Math.min(t.grid.rows, t.grid.cols) * 0.35;
-	const angle = Math.sin(t.secs * 3) * Math.PI * 0.3;
-	const bobX = Math.sin(angle) * length;
-	const bobY = Math.cos(angle) * length;
-
-	t.charColor(80);
-	t.char('.');
-	t.line(0, 0, bobX, bobY);
-
-	for (let i = 1; i <= 4; i++) {
-		const lag = i * 0.08;
-		const echoAngle = Math.sin((t.secs - lag) * 3) * Math.PI * 0.3;
-
-		t.push();
-		t.translate(Math.sin(echoAngle) * length, Math.cos(echoAngle) * length);
-		t.char('o');
-		t.charColor(50, 100, 255, 100 - i * 20);
-		t.ellipse(6 - i, 6 - i);
-		t.pop();
-	}
+	const time = t.secs;
+	const length = 15;
+	const angle = Math.sin(time * 2) * 60; // Pendulum swing
 
 	t.push();
-	t.translate(bobX, bobY);
+	t.rotateZ(angle);
+	t.charColor(60, 70, 100);
+	t.char('|');
+	t.rect(1, length);
+
+	t.translate(0, length);
 	t.char('O');
-	t.charColor(255, 100 + Math.abs(Math.cos(t.secs * 3)) * 155, 50);
+	t.charColor(255, 140, 180);
 	t.ellipse(8, 8);
 	t.pop();
 
-	drawLabel('hold SPACE and move mouse to set secs', Math.floor(t.grid.rows / 2) - 3);
-	drawLabel(`${t.secs.toFixed(2)} secs`, Math.floor(t.grid.rows / 2) - 1);
+	drawCenteredText('Textmodifier.secs (Time Scrubbing)', -18, [255, 255, 255]);
+	drawCenteredText('Hold Click and drag horizontally to scrub time.', -16, [150, 170, 200]);
+	drawCenteredText(`t.secs = ${t.secs.toFixed(2)}s`, 12, [255, 140, 180]);
+
+	t.push();
+	t.translate(0, 15);
+	t.charColor(40, 45, 60);
+	t.char('-');
+	t.rect(barWidth, 1);
+
+	t.translate(Math.floor((t.secs / 10) * barWidth) + startX, 0);
+	t.char('^');
+	t.charColor(255);
+	t.point();
+	t.pop();
 });
 
 t.windowResized(() => {

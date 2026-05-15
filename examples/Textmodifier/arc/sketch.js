@@ -2,44 +2,69 @@
  * @title Textmodifier.arc
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
+
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+	t.push();
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+
+	for (let i = 0; i < text.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(text[i]);
+		t.point();
+		t.pop();
+	}
+
+	t.pop();
+}
 
 t.draw(() => {
-  t.background(10, 15, 25); // Deep space blue
+	t.background(6, 10, 22);
 
-  const time = t.frameCount * 0.02;
-  const arcCount = 32;
-  const baseSize = Math.min(t.grid.cols, t.grid.rows);
+	const time = t.frameCount * 0.02;
+	const startAngle = (time * 50) % 360;
+	const endAngle = startAngle + 90 + Math.sin(time) * 45;
 
-  for (let i = 0; i < arcCount; i++) {
-    const phase = i / arcCount;
-    const size = baseSize * (0.3 + 0.7 * Math.sin(time + phase * Math.PI));
-    const startAngle = (time * 50 + i * 45) % 360;
-    const sweep = 45 + 90 * (0.5 + 0.5 * Math.cos(time * 0.7 + i));
+	t.push();
+	t.charColor(40, 50, 80);
+	t.char('.');
+	t.rect(t.grid.cols, t.grid.rows);
+	t.pop();
 
-    t.push();
-    t.rotateZ(i * (360 / arcCount) + time * 20);
+	drawCenteredText('Textmodifier.arc', -12, [240, 245, 255]);
+	drawCenteredText('Drawing circular or elliptical paths.', -10, [150, 170, 200]);
 
-    // Color shifting
-    const r = 100 + 155 * Math.sin(time + phase);
-    const g = 150 + 105 * Math.cos(time * 0.5 + phase);
-    const b = 200 + 55 * Math.sin(time * 0.8);
+	t.push();
+	t.char('#');
+	t.charColor(140, 180, 255);
+	t.lineWeight(1);
 
-    t.charColor(r, g, b);
-    t.char(['+', '•', '·', '░'][i % 4]);
-    t.lineWeight(2 + i % 3);
+	// Params: width, height, startAngle (deg), endAngle (deg)
+	t.arc(24, 14, startAngle, endAngle);
 
-    t.arc(size, size, startAngle, startAngle + sweep);
-    t.pop();
-  }
+	t.push();
+	t.charColor(60, 70, 100, 150);
+	t.char('.');
 
-  // Center core
-  t.char('@');
-  t.charColor(255, 255, 200);
-  t.rotateZ(-time * 100);
-  t.rect(2, 2);
+	const startRad = (startAngle * Math.PI) / 180;
+	t.line(0, 0, Math.cos(startRad) * 12, Math.sin(startRad) * 7);
+
+	const endRad = (endAngle * Math.PI) / 180;
+	t.line(0, 0, Math.cos(endRad) * 12, Math.sin(endRad) * 7);
+	t.pop();
+	t.pop();
+
+	drawCenteredText(`START: ${startAngle.toFixed(1).padStart(5, '0')} DEG`, 8, [255, 225, 140]);
+	drawCenteredText(`END:   ${endAngle.toFixed(1).padStart(5, '0')} DEG`, 10, [140, 255, 180]);
+	drawCenteredText('t.arc(width, height, start, end)', 13, [100, 120, 150]);
 });
 
 t.windowResized(() => {
-  t.resizeCanvas(window.innerWidth, window.innerHeight);
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

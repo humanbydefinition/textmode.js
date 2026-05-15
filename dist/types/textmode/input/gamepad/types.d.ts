@@ -133,7 +133,7 @@ export type GamepadButtonEventHandler = (data: GamepadButtonEventData) => void;
 /** Gamepad axis event handler. */
 export type GamepadAxisEventHandler = (data: GamepadAxisEventData) => void;
 /**
- * Event map for all gamepad events emitted by the {@link GamepadInput}.
+ * Event map for all gamepad events emitted by the gamepad input manager.
  */
 export interface GamepadEventMap {
     /** Fires when a gamepad appears in the current frame snapshot. */

@@ -9,8 +9,25 @@ export { GLFramebuffer as TextmodeFramebuffer } from './rendering';
 export { TextmodeColor } from './textmode/color';
 export { TextmodeCamera } from './textmode/camera';
 export { TextmodeGrid } from './textmode/grid/TextmodeGrid';
+export { TextmodeFont, TextmodeTileset } from './textmode/fonts';
+export { TextmodeLayer, TextmodeLayerManager } from './textmode/layers';
+export { TextmodeImage, TextmodeSource, TextmodeTexture, TextmodeVideo } from './textmode/media';
+export { TextmodeConversionManager } from './textmode/conversion';
+export { TextmodeFilterManager } from './textmode/filters';
+export { TextmodeError, TextmodeErrorLevel, ErrorLayerController } from './textmode/error';
+export { LoadingLayerController } from './textmode/layers/overlays/loading';
+export { INPUT_EVENT_NAMES } from './textmode/input';
+export { TEXTMODE_LAYER_BLEND_MODES } from './textmode/layers';
 export type { TextmodeOptions } from './textmode/types';
 export type { TextmodeFramebufferOptions } from './rendering/webgl';
+export type { TextmodeLayerBlendMode, TextmodeLayerOptions } from './textmode/layers/types';
+export type { TextmodeGlyph, TextmodeTilesetOptions, GlyphData } from './textmode/fonts';
+export type { BuiltInConversionMode, TextmodeConversionMode, TextmodeConversionContext, TextmodeConversionStrategy, } from './textmode/conversion';
+export type { BuiltInFilterName, BuiltInFilterParams, FilterName } from './textmode/filters';
+export type { ErrorScreenRendererContext } from './textmode/error';
+export type { LoadingScreenOptions, LoadingScreenRendererContext, LoadingScreenState, } from './textmode/layers/overlays/loading';
+export type { InputEventMap, InputEventName, InputEventOwner } from './textmode/input';
+export type { TextmodeCanvasHandle, TextmodePlugin, TextmodePluginContext, TextmodePluginHook, LayerLifecycleHook, LayerRenderHook, SetupLifecycleHook, LayerExtensionImplementation, } from './textmode/plugins';
 /**
  * All media conversion related modules and types.
  *
@@ -32,7 +49,7 @@ export * as conversion from './textmode/conversion';
  *
  * @example
  * ```ts
- * import type { TextmodePlugin, TextmodePluginContext } from 'textmode.js/plugins';
+ * import type { TextmodePlugin, TextmodePluginContext } from 'textmode.js';
  *
  * const MyPlugin: TextmodePlugin = {
  *   name: 'my-plugin',

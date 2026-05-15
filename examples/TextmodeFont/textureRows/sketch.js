@@ -2,12 +2,17 @@
  * @title TextmodeFont.textureRows
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-function label(text, y, color = [220, 220, 220]) {
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.push();
 	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+
 	for (let i = 0; i < text.length; i++) {
 		t.push();
 		t.translate(i, 0);
@@ -15,23 +20,17 @@ function label(text, y, color = [220, 220, 220]) {
 		t.point();
 		t.pop();
 	}
+
 	t.pop();
 }
 
 t.draw(() => {
-	const rows = t.font.textureRows;
-	t.background(8, 10, 22);
-	label('textureRows', -6, [255, 210, 90]);
-	label(`atlas rows: ${rows}`, -2);
+	t.background(6, 10, 22);
 
-	for (let i = 0; i < rows; i++) {
-		t.push();
-		t.translate(0, i - rows / 2 + 4);
-		t.char('-');
-		t.charColor(120, 170 + (i % 10) * 8, 255);
-		t.line(-6, 0, 6, 0);
-		t.pop();
-	}
+	const rows = t.font.textureRows;
+
+	drawCenteredText('TextmodeFont.textureRows', -6, [240, 245, 255]);
+	drawCenteredText('textureRows: ' + rows, 4, [180, 200, 220]);
 });
 
 t.windowResized(() => {

@@ -2,42 +2,69 @@
  * @title Textmodifier.box
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-function label(text, y) {
+const labelLayer = t.layers.add();
+
+let w = 0,
+	h = 0,
+	d = 0;
+
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y, 0);
-	t.charColor(220);
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+
 	for (let i = 0; i < text.length; i++) {
 		t.push();
-		t.translate(i, 0, 0);
+		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
 		t.pop();
 	}
+
 	t.pop();
 }
 
+labelLayer.draw(() => {
+	t.clear();
+
+	drawCenteredText('Textmodifier.box', -12, [240, 245, 255]);
+	drawCenteredText('A 3D box primitive with width, height, and depth.', -10, [150, 170, 200]);
+
+	drawCenteredText(`WIDTH:  ${w.toFixed(1)}`, 8, [140, 180, 255]);
+	drawCenteredText(`HEIGHT: ${h.toFixed(1)}`, 10, [140, 255, 180]);
+	drawCenteredText(`DEPTH:  ${d.toFixed(1)}`, 12, [255, 225, 140]);
+
+	drawCenteredText('t.box(width, height, depth)', 15, [100, 120, 150]);
+});
+
 t.draw(() => {
+	t.background(6, 10, 22);
+
 	const time = t.frameCount * 0.02;
-	t.background(6, 8, 18);
-	t.ambientLight(22, 24, 30);
-	t.pointLight([255, 170, 120], { x: Math.cos(time) * 26, y: -8, z: 28 });
-	t.camera(Math.sin(time * 0.5) * 18, -8, 84, 0, 0, 0);
 
-	for (let i = 0; i < 4; i++) {
-		t.push();
-		t.translate((i - 1.5) * 12, Math.sin(time * 2 + i) * 2, -i * 8);
-		t.rotateX(18 + Math.sin(time * 1.7 + i) * 10);
-		t.rotateY(time * 42 + i * 18);
-		t.char(['#', 'H', 'X', '@'][i]);
-		t.charColor(140 + i * 22, 110 + i * 18, 255 - i * 24);
-		t.cellColor(14 + i * 3, 12 + i * 2, 22 + i * 4);
-		t.box(5 + i * 2, 4 + (i % 2) * 4, 3 + i * 1.5);
-		t.pop();
-	}
+	w = 12 + Math.sin(time) * 4;
+	h = 8 + Math.cos(time * 0.7) * 3;
+	d = 10 + Math.sin(time * 0.5) * 4;
 
-	label('box(width, height, depth)', Math.floor(t.grid.rows / 2) - 3);
+	t.ambientLight(30, 40, 60);
+	t.pointLight([255, 225, 140], 0, -20, 30);
+	t.camera(15, -10, 40, 0, 0, 0);
+
+	t.push();
+	t.rotateX(time * 20);
+	t.rotateY(time * 30);
+	t.char('#');
+	t.charColor(140, 180, 255);
+	t.cellColor(20, 30, 60);
+
+	t.box(w, h, d);
+	t.pop();
 });
 
 t.windowResized(() => {

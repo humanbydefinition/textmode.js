@@ -2,67 +2,73 @@
  * @title TextmodeLayer.offset
  * @author codex
  */
-const t = textmode.create();
-
-const LAYER_COUNT = 32;
-const LABEL = 'textmode.js';
-
-// Create trailing layers
-const layers = Array.from({ length: LAYER_COUNT }, () =>
-  t.layers.add({ blendMode: 'normal', opacity: 1.0 })
-);
-
-// Snake segments for smooth trailing effect
-const segments = Array.from({ length: LAYER_COUNT + 1 }, () => ({ x: 0, y: 0 }));
-
-// Helper to draw text label centered
-const drawLabel = (color) => {
-  t.charColor(...color);
-  t.cellColor(0, 0, 0, 0);
-  [...LABEL].forEach((char, i) => {
-    t.push();
-    t.char(char);
-    t.translate(i - Math.floor(LABEL.length / 2), 0);
-    t.rect(1, 1);
-    t.pop();
-  });
-};
-
-// Set up layer draw callbacks
-layers.forEach((layer, index) => {
-  layer.draw(() => {
-    t.background(0, 0, 0, 0);
-    const brightness = 255 - (index / LAYER_COUNT) * 180;
-    drawLabel([brightness, brightness * 0.8, 255]);
-  });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
 });
 
+const offsetLayer = t.layers.add({ blendMode: 'additive' });
+
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+	t.push();
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+
+	for (let i = 0; i < text.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(text[i]);
+		t.point();
+		t.pop();
+	}
+
+	t.pop();
+}
+
 t.draw(() => {
-  t.background(20, 20, 40);
-  t.clear();
+	t.background(6, 10, 22);
 
-  // Compute head position (circular motion)
-  const time = t.frameCount * 0.06;
-  const head = {
-    x: Math.cos(time) * 24,
-    y: Math.sin(time * 0.7) * 12
-  };
+	const time = t.frameCount * 0.03;
+	const g = t.grid;
 
-  // Update snake segments with elastic follow
-  segments[0] = head;
-  for (let i = 1; i < segments.length; i++) {
-    const prev = segments[i - 1];
-    segments[i].x += (prev.x - segments[i].x) * 0.3;
-    segments[i].y += (prev.y - segments[i].y) * 0.3;
-  }
+	const offX = Math.round(Math.cos(time) * (g.width * 0.25));
+	const offY = Math.round(Math.sin(time * 0.7) * (g.height * 0.25));
 
-  // Draw head on base layer
-  t.layers.base.offset(Math.round(head.x), Math.round(head.y));
-  drawLabel([255, 200, 100]);
+	offsetLayer.offset(offX, offY);
 
-  // Offset each trailing layer to its segment position
-  layers.forEach((layer, index) => {
-    const seg = segments[index + 1];
-    layer.offset(Math.round(seg.x), Math.round(seg.y));
-  });
+	const targetGridX = Math.round(offX / g.cellWidth);
+	const targetGridY = Math.round(offY / g.cellHeight);
+
+	t.push();
+	t.charColor(60, 70, 100, 150);
+	t.char('.');
+	t.line(0, 0, targetGridX, targetGridY);
+	t.pop();
+
+	t.push();
+	t.charColor(100, 120, 150);
+	t.char('+');
+	t.point();
+	t.pop();
+
+	drawCenteredText('TextmodeLayer.offset', -12, [240, 245, 255]);
+	drawCenteredText('Translating the entire layer coordinate system in pixels.', -10, [150, 170, 200]);
+
+	drawCenteredText(`OFFSET X: ${offX} PX`, 8, [255, 180, 100]);
+	drawCenteredText(`OFFSET Y: ${offY} PX`, 10, [255, 180, 100]);
+});
+
+offsetLayer.draw(() => {
+	t.clear();
+
+	t.push();
+	t.charColor(255, 180, 100);
+	t.char('#');
+	t.rect(7, 3);
+	t.pop();
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

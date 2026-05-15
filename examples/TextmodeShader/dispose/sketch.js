@@ -2,15 +2,19 @@
  * @title TextmodeShader.dispose
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let shader = null;
+let customShader = null;
 let isDisposed = false;
 
-function drawLabel(text, y, color = [220, 220, 220]) {
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.push();
 	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
 		t.push();
@@ -49,7 +53,7 @@ async function createShader() {
 		}
 	`;
 
-	shader = await t.createShader(vert, frag);
+	customShader = await t.createShader(vert, frag);
 	isDisposed = false;
 }
 
@@ -58,26 +62,41 @@ t.setup(async () => {
 });
 
 t.draw(() => {
-	t.background(5, 6, 16);
+	t.background(6, 10, 22);
 
-	if (shader && !isDisposed) {
-		t.shader(shader);
-		t.rect(t.grid.cols - 12, t.grid.rows - 12);
+	drawCenteredText('TextmodeShader.dispose', -12, [240, 245, 255]);
+	drawCenteredText('Manually releasing GPU resources.', -10, [150, 170, 200]);
+
+	if (customShader && !isDisposed) {
+		t.push();
+		t.shader(customShader);
+		t.charColor(255, 180, 100);
+		t.rect(14, 6);
 		t.resetShader();
+		t.pop();
+
+		drawCenteredText('GPU STATUS: ACTIVE', 6, [140, 255, 180]);
+	} else {
+		t.push();
+		t.charColor(60, 70, 100);
+		t.char('.');
+		t.rect(14, 6);
+		t.pop();
+
+		drawCenteredText('GPU STATUS: OFFLINE', 6, [255, 100, 100]);
 	}
 
-	drawLabel(isDisposed ? 'shader disposed' : 'click to dispose shader', -Math.floor(t.grid.rows * 0.34), [255, 225, 140]);
-	drawLabel(isDisposed ? 'click again to rebuild it' : 'program still valid until dispose()', Math.floor(t.grid.rows * 0.32), [120, 205, 255]);
+	drawCenteredText('CLICK TO ' + (isDisposed ? 'REBUILD' : 'DISPOSE'), 10, [140, 180, 255]);
+	drawCenteredText('dispose() frees the GL program handle.', 13, [100, 120, 150]);
 });
 
 t.mouseClicked(async () => {
-	if (shader && !isDisposed) {
-		shader.dispose();
+	if (customShader && !isDisposed) {
+		customShader.dispose();
 		isDisposed = true;
-		return;
+	} else {
+		await createShader();
 	}
-
-	await createShader();
 });
 
 t.windowResized(() => {

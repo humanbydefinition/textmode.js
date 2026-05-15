@@ -79,7 +79,7 @@
 
 			<!-- Footer -->
 			<footer class="mt-12 pt-8 border-t border-zinc-800 text-xs text-zinc-600">
-				<p>textmode.js - LGPL-2.1 license</p>
+				<p>textmode.js - MIT license</p>
 			</footer>
 		</div>
 
@@ -108,16 +108,10 @@
 						'characters',
 						'creation',
 						'dispose',
-						{ name: 'framebuffer', path: 'fontFramebuffer' },
+						'framebuffer',
 						'font',
-						'fontFramebuffer',
 						'fontSize',
 						'maxGlyphDimensions',
-						'cellDimensions',
-						{ name: 'cellWidth', path: 'cellDimensions' },
-						{ name: 'cellHeight', path: 'cellDimensions' },
-						{ name: 'columns', path: 'textureColumns' },
-						{ name: 'rows', path: 'textureRows' },
 						'textureColumns',
 						'textureRows',
 					],
@@ -126,21 +120,22 @@
 					name: 'TextmodeTileset',
 					description: 'Tileset atlas metadata, cell sizing, and lifecycle',
 					entries: [
+						'creation',
 						'dispose',
 						'characters',
-						{ name: 'characterMap', path: 'atlas' },
-						{ name: 'framebuffer', path: 'atlas' },
-						{ name: 'fontFramebuffer', path: 'atlas' },
-						{ name: 'columns', path: 'atlas' },
-						{ name: 'rows', path: 'atlas' },
-						{ name: 'textureColumns', path: 'atlas' },
-						{ name: 'textureRows', path: 'atlas' },
+						'characterMap',
+						'framebuffer',
+						'fontFramebuffer',
+						'columns',
+						'rows',
+						'textureColumns',
+						'textureRows',
 						'nativeCellDimensions',
-						{ name: 'maxGlyphDimensions', path: 'dimensions' },
-						{ name: 'cellDimensions', path: 'dimensions' },
-						{ name: 'cellWidth', path: 'dimensions' },
-						{ name: 'cellHeight', path: 'dimensions' },
-						{ name: 'fontSize', path: 'dimensions' },
+						'maxGlyphDimensions',
+						'cellDimensions',
+						'cellWidth',
+						'cellHeight',
+						'fontSize',
 					],
 				},
 				{
@@ -261,10 +256,10 @@
 						'flipY',
 						'invert',
 						'texture',
-						{ name: 'width', path: 'dimensions' },
-						{ name: 'height', path: 'dimensions' },
-						{ name: 'originalWidth', path: 'dimensions' },
-						{ name: 'originalHeight', path: 'dimensions' },
+						'width',
+						'height',
+						'originalWidth',
+						'originalHeight',
 					],
 				},
 				{

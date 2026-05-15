@@ -2,24 +2,19 @@
  * @title TextmodeLayer.loadTileset
  * @author codex
  */
-const TILE_COLUMNS = 16;
-const TILE_ROWS = 16;
-const TILE_COUNT = TILE_COLUMNS * TILE_ROWS;
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
-const tilesLayer = t.layers.add({ fontSize: 16 });
+// Each layer can have its own tileset and color behavior.
+const tilesLayer = t.layers.add();
 
-let tileset = null;
-let useTileColors = false;
-
-function activeTileIndex() {
-	return Math.floor((t.frameCount * 0.4) % TILE_COUNT);
-}
-
-function label(text, y, color = [220, 220, 220]) {
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.push();
 	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
 		t.push();
@@ -33,43 +28,53 @@ function label(text, y, color = [220, 220, 220]) {
 }
 
 t.setup(async () => {
-	tileset = await t.loadTileset(
-		{
-			source: 'https://littlebitspace.com/resources/fonts/T64.png',
-			columns: TILE_COLUMNS,
-			rows: TILE_ROWS,
-			count: TILE_COUNT,
-		},
-		false
-	);
-
-	await tilesLayer.loadTileset(tileset);
-	tilesLayer.useTileColors(useTileColors);
+	await tilesLayer.loadTileset({
+		source: 'https://littlebitspace.com/resources/fonts/T64.png',
+		columns: 16,
+		rows: 16,
+		count: 256,
+	});
 });
 
 t.draw(() => {
-	t.background(5, 7, 18);
-	label('layer-local tileset', -Math.floor(t.grid.rows * 0.34), [255, 225, 140]);
-	label('T64  16 x 16  8 x 8 cells', Math.floor(t.grid.rows * 0.22));
-	label(useTileColors ? 'layer uses authored colors' : 'layer recolors through char/cell', Math.floor(t.grid.rows * 0.30));
-	label('click to toggle layer.useTileColors()', Math.floor(t.grid.rows * 0.38), [120, 205, 255]);
+	t.background(6, 10, 22);
+
+	drawCenteredText('TextmodeLayer.loadTileset', -12, [240, 245, 255]);
+	drawCenteredText('Bitmaps repacked into per-layer glyph atlases.', -10, [150, 170, 200]);
+
+	t.push();
+	t.charColor(40, 50, 80);
+	t.char('.');
+	t.rect(t.grid.cols, 1);
+	t.pop();
+
+	drawCenteredText('CLICK TO TOGGLE useTileColors()', 10, [140, 220, 255]);
 });
 
 tilesLayer.draw(() => {
-	if (!tileset) {
-		return;
-	}
-
 	t.clear();
-	tilesLayer.useTileColors(useTileColors);
-	t.char(activeTileIndex());
-	t.charColor(255, 90, 110);
-	t.cellColor(18, 70, 160);
-	t.point();
+	const font = tilesLayer.font;
+	if (!font || font.characters.length === 0) return;
+
+	const time = t.frameCount * 0.05;
+	const activeTile = Math.floor(time) % font.characters.length;
+
+	t.push();
+	t.translate(0, 0);
+	t.char(activeTile);
+
+	t.charColor(120, 255, 180);
+	t.cellColor(20, 40, 60);
+	t.rect(10, 6);
+	t.pop();
+
+	const mode = tilesLayer.useTileColors();
+	const statusColor = mode ? [255, 225, 140] : [140, 180, 255];
+	drawCenteredText('MODE: ' + (mode ? 'AUTHORED COLORS' : 'RECOLORED'), 6, statusColor);
 });
 
 t.mouseClicked(() => {
-	useTileColors = !useTileColors;
+	tilesLayer.useTileColors(!tilesLayer.useTileColors());
 });
 
 t.windowResized(() => {

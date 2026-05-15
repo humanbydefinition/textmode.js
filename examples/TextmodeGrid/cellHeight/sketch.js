@@ -2,32 +2,59 @@
  * @title TextmodeGrid.cellHeight
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-t.draw(() => {
-	t.background(0);
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+	t.push();
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
 
-	const rows = t.grid.rows;
-	const label = `CELL H: ${t.grid.cellHeight}px`;
-
-	for (let y = -rows / 2; y < rows / 2; y++) {
-		const brightness = 100 + (Math.sin(y * 0.2 + t.frameCount * 0.1) * 0.5 + 0.5) * 155;
-
-		t.cellColor(0, brightness * 0.5, brightness);
+	for (let i = 0; i < text.length; i++) {
 		t.push();
-		t.translate(0, y);
-		t.char('=');
-		t.charColor(255);
+		t.translate(i, 0);
+		t.char(text[i]);
 		t.point();
 		t.pop();
 	}
 
-	for (let i = 0; i < label.length; i++) {
+	t.pop();
+}
+
+t.draw(() => {
+	t.background(6, 10, 22);
+
+	const h = t.grid.cellHeight;
+
+	drawCenteredText('TextmodeGrid.cellHeight', -8, [240, 245, 255]);
+	drawCenteredText(`${h} PIXELS`, 6, [255, 225, 140]);
+
+	for (let y = -3; y <= 3; y++) {
+		const isTarget = y === 0;
+
 		t.push();
-		t.translate(i - label.length / 2, 0);
-		t.char(label[i]);
-		t.cellColor(0);
-		t.charColor(255, 255, 0);
+		t.translate(0, y);
+
+		if (isTarget) {
+			t.char('#');
+			t.charColor(255, 225, 140);
+
+			t.push();
+			t.translate(-3, 0);
+			t.char('>');
+			t.point();
+			t.translate(6, 0);
+			t.char('<');
+			t.point();
+			t.pop();
+		} else {
+			t.char('.');
+			t.charColor(100, 120, 150);
+		}
+
 		t.point();
 		t.pop();
 	}

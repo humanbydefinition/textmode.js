@@ -38,7 +38,7 @@ export interface MouseEventData {
  */
 export type MouseEventHandler = (data: MouseEventData) => void;
 /**
- * Event map for all mouse events emitted by the {@link MouseInput}.
+ * Event map for all mouse events emitted by the mouse input manager.
  */
 export interface MouseEventMap {
     /** Fires when the mouse button is clicked (full press + release). */

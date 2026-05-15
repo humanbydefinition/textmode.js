@@ -2,31 +2,18 @@
  * @title TextmodeSource.cellColor
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let source;
+let techSource;
 
-function createGradientCanvas() {
-	const canvas = document.createElement('canvas');
-	canvas.width = 160;
-	canvas.height = 160;
-
-	const ctx = canvas.getContext('2d');
-	if (!ctx) return canvas;
-
-	const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-	gradient.addColorStop(0, '#050505');
-	gradient.addColorStop(1, '#f5f5f5');
-	ctx.fillStyle = gradient;
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-	return canvas;
-}
-
-function drawLabel(text, y) {
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.push();
 	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(255);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
 		t.push();
@@ -39,23 +26,66 @@ function drawLabel(text, y) {
 	t.pop();
 }
 
+function createTechCanvas() {
+	const canvas = document.createElement('canvas');
+	canvas.width = 128;
+	canvas.height = 128;
+	const ctx = canvas.getContext('2d');
+	if (!ctx) return canvas;
+
+	ctx.fillStyle = '#000000';
+	ctx.fillRect(0, 0, 128, 128);
+
+	ctx.strokeStyle = '#ffffff';
+	ctx.lineWidth = 4;
+
+	for (let i = 0; i < 3; i++) {
+		ctx.beginPath();
+		ctx.arc(64, 64, 20 + i * 20, 0, Math.PI * 2);
+		ctx.stroke();
+	}
+
+	ctx.beginPath();
+	ctx.moveTo(64, 10);
+	ctx.lineTo(64, 118);
+	ctx.moveTo(10, 64);
+	ctx.lineTo(118, 64);
+	ctx.stroke();
+
+	return canvas;
+}
+
 t.setup(() => {
-	source = t.createTexture(createGradientCanvas());
-	source.characters(' .:-=+*#%@');
-	source.charColorMode('fixed');
-	source.charColor(255);
-	source.cellColorMode('fixed');
+	techSource = t.createTexture(createTechCanvas());
+
+	techSource.characters(' .:-=+*#%@');
+
+	techSource.charColorMode('fixed').charColor(255);
+
+	techSource.cellColorMode('fixed');
 });
 
 t.draw(() => {
-	t.background(0);
-	if (!source) return;
+	t.background(6, 10, 22);
 
-	const blue = 32 + Math.round(64 * (1 + Math.sin(t.frameCount * 0.05)));
-	source.cellColor('#000033');
-	source.cellColor(0, 0, blue);
-	t.image(source, source.width, source.height);
-	drawLabel('cellColor(0, 0, blue)', Math.floor(t.grid.rows / 2) - 2);
+	if (!techSource) return;
+
+	const time = t.frameCount * 0.04;
+	const red = Math.round(40 + 40 * Math.sin(time));
+	const blue = Math.round(80 + 40 * Math.cos(time * 0.7));
+
+	techSource.cellColor(red, 40, blue);
+
+	drawCenteredText('TextmodeSource.cellColor', -12, [240, 245, 255]);
+	drawCenteredText('Overriding the background color of every cell in a source.', -10, [150, 170, 200]);
+
+	t.push();
+	t.translate(0, 0);
+	t.image(techSource, 24, 14);
+	t.pop();
+
+	drawCenteredText('MODE: FIXED', 9, [140, 255, 180]);
+	drawCenteredText(`CELL_COLOR: [${red}, 40, ${blue}]`, 11, [140, 220, 255]);
 });
 
 t.windowResized(() => {

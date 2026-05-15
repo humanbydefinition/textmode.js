@@ -6,8 +6,8 @@ const t = textmode.create({ width: 800, height: 600 });
 
 let glitchShader;
 
-t.setup(async() => {
-    glitchShader = await t.createFilterShader(`#version 300 es
+t.setup(async () => {
+	glitchShader = await t.createFilterShader(`#version 300 es
   precision highp float;
   in vec2 v_uv;
   uniform float u_intensity;
@@ -27,14 +27,13 @@ t.setup(async() => {
 });
 
 t.draw(() => {
-    t.shader(glitchShader);
-    t.setUniform('u_intensity', Math.sin(t.frameCount * 0.1) * 0.02);
+	t.shader(glitchShader);
+	t.setUniform('u_intensity', Math.sin(t.frameCount * 0.1) * 0.02);
 
-    // Draw multiple shapes with the same shader
-    t.translate(10, 10);
-    t.rect(20, 20);
-    t.translate(25, 0);
-    t.rect(20, 20);
+	t.translate(10, 10);
+	t.rect(20, 20);
+	t.translate(25, 0);
+	t.rect(20, 20);
 
-    t.resetShader(); // Reset to default when done
+	t.resetShader();
 });

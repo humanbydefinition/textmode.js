@@ -1,4 +1,4 @@
-import type { GlyphDimensions } from './types.ts';
+import type { GlyphDimensions, TextmodeGlyph } from './types.ts';
 import type { TyprFont } from './typr/types.ts';
 /**
  * Handles calculation of font metrics and glyph dimensions.
@@ -14,10 +14,10 @@ export declare class FontMetricsCalculator {
     /**
      * Calculates the maximum glyph dimensions for a given set of characters
      * using direct font metrics from the parsed font data.
-     * @param characters Array of character strings
+     * @param characters Array of glyph entries
      * @param fontSize Font size to use for scaling measurements
      * @param font Parsed TyprFont object containing font data
      * @returns Object containing width and height dimensions
      */
-    _calculateMaxGlyphDimensions(characters: string[], fontSize: number, font: TyprFont): GlyphDimensions;
+    _calculateMaxGlyphDimensions(characters: readonly TextmodeGlyph[], fontSize: number, font: TyprFont): GlyphDimensions;
 }

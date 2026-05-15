@@ -2,80 +2,66 @@
  * @title LayerManager.add
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-const cloudLayer = t.layers.add({ blendMode: 'screen', opacity: 0.45 });
-const rainLayer = t.layers.add({ blendMode: 'additive', opacity: 0.7, fontSize: 8 });
-const signalLayer = t.layers.add({ blendMode: 'difference', opacity: 0.3 });
+const layer1 = t.layers.add({ blendMode: 'screen', opacity: 0.8 });
+const layer2 = t.layers.add({ blendMode: 'additive', opacity: 0.6 });
 
-t.draw(() => {
-	const time = t.frameCount * 0.02;
-	const radius = Math.min(t.grid.cols, t.grid.rows) * 0.42;
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+	t.push();
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
 
-	t.background(6, 10, 22);
-
-	for (let i = 0; i < 18; i++) {
-		const angle = (i / 18) * Math.PI * 2;
-		const x = Math.cos(angle + time * 0.3) * radius;
-		const y = Math.sin(angle * 2 + time) * radius * 0.35;
-
-		t.charColor(40, 80 + i * 5, 120 + i * 7);
-		t.char(['·', ':', '+'][i % 3]);
-		t.line(-x, -y, x, y);
+	for (let i = 0; i < text.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(text[i]);
+		t.point();
+		t.pop();
 	}
+
+	t.pop();
+}
+
+function drawOrbit(radius, speed, rgb, offset = 0) {
+	const angle = t.frameCount * speed + offset;
+	const x = Math.round(Math.cos(angle) * radius * 1.7);
+	const y = Math.round(Math.sin(angle) * radius);
 
 	t.push();
-	t.rotateZ(-time * 30);
-	t.charColor(255, 220, 140);
-	t.char('*');
-	t.arc(radius * 0.9, radius * 0.9, time * 90, time * 90 + 260);
+	t.translate(x, y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.char('o');
+	t.point();
 	t.pop();
+}
+
+t.draw(() => {
+	t.background(6, 10, 22);
+
+	drawCenteredText('Base Layer', -8, [240, 245, 255]);
+	drawOrbit(6, 0.03, [70, 160, 255], 0);
+	drawOrbit(6, 0.03, [70, 160, 255], Math.PI);
 });
 
-cloudLayer.draw(() => {
+layer1.draw(() => {
 	t.clear();
 
-	const time = t.frameCount * 0.02;
-
-	for (let i = 0; i < 14; i++) {
-		t.push();
-		t.translate(Math.sin(time * 0.9 + i) * 18, Math.cos(time * 0.6 + i * 1.7) * 7);
-		t.rotateZ(time * 15 + i * 20);
-		t.char(['░', '▒', '▓'][i % 3]);
-		t.charColor(120 + i * 8, 180 + i * 4, 255);
-		t.ellipse(10 + i * 0.8, 4 + Math.sin(time + i) * 2);
-		t.pop();
-	}
+	drawCenteredText('Layer 1', 0, [255, 200, 100]);
+	drawOrbit(4, -0.05, [255, 120, 80], Math.PI / 2);
+	drawOrbit(4, -0.05, [255, 120, 80], (Math.PI * 3) / 2);
 });
 
-rainLayer.draw(() => {
+layer2.draw(() => {
 	t.clear();
 
-	const time = t.frameCount * 0.04;
-	const g = rainLayer.grid;
-
-	for (let x = -g.cols / 2; x < g.cols / 2; x += 3) {
-		const speed = 0.6 + Math.abs(Math.sin(x * 0.17)) * 1.5;
-		const y = ((time * speed + x * 3) % (g.rows + 12)) - g.rows / 2 - 6;
-
-		t.push();
-		t.translate(x, y);
-		t.charColor(120, 255, 220);
-		t.char('¦');
-		t.line(0, 0, 0, 8);
-		t.pop();
-	}
-});
-
-signalLayer.draw(() => {
-	t.clear();
-
-	const time = t.frameCount * 0.02;
-	const sweepY = Math.sin(time * 2.4) * t.grid.rows * 0.25;
-
-	t.charColor(255, 255, 255);
-	t.char('─');
-	t.line(-t.grid.cols * 0.45, sweepY, t.grid.cols * 0.45, sweepY);
+	drawCenteredText('Layer 2', 8, [120, 255, 180]);
+	drawOrbit(3, 0.07, [80, 255, 140], Math.PI / 4);
+	drawOrbit(3, 0.07, [80, 255, 140], (Math.PI * 5) / 4);
 });
 
 t.windowResized(() => {

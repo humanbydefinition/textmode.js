@@ -2,50 +2,51 @@
  * @title TextmodeColor.g
  * @author codex
  */
-// Green channel visualization
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
 t.draw(() => {
-  t.background(0, 10, 0); // Dim phosphor background
+	t.background(6, 10, 22);
 
-  const time = (t.frameCount * 0.05) % (Math.PI * 2);
-  const radius = Math.min(t.grid.cols, t.grid.rows) * 0.4;
+	const time = t.frameCount * 0.02;
 
-  // Scan the grid area
-  for (let y = -radius; y < radius; y++) {
-    for (let x = -radius; x < radius; x++) {
-      if (x * x + y * y > radius * radius) continue;
+	for (let y = -6; y <= 6; y++) {
+		const phase = y * 0.3 + time;
+		const wave = Math.sin(phase);
+		const shapedWave = 0.7 * Math.sin(phase) + 0.3 * Math.sin(phase * 3);
+		const green = Math.round(50 + shapedWave * 180);
+		const c = t.color(80, green, 120);
 
-      // Calculate angle of point relative to center
-      let a = Math.atan2(y, x);
-      if (a < 0) a += Math.PI * 2;
+		const offset = shapedWave * 3;
 
-      // Calculate distance from scan line angle
-      let diff = time - a;
-      if (diff < 0) diff += Math.PI * 2;
+		t.push();
+		t.translate(offset, y);
+		t.charColor(c.r, c.g, c.b);
+		t.char('~');
+		t.rect(Math.abs(shapedWave) * 12 + 2, 1);
+		t.pop();
+	}
 
-      // Fade out trail
-      const brightness = Math.max(0, 255 - diff * 100);
+	const centerGreen = Math.round(50 + Math.abs(Math.sin(time)) * 180);
+	const label = `green: ${t.color(80, centerGreen, 120).g}`;
+	t.push();
+	t.translate(-Math.floor(label.length / 2), 10);
+	t.charColor(80, centerGreen, 120);
 
-      // Blip targets
-      const isTarget = (Math.abs(x - 10) < 2 && Math.abs(y + 5) < 2);
-      const g = isTarget ? Math.max(brightness, 150 + Math.sin(t.frameCount*0.5)*100) : brightness;
+	for (let i = 0; i < label.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(label[i]);
+		t.point();
+		t.pop();
+	}
 
-      const col = t.color(0, g, 0);
-
-      if (col.g > 20) {
-        t.push();
-        t.translate(x, y);
-        t.charColor(col);
-        // Use green intensity to pick character
-        t.char(col.g > 180 ? '█' : col.g > 80 ? '▒' : '·');
-        t.point();
-        t.pop();
-      }
-    }
-  }
+	t.pop();
 });
 
 t.windowResized(() => {
-  t.resizeCanvas(window.innerWidth, window.innerHeight);
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

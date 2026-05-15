@@ -2,47 +2,56 @@
  * @title TextmodeCamera.setPosition
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let camera;
+const labelLayer = t.layers.add();
+let posX = 0;
+let posY = 0;
+let posZ = 0;
 
-function label(text, y) {
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y, 0);
-	t.charColor(220);
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+
 	for (let i = 0; i < text.length; i++) {
 		t.push();
-		t.translate(i, 0, 0);
+		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
 		t.pop();
 	}
+
 	t.pop();
 }
 
-t.setup(() => {
-	t.perspective(58, 0.1, 4096);
-	camera = t.createCamera();
+labelLayer.draw(() => {
+	t.clear();
+	drawCenteredText('TextmodeCamera.setPosition', -8, [240, 245, 255]);
+	drawCenteredText('pos: ' + posX.toFixed(1) + ', ' + posY.toFixed(1) + ', ' + posZ.toFixed(1), 6, [180, 200, 220]);
 });
 
 t.draw(() => {
-	t.background(8, 10, 24);
+	t.background(6, 10, 22);
 
 	const time = t.frameCount * 0.02;
-	camera.setPosition(Math.cos(time) * 34, 10 + Math.sin(time * 0.7) * 8, Math.sin(time) * 34).lookAt(0, 0, 0);
-	t.setCamera(camera);
+	posX = Math.cos(time) * 20;
+	posY = 8;
+	posZ = Math.sin(time) * 20;
 
-	for (let i = 0; i < 3; i++) {
-		t.push();
-		t.translate((i - 1) * 18, 0, -i * 8);
-		t.rotateY(t.frameCount * (1 + i * 0.25));
-		t.char(['L', 'M', 'R'][i]);
-		t.charColor(255 - i * 60, 120 + i * 30, 120 + i * 50);
-		t.rect(8, 12);
-		t.pop();
-	}
+	const cam = t.createCamera().setPosition(posX, posY, posZ).lookAt(0, 0, 0);
+	t.setCamera(cam);
 
-	label('setPosition() orbits three towers', Math.floor(t.grid.rows / 2) - 3);
+	t.push();
+	t.char('+');
+	t.charColor(120, 180, 255);
+	t.line(-10, 0, 10, 0);
+	t.line(0, -5, 0, 5);
+	t.pop();
 });
 
 t.windowResized(() => {

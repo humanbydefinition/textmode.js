@@ -2,13 +2,17 @@
  * @title TextmodeFont.fontSize
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
-const miniLayer = t.layers.add({ fontSize: 16, offset: [0, 6] });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-function label(text, y, color = [220, 220, 220]) {
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.push();
 	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+
 	for (let i = 0; i < text.length; i++) {
 		t.push();
 		t.translate(i, 0);
@@ -16,19 +20,15 @@ function label(text, y, color = [220, 220, 220]) {
 		t.point();
 		t.pop();
 	}
+
 	t.pop();
 }
 
 t.draw(() => {
-	t.background(8, 10, 22);
-	label('fontSize', -6, [255, 210, 90]);
-	label(`base font size: ${t.layers.base.font.fontSize}`, -2);
-	label(`upper layer font size: ${miniLayer.font.fontSize}`, 2, [150, 160, 190]);
-});
+	t.background(6, 10, 22);
 
-miniLayer.draw(() => {
-	t.clear();
-	label('larger layer font', 0, [120, 220, 255]);
+	drawCenteredText('TextmodeFont.fontSize', -8, [240, 245, 255]);
+	drawCenteredText('layer.font.fontSize: ' + t.layers.base.font.fontSize, 0, [180, 200, 220]);
 });
 
 t.windowResized(() => {

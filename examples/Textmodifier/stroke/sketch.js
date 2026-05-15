@@ -36,7 +36,7 @@ t.draw(() => {
 	const fill = t.fill();
 
 	drawLabel(`stroke ${stroke.r},${stroke.g},${stroke.b}`, -Math.floor(t.grid.rows * 0.34), [255, 225, 140]);
-	drawLabel(`fill ${fill.r},${fill.g},${fill.b}`, Math.floor(t.grid.rows * 0.30), [120, 205, 255]);
+	drawLabel(`fill ${fill.r},${fill.g},${fill.b}`, Math.floor(t.grid.rows * 0.3), [120, 205, 255]);
 });
 
 t.windowResized(() => {

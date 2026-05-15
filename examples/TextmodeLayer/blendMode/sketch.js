@@ -2,9 +2,12 @@
  * @title TextmodeLayer.blendMode
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-// Create 5 layers with different blend modes
 const blendModes = ['additive', 'screen', 'overlay', 'difference', 'multiply'];
 const colors = [
 	[255, 80, 150],
@@ -13,32 +16,54 @@ const colors = [
 	[150, 255, 120],
 	[200, 120, 255],
 ];
-const layers = blendModes.map((mode) => t.layers.add({ blendMode: mode, opacity: 0.85 }));
+
+const layers = blendModes.map((mode) => t.layers.add({ blendMode: mode, opacity: 0.9 }));
+
+function drawLabel(text, x, y, col = [255, 255, 255]) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(...col);
+	for (let i = 0; i < text.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(text[i]);
+		t.point();
+		t.pop();
+	}
+	t.pop();
+}
 
 t.draw(() => {
-	const time = t.frameCount * 0.2;
-	t.background(12, 8, 20, 255);
+	const time = t.frameCount * 0.02;
+	t.background(10, 15, 25);
+
+	const { cols, rows } = t.grid;
+
+	t.char('+');
+	t.charColor(40, 50, 80);
+	t.rect(cols, rows);
 
 	layers.forEach((layer, i) => {
 		layer.draw(() => {
-			t.charColor(...colors[i], 255);
+			t.clear();
+			t.push();
 
-			// Draw spiral of characters
-			for (let j = 0; j < 30; j++) {
-				const angle = j * 0.2 + time * (i % 2 ? 1 : -1);
-				const radius = 3 + j * 0.4 + Math.sin(time + j) * 2;
-				const x = Math.cos(angle) * radius;
-				const y = Math.sin(angle) * radius * 0.6;
+			const angle = (i / layers.length) * Math.PI * 2 + time;
+			const radius = 8 + Math.sin(time * 2) * 2;
+			t.translate(Math.cos(angle) * radius, Math.sin(angle) * radius);
 
-				t.char('#*+=-.'[j % 6]);
-				t.translate(Math.round(x), Math.round(y));
-				t.rect(1, 1);
-			}
+			t.charColor(...colors[i]);
+			t.char('@');
+			t.rect(14, 8);
+
+			drawLabel(blendModes[i], -(blendModes[i].length - 1) / 2, 0, [255, 255, 255]);
+
+			t.pop();
 		});
-
-		// Offset each layer
-		layer.offset(Math.sin(time * 0.6 + i) * 6, Math.cos(time * 0.3 + i) * 4);
 	});
+
+	const title = '--- BLEND MODES ---';
+	drawLabel(title, -(title.length - 1) / 2, -(rows - 1) / 2 + 2, [255, 220, 100]);
 });
 
 t.windowResized(() => {

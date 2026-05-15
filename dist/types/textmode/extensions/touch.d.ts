@@ -4,7 +4,7 @@ declare module '../Textmodifier' {
         /**
          * Set a callback function that will be called when a touch point begins.
          *
-         * The callback receives {@link TouchEventData} containing the touch that triggered the event,
+         * The callback receives {@link input.touch.TouchEventData} containing the touch that triggered the event,
          * all active touches, and the original DOM event. Use this to react when the user places one or
          * more fingers on the canvas.
          *
@@ -54,7 +54,7 @@ declare module '../Textmodifier' {
          * Register a callback for tap gestures.
          *
          * A tap is fired when the user quickly touches and releases the canvas without travelling far.
-         * Use {@link TouchTapEventData.taps} to determine whether the gesture is a single or multi tap.
+         * Use {@link input.touch.TouchTapEventData.taps} to determine whether the gesture is a single or multi tap.
          *
          * @param callback The function to call when a tap gesture is detected.
          *
@@ -65,7 +65,7 @@ declare module '../Textmodifier' {
         /**
          * Register a callback for double tap gestures.
          *
-         * Double taps reuse the same {@link TouchTapEventData} as taps with `taps` set to `2`. This
+         * Double taps reuse the same {@link input.touch.TouchTapEventData} as taps with `taps` set to `2`. This
          * helper lets you supply a dedicated handler when you want to treat double taps differently.
          *
          * @param callback The function to call when a double tap is detected.

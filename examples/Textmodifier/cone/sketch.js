@@ -2,42 +2,67 @@
  * @title Textmodifier.cone
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-function label(text, y) {
+const labelLayer = t.layers.add();
+
+let radius = 0,
+	height = 0;
+
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y, 0);
-	t.charColor(220);
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.cellColor(0, 0, 0);
+
 	for (let i = 0; i < text.length; i++) {
 		t.push();
-		t.translate(i, 0, 0);
+		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
 		t.pop();
 	}
+
 	t.pop();
 }
 
+labelLayer.draw(() => {
+	t.clear();
+
+	drawCenteredText('Textmodifier.cone', -12, [240, 245, 255]);
+	drawCenteredText('A 3D cone primitive defined by radius and height.', -10, [150, 170, 200]);
+
+	drawCenteredText(`RADIUS: ${radius.toFixed(1)}`, 8, [140, 180, 255]);
+	drawCenteredText(`HEIGHT: ${height.toFixed(1)}`, 10, [255, 225, 140]);
+
+	drawCenteredText('t.cone(radius, height)', 13, [100, 120, 150]);
+});
+
 t.draw(() => {
+	t.background(6, 10, 22);
+
 	const time = t.frameCount * 0.02;
-	t.background(5, 7, 16);
-	t.ambientLight(20, 22, 26);
-	t.pointLight([255, 170, 100], { x: -22, y: -10, z: 18 });
-	t.camera(Math.sin(time * 0.3) * 12, -6, 82, 0, 2, 0);
 
-	for (let i = 0; i < 5; i++) {
-		t.push();
-		t.translate((i - 2) * 10, 4 - Math.sin(time * 1.8 + i) * 3, -i * 4);
-		t.rotateZ(Math.sin(time * 1.4 + i) * 10);
-		t.rotateY(time * 30 + i * 25);
-		t.char(['A', 'V', 'M', 'W', 'Y'][i]);
-		t.charColor(255, 140 + i * 18, 110 + i * 20);
-		t.cellColor(22 + i * 2, 12 + i * 2, 16 + i * 2);
-		t.cone(3 + i * 0.7, 8 + i * 2);
-		t.pop();
-	}
+	radius = 6 + Math.sin(time) * 2;
+	height = 12 + Math.cos(time * 0.7) * 4;
 
-	label('cone(radius, height)', Math.floor(t.grid.rows / 2) - 3);
+	t.ambientLight(30, 40, 60);
+	t.pointLight([255, 225, 140], 0, -20, 30);
+	t.camera(15, -10, 40, 0, 2, 0);
+
+	t.push();
+	t.rotateX(time * 20);
+	t.rotateY(time * 30);
+	t.char('#');
+	t.charColor(140, 180, 255);
+	t.cellColor(20, 30, 60);
+
+	t.cone(radius, height);
+	t.pop();
 });
 
 t.windowResized(() => {

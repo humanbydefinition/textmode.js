@@ -1,20 +1,20 @@
 import type { GLFramebuffer } from '../../rendering/webgl/core/Framebuffer.ts';
 import { Disposable } from '../../utils/Disposable.ts';
-import type { TextmodeGlyph, TextmodeGlyphAtlas } from './types.ts';
+import type { TextmodeGlyph } from './types.ts';
 import type { TyprFont } from './typr/types.ts';
 /**
- * Manages the font used for rendering characters via {@link TextmodeLayer.loadFont}.
+ * Manages the font used for rendering characters via {@link layering.TextmodeLayer.loadFont}.
  *
  * This class coordinates font loading, character extraction, texture atlas creation,
  * and provides character information.
  *
- * Each {@link TextmodeLayer} has its own instance of this class to allow for
+ * Each {@link layering.TextmodeLayer} has its own instance of this class to allow for
  * layer-specific font configurations.
  *
  * @example
  * {@includeCode ../../../examples/TextmodeFont/creation/sketch.js}
  */
-export declare class TextmodeFont extends Disposable implements TextmodeGlyphAtlas {
+export declare class TextmodeFont extends Disposable {
     private _renderer;
     private _font;
     private _characters;
@@ -55,17 +55,10 @@ export declare class TextmodeFont extends Disposable implements TextmodeGlyphAtl
      */
     dispose(): void;
     /**
-     * Returns the WebGL framebuffer containing the font texture atlas.
-     *
-     * @example
-     * {@includeCode ../../../examples/TextmodeFont/fontFramebuffer/sketch.js}
-     */
-    get fontFramebuffer(): GLFramebuffer;
-    /**
      * Returns the normalized glyph atlas framebuffer used by the ASCII shader.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeFont/fontFramebuffer/sketch.js}
+     * {@includeCode ../../../examples/TextmodeFont/framebuffer/sketch.js}
      */
     get framebuffer(): GLFramebuffer;
     /**
@@ -90,26 +83,12 @@ export declare class TextmodeFont extends Disposable implements TextmodeGlyphAtl
      */
     get textureColumns(): number;
     /**
-     * Returns the number of columns in the normalized glyph atlas.
-     *
-     * @example
-     * {@includeCode ../../../examples/TextmodeFont/textureColumns/sketch.js}
-     */
-    get columns(): number;
-    /**
      * Returns the number of rows in the texture atlas.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeFont/textureRows/sketch.js}
      */
     get textureRows(): number;
-    /**
-     * Returns the number of rows in the normalized glyph atlas.
-     *
-     * @example
-     * {@includeCode ../../../examples/TextmodeFont/textureRows/sketch.js}
-     */
-    get rows(): number;
     /**
      * Returns the maximum dimensions of a glyph in the font in pixels.
      *
@@ -120,30 +99,6 @@ export declare class TextmodeFont extends Disposable implements TextmodeGlyphAtl
         width: number;
         height: number;
     };
-    /**
-     * Returns the effective glyph cell dimensions used by the layer grid.
-     *
-     * @example
-     * {@includeCode ../../../examples/TextmodeFont/cellDimensions/sketch.js}
-     */
-    get cellDimensions(): {
-        width: number;
-        height: number;
-    };
-    /**
-     * Returns the effective glyph cell width used by the layer grid.
-     *
-     * @example
-     * {@includeCode ../../../examples/TextmodeFont/cellDimensions/sketch.js}
-     */
-    get cellWidth(): number;
-    /**
-     * Returns the effective glyph cell height used by the layer grid.
-     *
-     * @example
-     * {@includeCode ../../../examples/TextmodeFont/cellDimensions/sketch.js}
-     */
-    get cellHeight(): number;
     /**
      * Returns the font size used for the texture atlas.
      *

@@ -2,33 +2,18 @@
  * @title TextmodeSource.charColorMode
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let sampledSource;
-let fixedSource;
+let sourceA, sourceB;
 
-function createColorCanvas() {
-	const canvas = document.createElement('canvas');
-	canvas.width = 160;
-	canvas.height = 160;
-
-	const ctx = canvas.getContext('2d');
-	if (!ctx) return canvas;
-
-	const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-	gradient.addColorStop(0, '#ffcc00');
-	gradient.addColorStop(0.5, '#ff0055');
-	gradient.addColorStop(1, '#3300ff');
-	ctx.fillStyle = gradient;
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-	return canvas;
-}
-
-function drawLabel(text, x, y) {
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(x - Math.floor(text.length / 2), y);
-	t.charColor(255);
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
 		t.push();
@@ -41,40 +26,57 @@ function drawLabel(text, x, y) {
 	t.pop();
 }
 
+function createGradientCanvas() {
+	const canvas = document.createElement('canvas');
+	canvas.width = 128;
+	canvas.height = 128;
+	const ctx = canvas.getContext('2d');
+	if (!ctx) return canvas;
+
+	const grad = ctx.createLinearGradient(0, 0, 128, 128);
+	grad.addColorStop(0, '#ffcc00');
+	grad.addColorStop(0.5, '#ff0055');
+	grad.addColorStop(1, '#3300ff');
+	ctx.fillStyle = grad;
+	ctx.fillRect(0, 0, 128, 128);
+
+	return canvas;
+}
+
 t.setup(() => {
-	const canvas = createColorCanvas();
+	const canvas = createGradientCanvas();
 
-	sampledSource = t.createTexture(canvas);
-	sampledSource.characters(' .:-=+*#%@');
-	sampledSource.charColorMode('sampled');
-	sampledSource.cellColorMode('sampled');
+	sourceA = t.createTexture(canvas);
+	sourceA.characters(' .:-=+*#%@');
+	sourceA.charColorMode('sampled');
 
-	fixedSource = t.createTexture(canvas);
-	fixedSource.characters(' .:-=+*#%@');
-	fixedSource.charColorMode('fixed');
-	fixedSource.charColor(255, 80, 80);
-	fixedSource.cellColorMode('sampled');
+	sourceB = t.createTexture(canvas);
+	sourceB.characters(' .:-=+*#%@');
+	sourceB.charColorMode('fixed').charColor(140, 255, 180);
 });
 
 t.draw(() => {
-	t.background(0);
-	if (!sampledSource || !fixedSource) return;
+	t.background(6, 10, 22);
 
-	const size = Math.min(sampledSource.width, sampledSource.height) * 0.7;
-	const offset = Math.floor(size * 0.7);
+	if (!sourceA || !sourceB) return;
+
+	drawCenteredText('TextmodeSource.charColorMode', -12, [240, 245, 255]);
+	drawCenteredText('Determines if characters use source colors or a fixed override.', -10, [150, 170, 200]);
+
+	const imgW = 20;
+	const imgH = 12;
 
 	t.push();
-	t.translate(-offset, 0);
-	t.image(sampledSource, size, size);
+	t.translate(-12, 0);
+	t.image(sourceA, imgW, imgH);
 	t.pop();
+	drawCenteredText("MODE: 'sampled'", 8, [140, 180, 255]);
 
 	t.push();
-	t.translate(offset, 0);
-	t.image(fixedSource, size, size);
+	t.translate(12, 0);
+	t.image(sourceB, imgW, imgH);
 	t.pop();
-
-	drawLabel("charColorMode('sampled')", -offset, Math.floor(t.grid.rows / 2) - 2);
-	drawLabel("charColorMode('fixed')", offset, Math.floor(t.grid.rows / 2) - 2);
+	drawCenteredText("MODE: 'fixed'", 12, [255, 180, 100]);
 });
 
 t.windowResized(() => {

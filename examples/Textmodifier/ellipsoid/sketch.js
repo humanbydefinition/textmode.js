@@ -2,15 +2,19 @@
  * @title Textmodifier.ellipsoid
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 8, // Higher resolution for 3D geometry
+});
 
-function label(text, y) {
+function drawCenteredText(text, row, rgb = [240, 245, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y, 0);
-	t.charColor(220);
+	t.translate(-Math.floor(text.length / 2), row);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
 	for (let i = 0; i < text.length; i++) {
 		t.push();
-		t.translate(i, 0, 0);
+		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
 		t.pop();
@@ -19,25 +23,28 @@ function label(text, y) {
 }
 
 t.draw(() => {
-	const time = t.frameCount * 0.02;
-	t.background(5, 6, 16);
-	t.ambientLight(18, 22, 28);
-	t.pointLight([255, 190, 120], { x: -20, y: -10, z: 24 });
-	t.camera(Math.cos(time * 0.35) * 16, -6, 86, 0, 0, 0);
+	t.background(6, 10, 22);
+	t.ambientLight(30, 35, 50);
+	t.pointLight([255, 200, 150], { x: 30, y: -20, z: 40 });
 
-	for (let i = 0; i < 4; i++) {
-		t.push();
-		t.translate((i - 1.5) * 12, Math.sin(time * 1.6 + i) * 3, -i * 8);
-		t.rotateX(time * 34 + i * 15);
-		t.rotateY(time * 42 + i * 20);
-		t.char(['o', 'O', '0', '@'][i]);
-		t.charColor(255 - i * 20, 150 + i * 20, 140 + i * 28);
-		t.cellColor(18 + i * 2, 12 + i * 2, 20 + i * 4);
-		t.ellipsoid(4 + i * 1.4, 2.5 + i * 0.8, 6 + i * 1.8);
-		t.pop();
-	}
+	const time = t.secs;
 
-	label('ellipsoid(radiusX, radiusY, radiusZ)', Math.floor(t.grid.rows / 2) - 3);
+	const rx = 15 + Math.sin(time * 1.2) * 5;
+	const ry = 10 + Math.cos(time * 1.5) * 4;
+	const rz = 20 + Math.sin(time * 0.8) * 8;
+
+	t.push();
+	t.rotateY(time * 20);
+	t.rotateX(time * 10);
+
+	t.charColor(150, 160, 200);
+	t.char('0');
+	t.ellipsoid(rx, ry, rz);
+	t.pop();
+
+	drawCenteredText('Textmodifier.ellipsoid', -35, [255, 255, 255]);
+	drawCenteredText('Draws a 3D ellipsoid with independent radii for X, Y, and Z axes.', -32, [150, 170, 200]);
+	drawCenteredText(`t.ellipsoid(${rx.toFixed(1)}, ${ry.toFixed(1)}, ${rz.toFixed(1)})`, 32, [140, 180, 255]);
 });
 
 t.windowResized(() => {

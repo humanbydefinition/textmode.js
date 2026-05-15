@@ -35,9 +35,17 @@ t.draw(() => {
 	t.background(4, 6, 14);
 	t.image(framebuffer, framebuffer.width, framebuffer.height);
 
-	drawLabel(`width ${framebuffer.width}  height ${framebuffer.height}`, -Math.floor(t.grid.rows * 0.34), [255, 220, 140]);
+	drawLabel(
+		`width ${framebuffer.width}  height ${framebuffer.height}`,
+		-Math.floor(t.grid.rows * 0.34),
+		[255, 220, 140]
+	);
 	drawLabel(`framebuffer ${framebuffer.framebuffer ? 'allocated' : 'missing'}`, Math.floor(t.grid.rows * 0.28));
-	drawLabel(`textures ${framebuffer.textures.length}  attachments ${framebuffer.attachmentCount}`, Math.floor(t.grid.rows * 0.36), [120, 205, 255]);
+	drawLabel(
+		`textures ${framebuffer.textures.length}  attachments ${framebuffer.attachmentCount}`,
+		Math.floor(t.grid.rows * 0.36),
+		[120, 205, 255]
+	);
 });
 
 t.windowResized(() => {

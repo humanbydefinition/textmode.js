@@ -79,6 +79,10 @@ To use `textmode.js` in a UMD environment, download the latest `umd` build from 
 </html>
 ```
 
+`textmode.js` can also be initialized from scripts loaded in `<head>`.
+The auto-created canvas mount is deferred until `<body>` is available.
+Using `defer` is still recommended for explicit startup order.
+
 ```javascript
 // sketch.js
 const t = textmode.create({
@@ -189,7 +193,7 @@ Thanks go to these wonderful people ([emoji key](https://allcontributors.org/doc
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/humanbydefinition"><img src="https://avatars.githubusercontent.com/u/59119064?v=4?s=100" width="100px;" alt="humanbydefinition"/><br /><sub><b>humanbydefinition</b></sub></a><br /><a href="https://github.com/humanbydefinition/textmode.js/commits?author=humanbydefinition" title="Code">💻</a> <a href="https://github.com/humanbydefinition/textmode.js/commits?author=humanbydefinition" title="Documentation">📖</a> <a href="#design-humanbydefinition" title="Design">🎨</a> <a href="#example-humanbydefinition" title="Examples">💡</a> <a href="#ideas-humanbydefinition" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-humanbydefinition" title="Maintenance">🚧</a> <a href="#infra-humanbydefinition" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#tool-humanbydefinition" title="Tools">🔧</a> <a href="#plugin-humanbydefinition" title="Plugin/utility libraries">🔌</a> <a href="https://github.com/humanbydefinition/textmode.js/pulls?q=is%3Apr+reviewed-by%3Ahumanbydefinition" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/humanbydefinition"><img src="https://avatars.githubusercontent.com/u/59119064?v=4?s=100" width="100px;" alt="humanbydefinition"/><br /><sub><b>humanbydefinition</b></sub></a><br /><a href="https://github.com/humanbydefinition/textmode.js-dev/commits?author=humanbydefinition" title="Code">💻</a> <a href="https://github.com/humanbydefinition/textmode.js-dev/commits?author=humanbydefinition" title="Documentation">📖</a> <a href="#design-humanbydefinition" title="Design">🎨</a> <a href="#example-humanbydefinition" title="Examples">💡</a> <a href="#ideas-humanbydefinition" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-humanbydefinition" title="Maintenance">🚧</a> <a href="#infra-humanbydefinition" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#tool-humanbydefinition" title="Tools">🔧</a> <a href="#plugin-humanbydefinition" title="Plugin/utility libraries">🔌</a> <a href="https://github.com/humanbydefinition/textmode.js-dev/pulls?q=is%3Apr+reviewed-by%3Ahumanbydefinition" title="Reviewed Pull Requests">👀</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/trintlermint"><img src="https://www.github.com/trintlermint.png?s=100" width="100px;" alt="trintlermint"/><br /><sub><b>trintlermint</b></sub></a><br /><a href="#design-trintlermint" title="Design">🎨</a> <a href="#example-trintlermint" title="Examples">💡</a></td>
     </tr>
   </tbody>

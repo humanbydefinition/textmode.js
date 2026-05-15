@@ -1,5 +1,5 @@
 /**
- * @title TextmodeTileset.characters
+ * @title TextmodeTileset.framebuffer
  * @author codex
  */
 const TILE_COLUMNS = 16;
@@ -47,12 +47,10 @@ t.draw(() => {
 	}
 
 	const atlas = tileset.framebuffer;
-	label('TextmodeTileset atlas', -6, [255, 225, 140]);
-	label('T64 bitmap tileset', -2);
-	label(`characters ${tileset.characters.length}  map ${tileset.characterMap.size}`, 2);
-	label(`source sheet ${TILE_COLUMNS} x ${TILE_ROWS}`, 6);
-	label(`normalized atlas ${tileset.columns} x ${tileset.rows}`, 10);
-	label(`framebuffer ${atlas.width} x ${atlas.height}`, 14, [120, 205, 255]);
+
+	label('TextmodeTileset.framebuffer', -6, [255, 225, 140]);
+	label(atlas.width + ' x ' + atlas.height + ' px', 0, [180, 200, 220]);
+	label(tileset.columns + ' cols x ' + tileset.rows + ' rows', 4, [150, 170, 200]);
 });
 
 t.windowResized(() => {

@@ -1,10 +1,10 @@
 /**
- * @title Textmode.setErrorLevel
+ * @title Textmode.version
  * @author humanbydefinition
- * @instagram https://www.instagram.com/humanbydefinition/
+ * @instagram https://www.instagram.com/textmode.art/
  * @mastodon https://mastodon.social/@humanbydefinition
- * @bluesky https://bsky.app/profile/humanbydefinition
- * @website https://code.textmode.art
+ * @bluesky https://bsky.app/profile/textmode.art
+ * @website https://textmode.art
  */
 const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 

@@ -1,8 +1,12 @@
 /**
- * @title TextmodeFont.cellDimensions
+ * @title TextmodeTileset.creation
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
+const TILE_COLUMNS = 16;
+const TILE_ROWS = 16;
+const TILE_COUNT = TILE_COLUMNS * TILE_ROWS;
+
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 
 function label(text, y, color = [220, 220, 220]) {
 	t.push();
@@ -21,12 +25,11 @@ function label(text, y, color = [220, 220, 220]) {
 }
 
 t.draw(() => {
-	const dimensions = t.font.cellDimensions;
-	t.background(7, 10, 20);
+	t.background(5, 7, 18);
 
-	label('TextmodeFont cell metrics', -5, [255, 220, 120]);
-	label(`cell ${dimensions.width} x ${dimensions.height}px`, -1);
-	label(`width ${t.font.cellWidth}  height ${t.font.cellHeight}`, 3, [120, 205, 255]);
+	label('TextmodeTileset.creation', -6, [255, 225, 140]);
+	label('t.loadTileset(options)', 0, [180, 200, 220]);
+	label('async bitmap loading', 4, [150, 170, 200]);
 });
 
 t.windowResized(() => {

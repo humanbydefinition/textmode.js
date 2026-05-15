@@ -2,21 +2,65 @@
  * @title TextmodeGrid.cols
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
+
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+	t.push();
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+
+	for (let i = 0; i < text.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(text[i]);
+		t.point();
+		t.pop();
+	}
+
+	t.pop();
+}
 
 t.draw(() => {
-	t.background(0);
+	t.background(6, 10, 22);
 
 	const cols = t.grid.cols;
-	const rows = t.grid.rows;
 
-	t.char('#');
-	t.charColor(255, 100, 100);
-	t.rect(cols, rows);
+	drawCenteredText('TextmodeGrid.cols', -8, [240, 245, 255]);
+	drawCenteredText(`${cols} COLUMNS`, 6, [140, 180, 255]);
 
-	t.char(' ');
-	t.cellColor(0);
-	t.rect(cols - 2, rows - 2);
+	const halfWidth = Math.floor(cols / 2);
+
+	for (let x = -halfWidth; x < halfWidth; x++) {
+		t.push();
+		t.translate(x, 0);
+
+		const isMarker = (x + halfWidth) % 5 === 0;
+
+		if (isMarker) {
+			t.char('|');
+			t.charColor(140, 180, 255);
+		} else {
+			t.char('-');
+			t.charColor(60, 70, 100);
+		}
+
+		t.point();
+		t.pop();
+	}
+
+	t.push();
+	t.charColor(255, 255, 255);
+	t.translate(-halfWidth, 0);
+	t.char('<');
+	t.point();
+	t.translate(cols - 1, 0);
+	t.char('>');
+	t.point();
+	t.pop();
 });
 
 t.windowResized(() => {

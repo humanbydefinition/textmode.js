@@ -40,7 +40,7 @@ t.draw(() => {
 	t.pop();
 
 	drawLabel('left keeps rotation', -Math.floor(t.grid.rows * 0.34), [255, 225, 140]);
-	drawLabel('right calls resetMatrix()', Math.floor(t.grid.rows * 0.30), [120, 205, 255]);
+	drawLabel('right calls resetMatrix()', Math.floor(t.grid.rows * 0.3), [120, 205, 255]);
 });
 
 t.windowResized(() => {

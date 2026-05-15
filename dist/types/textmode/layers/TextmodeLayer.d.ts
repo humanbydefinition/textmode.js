@@ -20,7 +20,7 @@ import { TextmodeCamera } from '../camera';
  * method for hydra-like procedural generation.
  *
  * The base layer, which is always present at the bottom of the layer stack,
- * can be accessed via {@link Textmodifier.layers.base}.
+ * can be accessed via {@link Textmodifier.layers} as `t.layers.base`.
  */
 export declare class TextmodeLayer {
     private _renderer;
@@ -32,7 +32,10 @@ export declare class TextmodeLayer {
     private _rawAsciiFramebuffer?;
     private _pingPongBuffers?;
     private _drawCallback;
+    private _postDrawCallback;
     private _filterQueue;
+    private _postFilterQueue;
+    private _isRunningPostDraw;
     private _useTilesetColors;
     private _cameraController;
     private _fontSizeWasExplicitlySet;
@@ -50,6 +53,33 @@ export declare class TextmodeLayer {
      * {@includeCode ../../../examples/TextmodeLayer/draw/sketch.js}
      */
     draw(callback: () => void): void;
+    /**
+     * Define this layer's post-draw callback.
+     *
+     * The callback is executed after the layer has been converted to ASCII and after
+     * any filters queued in {@link filter} during {@link draw} have been applied.
+     * Filters queued inside this callback are applied to the layer's final ASCII texture
+     * before the layer is composited with the rest of the scene.
+     *
+     * @param callback The function to call after this layer has been drawn and filtered.
+     *
+     * @example
+     * ```js
+     * const layer = t.layers.add();
+     *
+     * layer.draw(() => {
+     * 	t.background(0);
+     * 	t.char('A');
+     * 	t.rect(12, 8);
+     * 	layer.filter('grayscale', 0.4);
+     * });
+     *
+     * layer.postDraw(() => {
+     * 	layer.filter('invert');
+     * });
+     * ```
+     */
+    postDraw(callback: () => void): void;
     /**
      * Show this layer for rendering.
      *

@@ -2,45 +2,56 @@
  * @title TextmodeCamera.eyeY
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let camera;
+const labelLayer = t.layers.add();
+let eyeValue = 0;
 
-function label(text, y) {
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y, 0);
-	t.charColor(220);
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+
 	for (let i = 0; i < text.length; i++) {
 		t.push();
-		t.translate(i, 0, 0);
+		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
 		t.pop();
 	}
+
 	t.pop();
 }
 
+labelLayer.draw(() => {
+	t.clear();
+	drawCenteredText('TextmodeCamera.eyeY', -8, [240, 245, 255]);
+	drawCenteredText('eyeY: ' + eyeValue.toFixed(1), 6, [180, 200, 220]);
+});
+
 t.setup(() => {
 	t.perspective(58, 0.1, 4096);
-	camera = t.createCamera();
 });
 
 t.draw(() => {
-	t.background(8, 10, 24);
+	t.background(6, 10, 22);
 
-	camera.setPosition(0, 8 + Math.sin(t.frameCount * 0.04) * 12, 52).lookAt(0, 0, 0);
-	t.setCamera(camera);
+	const cam = t
+		.createCamera()
+		.setPosition(0, Math.sin(t.frameCount * 0.02) * 12, 20)
+		.lookAt(0, 0, 0);
 
-	for (let i = 0; i < 3; i++) {
-		t.push();
-		t.translate((i - 1) * 12, -8 + i * 6, -i * 10);
-		t.char(['A', 'P', 'E'][i]);
-		t.charColor(120 + i * 30, 160 + i * 20, 255);
-		t.triangle(0, -4, -4, 4, 4, 4);
-		t.pop();
-	}
+	eyeValue = cam.eyeY;
+	t.setCamera(cam);
 
-	label(`eyeY ${camera.eyeY.toFixed(1)}`, Math.floor(t.grid.rows / 2) - 3);
+	t.char('+');
+	t.charColor(120, 180, 255);
+	t.line(-10, 0, 10, 0);
+	t.line(0, -5, 0, 5);
 });
 
 t.windowResized(() => {

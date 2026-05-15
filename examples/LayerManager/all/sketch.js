@@ -2,47 +2,55 @@
  * @title LayerManager.all
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-['screen', 'additive', 'overlay', 'difference'].forEach((blendMode, index) => {
-	const layer = t.layers.add({ blendMode, opacity: 0.7 });
+const labels = ['Layer 1', 'Layer 2', 'Layer 3'];
+const colors = [
+	[255, 120, 80],
+	[120, 255, 180],
+	[80, 180, 255],
+];
+
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+	t.push();
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+
+	for (let i = 0; i < text.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(text[i]);
+		t.point();
+		t.pop();
+	}
+
+	t.pop();
+}
+
+labels.forEach((label, index) => {
+	const layer = t.layers.add({ blendMode: 'screen', opacity: 0.7 });
 
 	layer.draw(() => {
 		t.clear();
-
-		const time = t.frameCount * 0.02;
-		const ringCount = 10;
-		const baseSize = Math.min(t.grid.cols, t.grid.rows) * (0.35 + index * 0.08);
-
-		for (let i = 0; i < ringCount; i++) {
-			const phase = i / ringCount;
-			const size = baseSize * (0.4 + phase * 0.9 + 0.1 * Math.sin(time * 2 + index + i));
-			const start = time * 90 + index * 45 + i * 28;
-			const sweep = 35 + 90 * (0.5 + 0.5 * Math.sin(time * 1.5 + phase * Math.PI * 2 + index));
-
-			t.push();
-			t.rotateZ(start * (index % 2 ? -0.25 : 0.25));
-			t.char(['·', '+', '*', '░', '▒'][(index * 2 + i) % 5]);
-			t.lineWeight(1 + ((i + index) % 3));
-			t.charColor(80 + 40 * i, 120 + 30 * index, 255 - 18 * i);
-			t.arc(size, size * (0.6 + phase * 0.35), start, start + sweep);
-			t.pop();
-		}
+		drawCenteredText(label, 0, colors[index]);
 	});
 });
 
 t.draw(() => {
-	t.background(10, 15, 25);
+	t.background(6, 10, 22);
 
 	const time = t.frameCount * 0.02;
-	const radius = Math.min(t.grid.cols, t.grid.rows) * 0.12;
 
 	t.layers.all.forEach((layer, index) => {
-		const angle = time * (0.8 + index * 0.15) + index * ((Math.PI * 2) / t.layers.all.length);
+		const angle = time + index * ((Math.PI * 2) / t.layers.all.length);
+		const radius = 5;
 
-		layer.offset(Math.cos(angle) * radius, Math.sin(angle * 1.4) * radius * 0.6);
-		layer.rotateZ(time * (40 - index * 10));
-		layer.opacity(0.35 + index * 0.12 + 0.18 * Math.sin(time * 3 + index));
+		layer.offset(Math.cos(angle) * radius, Math.sin(angle) * radius);
+		layer.opacity(0.4 + 0.4 * Math.sin(time * 2 + index));
 	});
 });
 

@@ -2,39 +2,67 @@
  * @title Textmodifier.rotateX
  * @author codex
  */
-// A field of oscillating slabs
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
+
+function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+	t.push();
+	t.translate(-Math.floor(text.length / 2), row);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+	for (let i = 0; i < text.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(text[i]);
+		t.point();
+		t.pop();
+	}
+	t.pop();
+}
 
 t.draw(() => {
-  t.background(0);
+	t.background(6, 10, 22);
 
-  const cols = 5;
-  const rows = 5;
-  const spacing = 12;
+	const time = t.frameCount * 2;
+	let angle = time;
 
-  for (let x = 0; x < cols; x++) {
-    for (let y = 0; y < rows; y++) {
-      t.push();
-      // Position in grid
-      t.translate((x - (cols - 1) / 2) * spacing, (y - (rows - 1) / 2) * spacing);
+	if (t.mouse.y !== Number.NEGATIVE_INFINITY) {
+		angle = t.mouse.y * 10;
+	}
 
-      // Rotation with phase shift based on position
-      const angle = t.frameCount * 4 + (x + y) * 20;
-      t.rotateX(angle);
+	t.push();
+	t.charColor(40, 50, 80);
+	for (let i = -2; i <= 2; i++) {
+		t.push();
+		t.translate(0, i * 10, 0);
+		t.char('-');
+		t.rect(60, 1);
+		t.pop();
+	}
+	t.pop();
 
-      // Aesthetic coloring based on rotation phase
-      const intensity = Math.sin(angle * Math.PI / 180);
-      const brightness = 127 + 127 * intensity;
+	t.push();
+	t.rotateX(angle);
+	const currentAngle = t.rotateX();
+	const intensity = Math.abs(Math.cos((currentAngle * Math.PI) / 180));
+	t.charColor(120, 255, 180);
+	t.char(intensity > 0.3 ? '█' : '▒');
+	t.rect(30, 15);
+	t.pop();
 
-      t.charColor(brightness, 150, 255 - brightness);
-      t.char(Math.abs(intensity) > 0.5 ? '█' : '▒');
+	drawCenteredText(`Current X-Angle: ${Math.floor(currentAngle % 360)}°`, 12, [255, 225, 140]);
 
-      t.rect(10, 8);
-      t.pop();
-    }
-  }
+	drawCenteredText('Textmodifier.rotateX', -18, [255, 255, 255]);
+	drawCenteredText('Rotates the coordinate system around the X-axis (Pitch).', -16, [150, 170, 200]);
+	drawCenteredText('t.rotateX(degrees)', 18, [140, 180, 255]);
+
+	if (t.mouse.y === Number.NEGATIVE_INFINITY) {
+		drawCenteredText('Move mouse Y to control rotation', 21, [100, 100, 120]);
+	}
 });
 
 t.windowResized(() => {
-  t.resizeCanvas(window.innerWidth, window.innerHeight);
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

@@ -2,15 +2,17 @@
  * @title TextmodeFont.dispose
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let tempFont;
-let disposed = false;
-
-function label(text, y, color = [220, 220, 220]) {
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.push();
 	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+
 	for (let i = 0; i < text.length; i++) {
 		t.push();
 		t.translate(i, 0);
@@ -18,23 +20,16 @@ function label(text, y, color = [220, 220, 220]) {
 		t.point();
 		t.pop();
 	}
+
 	t.pop();
 }
 
-t.setup(async () => {
-	tempFont = await t.loadFont('../../primitives/CHUNKY.ttf', false);
-});
-
 t.draw(() => {
-	t.background(8, 10, 22);
-	label('dispose()', -4, [255, 210, 90]);
-	label(disposed ? 'temporary font disposed' : 'disposing temp font after 3 seconds', -1);
-	label('active layer font keeps rendering normally', 2, [150, 160, 190]);
+	t.background(6, 10, 22);
 
-	if (tempFont && !disposed && t.frameCount > 180) {
-		tempFont.dispose();
-		disposed = true;
-	}
+	drawCenteredText('TextmodeFont.dispose', -6, [240, 245, 255]);
+	drawCenteredText('font.dispose()', 0, [180, 200, 220]);
+	drawCenteredText('releases GPU resources', 4, [150, 170, 200]);
 });
 
 t.windowResized(() => {

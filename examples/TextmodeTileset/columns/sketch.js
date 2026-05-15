@@ -1,5 +1,5 @@
 /**
- * @title TextmodeTileset.nativeCellDimensions
+ * @title TextmodeTileset.columns
  * @author codex
  */
 const TILE_COLUMNS = 16;
@@ -33,7 +33,6 @@ t.setup(async () => {
 			columns: TILE_COLUMNS,
 			rows: TILE_ROWS,
 			count: TILE_COUNT,
-			fontSize: 16,
 		},
 		false
 	);
@@ -47,17 +46,8 @@ t.draw(() => {
 		return;
 	}
 
-	const nativeDimensions = tileset.nativeCellDimensions;
-	const maxGlyphDimensions = tileset.maxGlyphDimensions;
-	const cellDimensions = tileset.cellDimensions;
-
-	label('TextmodeTileset dimensions', -7, [255, 225, 140]);
-	label('T64 tileset source', -3);
-	label(`native ${nativeDimensions.width} x ${nativeDimensions.height}`, 1);
-	label(`max ${maxGlyphDimensions.width} x ${maxGlyphDimensions.height}`, 5);
-	label(`cell ${cellDimensions.width} x ${cellDimensions.height}`, 9);
-	label(`cellWidth ${tileset.cellWidth}  cellHeight ${tileset.cellHeight}`, 13);
-	label(`fontSize ${tileset.fontSize}`, 17, [120, 205, 255]);
+	label('TextmodeTileset.columns', -4, [255, 225, 140]);
+	label('columns: ' + tileset.columns, 2, [120, 205, 255]);
 });
 
 t.windowResized(() => {

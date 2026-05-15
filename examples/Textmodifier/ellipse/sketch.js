@@ -2,47 +2,64 @@
  * @title Textmodifier.ellipse
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
+
+function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+	t.push();
+	t.translate(-Math.floor(text.length / 2), row);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+	for (let i = 0; i < text.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(text[i]);
+		t.point();
+		t.pop();
+	}
+	t.pop();
+}
 
 t.draw(() => {
-  t.background(5, 5, 15);
+	t.background(6, 10, 22);
 
-  const time = t.frameCount * 0.02;
-  const orbitCount = 12;
-  const baseSize = Math.min(t.grid.cols, t.grid.rows);
+	const time = t.secs;
 
-  // Draw a series of harmonically rotating orbital rings
-  for (let i = 0; i < orbitCount; i++) {
-    const phase = i / orbitCount;
+	const rx = 20 + Math.sin(time * 1.5) * 10;
+	const ry = 12 + Math.cos(time * 2.0) * 8;
 
-    t.push();
-    // Complex 3D rotation based on index and time
-    t.rotateX(time * 23 + i * 15);
-    t.rotateY(time * 31 + i * 25);
-    t.rotateZ(time * 17 + i * 35);
+	t.push();
+	t.charColor(100, 200, 255);
+	t.char('•');
+	t.ellipse(rx, ry);
 
-    // Color shifts through a cool-to-warm spectrum
-    t.charColor(150 + 105 * Math.sin(time + phase * 6), 100, 255);
+	t.push();
+	t.charColor(255, 100, 100);
+	t.char('-');
+	t.line(0, 0, rx, 0);
+	t.translate(rx, 0);
+	t.char('>');
+	t.point();
+	t.pop();
 
-    // Select character based on "depth" or index for texture variety
-    t.char(['░', '▒', '▓', '█', '•', '·'][i % 6]);
-    t.lineWeight(1 + (i % 3));
+	t.push();
+	t.charColor(100, 255, 100);
+	t.char('|');
+	t.line(0, 0, 0, ry);
+	t.translate(0, ry);
+	t.char('v');
+	t.point();
+	t.pop();
+	t.pop();
 
-    const s = baseSize * (0.4 + 0.6 * Math.sin(time * 0.5 + phase * Math.PI));
-    t.ellipse(s, s * 0.7);
-    t.pop();
-  }
-
-  // Pulsing central star
-  t.push();
-  t.char('☼');
-  t.charColor(255, 255, 200);
-  t.rotateZ(-time * 100);
-  const pulse = 2 + Math.sin(time * 8) * 0.5;
-  t.ellipse(pulse, pulse);
-  t.pop();
+	drawCenteredText('Textmodifier.ellipse', -22, [255, 255, 255]);
+	drawCenteredText('Draws a 2D ellipse with two radii.', -20, [150, 170, 200]);
+	drawCenteredText('radiusX for width, radiusY for height.', -18, [150, 170, 200]);
+	drawCenteredText(`t.ellipse(radiusX: ${rx.toFixed(1)}, radiusY: ${ry.toFixed(1)})`, 18, [140, 180, 255]);
 });
 
 t.windowResized(() => {
-  t.resizeCanvas(window.innerWidth, window.innerHeight);
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

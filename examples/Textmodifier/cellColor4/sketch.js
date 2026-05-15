@@ -2,17 +2,64 @@
  * @title Textmodifier.cellColor4
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
+
+const labelLayer = t.layers.add();
+
+const colorA = t.color(120, 20, 40); // Dark Red-Brown
+const colorB = t.color(20, 60, 100);
+
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+	t.push();
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.cellColor(0, 0, 0, 0);
+
+	for (let i = 0; i < text.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(text[i]);
+		t.point();
+		t.pop();
+	}
+
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+
+	drawCenteredText('Textmodifier.cellColor (Color Object)', -12, [240, 245, 255]);
+	drawCenteredText('Passing a TextmodeColor object directly for reuse.', -10, [150, 170, 200]);
+
+	drawCenteredText('t.cellColor(colorObject)', 13, [100, 120, 150]);
+});
 
 t.draw(() => {
-  t.background(0);
-  t.char('@');
+	t.background(6, 10, 22);
 
-  // Use hex for cell background
-  t.cellColor('#ff4400');
-  t.rect(10, 10);
+	const cycle = Math.floor(t.frameCount / 60) % 2;
+	const activeColor = cycle === 0 ? colorA : colorB;
+
+	t.cellColor(activeColor);
+
+	t.push();
+	t.charColor(255, 225, 140);
+	t.char('@');
+	t.rect(14, 6);
+	t.pop();
+
+	t.push();
+	t.resetCamera();
+	drawCenteredText('REUSABLE COLOR OBJECT', 8, [140, 255, 180]);
+	drawCenteredText(`ACTIVE_ID: ${cycle === 0 ? 'colorA' : 'colorB'}`, 10, [140, 180, 255]);
+	t.pop();
 });
 
 t.windowResized(() => {
-  t.resizeCanvas(window.innerWidth, window.innerHeight);
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

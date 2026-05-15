@@ -38,11 +38,15 @@ export declare abstract class TextmodeSource extends Disposable {
     protected _cellColor: RGBA;
     protected _backgroundColor: RGBA;
     protected _glyphColors: RGB[];
+    private _glyphPaletteTexture;
+    private _glyphPaletteDirty;
     private _characterString;
     private _frameCharColor;
     private _frameCellColor;
     private _frameBackgroundColor;
     private _frameGlyphColors;
+    private _frameGlyphPaletteTexture;
+    private _frameGlyphPaletteDirty;
     protected constructor(gl: WebGL2RenderingContext, renderer: GLRenderer, texture: WebGLTexture, conversionManager: TextmodeConversionManager, originalWidth: number, originalHeight: number, gridCols: number, gridRows: number);
     private _setFrameOrBaseColor;
     /**
@@ -163,7 +167,6 @@ export declare abstract class TextmodeSource extends Disposable {
     background(colorOrGray: number | TextmodeColor | string, g?: number, b?: number, a?: number): this;
     /**
      * Define the characters to use for brightness mapping as a string.
-     * Maximum length is 255; excess characters are ignored.
      * @param chars String of characters to map
      * @returns This instance for chaining.
      *
@@ -182,28 +185,28 @@ export declare abstract class TextmodeSource extends Disposable {
      * Ideal width in grid cells.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeSource/dimensions/sketch.js}
+     * {@includeCode ../../../examples/TextmodeSource/width/sketch.js}
      */
     get width(): number;
     /**
      * Ideal height in grid cells.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeSource/dimensions/sketch.js}
+     * {@includeCode ../../../examples/TextmodeSource/height/sketch.js}
      */
     get height(): number;
     /**
      * Original pixel width.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeSource/dimensions/sketch.js}
+     * {@includeCode ../../../examples/TextmodeSource/originalWidth/sketch.js}
      */
     get originalWidth(): number;
     /**
      * Original pixel height.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeSource/dimensions/sketch.js}
+     * {@includeCode ../../../examples/TextmodeSource/originalHeight/sketch.js}
      */
     get originalHeight(): number;
     protected _beforeMaterialUpdate(): void;
@@ -213,6 +216,11 @@ export declare abstract class TextmodeSource extends Disposable {
     private _applyCharacterPalette;
     private _getCharacterPalette;
     private _setIdealDimensions;
+    private _getCharacterPaletteTexture;
+    private _uploadCharacterPaletteTexture;
+    private _createCharacterPaletteData;
+    private _normalizedColorByte;
+    private _disposeCharacterPaletteTexture;
     _hasFrameOverrides(): boolean;
     private _getActiveConversionStrategy;
     private _setFrameColor;

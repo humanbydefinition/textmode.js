@@ -34,9 +34,12 @@ t.draw(() => {
 
 	if (video) {
 		t.image(video, t.grid.cols - 8, t.grid.rows - 10);
-		label(`videoElement ${video.videoElement ? 'ready' : 'pending'}`, Math.floor(t.grid.rows * 0.20));
-		label(`current ${video.currentTime.toFixed(1)}s / ${video.duration.toFixed(1)}s`, Math.floor(t.grid.rows * 0.30));
-		label(`isPlaying ${video.isPlaying ? 'true' : 'false'}`, Math.floor(t.grid.rows * 0.40), [120, 205, 255]);
+		label(`videoElement ${video.videoElement ? 'ready' : 'pending'}`, Math.floor(t.grid.rows * 0.2));
+		label(
+			`current ${video.currentTime.toFixed(1)}s / ${video.duration.toFixed(1)}s`,
+			Math.floor(t.grid.rows * 0.3)
+		);
+		label(`isPlaying ${video.isPlaying ? 'true' : 'false'}`, Math.floor(t.grid.rows * 0.4), [120, 205, 255]);
 	}
 
 	label('click to toggle play / pause', -Math.floor(t.grid.rows * 0.34), [255, 225, 140]);

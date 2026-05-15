@@ -93,7 +93,8 @@ t.mouseClicked(() => {
 	}
 
 	t.destroy();
-	document.body.innerHTML = '<div style="padding: 24px; color: #e4e4e7; background: #09090b; min-height: 100vh;">plugin.uninstall() ran after destroy()</div>';
+	document.body.innerHTML =
+		'<div style="padding: 24px; color: #e4e4e7; background: #09090b; min-height: 100vh;">plugin.uninstall() ran after destroy()</div>';
 });
 
 t.windowResized(() => {

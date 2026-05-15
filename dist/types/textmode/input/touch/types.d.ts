@@ -149,7 +149,7 @@ export type TouchPinchHandler = (data: TouchPinchEventData) => void;
 /** Touch rotate event handler function type. */
 export type TouchRotateHandler = (data: TouchRotateEventData) => void;
 /**
- * Event map for all touch events emitted by the {@link TouchInput}.
+ * Event map for all touch events emitted by the touch input manager.
  */
 export interface TouchEventMap {
     /** Fires when a touch point begins on the canvas. */

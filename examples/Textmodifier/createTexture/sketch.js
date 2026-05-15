@@ -58,7 +58,11 @@ t.draw(() => {
 	t.image(texture, t.grid.cols - 8, t.grid.rows - 10);
 
 	drawLabel('createTexture(canvas)', -Math.floor(t.grid.rows * 0.34), [255, 225, 140]);
-	drawLabel(`source matches ${texture.source === sourceCanvas ? 'yes' : 'no'}`, Math.floor(t.grid.rows * 0.30), [120, 205, 255]);
+	drawLabel(
+		`source matches ${texture.source === sourceCanvas ? 'yes' : 'no'}`,
+		Math.floor(t.grid.rows * 0.3),
+		[120, 205, 255]
+	);
 });
 
 t.windowResized(() => {

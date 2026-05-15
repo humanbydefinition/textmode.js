@@ -56,8 +56,11 @@ t.draw(() => {
 	t.point();
 
 	drawLabel('base layer tileset colors', -Math.floor(t.grid.rows * 0.34), [255, 225, 140]);
-	drawLabel('T64  16 x 16  8 x 8 cells', Math.floor(t.grid.rows * 0.20));
-	drawLabel(usesTileColors ? 'authored colors enabled' : 'char + cell recolor active', Math.floor(t.grid.rows * 0.28));
+	drawLabel('T64  16 x 16  8 x 8 cells', Math.floor(t.grid.rows * 0.2));
+	drawLabel(
+		usesTileColors ? 'authored colors enabled' : 'char + cell recolor active',
+		Math.floor(t.grid.rows * 0.28)
+	);
 	drawLabel('click to toggle useTileColors()', Math.floor(t.grid.rows * 0.36), [120, 205, 255]);
 });
 

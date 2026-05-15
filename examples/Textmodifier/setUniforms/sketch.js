@@ -2,12 +2,11 @@
  * @title Textmodifier.setUniforms
  * @author codex
  */
-// Bulk uniform updates
 const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 let ripple;
 t.setup(async () => {
-  ripple = await t.createFilterShader(`#version 300 es
+	ripple = await t.createFilterShader(`#version 300 es
     precision highp float;
     in vec2 v_uv;
     uniform float u_time; uniform vec2 u_mouse;
@@ -25,17 +24,17 @@ t.setup(async () => {
 });
 
 t.draw(() => {
-  t.background(0);
-  if (ripple) {
-    t.shader(ripple);
-    t.setUniforms({
-      u_time: t.frameCount * 0.05,
-      u_mouse: [t.mouse.x, t.mouse.y]
-    });
-    t.rect(t.grid.cols, t.grid.rows);
-  }
+	t.background(0);
+	if (ripple) {
+		t.shader(ripple);
+		t.setUniforms({
+			u_time: t.frameCount * 0.05,
+			u_mouse: [t.mouse.x, t.mouse.y],
+		});
+		t.rect(t.grid.cols, t.grid.rows);
+	}
 });
 
 t.windowResized(() => {
-  t.resizeCanvas(window.innerWidth, window.innerHeight);
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

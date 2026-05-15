@@ -33,7 +33,8 @@ t.draw(() => {
 	framebuffer.end();
 
 	const pixels = framebuffer.readPixels(1);
-	const centerIndex = ((Math.floor(framebuffer.height / 2) * framebuffer.width) + Math.floor(framebuffer.width / 2)) * 4;
+	const centerIndex =
+		(Math.floor(framebuffer.height / 2) * framebuffer.width + Math.floor(framebuffer.width / 2)) * 4;
 	const rgba = pixels.slice(centerIndex, centerIndex + 4);
 
 	t.background(6, 8, 18);

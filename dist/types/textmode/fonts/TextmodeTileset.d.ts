@@ -9,6 +9,9 @@ import type { TextmodeGlyph, TextmodeGlyphAtlas } from './types.ts';
  *
  * `fontSize()` changes on a tileset only affect the effective output cell size.
  * The native atlas stays at the authored tile resolution.
+ *
+ * @example
+ * {@includeCode ../../../examples/TextmodeTileset/creation/sketch.js}
  */
 export declare class TextmodeTileset extends Disposable implements TextmodeGlyphAtlas {
     private static readonly _atlasCache;
@@ -77,63 +80,63 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      * Returns the array of glyphs generated from the tileset mapping.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeTileset/atlas/sketch.js}
+     * {@includeCode ../../../examples/TextmodeTileset/characters/sketch.js}
      */
     get characters(): readonly TextmodeGlyph[];
     /**
      * Returns the character-to-glyph lookup map for the tileset.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeTileset/atlas/sketch.js}
+     * {@includeCode ../../../examples/TextmodeTileset/characterMap/sketch.js}
      */
     get characterMap(): Map<string, TextmodeGlyph>;
     /**
      * Returns the normalized glyph atlas framebuffer used by the ASCII shader.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeTileset/atlas/sketch.js}
+     * {@includeCode ../../../examples/TextmodeTileset/framebuffer/sketch.js}
      */
     get framebuffer(): GLFramebuffer;
     /**
      * Returns the tileset atlas framebuffer backing this glyph atlas.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeTileset/atlas/sketch.js}
+     * {@includeCode ../../../examples/TextmodeTileset/fontFramebuffer/sketch.js}
      */
     get fontFramebuffer(): GLFramebuffer;
     /**
      * Returns the number of columns in the normalized glyph atlas.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeTileset/atlas/sketch.js}
+     * {@includeCode ../../../examples/TextmodeTileset/columns/sketch.js}
      */
     get columns(): number;
     /**
      * Returns the number of rows in the normalized glyph atlas.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeTileset/atlas/sketch.js}
+     * {@includeCode ../../../examples/TextmodeTileset/rows/sketch.js}
      */
     get rows(): number;
     /**
      * Returns the number of columns in the repacked tileset texture atlas.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeTileset/atlas/sketch.js}
+     * {@includeCode ../../../examples/TextmodeTileset/textureColumns/sketch.js}
      */
     get textureColumns(): number;
     /**
      * Returns the number of rows in the repacked tileset texture atlas.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeTileset/atlas/sketch.js}
+     * {@includeCode ../../../examples/TextmodeTileset/textureRows/sketch.js}
      */
     get textureRows(): number;
     /**
      * Returns the authored tile dimensions from the source tileset in pixels.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeTileset/dimensions/sketch.js}
+     * {@includeCode ../../../examples/TextmodeTileset/nativeCellDimensions/sketch.js}
      */
     get nativeCellDimensions(): {
         width: number;
@@ -143,7 +146,7 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      * Returns the effective tile dimensions used by the layer grid.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeTileset/dimensions/sketch.js}
+     * {@includeCode ../../../examples/TextmodeTileset/maxGlyphDimensions/sketch.js}
      */
     get maxGlyphDimensions(): {
         width: number;
@@ -153,7 +156,7 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      * Returns the effective tile cell dimensions used by the layer grid.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeTileset/dimensions/sketch.js}
+     * {@includeCode ../../../examples/TextmodeTileset/cellDimensions/sketch.js}
      */
     get cellDimensions(): {
         width: number;
@@ -163,21 +166,21 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      * Returns the effective tile cell width used by the layer grid.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeTileset/dimensions/sketch.js}
+     * {@includeCode ../../../examples/TextmodeTileset/cellWidth/sketch.js}
      */
     get cellWidth(): number;
     /**
      * Returns the effective tile cell height used by the layer grid.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeTileset/dimensions/sketch.js}
+     * {@includeCode ../../../examples/TextmodeTileset/cellHeight/sketch.js}
      */
     get cellHeight(): number;
     /**
      * Returns the effective font size used to scale tileset cells.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeTileset/dimensions/sketch.js}
+     * {@includeCode ../../../examples/TextmodeTileset/fontSize/sketch.js}
      */
     get fontSize(): number;
 }

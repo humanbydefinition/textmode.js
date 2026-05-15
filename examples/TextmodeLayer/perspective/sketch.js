@@ -6,7 +6,7 @@ const t = textmode.create({ width: window.innerWidth, height: window.innerHeight
 const scene = t.layers.add();
 
 t.draw(() => {
-	const fov = 30 + ((Math.sin(t.frameCount * 0.03) + 1) * 0.5) * 70;
+	const fov = 30 + (Math.sin(t.frameCount * 0.03) + 1) * 0.5 * 70;
 	t.background(8, 10, 18);
 	scene.perspective(fov, 0.1, 256);
 	scene.camera(0, 0, 44);

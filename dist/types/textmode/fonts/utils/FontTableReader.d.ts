@@ -22,11 +22,7 @@ export declare class FontTableReader {
      * Gets font-level metrics scaled to the specified font size.
      */
     _getFontMetrics(font: TyprFont, fontSize: number): {
-        ascender: number;
-        descender: number;
-        lineGap: number;
         lineHeight: number;
-        unitsPerEm: number;
         scale: number;
     };
     /**

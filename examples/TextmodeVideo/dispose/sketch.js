@@ -38,7 +38,7 @@ t.draw(() => {
 	}
 
 	label('click to dispose video', -Math.floor(t.grid.rows * 0.34), [255, 225, 140]);
-	label(disposed ? 'video disposed' : 'video active', Math.floor(t.grid.rows * 0.30), [120, 205, 255]);
+	label(disposed ? 'video disposed' : 'video active', Math.floor(t.grid.rows * 0.3), [120, 205, 255]);
 });
 
 t.mouseClicked(() => {

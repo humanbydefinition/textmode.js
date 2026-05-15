@@ -12,24 +12,7 @@ function trsMatrixY(angle, tx, ty, tz, sx, sy, sz) {
 	const c = Math.cos(angle);
 	const s = Math.sin(angle);
 
-	return new Float32Array([
-		c * sx,
-		0,
-		-s * sx,
-		0,
-		0,
-		sy,
-		0,
-		0,
-		s * sz,
-		0,
-		c * sz,
-		0,
-		tx,
-		ty,
-		tz,
-		1,
-	]);
+	return new Float32Array([c * sx, 0, -s * sx, 0, 0, sy, 0, 0, s * sz, 0, c * sz, 0, tx, ty, tz, 1]);
 }
 
 function drawLabel(text, y, color = [220, 220, 220]) {

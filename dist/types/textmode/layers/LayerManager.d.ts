@@ -24,6 +24,9 @@ export declare class TextmodeLayerManager {
     private _isReady;
     private readonly _gridDimensionChangeCallbacks;
     private _globalFilterQueue;
+    private _finalFilterQueue;
+    private _isRunningFinalDraw;
+    private _finalDrawCallback;
     private _preFilterFramebuffer;
     private _postFilterFramebuffer;
     private _lastPresentedFramebuffer;

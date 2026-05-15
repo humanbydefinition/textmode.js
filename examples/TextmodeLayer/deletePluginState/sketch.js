@@ -2,49 +2,67 @@
  * @title TextmodeLayer.deletePluginState
  * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
+
 const layer = t.layers.add();
+const PLUGIN_NAME = 'monitor';
+
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+	t.push();
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+
+	for (let i = 0; i < text.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(text[i]);
+		t.point();
+		t.pop();
+	}
+
+	t.pop();
+}
 
 t.mousePressed(() => {
-  // Reset the 'boom' state when mouse is clicked
-  if (layer.hasPluginState('boom')) {
-    layer.deletePluginState('boom');
-  }
+	if (layer.hasPluginState(PLUGIN_NAME)) {
+		layer.deletePluginState(PLUGIN_NAME);
+	}
 });
 
 layer.draw(() => {
-  t.clear();
+	t.clear();
 
-  if (!layer.hasPluginState('boom')) {
-    layer.setPluginState('boom', { frame: 0 });
-  }
+	if (!layer.hasPluginState(PLUGIN_NAME)) {
+		layer.setPluginState(PLUGIN_NAME, { angle: 0, resets: 0 });
+	}
 
-  const state = layer.getPluginState('boom');
-  if (state) {
-    state.frame++;
-    const radius = state.frame;
-    if (radius > 10) return; // Explosion finished
+	const state = layer.getPluginState(PLUGIN_NAME);
 
-    // Draw explosion ring
-    for(let i=0; i<12; i++) {
-      const angle = (i / 12) * Math.PI * 2;
-      const x = Math.cos(angle) * radius;
-      const y = Math.sin(angle) * radius * 0.5;
+	state.angle += 0.05;
 
-      t.push();
-      t.translate(Math.round(x), Math.round(y));
-      t.char('*');
-      t.charColor(255, 100 + radius * 10, 0);
-      t.point();
-      t.pop();
-    }
-  }
+	t.push();
+	t.rotateZ((state.angle * 180) / Math.PI);
+	t.charColor(120, 180, 255);
+	t.char('#');
+	t.rect(8, 4);
+	t.pop();
+
+	drawCenteredText('TextmodeLayer.deletePluginState', -10, [240, 245, 255]);
+	drawCenteredText('Click to delete the "monitor" plugin state.', -8, [150, 170, 200]);
+
+	const statusColor = layer.hasPluginState(PLUGIN_NAME) ? [120, 255, 150] : [255, 100, 100];
+	drawCenteredText('STATE: ' + (layer.hasPluginState(PLUGIN_NAME) ? 'ACTIVE' : 'DELETED'), 6, statusColor);
+	drawCenteredText('VALUE: ' + state.angle.toFixed(2), 8, [180, 200, 220]);
 });
 
 t.draw(() => {
-  t.background(0);
+	t.background(6, 10, 22);
 });
 
 t.windowResized(() => {
-  t.resizeCanvas(window.innerWidth, window.innerHeight);
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

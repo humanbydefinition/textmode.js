@@ -17,7 +17,6 @@ export declare const UNIT_QUAD: Float32Array<ArrayBuffer>;
  */
 export declare const GEOMETRY_2D_DESCRIPTOR: {
     readonly _stride: 16;
-    readonly _primitiveType: 4;
     readonly _attributes: {
         readonly _position: {
             readonly size: 2;

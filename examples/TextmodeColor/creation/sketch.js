@@ -2,44 +2,79 @@
  * @title TextmodeColor.creation
  * @author codex
  */
-// Demonstrating color creation and manipulation
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
+
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+	t.push();
+	t.translate(-Math.floor(text.length / 2), y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+
+	for (let i = 0; i < text.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(text[i]);
+		t.point();
+		t.pop();
+	}
+
+	t.pop();
+}
 
 t.draw(() => {
-  t.background(10, 5, 15);
+	t.background(6, 10, 22);
 
-  const time = t.frameCount * 0.02;
-  const count = 100;
+	drawCenteredText('TextmodeColor.creation', -6, [240, 245, 255]);
 
-  for (let i = 0; i < count; i++) {
-    const angle = (i / count) * Math.PI * 2 * 3 + time;
-    const radius = 5 + i * 0.4;
-    const x = Math.cos(angle) * radius;
-    const y = Math.sin(angle) * radius;
+	const col1 = t.color(255, 120, 80);
+	t.push();
+	t.translate(-6, 0);
+	t.charColor(col1.r, col1.g, col1.b);
 
-    t.push();
-    t.translate(x, y);
+	const label1 = 'RGB: 255, 120, 80';
+	for (let i = 0; i < label1.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(label1[i]);
+		t.point();
+		t.pop();
+	}
+	t.pop();
 
-    // Demonstrate different color creation methods based on index
-    let col;
-    if (i % 3 === 0) {
-      // RGB: Warm colors
-      col = t.color(255, i * 2, 50);
-    } else if (i % 3 === 1) {
-      // Hex: Teal accents
-      col = t.color('#00FFCC');
-    } else {
-      // Grayscale: White stars
-      col = t.color(255, 150);
-    }
+	const col2 = t.color('#80FFB0');
+	t.push();
+	t.translate(-6, 4);
+	t.charColor(col2.r, col2.g, col2.b);
 
-    t.charColor(col);
-    t.char(i % 5 === 0 ? '+' : '#');
-    t.point();
-    t.pop();
-  }
+	const label2 = 'Hex: #80FFB0';
+	for (let i = 0; i < label2.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(label2[i]);
+		t.point();
+		t.pop();
+	}
+	t.pop();
+
+	const col3 = t.color(180);
+	t.push();
+	t.translate(-6, 8);
+	t.charColor(col3.r, col3.g, col3.b);
+
+	const label3 = 'Gray: 180';
+	for (let i = 0; i < label3.length; i++) {
+		t.push();
+		t.translate(i, 0);
+		t.char(label3[i]);
+		t.point();
+		t.pop();
+	}
+	t.pop();
 });
 
 t.windowResized(() => {
-  t.resizeCanvas(window.innerWidth, window.innerHeight);
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });
