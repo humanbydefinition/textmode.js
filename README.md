@@ -79,10 +79,6 @@ To use `textmode.js` in a UMD environment, download the latest `umd` build from 
 </html>
 ```
 
-`textmode.js` can also be initialized from scripts loaded in `<head>`.
-The auto-created canvas mount is deferred until `<body>` is available.
-Using `defer` is still recommended for explicit startup order.
-
 ```javascript
 // sketch.js
 const t = textmode.create({
