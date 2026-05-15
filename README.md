@@ -207,7 +207,7 @@ and `npm run contributors:generate`.
 
 ## License
 
-`textmode.js` is licensed under the [GNU Lesser General Public License v2.1](./LICENSE).
+`textmode.js` is licensed under the [MIT License](./LICENSE).
 
 Third-party license attributions are listed in [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md).
 
