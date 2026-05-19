@@ -56,18 +56,6 @@ export declare class TextmodeErrorHandler {
      * @returns true if execution should continue, false if error was handled
      */
     private _handle;
-    /**
-     * Validate a condition and handle errors if validation fails
-     * @param condition The condition to validate
-     * @param message Error message if validation fails
-     * @param context Additional context for debugging
-     * @returns true if validation passed, false if validation failed and was handled
-     */
-    _validate(condition: boolean, message: string, context?: Record<string, unknown>): boolean;
-    /**
-     * Set global error level
-     */
-    _setGlobalLevel(level: TextmodeErrorLevel): void;
     private _shouldEmit;
     private _createFingerprint;
     private _stableStringify;

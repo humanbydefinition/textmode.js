@@ -3,7 +3,7 @@ import type { Material } from '../../rendering/webgl/materials/Material';
 import { TextmodeColor } from '../color/TextmodeColor';
 import type { TextmodeGlyphAtlas } from '../fonts/types';
 import { Disposable } from '../../utils/Disposable';
-import type { TextmodeConversionMode, TextmodeConversionManager } from '../conversion';
+import type { TextmodeConversionMode, TextmodeConversionStep, TextmodeConversionManager } from '../conversion';
 import type { RGB, RGBA } from '../../utils/color';
 /**
  * Abstract base class representing a textmode source asset (image, video, texture).
@@ -22,16 +22,24 @@ export declare abstract class TextmodeSource extends Disposable {
     private _cachedConversionStrategy;
     private _conversionManager;
     private _frameConversionMode;
+    private _conversionStack;
+    private _frameConversionStack;
+    private _activeConversionStep;
+    private _activeConversionPass;
     protected _invert: number;
     protected _flipX: number;
     protected _flipY: number;
     protected _charRotation: number;
+    protected _brightnessStart: number;
+    protected _brightnessEnd: number;
     protected _charColorMode: 'sampled' | 'fixed';
     protected _cellColorMode: 'sampled' | 'fixed';
     private _frameInvert;
     private _frameFlipX;
     private _frameFlipY;
     private _frameCharRotation;
+    private _frameBrightnessStart;
+    private _frameBrightnessEnd;
     private _frameCharColorMode;
     private _frameCellColorMode;
     protected _charColor: RGBA;
@@ -48,6 +56,7 @@ export declare abstract class TextmodeSource extends Disposable {
     private _frameGlyphPaletteTexture;
     private _frameGlyphPaletteDirty;
     protected constructor(gl: WebGL2RenderingContext, renderer: GLRenderer, texture: WebGLTexture, conversionManager: TextmodeConversionManager, originalWidth: number, originalHeight: number, gridCols: number, gridRows: number);
+    private _invalidateMaterials;
     private _setFrameOrBaseColor;
     /**
      * Select the conversion mode for this source.
@@ -63,6 +72,30 @@ export declare abstract class TextmodeSource extends Disposable {
      * {@includeCode ../../../examples/TextmodeSource/conversionMode/sketch.js}
      */
     conversionMode(mode: TextmodeConversionMode): this;
+    /**
+     * Set an ordered conversion stack for this source.
+     *
+     * Each step renders the same source with its own conversion mode and optional
+     * overrides. Later steps are drawn on top of earlier steps.
+     *
+     * @param steps Ordered conversion passes to apply when this source is drawn.
+     * @returns This instance for chaining.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeSource/conversions/sketch.js}
+     */
+    conversions(steps: TextmodeConversionStep[]): this;
+    /**
+     * Clear this source's conversion stack and return to single-mode conversion.
+     *
+     * The active mode selected through {@link conversionMode} is preserved.
+     *
+     * @returns This instance for chaining.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeSource/clearConversions/sketch.js}
+     */
+    clearConversions(): this;
     /**
      * Dispose of the resource and free associated WebGL textures.
      *
@@ -111,6 +144,20 @@ export declare abstract class TextmodeSource extends Disposable {
      * {@includeCode ../../../examples/TextmodeSource/charRotation/sketch.js}
      */
     charRotation(degrees: number): this;
+    /**
+     * Capture only source pixels whose brightness is inside the inclusive byte range.
+     *
+     * Pixels outside the range are discarded by the built-in brightness converter,
+     * leaving the corresponding textmode cells transparent.
+     *
+     * @param start Minimum brightness to capture, from 0 (black) to 255 (white).
+     * @param end Maximum brightness to capture, from 0 (black) to 255 (white).
+     * @returns This instance for chaining.
+     *
+     * @example
+     * {@includeCode ../../../examples/TextmodeSource/brightnessRange/sketch.js}
+     */
+    brightnessRange(start: number, end: number): this;
     /**
      * Set character color mode: `'sampled'` *(from source)* or `'fixed'`.
      * @param mode The character color mode
@@ -212,16 +259,26 @@ export declare abstract class TextmodeSource extends Disposable {
     protected _beforeMaterialUpdate(): void;
     private _updateMaterial;
     private _createMaterial;
+    private _getConversionStepMaterial;
+    private _normalizeConversionStep;
+    private _assertColorMode;
+    private _normalizeStepOptions;
+    private _normalizeColorInput;
+    private _normalizeBrightnessRange;
     private _setColor;
     private _applyCharacterPalette;
+    private _refreshConversionStackPalettes;
     private _getCharacterPalette;
+    private _getActiveConversionStack;
+    private _hasFrameUniformOverrides;
     private _setIdealDimensions;
     private _getCharacterPaletteTexture;
     private _uploadCharacterPaletteTexture;
     private _createCharacterPaletteData;
     private _normalizedColorByte;
     private _disposeCharacterPaletteTexture;
-    _hasFrameOverrides(): boolean;
+    private _disposeConversionStack;
+    private _getConversionStrategy;
     private _getActiveConversionStrategy;
     private _setFrameColor;
     private _createConversionContext;

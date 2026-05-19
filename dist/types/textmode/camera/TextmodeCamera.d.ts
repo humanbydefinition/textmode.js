@@ -15,7 +15,6 @@ export declare class TextmodeCamera {
     private _upX;
     private _upY;
     private _upZ;
-    constructor(eyeX?: number, eyeY?: number, eyeZ?: number, targetX?: number, targetY?: number, targetZ?: number, upX?: number, upY?: number, upZ?: number);
     /**
      * Set camera eye position.
      *

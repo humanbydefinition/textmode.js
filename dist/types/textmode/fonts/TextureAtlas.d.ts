@@ -1,7 +1,5 @@
-import type { TextmodeGlyph, GlyphDimensions } from './types.ts';
 import type { GLRenderer } from '../../rendering/webgl/core/Renderer.ts';
 import type { GLFramebuffer } from '../../rendering/webgl/core/Framebuffer.ts';
-import type { TyprFont } from './typr/types.ts';
 /**
  * Handles creation of texture atlases for font rendering.
  * This class manages the Canvas 2D rendering and WebGL framebuffer creation.
@@ -20,15 +18,6 @@ export declare class TextureAtlas {
      * @param renderer The WebGL renderer instance
      */
     constructor(renderer: GLRenderer);
-    /**
-     * Creates or updates the texture atlas from the given characters.
-     * Reuses the existing framebuffer if possible, resizing if dimensions change.
-     * @param characters Array of TextmodeGlyph objects
-     * @param maxGlyphDimensions Maximum dimensions of glyphs
-     * @param fontSize Font size for rendering
-     * @param font Typr.js font data object for path rendering
-     */
-    _createTextureAtlas(characters: readonly TextmodeGlyph[], maxGlyphDimensions: GlyphDimensions, fontSize: number, font: TyprFont): void;
     /**
      * Sets up the canvas for rendering.
      * @param width Canvas buffer width

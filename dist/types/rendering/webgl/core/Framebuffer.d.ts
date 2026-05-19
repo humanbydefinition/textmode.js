@@ -55,7 +55,6 @@ export declare class GLFramebuffer extends Disposable implements IFramebuffer {
     private _attachTextures;
     private _createDepthRenderbuffer;
     private _updateDepthStorage;
-    _update(source: HTMLCanvasElement | HTMLVideoElement): void;
     /**
      * Resize the framebuffer and all attached textures.
      *

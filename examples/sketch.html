@@ -52,14 +52,14 @@
 			if (!examplePath || !isValidPath(examplePath)) {
 				showError('Invalid example path.');
 			} else {
+				window.textmode = textmodeModule.textmode;
+				window.TextmodeErrorLevel = textmodeModule.errors.TextmodeErrorLevel;
+				window.__TEXTMODE_EXAMPLE_PATH__ = examplePath;
+
 				document.title = `textmode.js - ${examplePath}`;
 				const base = document.createElement('base');
 				base.href = `./${examplePath}/`;
 				document.head.appendChild(base);
-
-				window.textmode = textmodeModule.textmode;
-				window.TextmodeErrorLevel = textmodeModule.errors.TextmodeErrorLevel;
-				window.__TEXTMODE_EXAMPLE_PATH__ = examplePath;
 
 				const script = document.createElement('script');
 				script.src = './sketch.js';

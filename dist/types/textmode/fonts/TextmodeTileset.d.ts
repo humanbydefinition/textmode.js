@@ -29,21 +29,6 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
     private _options?;
     private _sharedAtlas?;
     /**
-     * Get the color associated with a character using O(1) Map lookup.
-     * @param character The character to get the color for.
-     * @returns The RGB color as an array `[r, g, b]`.
-     * @ignore
-     */
-    _getCharacterColor(character: string): [number, number, number];
-    /**
-     * Get the colors associated with a string of characters using O(1) Map lookups.
-     * @param characters The string of characters to get colors for.
-     * @returns An array of RGB colors for each character in the string.
-     * Each color is represented as an array `[r, g, b]`.
-     * @ignore
-     */
-    _getCharacterColors(characters: string): [number, number, number][];
-    /**
      * Dispose the tileset and release its shared atlas resources.
      *
      * @example

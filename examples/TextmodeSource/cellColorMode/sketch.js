@@ -2,6 +2,7 @@
  * @title TextmodeSource.cellColorMode
  * @author codex
  */
+const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
@@ -26,31 +27,12 @@ function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.pop();
 }
 
-function createGradientCanvas() {
-	const canvas = document.createElement('canvas');
-	canvas.width = 128;
-	canvas.height = 128;
-	const ctx = canvas.getContext('2d');
-	if (!ctx) return canvas;
-
-	const grad = ctx.createLinearGradient(0, 0, 128, 128);
-	grad.addColorStop(0, '#ff4400');
-	grad.addColorStop(0.5, '#00ffaa');
-	grad.addColorStop(1, '#0088ff');
-	ctx.fillStyle = grad;
-	ctx.fillRect(0, 0, 128, 128);
-
-	return canvas;
-}
-
-t.setup(() => {
-	const canvas = createGradientCanvas();
-
-	sourceA = t.createTexture(canvas);
+t.setup(async () => {
+	sourceA = await t.loadImage(IMAGE_URL);
 	sourceA.characters(' .:-=+*#%@');
 	sourceA.cellColorMode('sampled');
 
-	sourceB = t.createTexture(canvas);
+	sourceB = await t.loadImage(IMAGE_URL);
 	sourceB.characters(' .:-=+*#%@');
 	sourceB.cellColorMode('fixed').cellColor(20, 30, 60);
 });

@@ -3,6 +3,8 @@ import type { UniformValue } from '../../rendering/webgl/types/UniformTypes';
 import type { GLRenderer } from '../../rendering/webgl/core/Renderer';
 import type { TextmodeGlyphAtlas } from '../fonts/types';
 import type { TextmodeSource } from '../media/TextmodeSource';
+import type { TextmodeColor } from '../color/TextmodeColor';
+import type { ColorTuple } from '../../utils/color';
 /**
  * Built-in conversion mode names provided by textmode.js
  */
@@ -11,6 +13,58 @@ export type BuiltInConversionMode = 'brightness';
  * Type representing the available textmode conversion modes
  */
 export type TextmodeConversionMode = BuiltInConversionMode | string;
+/**
+ * Color input accepted by conversion stack steps.
+ */
+export type TextmodeColorInput = number | string | TextmodeColor | ColorTuple;
+/**
+ * Custom options passed to conversion strategies for one conversion stack pass.
+ */
+export type TextmodeConversionStepOptions = Record<string, unknown>;
+/**
+ * One pass in a source-level conversion stack.
+ */
+export interface TextmodeConversionStep {
+    /** Conversion mode to run for this pass. */
+    mode: TextmodeConversionMode;
+    /** Characters used by this pass when the strategy maps through a character palette. */
+    characters?: string;
+    /** Minimum captured brightness for this pass in byte-space (0-255). Requires brightnessEnd. */
+    brightnessStart?: number;
+    /** Maximum captured brightness for this pass in byte-space (0-255). Requires brightnessStart. */
+    brightnessEnd?: number;
+    /** Invert character/cell colors for this pass. */
+    invert?: boolean | number;
+    /** Flip characters horizontally for this pass. */
+    flipX?: boolean | number;
+    /** Flip characters vertically for this pass. */
+    flipY?: boolean | number;
+    /** Character rotation in degrees for this pass. */
+    charRotation?: number;
+    /** Character color mode for this pass. */
+    charColorMode?: 'sampled' | 'fixed';
+    /** Cell color mode for this pass. */
+    cellColorMode?: 'sampled' | 'fixed';
+    /** Fixed character color for this pass. */
+    charColor?: TextmodeColorInput;
+    /** Fixed cell color for this pass. */
+    cellColor?: TextmodeColorInput;
+    /** Strategy-specific options for this pass. */
+    options?: TextmodeConversionStepOptions;
+}
+/**
+ * Metadata describing the active pass while a conversion stack is being rendered.
+ */
+export interface TextmodeConversionPassContext {
+    /** Zero-based index of the active pass. */
+    index: number;
+    /** Total number of passes in the active stack. */
+    count: number;
+    /** Conversion mode being rendered for this pass. */
+    mode: TextmodeConversionMode;
+    /** Strategy-specific options for this pass. */
+    options: TextmodeConversionStepOptions;
+}
 /**
  * Interface for the context provided to conversion strategies during shader and uniform creation.
  *
@@ -42,6 +96,12 @@ export interface TextmodeConversionContext {
      * Provides access to the source texture and dimensions.
      */
     source: TextmodeSource;
+    /**
+     * Metadata for the active source-level conversion stack pass.
+     *
+     * Undefined for legacy single-conversion rendering.
+     */
+    pass?: TextmodeConversionPassContext;
 }
 /**
  * Interface for defining a custom textmode conversion strategy.

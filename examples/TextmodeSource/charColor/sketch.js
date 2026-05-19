@@ -2,6 +2,7 @@
  * @title TextmodeSource.charColor
  * @author codex
  */
+const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
@@ -26,39 +27,9 @@ function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 	t.pop();
 }
 
-function createTechCanvas() {
-	const canvas = document.createElement('canvas');
-	canvas.width = 128;
-	canvas.height = 128;
-	const ctx = canvas.getContext('2d');
-	if (!ctx) return canvas;
-
-	ctx.fillStyle = '#000000';
-	ctx.fillRect(0, 0, 128, 128);
-
-	ctx.strokeStyle = '#ffffff';
-	ctx.lineWidth = 4;
-
-	for (let i = 0; i < 3; i++) {
-		ctx.beginPath();
-		ctx.arc(64, 64, 20 + i * 20, 0, Math.PI * 2);
-		ctx.stroke();
-	}
-
-	ctx.beginPath();
-	ctx.moveTo(64, 10);
-	ctx.lineTo(64, 118);
-	ctx.moveTo(10, 64);
-	ctx.lineTo(118, 64);
-	ctx.stroke();
-
-	return canvas;
-}
-
-t.setup(() => {
-	techSource = t.createTexture(createTechCanvas());
+t.setup(async () => {
+	techSource = await t.loadImage(IMAGE_URL);
 	techSource.characters(' .:-=+*#%@');
-
 	techSource.charColorMode('fixed');
 });
 

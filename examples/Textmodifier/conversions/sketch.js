@@ -2,6 +2,7 @@
  * @title Textmodifier.conversions
  * @author codex
  */
+const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
 const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
 
 let img;
@@ -22,21 +23,8 @@ function label(text, y, color = [220, 220, 220]) {
 }
 
 t.setup(async () => {
-	const source = document.createElement('canvas');
-	source.width = 96;
-	source.height = 64;
-	const ctx = source.getContext('2d');
-	ctx.fillStyle = '#111827';
-	ctx.fillRect(0, 0, source.width, source.height);
-	ctx.fillStyle = '#38bdf8';
-	ctx.fillRect(8, 8, 28, 48);
-	ctx.fillStyle = '#f59e0b';
-	ctx.beginPath();
-	ctx.arc(66, 32, 18, 0, Math.PI * 2);
-	ctx.fill();
-
 	hasBrightness = t.conversions.has('brightness');
-	img = await t.loadImage(source.toDataURL());
+	img = await t.loadImage(IMAGE_URL);
 	if (hasBrightness) img.conversionMode('brightness');
 	img.characters(' .:-=+*#%@');
 });

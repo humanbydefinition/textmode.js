@@ -5,6 +5,7 @@ import type { TextmodeFont, TextmodeTileset } from '../../fonts';
 import type { TextmodeGlyphAtlas } from '../../fonts/types';
 import type { TextmodeLayer } from '../../layers/TextmodeLayer';
 import type { TextmodeLayerManager } from '../../layers';
+import type { TextmodeSource } from '../../media/TextmodeSource';
 import type { LayerLifecycleHook, LayerRenderHook, SetupLifecycleHook, TextmodePluginHook } from './hooks';
 /**
  * Stable read-only canvas handle exposed to plugins.
@@ -140,4 +141,30 @@ export interface TextmodePluginContext {
      * {@includeCode ../../../../examples/plugins/removeLayerExtension/sketch.js}
      */
     removeLayerExtension(methodName: string): void;
+    /**
+     * Extend TextmodeSource instances with a new method.
+     * The method will be available on image, video, texture, and overlay sources.
+     *
+     * @param methodName The name of the method to add.
+     * @param implementation The implementation function. `this` will be bound to the TextmodeSource instance.
+     *
+     * @example
+     * ```ts
+     * api.extendSource('edgeDetection', function() {
+     *   // `this` is the TextmodeSource instance
+     *   return this.conversionMode('edge');
+     * });
+     * ```
+     */
+    extendSource<TArgs extends unknown[], TReturn>(methodName: string, implementation: (this: TextmodeSource, ...args: TArgs) => TReturn): void;
+    /**
+     * Remove a method extension from TextmodeSource.
+     * @param methodName The name of the method to remove.
+     *
+     * @example
+     * ```ts
+     * api.removeSourceExtension('edgeDetection');
+     * ```
+     */
+    removeSourceExtension(methodName: string): void;
 }

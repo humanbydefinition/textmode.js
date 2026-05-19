@@ -2,28 +2,11 @@
  * @title TextmodeSource.dispose
  * @author codex
  */
+const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
 const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 
-const sourceCanvas = document.createElement('canvas');
-sourceCanvas.width = 160;
-sourceCanvas.height = 120;
-
-const sourceContext = sourceCanvas.getContext('2d');
 let source = null;
 let disposed = false;
-
-function renderSource() {
-	if (!sourceContext) {
-		return;
-	}
-
-	sourceContext.fillStyle = '#050816';
-	sourceContext.fillRect(0, 0, sourceCanvas.width, sourceCanvas.height);
-	sourceContext.fillStyle = '#60a5fa';
-	sourceContext.fillRect(24, 20, 112, 80);
-	sourceContext.fillStyle = '#fef08a';
-	sourceContext.fillRect(56, 34, 48, 52);
-}
 
 function label(text, y, color = [220, 220, 220]) {
 	t.push();
@@ -41,9 +24,8 @@ function label(text, y, color = [220, 220, 220]) {
 	t.pop();
 }
 
-t.setup(() => {
-	renderSource();
-	source = t.createTexture(sourceCanvas);
+t.setup(async () => {
+	source = await t.loadImage(IMAGE_URL);
 	source.characters(' .:-=+*#%@');
 });
 

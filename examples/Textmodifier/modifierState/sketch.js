@@ -1,13 +1,18 @@
 /**
  * @title Textmodifier.modifierState
- * @author codex
+ * @description Glassmorphic terminal controller: displays illuminated, neon-glowing HUD panels for modifier keys that react in real-time when pressed.
+ * @author antigravity
  */
-const t = textmode.create({ width: 640, height: 640, fontSize: 16 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-function drawLabel(text, x, y, color = 180) {
+function drawText(text, x, y, r = 180, g = r, b = r) {
 	t.push();
 	t.translate(x - Math.floor(text.length / 2), y);
-	t.charColor(color);
+	t.charColor(r, g, b);
 
 	for (let i = 0; i < text.length; i++) {
 		t.push();
@@ -20,45 +25,88 @@ function drawLabel(text, x, y, color = 180) {
 	t.pop();
 }
 
-function drawPanel(x, y, label, active, hue) {
-	const pulse = 4 + Math.sin(t.frameCount * 0.08) * 2;
-	const glow = active ? 255 : 70;
-	const cell = active ? hue : 15;
-	const icon = active ? '*' : '.';
-	const status = active ? 'ON' : 'OFF';
+function drawPanel(x, y, label, active, themeColors) {
+	const borderChar = active ? '█' : '░';
+	const status = active ? ' ACTIVE ' : ' INACTIVE';
+
+	const activeR = active ? themeColors.active[0] : themeColors.idle[0];
+	const activeG = active ? themeColors.active[1] : themeColors.idle[1];
+	const activeB = active ? themeColors.active[2] : themeColors.idle[2];
 
 	t.push();
 	t.translate(x, y);
-	t.charColor(glow, glow, glow);
-	t.cellColor(cell, active ? hue : 15, 20);
-	t.char(icon);
-	t.rect(10 + pulse, 6 + pulse * 0.3);
 
-	t.charColor(active ? 0 : 190, active ? 0 : 190, active ? 0 : 190);
-	drawLabel(label, 0, -1, active ? 0 : 200);
-	drawLabel(status, 0, 1, active ? 0 : 120);
+	// Panel glowing container
+	t.char(borderChar);
+	t.charColor(activeR, activeG, activeB, active ? 255 : 120);
+	t.rect(14, 6);
+
+	// Invert character content for the active text label
+	drawText(label, 0, -1, active ? 255 : 160, active ? 255 : 160, active ? 255 : 180);
+	drawText(status, 0, 1, activeR, activeG, activeB);
+
 	t.pop();
 }
 
 t.draw(() => {
+	t.background(6, 8, 14);
+
 	const { shift, ctrl, alt, meta } = t.modifierState;
 	const activeCount = [shift, ctrl, alt, meta].filter(Boolean).length;
-	const orbit = activeCount === 0 ? 0 : 6 + Math.sin(t.frameCount * 0.05) * 2;
 
-	t.background(0);
+	const cols = t.grid.cols;
+	const rows = t.grid.rows;
 
-	drawPanel(-12, -8, 'SHIFT', shift, 255);
-	drawPanel(12, -8, 'CTRL', ctrl, 220);
-	drawPanel(-12, 8, 'ALT', alt, 180);
-	drawPanel(12, 8, 'META', meta, 140);
+	// Header JSDoc terminal console title
+	drawText('COGNITIVE INTERACTIVE KEYBOARD SENSORS', 0, -Math.floor(rows / 2) + 4, 100, 200, 255);
+	drawText(
+		'PRESS AND HOLD MODIFIER KEYS ON YOUR KEYBOARD TO TELEPORT THE SIGNAL',
+		0,
+		-Math.floor(rows / 2) + 6,
+		120,
+		140,
+		160
+	);
 
-	drawLabel('hold shift ctrl alt or cmd', 0, -15, 200);
-	drawLabel(activeCount === 0 ? 'idle input state' : `${activeCount} modifier active`, 0, 15, 160);
+	// Color configurations for the 4 key panels
+	const themeShift = { active: [255, 100, 100], idle: [60, 40, 40] }; // Red
+	const themeCtrl = { active: [255, 200, 50], idle: [60, 55, 30] }; // Yellow
+	const themeAlt = { active: [100, 255, 150], idle: [30, 60, 45] }; // Green
+	const themeMeta = { active: [100, 180, 255], idle: [30, 45, 60] }; // Cyan
 
+	// Responsive quad layout
+	const spacingX = Math.max(12, Math.floor(cols / 4));
+	const spacingY = Math.max(6, Math.floor(rows / 4));
+
+	drawPanel(-spacingX, -spacingY, 'SHIFT KEY', shift, themeShift);
+	drawPanel(spacingX, -spacingY, 'CTRL KEY', ctrl, themeCtrl);
+	drawPanel(-spacingX, spacingY, 'ALT KEY', alt, themeAlt);
+	drawPanel(spacingX, spacingY, 'META / CMD', meta, themeMeta);
+
+	// Central visual connection matrix
 	t.push();
-	t.rotateZ(t.frameCount * 2);
-	t.char(activeCount === 0 ? '+' : '#');
-	t.charColor(255, 220 - activeCount * 20, 120 + activeCount * 30);
-	t.rect(4 + orbit * 0.2, 4 + orbit * 0.2);
+	const pulse = 1 + Math.sin(t.frameCount * 0.1) * 0.25;
+	t.rotateZ(t.frameCount * (1 + activeCount * 2));
+	t.char(activeCount > 0 ? '☼' : '·');
+	t.charColor(activeCount > 0 ? 255 : 80, activeCount > 0 ? 220 : 90, activeCount > 0 ? 150 : 100);
+	t.rect(4 * pulse + activeCount * 4, 4 * pulse + activeCount * 4);
 	t.pop();
+
+	// Telemetry stats footer
+	const infoStr =
+		activeCount === 0
+			? 'STATUS: IDLE PORT - WAITING FOR INPUT...'
+			: `STATUS: ACTIVE GATEWAY - ${activeCount} KEYS BINDING`;
+	drawText(
+		infoStr,
+		0,
+		Math.floor(rows / 2) - 4,
+		activeCount > 0 ? 100 : 140,
+		activeCount > 0 ? 255 : 140,
+		activeCount > 0 ? 180 : 150
+	);
+});
+
+t.windowResized(() => {
+	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

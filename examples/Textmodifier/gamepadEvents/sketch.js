@@ -1,12 +1,17 @@
 /**
  * @title Textmodifier.gamepadEvents
- * @description Event-driven gamepad: visualize press, release, and axis change events with a scrolling log.
+ * @description Event-driven gamepad monitor: connect a controller to see button, axis, and connection events become a live textmode signal board.
  * @author humanbydefinition
  */
-const t = textmode.create({ width: 960, height: 640, fontSize: 16 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
 const MAX_LOG = 28;
 const log = [];
+let pulse = 0;
 
 function pushLog(tag, text, r, g, b) {
 	log.unshift({ tag, text, r, g, b, age: 0 });
@@ -30,7 +35,7 @@ function drawText(text, x, y, r = 220, g = r, b = r, a = 255) {
 }
 
 t.on('gamepadConnected', (data) => {
-	pushLog('CONN', `slot ${data.gamepad.index} connected — ${data.gamepad.id.slice(0, 36)}`, 80, 220, 120);
+	pushLog('CONN', `slot ${data.gamepad.index} connected - ${data.gamepad.id.slice(0, 36)}`, 80, 220, 120);
 });
 
 t.on('gamepadDisconnected', (data) => {
@@ -56,14 +61,38 @@ t.on('gamepadAxisChanged', (data) => {
 });
 
 t.draw(() => {
-	t.background(0);
+	t.background(4, 6, 12);
 
-	drawText('gamepad events', -28, -18, 255, 255, 255);
-	drawText('connect a controller and interact with it', -28, -16, 140, 140, 140);
-	drawText(`connected: ${t.gamepads.length}`, -28, -14, 160, 160, 160);
+	const cols = t.grid.cols;
+	const rows = t.grid.rows;
+	const left = -Math.floor(cols / 2) + 4;
+	const top = -Math.floor(rows / 2) + 3;
+	const bottom = Math.floor(rows / 2) - 3;
+	pulse += 0.04 + t.gamepads.length * 0.02;
 
-	drawText('event log', -28, -11, 200, 200, 200);
-	drawText('-----------------------------------------------------', -28, -10, 60, 60, 60);
+	for (let ring = 0; ring < 6; ring++) {
+		const points = 24 + ring * 8;
+		const radius = 4 + ring * 3 + Math.sin(pulse + ring) * 0.8;
+
+		for (let i = 0; i < points; i++) {
+			const angle = (i / points) * Math.PI * 2 + pulse * (0.18 + ring * 0.025);
+			const flicker = 0.5 + 0.5 * Math.sin(pulse * 3 + i * 0.7 + ring);
+
+			t.push();
+			t.translate(Math.cos(angle) * radius * 1.65, Math.sin(angle) * radius);
+			t.char(['.', ':', '+', '*', 'o', '@'][ring]);
+			t.charColor(50 + ring * 28, 110 + flicker * 100, 190 + ring * 8, 70 + flicker * 100);
+			t.point();
+			t.pop();
+		}
+	}
+
+	drawText('gamepad events', left, top, 255, 255, 255);
+	drawText('connect a controller, press buttons, tilt sticks', left, top + 2, 140, 170, 190);
+	drawText(`connected: ${t.gamepads.length}`, left, top + 4, 160, 220, 160);
+
+	drawText('event log', left, top + 7, 220, 220, 220);
+	drawText('-----------------------------------------------------', left, top + 8, 60, 70, 90);
 
 	for (let i = 0; i < log.length; i++) {
 		const entry = log[i];
@@ -72,12 +101,14 @@ t.draw(() => {
 		const a = Math.round(255 * fade);
 		const tag = (entry.tag + '     ').slice(0, 5);
 
-		drawText(`${tag} ${entry.text}`, -28, -9 + i, entry.r, entry.g, entry.b, a);
+		drawText(`${tag} ${entry.text}`, left, top + 9 + i, entry.r, entry.g, entry.b, a);
 	}
 
 	if (log.length === 0) {
-		drawText('waiting for events...', -28, -8, 100, 100, 100);
+		drawText('waiting for events...', left, top + 9, 100, 120, 150);
 	}
+
+	drawText('buttons and axes emit named events when standard mappings are available', left, bottom, 110, 130, 155);
 });
 
 t.windowResized(() => {

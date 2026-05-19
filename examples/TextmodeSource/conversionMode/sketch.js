@@ -2,27 +2,10 @@
  * @title TextmodeSource.conversionMode
  * @author codex
  */
+const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
 const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 let source;
-
-function createGradientCanvas() {
-	const canvas = document.createElement('canvas');
-	canvas.width = 160;
-	canvas.height = 160;
-
-	const ctx = canvas.getContext('2d');
-	if (!ctx) return canvas;
-
-	const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-	gradient.addColorStop(0, '#040404');
-	gradient.addColorStop(0.5, '#888888');
-	gradient.addColorStop(1, '#f8f8f8');
-	ctx.fillStyle = gradient;
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-	return canvas;
-}
 
 function drawLabel(text, y) {
 	t.push();
@@ -40,8 +23,8 @@ function drawLabel(text, y) {
 	t.pop();
 }
 
-t.setup(() => {
-	source = t.createTexture(createGradientCanvas());
+t.setup(async () => {
+	source = await t.loadImage(IMAGE_URL);
 	source.conversionMode('brightness');
 	source.characters(' .:-=+*#%@');
 });

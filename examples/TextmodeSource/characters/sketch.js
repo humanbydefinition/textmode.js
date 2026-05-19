@@ -2,27 +2,11 @@
  * @title TextmodeSource.characters
  * @author codex
  */
+const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
 const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 let sparseSource;
 let denseSource;
-
-function createGradientCanvas() {
-	const canvas = document.createElement('canvas');
-	canvas.width = 160;
-	canvas.height = 160;
-
-	const ctx = canvas.getContext('2d');
-	if (!ctx) return canvas;
-
-	const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-	gradient.addColorStop(0, '#000000');
-	gradient.addColorStop(1, '#ffffff');
-	ctx.fillStyle = gradient;
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-	return canvas;
-}
 
 function drawLabel(text, x, y) {
 	t.push();
@@ -40,13 +24,11 @@ function drawLabel(text, x, y) {
 	t.pop();
 }
 
-t.setup(() => {
-	const canvas = createGradientCanvas();
-
-	sparseSource = t.createTexture(canvas);
+t.setup(async () => {
+	sparseSource = await t.loadImage(IMAGE_URL);
 	sparseSource.characters(' .oO@');
 
-	denseSource = t.createTexture(canvas);
+	denseSource = await t.loadImage(IMAGE_URL);
 	denseSource.characters(' .:-=+*#%@');
 });
 

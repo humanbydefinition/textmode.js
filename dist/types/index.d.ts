@@ -22,12 +22,12 @@ export type { TextmodeOptions } from './textmode/types';
 export type { TextmodeFramebufferOptions } from './rendering/webgl';
 export type { TextmodeLayerBlendMode, TextmodeLayerOptions } from './textmode/layers/types';
 export type { TextmodeGlyph, TextmodeTilesetOptions, GlyphData } from './textmode/fonts';
-export type { BuiltInConversionMode, TextmodeConversionMode, TextmodeConversionContext, TextmodeConversionStrategy, } from './textmode/conversion';
+export type { BuiltInConversionMode, TextmodeConversionMode, TextmodeConversionContext, TextmodeConversionPassContext, TextmodeConversionStep, TextmodeConversionStepOptions, TextmodeColorInput, TextmodeConversionStrategy, } from './textmode/conversion';
 export type { BuiltInFilterName, BuiltInFilterParams, FilterName } from './textmode/filters';
 export type { ErrorScreenRendererContext } from './textmode/error';
 export type { LoadingScreenOptions, LoadingScreenRendererContext, LoadingScreenState, } from './textmode/layers/overlays/loading';
 export type { InputEventMap, InputEventName, InputEventOwner } from './textmode/input';
-export type { TextmodeCanvasHandle, TextmodePlugin, TextmodePluginContext, TextmodePluginHook, LayerLifecycleHook, LayerRenderHook, SetupLifecycleHook, LayerExtensionImplementation, } from './textmode/plugins';
+export type { TextmodeCanvasHandle, TextmodePlugin, TextmodePluginContext, TextmodePluginHook, LayerLifecycleHook, LayerRenderHook, SetupLifecycleHook, LayerExtensionImplementation, SourceExtensionImplementation, } from './textmode/plugins';
 /**
  * All media conversion related modules and types.
  *
