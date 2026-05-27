@@ -1,55 +1,57 @@
 /**
  * @title Textmodifier.camera
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-const scene = [
-	{ x: -14, y: -4, z: 0, char: 'A', color: [255, 120, 120] },
-	{ x: 0, y: 8, z: -12, char: 'B', color: [120, 255, 160] },
-	{ x: 14, y: -2, z: 10, char: 'C', color: [120, 180, 255] },
-];
+const labelLayer = t.layers.add();
 
-function drawScene() {
-	for (let i = 0; i < scene.length; i++) {
-		const item = scene[i];
+let eyeX = 0;
 
-		t.push();
-		t.translate(item.x, item.y, item.z);
-		t.rotateX(t.frameCount * (1 + i * 0.15));
-		t.rotateY(t.frameCount * (1.3 + i * 0.2));
-		t.char(item.char);
-		t.charColor(item.color[0], item.color[1], item.color[2]);
-		t.rect(8, 8);
-		t.pop();
-	}
-}
-
-function drawLabel(text, y) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y, 0);
-	t.charColor(220);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 t.draw(() => {
-	t.background(8, 10, 24);
-
-	const time = t.frameCount * 0.02;
+	t.background(6, 8, 18);
+	const time = t.frameCount * 0.025;
+	eyeX = Math.sin(time) * 24;
 	t.perspective(58, 0.1, 4096);
-	t.camera(Math.cos(time) * 38, 12 + Math.sin(time * 0.5) * 8, Math.sin(time) * 38, 0, 0, 0);
+	t.camera(eyeX, 8, 42, 0, 0, 0);
+	t.ambientLight(25, 28, 36);
+	t.pointLight([255, 210, 140], { x: 20, y: -18, z: 28 });
+	t.push();
+	t.rotateY(time * 30);
+	t.char('#');
+	t.charColor(140, 220, 255);
+	t.box(8, 8, 8);
+	t.pop();
+});
 
-	drawScene();
-	drawLabel('camera(eyeX, eyeY, eyeZ, 0, 0, 0)', Math.floor(t.grid.rows / 2) - 3);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.CAMERA', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: SET VIEW CAMERA', x, y++, 100, 220, 255);
+	drawText('Eye position moves left/right.', x, y++, 140, 160, 190);
+	drawText('Target remains at origin.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`EYE X: ${eyeX.toFixed(1)}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

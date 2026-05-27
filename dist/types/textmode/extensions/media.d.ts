@@ -6,60 +6,57 @@ import { TextmodeVideo } from '../media/TextmodeVideo';
 declare module '../Textmodifier' {
     interface Textmodifier {
         /**
-         * Create a new framebuffer for offscreen rendering.
+         * Create a framebuffer for offscreen rendering.
          *
          * The framebuffer uses the same MRT structure as the main rendering pipeline.
          * By default it allocates 3 attachments (character + color data).
          *
-         * @param options Configuration options for the framebuffer.
-         * @returns A new Framebuffer instance.
+         * @param options Framebuffer configuration.
+         * @returns The created framebuffer.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/createFramebuffer/sketch.js}
          */
         createFramebuffer(options: TextmodeFramebufferOptions): GLFramebuffer;
         /**
-         * Draw a TextmodeFramebuffer, TextmodeImage, TextmodeVideo, or TextmodeTexture to the current render target.
+         * Draw a framebuffer, image, video, or texture source to the current render target.
          *
-         * @param source The TextmodeFramebuffer, TextmodeImage, TextmodeVideo, or TextmodeTexture to render
-         * @param width Width in grid cells to potentially scale the content (defaults to ideal fit, respecting aspect ratio)
-         * @param height Height in grid cells to potentially scale the content (defaults to ideal fit, respecting aspect ratio)
+         * @param source Source to render.
+         * @param width Width in grid cells. Defaults to an aspect-ratio-preserving fit.
+         * @param height Height in grid cells. Defaults to an aspect-ratio-preserving fit.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/image/sketch.js}
          */
         image(source: GLFramebuffer | TextmodeImage | TextmodeVideo | TextmodeTexture, width?: number, height?: number): void;
         /**
-         * Load an image and return a TextmodeImage that can be drawn with image().
+         * Load an image source that can be drawn with {@link image}.
          *
-         * The loaded image can be rendered to the canvas using the {@link image} method.
-         * This function returns a Promise that resolves when the image has loaded.
-         *
-         * @param src URL of the image file
-         * @returns A Promise that resolves to a TextmodeImage object
+         * @param src Image URL.
+         * @returns The loaded TextmodeImage.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/loadImage/sketch.js}
          */
         loadImage(src: string): Promise<TextmodeImage>;
         /**
-         * Load a video and return a TextmodeVideo that can be drawn with image().
-         * @param src URL of the video file
+         * Load a video source that can be drawn with {@link image}.
+         * @param src Video URL.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/loadVideo/sketch.js}
          */
         loadVideo(src: string): Promise<TextmodeVideo>;
         /**
-         * Create a texture from an external canvas or video element for integration with other WebGL libraries.
+         * Create a dynamic texture from an external canvas or video element.
          *
-         * This method enables seamless integration with libraries like three.js, p5.js, Babylon.js,
-         * hydra-synth, or any library that renders to a canvas element.
+         * Use this to sample canvases or videos rendered by libraries such as three.js,
+         * p5.js, Babylon.js, or hydra-synth.
          *
          * The texture automatically updates each frame to capture the latest content from the source.
          *
-         * @param source Canvas or video element from an external library
-         * @returns A TextmodeTexture that can be drawn with image()
+         * @param source Canvas or video element to capture.
+         * @returns A TextmodeTexture that can be drawn with {@link image}.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/createTexture/sketch.js}

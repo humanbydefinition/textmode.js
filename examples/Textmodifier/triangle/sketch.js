@@ -1,42 +1,52 @@
 /**
  * @title Textmodifier.triangle
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
+
+const labelLayer = t.layers.add();
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
 
 t.draw(() => {
-	t.background(5, 5, 10);
+	t.background(6, 10, 22);
+	const time = t.frameCount * 0.03;
+	t.push();
+	t.translate(8, 2);
+	t.rotateZ(Math.sin(time) * 18);
+	t.char('^');
+	t.charColor(255, 210, 120);
+	t.cellColor(30, 20, 10);
+	t.triangle(-9, 6, 0, -7, 9, 6);
+	t.pop();
+});
 
-	const time = t.frameCount * 0.02;
-	const count = 12;
-	const radius = Math.min(t.grid.cols, t.grid.rows) * 0.35;
-
-	for (let i = 0; i < count; i++) {
-		const angle = (i / count) * Math.PI * 2;
-		const pulse = 0.5 + 0.5 * Math.sin(time + i * 0.5);
-
-		const x = Math.cos(angle + time * 0.5) * radius * pulse;
-		const y = Math.sin(angle + time * 0.5) * radius * pulse;
-
-		t.push();
-		t.translate(x, y);
-		t.rotateZ(i * 30 + time * 100);
-
-		t.charColor(150 + pulse * 105, 100, 255 - pulse * 100);
-		t.char(['/', '\\', '|', '-'][i % 4]);
-		t.lineWeight(1 + Math.floor(pulse * 3));
-
-		const s = 4 + pulse * 8;
-		t.triangle(
-			0,
-			-s, // Top vertex
-			-s,
-			s * 0.7, // Bottom left
-			s,
-			s * 0.7 // Bottom right
-		);
-		t.pop();
-	}
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.TRIANGLE', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: THREE POINT SHAPE', x, y++, 100, 220, 255);
+	drawText('Uses three explicit vertices.', x, y++, 140, 160, 190);
+	drawText('Rotation shows the filled area.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('API: t.triangle(...)', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.secs
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,53 +7,48 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+const labelLayer = t.layers.add();
+
+let value = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const time = t.secs;
-	const radius = 15;
-
-	const x = Math.cos(time * 1.5) * radius;
-	const y = Math.sin(time * 2.0) * radius * 0.5;
-
+	value = t.secs;
+	const angle = (value % 6.28) * 1;
 	t.push();
-	t.translate(x, y);
-	t.char('☼');
-	t.charColor(255, 200, 100);
-	t.rect(5, 5);
+	t.translate(8, 2);
+	t.rotateZ((angle * 180) / Math.PI);
+	t.char('#');
+	t.charColor(140, 220, 255);
+	t.rect(12, 1);
 	t.pop();
+});
 
-	// Trail indicating previous seconds
-	for (let i = 1; i <= 10; i++) {
-		const pastTime = time - i * 0.1;
-		const px = Math.cos(pastTime * 1.5) * radius;
-		const py = Math.sin(pastTime * 2.0) * radius * 0.5;
-
-		t.push();
-		t.translate(px, py);
-		t.char('·');
-		t.charColor(100, 150, 255, (1 - i / 10) * 150);
-		t.point();
-		t.pop();
-	}
-
-	drawCenteredText('Textmodifier.secs', -12, [255, 255, 255]);
-	drawCenteredText('The elapsed time in seconds since the sketch started.', -10, [150, 170, 200]);
-	drawCenteredText(`t.secs = ${t.secs.toFixed(3)}`, 10, [140, 180, 255]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.SECS', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: ELAPSED SECONDS', x, y++, 100, 220, 255);
+	drawText('Numeric time drives motion.', x, y++, 140, 160, 190);
+	drawText('Rows stay fixed-width short.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`VALUE: ${value.toFixed(2)}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

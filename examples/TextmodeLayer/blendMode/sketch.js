@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.blendMode
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -18,19 +17,22 @@ const colors = [
 ];
 
 const layers = blendModes.map((mode) => t.layers.add({ blendMode: mode, opacity: 0.9 }));
+const labelLayer = t.layers.add();
 
-function drawLabel(text, x, y, col = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
 	t.translate(x, y);
-	t.charColor(...col);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
+}
+
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+	drawText(text, -Math.floor(text.length / 2), y, rgb);
 }
 
 t.draw(() => {
@@ -56,14 +58,29 @@ t.draw(() => {
 			t.char('@');
 			t.rect(14, 8);
 
-			drawLabel(blendModes[i], -(blendModes[i].length - 1) / 2, 0, [255, 255, 255]);
+			drawCenteredText(blendModes[i], 0, [255, 255, 255]);
 
 			t.pop();
 		});
 	});
+});
 
-	const title = '--- BLEND MODES ---';
-	drawLabel(title, -(title.length - 1) / 2, -(rows - 1) / 2 + 2, [255, 220, 100]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	const active = blendModes[Math.floor(t.frameCount / 80) % blendModes.length];
+
+	drawText('TEXTMODELAYER.BLENDMODE', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: PER-LAYER BLENDING', x, y++, [100, 220, 255]);
+	drawText('Each layer composites differently.', x, y++, [140, 160, 190]);
+	drawText('Opacity is set per layer too.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(`MODES: ${blendModes.length}`, x, y++, [140, 255, 180]);
+	drawText(`WATCH: ${active}`, x, y++, [120, 200, 255]);
 });
 
 t.windowResized(() => {

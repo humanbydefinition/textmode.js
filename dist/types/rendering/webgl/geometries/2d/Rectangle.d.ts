@@ -1,6 +1,3 @@
-/**
- * Instanced rectangle geometry implementation
- */
 import type { InstanceBatch } from '../../batching/InstanceBatch';
 import { type RectangleParams } from '../../types/GeometryTypes';
 import { BaseGeometry } from '../BaseGeometry';
@@ -11,11 +8,5 @@ import type { IRenderState } from '../../state/RenderState';
  */
 export declare class Rectangle extends BaseGeometry<RectangleParams> {
     constructor(gl: WebGL2RenderingContext, batch: InstanceBatch);
-    /**
-     * Add a rectangle instance to the batch
-     * @param params Rectangle parameters
-     * @param renderState Current render state
-     * @returns Index of the added instance
-     */
     _addInstance(params: RectangleParams, renderState: IRenderState): number;
 }

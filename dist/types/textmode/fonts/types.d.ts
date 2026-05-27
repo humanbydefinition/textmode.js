@@ -35,7 +35,7 @@ export interface GlyphData extends GlyphOutlineData {
  * Represents a single glyph entry in a textmode glyph atlas.
  */
 export type TextmodeGlyph = {
-    /** The character itself. */
+    /** The Unicode character used to address this glyph. */
     character: string;
     /** The Unicode code point of the character. */
     unicode: number;
@@ -49,9 +49,7 @@ export type TextmodeGlyph = {
      */
     glyphData?: GlyphData | null;
 };
-/**
- * Font glyph dimensions
- */
+/** Glyph cell dimensions in pixels. */
 export interface GlyphDimensions {
     width: number;
     height: number;

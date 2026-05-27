@@ -1,86 +1,92 @@
 /**
  * @title Textmodifier.overlay
- * @description Overlay mode: paint into a regular 2D canvas, then let textmode.js sample it as a live ASCII layer.
- * @author codex
  */
 const sourceCanvas = document.createElement('canvas');
-sourceCanvas.width = window.innerWidth;
-sourceCanvas.height = window.innerHeight;
-sourceCanvas.style.cssText = 'display:block;width:100vw;height:100vh;background:#050816;';
+const sourceCtx = sourceCanvas.getContext('2d');
+
 document.body.style.margin = '0';
 document.body.style.overflow = 'hidden';
+sourceCanvas.style.position = 'fixed';
+sourceCanvas.style.inset = '0';
+sourceCanvas.style.width = '100vw';
+sourceCanvas.style.height = '100vh';
+sourceCanvas.style.display = 'block';
 document.body.appendChild(sourceCanvas);
 
-const source = sourceCanvas.getContext('2d');
 const t = textmode.create({
-	width: window.innerWidth,
-	height: window.innerHeight,
 	canvas: sourceCanvas,
 	overlay: true,
-	fontSize: 8,
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
 });
 
-function resizeSource() {
+const labelLayer = t.layers.add();
+
+function resizeSourceCanvas() {
 	sourceCanvas.width = window.innerWidth;
 	sourceCanvas.height = window.innerHeight;
-	sourceCanvas.style.width = window.innerWidth + 'px';
-	sourceCanvas.style.height = window.innerHeight + 'px';
 }
 
-function paint(time) {
-	const w = sourceCanvas.width;
-	const h = sourceCanvas.height;
-	const cx = w / 2;
-	const cy = h / 2;
-	const sweep = time * 0.001;
-	const gradient = source.createLinearGradient(0, 0, w, h);
-
-	gradient.addColorStop(0, '#050816');
-	gradient.addColorStop(0.45, '#0f172a');
-	gradient.addColorStop(1, '#111827');
-	source.fillStyle = gradient;
-	source.fillRect(0, 0, w, h);
-
-	for (let i = 0; i < 11; i++) {
-		const angle = sweep * (0.45 + i * 0.04) + i * 0.72;
-		const radius = Math.min(w, h) * (0.12 + i * 0.025);
-		const x = cx + Math.cos(angle) * radius * 1.8;
-		const y = cy + Math.sin(angle) * radius;
-		const size = Math.max(22, Math.min(w, h) * (0.035 + i * 0.002));
-
-		source.fillStyle = i % 2 === 0 ? '#38bdf8' : '#f59e0b';
-		source.globalAlpha = 0.28 + (i % 4) * 0.08;
-		source.beginPath();
-		source.arc(x, y, size, 0, Math.PI * 2);
-		source.fill();
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
 	}
-
-	source.globalAlpha = 1;
-	source.fillStyle = '#38bdf8';
-	source.fillRect(cx - 190 + Math.sin(time * 0.0012) * 70, cy - 74, 150, 112);
-	source.fillStyle = '#f59e0b';
-	source.beginPath();
-	source.arc(cx + 128, cy + Math.sin(time * 0.0018) * 72, 58, 0, Math.PI * 2);
-	source.fill();
-	source.fillStyle = '#e4e4e7';
-	source.font = '28px monospace';
-
-	requestAnimationFrame(paint);
+	t.pop();
 }
+
+function paintSourceCanvas() {
+	const pulse = t.frameCount * 0.035;
+	sourceCtx.fillStyle = '#050816';
+	sourceCtx.fillRect(0, 0, sourceCanvas.width, sourceCanvas.height);
+	sourceCtx.fillStyle = '#38bdf8';
+	sourceCtx.fillRect(sourceCanvas.width * 0.24 + Math.sin(pulse) * 30, sourceCanvas.height * 0.42, 128, 82);
+	sourceCtx.fillStyle = '#f59e0b';
+	sourceCtx.beginPath();
+	sourceCtx.arc(sourceCanvas.width * 0.68, sourceCanvas.height * 0.5, 54, 0, Math.PI * 2);
+	sourceCtx.fill();
+	sourceCtx.fillStyle = '#f8fafc';
+	sourceCtx.fillRect(sourceCanvas.width * 0.33, sourceCanvas.height * 0.68, 150, 28);
+}
+
+resizeSourceCanvas();
 
 t.setup(() => {
-	t.overlay.characters(' .:-=+*#%@').charColorMode('sampled').cellColorMode('fixed').cellColor(3, 6, 12);
-	requestAnimationFrame(paint);
+	if (!t.overlay) return;
+	t.overlay.characters(' .:-=+*#%@').charColorMode('sampled').cellColorMode('fixed').cellColor('#050816');
 });
 
 t.draw(() => {
+	paintSourceCanvas();
 	t.clear();
-	if (t.overlay) {
-		t.image(t.overlay, t.grid.cols, t.grid.rows);
-	}
+	if (!t.overlay) return;
+
+	t.image(t.overlay, t.grid.cols, t.grid.rows);
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODIFIER.OVERLAY', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: TARGET CANVAS SOURCE', x, y++, 100, 220, 255);
+	drawText('overlay samples sourceCanvas.', x, y++, 140, 160, 190);
+	drawText('Textmode renders above it.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	const state = t.overlay ? 'READY' : 'WAIT';
+	drawText(`OVERLAY: ${state}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {
-	resizeSource();
+	resizeSourceCanvas();
 	t.resizeCanvas(window.innerWidth, window.innerHeight);
 });

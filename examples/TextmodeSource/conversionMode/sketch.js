@@ -1,27 +1,15 @@
 /**
  * @title TextmodeSource.conversionMode
- * @author codex
  */
 const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 8,
+});
 
-let source;
-
-function drawLabel(text, y) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(255);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
+const labelLayer = t.layers.add();
+let source = null;
 
 t.setup(async () => {
 	source = await t.loadImage(IMAGE_URL);
@@ -30,11 +18,38 @@ t.setup(async () => {
 });
 
 t.draw(() => {
+	t.background(4, 7, 18);
 	t.background(0);
 	if (!source) return;
 
 	t.image(source, source.width, source.height);
-	drawLabel("conversionMode('brightness')", Math.floor(t.grid.rows / 2) - 2);
+});
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODESOURCE.CONVERSIONMODE', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: SET IMAGE CONVERSION MODE', x, y++, 100, 220, 255);
+	drawText('Sets mode used for pixel mapping.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONVERSION MODE: brightness', x, y++, 140, 190, 255);
 });
 
 t.windowResized(() => {

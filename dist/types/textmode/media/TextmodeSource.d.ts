@@ -6,7 +6,10 @@ import { Disposable } from '../../utils/Disposable';
 import type { TextmodeConversionMode, TextmodeConversionStep, TextmodeConversionManager } from '../conversion';
 import type { RGB, RGBA } from '../../utils/color';
 /**
- * Abstract base class representing a textmode source asset (image, video, texture).
+ * Shared base for textmode image, video, and dynamic texture sources.
+ *
+ * Source instances expose chainable conversion controls used before drawing with
+ * {@link Textmodifier.image}.
  */
 export declare abstract class TextmodeSource extends Disposable {
     protected _gl: WebGL2RenderingContext;
@@ -109,8 +112,8 @@ export declare abstract class TextmodeSource extends Disposable {
      */
     dispose(): void;
     /**
-     * Set the invert flag, swapping character and cell colors when enabled.
-     * @param v Invert flag
+     * Enable or disable source color inversion.
+     * @param v Whether to invert colors.
      * @returns This instance for chaining.
      *
      * @example
@@ -118,8 +121,8 @@ export declare abstract class TextmodeSource extends Disposable {
      */
     invert(v?: boolean | number): this;
     /**
-     * Set horizontal flip indicator flag.
-     * @param v Flip flag
+     * Flip the source horizontally.
+     * @param v Whether to flip horizontally.
      * @returns This instance for chaining.
      *
      * @example
@@ -127,8 +130,8 @@ export declare abstract class TextmodeSource extends Disposable {
      */
     flipX(v?: boolean | number): this;
     /**
-     * Set vertical flip indicator flag.
-     * @param v Flip flag
+     * Flip the source vertically.
+     * @param v Whether to flip vertically.
      * @returns This instance for chaining.
      *
      * @example
@@ -136,8 +139,8 @@ export declare abstract class TextmodeSource extends Disposable {
      */
     flipY(v?: boolean | number): this;
     /**
-     * Set the character rotation in degrees (0-360).
-     * @param degrees Rotation in degrees
+     * Rotate generated characters.
+     * @param degrees Rotation in degrees.
      * @returns This instance for chaining.
      *
      * @example
@@ -159,8 +162,8 @@ export declare abstract class TextmodeSource extends Disposable {
      */
     brightnessRange(start: number, end: number): this;
     /**
-     * Set character color mode: `'sampled'` *(from source)* or `'fixed'`.
-     * @param mode The character color mode
+     * Set whether character color is sampled from the source or fixed.
+     * @param mode Character color mode.
      * @returns This instance for chaining.
      *
      * @example
@@ -168,8 +171,8 @@ export declare abstract class TextmodeSource extends Disposable {
      */
     charColorMode(mode: 'sampled' | 'fixed'): this;
     /**
-     * Set cell color mode: `'sampled'` *(from source)* or `'fixed'`.
-     * @param mode The cell color mode
+     * Set whether cell color is sampled from the source or fixed.
+     * @param mode Cell color mode.
      * @returns This instance for chaining.
      *
      * @example
@@ -177,7 +180,7 @@ export declare abstract class TextmodeSource extends Disposable {
      */
     cellColorMode(mode: 'sampled' | 'fixed'): this;
     /**
-     * Defines the character color when {@link charColorMode} is `'fixed'`.
+     * Set the character color used when {@link charColorMode} is `'fixed'`.
      * @param colorOrGray A grayscale value (0-255), hex string ('#RGB', '#RRGGBB', '#RRGGBBAA'), or TextmodeColor instance
      * @param g Optional green component (0-255) if using RGB format, or alpha (0-255) when using grayscale form
      * @param b Optional blue component (0-255) if using RGB format
@@ -189,7 +192,7 @@ export declare abstract class TextmodeSource extends Disposable {
      */
     charColor(colorOrGray: number | string | TextmodeColor, g?: number, b?: number, a?: number): this;
     /**
-     * Defines the cell color when {@link cellColorMode} is `'fixed'`.
+     * Set the cell color used when {@link cellColorMode} is `'fixed'`.
      * @param colorOrGray A grayscale value (0-255), hex string ('#RGB', '#RRGGBB', '#RRGGBBAA'), or TextmodeColor instance
      * @param g Optional green component (0-255) if using RGB format, or alpha (0-255) when using grayscale form
      * @param b Optional blue component (0-255) if using RGB format
@@ -201,7 +204,7 @@ export declare abstract class TextmodeSource extends Disposable {
      */
     cellColor(colorOrGray: number | string | TextmodeColor, g?: number, b?: number, a?: number): this;
     /**
-     * Defines the background color used for transparent pixels.
+     * Set the background color used for transparent pixels.
      * @param colorOrGray A grayscale value (0-255), hex string ('#RGB', '#RRGGBB', '#RRGGBBAA'), or TextmodeColor instance
      * @param g Optional green component (0-255) if using RGB format, or alpha (0-255) when using grayscale form
      * @param b Optional blue component (0-255) if using RGB format
@@ -213,8 +216,8 @@ export declare abstract class TextmodeSource extends Disposable {
      */
     background(colorOrGray: number | TextmodeColor | string, g?: number, b?: number, a?: number): this;
     /**
-     * Define the characters to use for brightness mapping as a string.
-     * @param chars String of characters to map
+     * Set the characters used for brightness mapping.
+     * @param chars Characters to map from dark to bright.
      * @returns This instance for chaining.
      *
      * @example
@@ -222,35 +225,35 @@ export declare abstract class TextmodeSource extends Disposable {
      */
     characters(chars: string): this;
     /**
-     * Return the WebGL texture currently backing this source.
+     * WebGL texture backing this source.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeSource/texture/sketch.js}
      */
     get texture(): WebGLTexture;
     /**
-     * Ideal width in grid cells.
+     * Ideal draw width in grid cells.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeSource/width/sketch.js}
      */
     get width(): number;
     /**
-     * Ideal height in grid cells.
+     * Ideal draw height in grid cells.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeSource/height/sketch.js}
      */
     get height(): number;
     /**
-     * Original pixel width.
+     * Original source width in pixels.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeSource/originalWidth/sketch.js}
      */
     get originalWidth(): number;
     /**
-     * Original pixel height.
+     * Original source height in pixels.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeSource/originalHeight/sketch.js}

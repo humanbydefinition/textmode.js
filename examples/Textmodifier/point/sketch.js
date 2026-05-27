@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.point
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,85 +7,48 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+const labelLayer = t.layers.add();
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const time = t.frameCount * 0.05;
-
-	t.char('.');
-	t.charColor(40, 45, 60);
-	for (let y = -15; y <= 15; y += 5) {
-		for (let x = -30; x <= 30; x += 10) {
-			t.push();
-			t.translate(x, y);
-			t.point();
-			t.pop();
-		}
-	}
-
-	const count = 40;
+	const count = 24;
 	for (let i = 0; i < count; i++) {
-		const angle = time + i * 0.2;
-		const r = i * 0.6;
-		const x = Math.cos(angle) * r;
-		const y = Math.sin(angle) * r;
-
+		const angle = t.frameCount * 0.03 + (i / count) * Math.PI * 2;
+		const radius = 5 + (i % 4) * 2;
 		t.push();
-		t.translate(x, y);
-		t.char(['•', '·', '°', '*'][i % 4]);
-		t.charColor(100, 150 + i * 2, 255, (1 - i / count) * 255);
+		t.translate(Math.cos(angle) * radius * 1.6, Math.sin(angle) * radius);
+		t.char(i % 2 === 0 ? '+' : '.');
+		t.charColor(120 + i * 4, 180, 255 - i * 3);
 		t.point();
 		t.pop();
 	}
+});
 
-	let px = 0,
-		py = 0;
-	if (t.mouse.x !== Number.NEGATIVE_INFINITY) {
-		px = t.mouse.x;
-		py = t.mouse.y;
-	} else {
-		px = Math.sin(time * 0.7) * 20;
-		py = Math.cos(time * 0.5) * 10;
-	}
-
-	t.push();
-	t.translate(px, py);
-	t.char('☼');
-	t.charColor(255, 200, 100);
-	t.point();
-
-	t.translate(2, 0);
-	t.charColor(255);
-	const label = `point(${Math.floor(px)}, ${Math.floor(py)})`;
-	for (let i = 0; i < label.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(label[i]);
-		t.point();
-		t.pop();
-	}
-	t.pop();
-
-	drawCenteredText('Textmodifier.point', -20, [255, 255, 255]);
-	drawCenteredText('Draws the current character and color at the origin.', -18, [150, 170, 200]);
-
-	if (t.mouse.x === Number.NEGATIVE_INFINITY) {
-		drawCenteredText('Move mouse to control the tracker', 20, [100, 100, 120]);
-	}
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.POINT', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: DRAW ONE CELL', x, y++, 100, 220, 255);
+	drawText('point() stamps the active glyph.', x, y++, 140, 160, 190);
+	drawText('Each dot uses its own transform.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('API: t.point()', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

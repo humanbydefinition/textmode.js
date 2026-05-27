@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.char
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -10,52 +9,42 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-let currentChar = '';
+const glyphs = ['A', 'B', 'C', '#'];
+let glyph = 'A';
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-	t.cellColor(0, 0, 0, 0);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
-labelLayer.draw(() => {
-	t.clear();
-
-	drawCenteredText('Textmodifier.char', -12, [240, 245, 255]);
-	drawCenteredText('Assigning glyphs via strings and querying state.', -10, [150, 170, 200]);
-
-	drawCenteredText('GETTER READOUT', 8, [140, 255, 180]);
-	drawCenteredText(`ACTIVE_CHAR: "${currentChar}"`, 10, [140, 180, 255]);
-
-	drawCenteredText('t.char(string)', 13, [100, 120, 150]);
-});
-
 t.draw(() => {
 	t.background(6, 10, 22);
+	glyph = glyphs[Math.floor(t.frameCount / 45) % glyphs.length];
+	t.char(glyph);
+	t.charColor(255, 210, 120);
+	t.rect(8, 4);
+});
 
-	const cycle = Math.floor(t.frameCount / 60) % 3;
-	const charSet = ['@', '#', 'X'];
-
-	t.char(charSet[cycle]);
-
-	currentChar = t.char();
-
-	t.push();
-	t.charColor(255, 180, 100);
-	t.rotateZ(t.frameCount * 2);
-	t.rect(14, 14);
-	t.pop();
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.CHAR', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: ACTIVE GLYPH', x, y++, 100, 220, 255);
+	drawText('Sets the glyph for drawing.', x, y++, 140, 160, 190);
+	drawText('The selected glyph cycles.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CHAR: ' + glyph, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

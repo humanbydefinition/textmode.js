@@ -1,71 +1,71 @@
-import type { MouseEventHandler, MousePosition } from '../input/mouse';
+import { type MouseEventHandler, type MousePosition } from '../input/mouse';
 declare module '../Textmodifier' {
     interface Textmodifier {
         /**
-         * Set a callback function that will be called when the mouse is clicked.
+         * Register the single-callback handler for mouse clicks.
          *
-         * @param callback The function to call when the mouse is clicked
+         * @param callback Handler to run with mouse event data when the mouse is clicked.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/mouseClicked/sketch.js}
          */
         mouseClicked(callback: MouseEventHandler): void;
         /**
-         * Set a callback function that will be called when the mouse is double-clicked.
+         * Register the single-callback handler for double-clicks.
          *
-         * @param callback The function to call when the mouse is double-clicked
+         * @param callback Handler to run with mouse event data when the mouse is double-clicked.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/doubleClicked/sketch.js}
          */
         doubleClicked(callback: MouseEventHandler): void;
         /**
-         * Set a callback function that will be called when the mouse is pressed down.
+         * Register the single-callback handler for mouse press events.
          *
-         * @param callback The function to call when the mouse is pressed
+         * @param callback Handler to run with mouse event data when the mouse is pressed.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/mousePressed/sketch.js}
          */
         mousePressed(callback: MouseEventHandler): void;
         /**
-         * Set a callback function that will be called when the mouse is released.
+         * Register the single-callback handler for mouse release events.
          *
-         * @param callback The function to call when the mouse is released
+         * @param callback Handler to run with mouse event data when the mouse is released.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/mouseReleased/sketch.js}
          */
         mouseReleased(callback: MouseEventHandler): void;
         /**
-         * Set a callback function that will be called when the mouse moves.
+         * Register the single-callback handler for mouse movement.
          *
-         * @param callback The function to call when the mouse moves
+         * @param callback Handler to run with mouse event data when the mouse moves.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/mouseMoved/sketch.js}
          */
         mouseMoved(callback: MouseEventHandler): void;
         /**
-         * Set a callback function that will be called when the mouse moves while a button is held down.
+         * Register the single-callback handler for mouse dragging.
          *
-         * @param callback The function to call when the mouse is dragged
+         * @param callback Handler to run with mouse event data when the mouse is dragged.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/mouseDragged/sketch.js}
          */
         mouseDragged(callback: MouseEventHandler): void;
         /**
-         * Set a callback function that will be called when the mouse wheel is scrolled.
+         * Register the single-callback handler for mouse wheel scrolling.
          *
-         * @param callback The function to call when the mouse wheel is scrolled
+         * @param callback Handler to run with mouse event data when the mouse wheel is scrolled.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/mouseScrolled/sketch.js}
          */
         mouseScrolled(callback: MouseEventHandler): void;
         /**
-         * Get the current mouse position in center-based grid coordinates.
+         * Current mouse position in center-based grid coordinates.
          *
          * Returns the mouse position as grid cell coordinates where `(0, 0)` is the center cell.
          * This matches the drawing coordinate system, so coordinates can be used directly with `translate()`.
@@ -78,7 +78,7 @@ declare module '../Textmodifier' {
          */
         readonly mouse: MousePosition;
         /**
-         * Get whether a mouse button is currently being held down.
+         * Whether a mouse button is currently held down.
          *
          * This value stays `true` after a press begins on the canvas and returns to `false` when the
          * button is released, including releases that occur outside the canvas after the interaction
@@ -89,7 +89,7 @@ declare module '../Textmodifier' {
          */
         readonly mouseIsPressed: boolean;
         /**
-         * Get the mouse position from the previous rendered frame.
+         * Mouse position from the previous rendered frame.
          *
          * Unlike `previousPosition` in mouse event callbacks, this value is updated exactly once per
          * rendered frame. Use it inside `draw()` to measure frame-to-frame mouse motion or draw trails.
@@ -102,7 +102,7 @@ declare module '../Textmodifier' {
          */
         readonly pmouse: MousePosition;
         /**
-         * Get the horizontal mouse movement accumulated since the previous rendered frame.
+         * Horizontal mouse movement accumulated since the previous rendered frame.
          *
          * This is especially useful while pointer lock is active, where absolute mouse coordinates
          * stop being meaningful and relative movement becomes the primary input signal.
@@ -112,7 +112,7 @@ declare module '../Textmodifier' {
          */
         readonly movedX: number;
         /**
-         * Get the vertical mouse movement accumulated since the previous rendered frame.
+         * Vertical mouse movement accumulated since the previous rendered frame.
          *
          * This is especially useful while pointer lock is active, where absolute mouse coordinates
          * stop being meaningful and relative movement becomes the primary input signal.

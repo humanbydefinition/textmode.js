@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.mouseMoved
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,73 +7,68 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+const labelLayer = t.layers.add();
+
+const pulses = [];
+let count = 0;
+let last = 'WAITING';
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
+function addPulse(label, x = 0, y = 0) {
+	count++;
+	last = label;
+	pulses.unshift({ label, x, y, life: 1 });
+	if (pulses.length > 12) pulses.length = 12;
+}
+
+t.mouseMoved(() => {
+	addPulse('MOVE', t.mouse.x, t.mouse.y);
+});
+
 t.draw(() => {
 	t.background(6, 10, 22);
 
-	const mx = t.mouse.x;
-	const my = t.mouse.y;
-	const isInside = mx !== Number.NEGATIVE_INFINITY;
-
-	// Full-screen Magnetic Field Effect
-	const stepX = 6;
-	const stepY = 3;
-	const halfCols = Math.floor(t.grid.cols / 2);
-	const halfRows = Math.floor(t.grid.rows / 2);
-
-	t.charColor(60, 70, 100);
-	for (let y = -halfRows; y <= halfRows; y += stepY) {
-		for (let x = -halfCols; x <= halfCols; x += stepX) {
-			t.push();
-			t.translate(x, y);
-
-			if (isInside) {
-				const dist = Math.sqrt((mx - x) ** 2 + (my - y) ** 2);
-				const influence = Math.max(0, 1.0 - dist / 30);
-
-				const angle = Math.atan2(my - y, mx - x) * (180 / Math.PI);
-				t.rotateZ(angle);
-
-				t.charColor(60 + influence * 100, 70 + influence * 150, 100 + influence * 155);
-				t.char(influence > 0.5 ? '»' : '›');
-			} else {
-				t.char('·');
-			}
-
-			t.point();
-			t.pop();
+	for (let i = pulses.length - 1; i >= 0; i--) {
+		const p = pulses[i];
+		p.life -= 0.02;
+		if (p.life <= 0) {
+			pulses.splice(i, 1);
+			continue;
 		}
-	}
-
-	if (isInside) {
 		t.push();
-		t.translate(mx, my);
-		t.char('☼');
-		t.charColor(255, 255, 255);
+		t.translate(p.x, p.y - (1 - p.life) * 4);
+		t.char('*');
+		t.charColor(255, 210, 120);
 		t.point();
 		t.pop();
 	}
+});
 
-	drawCenteredText('Textmodifier.mouseMoved', -22, [255, 255, 255]);
-	drawCenteredText('Fires whenever the mouse moves.', -20, [150, 170, 200]);
-	drawCenteredText('Use for hover or proximity effects.', -18, [150, 170, 200]);
-
-	if (!isInside) {
-		drawCenteredText('Move mouse to attract the field', 18, [100, 150, 255]);
-	}
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.MOUSEMOVED', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: MOVE EVENT', x, y++, 100, 220, 255);
+	drawText('Event updates compact state.', x, y++, 140, 160, 190);
+	drawText('Pulses show recent triggers.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('MOVES: ' + count, x, y++, 140, 255, 180);
+	drawText('LAST: ' + last.slice(0, 28), x, y++, 180, 200, 220);
 });
 
 t.windowResized(() => {

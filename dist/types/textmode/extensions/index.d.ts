@@ -13,3 +13,4 @@ import './lighting';
 import './shader';
 import './media';
 import './events';
+import './random';

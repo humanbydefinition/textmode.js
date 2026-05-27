@@ -1,30 +1,13 @@
 /**
  * @title Textmode.creation
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
 });
 
-const label = 'textmode.create()';
+const labelLayer = t.layers.add();
 const chars = 'TEXTMODE';
-
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
 
 t.draw(() => {
 	t.background(8, 12, 24);
@@ -42,9 +25,32 @@ t.draw(() => {
 		t.point();
 		t.pop();
 	}
+});
 
-	drawCenteredText(label, 0, [240, 245, 255]);
-	drawCenteredText('creates a Textmodifier', 5, [140, 170, 210]);
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODE.CREATION', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: INITIALIZATION FUNCTION', x, y++, 100, 220, 255);
+	drawText('Creates a Textmodifier instance.', x, y++, 140, 160, 190);
+	drawText('Configures default viewport/canvas.', x, y++, 140, 160, 190);
 });
 
 t.windowResized(() => {

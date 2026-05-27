@@ -5,7 +5,9 @@ import { InputEventEmitter } from '../core/InputEventEmitter';
 import type { TouchEventMap, TouchPosition } from './types';
 /**
  * Manages all touch interactions for a Textmodifier instance.
- * Handles event listeners, coordinate conversion, raw touch state, and event dispatching.
+ *
+ * Converts browser touch points into textmode grid coordinates, tracks active
+ * touches, suppresses follow-up mouse events, and feeds gesture recognition.
  */
 export declare class TouchInput {
     private readonly _canvas;

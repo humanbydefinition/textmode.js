@@ -50,12 +50,3 @@ export declare function clampByte(value: number): number;
  * ```
  */
 export declare function parseCssColor(value?: string | null, allowTransparent?: boolean): RGBA | null;
-/**
- * Calculate the relative luminance of a color.
- * Uses the formula: 0.2126 * R + 0.7152 * G + 0.0722 * B
- * where R, G, B are linear RGB values.
- *
- * @param rgba The color to calculate luminance for (0-255 range)
- * @returns The relative luminance (0-1)
- */
-export declare function luminance(rgba: RGBA | null): number;

@@ -1,48 +1,91 @@
 /**
  * @title TextmodeFramebuffer.readPixels
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
-const framebuffer = t.createFramebuffer({ width: 12, height: 12 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-function drawLabel(text, y, color = [220, 220, 220]) {
+const labelLayer = t.layers.add();
+let fb;
+
+function drawText(text, x, y, r = 200, g = 220, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
+t.setup(() => {
+	fb = t.createFramebuffer({ width: 8, height: 8 });
+});
+
 t.draw(() => {
-	framebuffer.begin();
-	t.background(0, 0, 0);
+	t.background(8, 10, 18);
+
+	fb.begin();
+	t.clear();
+	t.background(10, 15, 30);
 	t.push();
-	t.rotateZ(t.frameCount * 2);
+	t.rotateZ(t.frameCount * 2.5);
 	t.charColor(255, 120, 80);
-	t.cellColor(20, 80, 160);
-	t.rect(framebuffer.width - 4, framebuffer.height - 4);
+	t.char('*');
+	t.rect(6, 2);
 	t.pop();
-	framebuffer.end();
+	fb.end();
 
-	const pixels = framebuffer.readPixels(1);
-	const centerIndex =
-		(Math.floor(framebuffer.height / 2) * framebuffer.width + Math.floor(framebuffer.width / 2)) * 4;
-	const rgba = pixels.slice(centerIndex, centerIndex + 4);
+	// Read primary color attachment and render a char-mapped pixel grid
+	const pixels = fb.readPixels(1);
+	t.push();
+	t.translate(5, -1);
+	for (let py = 0; py < 8; py++) {
+		for (let px = 0; px < 8; px++) {
+			const idx = (py * 8 + px) * 4;
+			const r = pixels[idx],
+				g = pixels[idx + 1],
+				b = pixels[idx + 2];
+			t.push();
+			t.translate(px, py);
+			if (r > 30 || g > 30 || b > 30) {
+				t.charColor(r, g, b);
+				t.char('#');
+			} else {
+				t.charColor(40, 50, 70);
+				t.char('.');
+			}
+			t.point();
+			t.pop();
+		}
+	}
+	t.pop();
 
-	t.background(6, 8, 18);
-	t.image(framebuffer, framebuffer.width * 2, framebuffer.height * 2);
+	t.push();
+	t.translate(-8, 3);
+	t.image(fb, 16, 16);
+	t.pop();
+});
 
-	drawLabel('readPixels(1)', -Math.floor(t.grid.rows * 0.34), [255, 225, 140]);
-	drawLabel(`center rgba ${rgba[0]}, ${rgba[1]}, ${rgba[2]}, ${rgba[3]}`, Math.floor(t.grid.rows * 0.28));
-	drawLabel(`buffer bytes ${pixels.length}`, Math.floor(t.grid.rows * 0.36), [120, 205, 255]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('READPIXELS', x, y++, 100, 255, 140);
+	drawText('--------------------------------', x, y++, 80, 100, 150);
+	drawText('Raw RGBA bytes from attachment.', x, y++, 100, 220, 255);
+	drawText('Right: char-map of pixel data.', x, y++, 140, 160, 190);
+	drawText('--------------------------------', x, y++, 80, 100, 150);
+
+	const px = fb ? fb.readPixels(1) : [];
+	drawText(`Buffer: ${px.length} bytes`, x, y++, 120, 255, 180);
 });
 
 t.windowResized(() => {

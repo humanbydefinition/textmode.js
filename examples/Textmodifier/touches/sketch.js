@@ -1,7 +1,5 @@
 /**
  * @title Textmodifier.touches
- * @description Multi-touch telemetry net: tracks multiple touch coordinates in real-time, displays pressure and location metrics, and draws interactive geometric triangulation lines between active fingers.
- * @author antigravity
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,102 +7,54 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawText(text, x, y, r = 180, g = r, b = r) {
-	t.push();
-	t.translate(x - Math.floor(text.length / 2), y);
-	t.charColor(r, g, b);
+const labelLayer = t.layers.add();
 
+let points = [];
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 t.draw(() => {
-	t.background(6, 8, 14);
-
-	const cols = t.grid.cols;
-	const rows = t.grid.rows;
-
-	// Telemetry header
-	drawText('MULTI-TOUCH HUD GEOMETRY NET', 0, -Math.floor(rows / 2) + 4, 100, 200, 255);
-	drawText(
-		'Tap multiple fingers on touchpad or drag mouse to triangulate signals',
-		0,
-		-Math.floor(rows / 2) + 6,
-		120,
-		140,
-		160
-	);
-
-	// Multi-point compilation: supports real multi-touch and desktop mouse drag fallback
-	const activePoints = [...t.touches];
-	if (activePoints.length === 0 && t.mouse && t.mouseIsPressed) {
-		activePoints.push({
-			id: 0,
-			x: t.mouse.x,
-			y: t.mouse.y,
-			pressure: 0.75,
-		});
-	}
-
-	// 1. Draw connecting triangulation lines between all active fingers
-	t.charColor(50, 80, 120);
-	for (let i = 0; i < activePoints.length; i++) {
-		for (let j = i + 1; j < activePoints.length; j++) {
-			t.line(activePoints[i].x, activePoints[i].y, activePoints[j].x, activePoints[j].y);
+	t.background(6, 10, 22);
+	points = Array.from(t.touches);
+	if (points.length === 0 && t.mouseIsPressed) points = [t.mouse];
+	for (let i = 0; i < points.length; i++) {
+		const p = points[i];
+		t.push();
+		t.translate(p.x, p.y);
+		t.char(String(i));
+		t.charColor(255, 210, 120);
+		t.point();
+		t.pop();
+		if (i > 0) {
+			t.charColor(80, 120, 180);
+			t.line(points[i - 1].x, points[i - 1].y, p.x, p.y);
 		}
 	}
+});
 
-	// 2. Draw rings and detailed coordinate text for each active touch point
-	activePoints.forEach((touch, idx) => {
-		const id = touch.id ?? idx;
-		t.push();
-		t.translate(touch.x, touch.y);
-
-		// Dynamic color based on touch ID
-		const r = Math.floor(130 + 125 * Math.sin(id * 1.5 + t.frameCount * 0.05));
-		const g = Math.floor(180 + 75 * Math.cos(id * 0.8));
-		const b = 255;
-
-		const pressure = touch.pressure ?? 0.5;
-		const pulse = 1 + Math.sin(t.frameCount * 0.1) * 0.15;
-		const radius = 3 + pressure * 10 * pulse;
-
-		// Bounding indicator ring
-		t.char('○');
-		t.charColor(r, g, b, 180);
-		t.ellipse(radius, radius);
-
-		// Core marker character
-		t.char('█');
-		t.charColor(r, g, b);
-		t.rect(1.5, 1.5);
-		t.pop();
-
-		// Digital metrics label drawn next to the touch point
-		const label = `ID:${id} (${touch.x.toFixed(0)}, ${touch.y.toFixed(0)}) P:${pressure.toFixed(2)}`;
-		drawText(label, touch.x, touch.y - radius - 1, r, g, b);
-	});
-
-	// Telemetry active stats footer
-	const statsStr =
-		activePoints.length === 0
-			? 'GRID TELEMETRY LINK: WAITING FOR INPUT SIGNALS...'
-			: `GRID TELEMETRY LINK: ${activePoints.length} SENSOR SIGNALS ESTABLISHED`;
-	drawText(
-		statsStr,
-		0,
-		Math.floor(rows / 2) - 4,
-		activePoints.length > 0 ? 100 : 140,
-		activePoints.length > 0 ? 255 : 140,
-		activePoints.length > 0 ? 180 : 150
-	);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.TOUCHES', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: ACTIVE TOUCH LIST', x, y++, 100, 220, 255);
+	drawText('Shows live touch points.', x, y++, 140, 160, 190);
+	drawText('Mouse drag acts as fallback.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`TOUCHES: ${points.length}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

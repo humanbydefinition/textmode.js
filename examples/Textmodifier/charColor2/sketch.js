@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.charColor2
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -10,56 +9,41 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-	t.cellColor(0, 0, 0, 0);
+let value = 0;
 
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
-labelLayer.draw(() => {
-	t.clear();
-
-	drawCenteredText('Textmodifier.charColor (Grayscale)', -12, [240, 245, 255]);
-	drawCenteredText('Passing a single number sets an R=G=B stroke level.', -10, [150, 170, 200]);
-
-	drawCenteredText('t.charColor(gray, alpha)', 12, [100, 120, 150]);
-});
-
 t.draw(() => {
 	t.background(6, 10, 22);
+	value = Math.round(80 + 80 * Math.sin(t.frameCount * 0.04));
+	t.char('#');
+	t.charColor(value, 220);
+	t.rect(10, 5);
+});
 
-	const time = t.frameCount * 0.05;
-	const gray = Math.round(127 + 127 * Math.sin(time));
-	const alpha = Math.round(127 + 127 * Math.cos(time * 0.7));
-
-	t.charColor(gray, alpha);
-
-	t.push();
-	t.char('+');
-	t.rotateZ(time * 30);
-	t.rect(20, 10);
-	t.pop();
-
-	t.push();
-	t.resetCamera();
-	drawCenteredText('GRAYSCALE + ALPHA PULSE', 8, [255, 225, 140]);
-	drawCenteredText(
-		`GRAY: ${gray.toString().padStart(3, '0')}  ALPHA: ${alpha.toString().padStart(3, '0')}`,
-		10,
-		[140, 180, 255]
-	);
-	t.pop();
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.CHARCOLOR2', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: GRAY GLYPH COLOR', x, y++, 100, 220, 255);
+	drawText('Gray plus alpha overload.', x, y++, 140, 160, 190);
+	drawText('The value pulses every frame.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`GRAY: ${value}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

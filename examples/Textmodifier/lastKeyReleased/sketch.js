@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.lastKeyReleased
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,43 +7,41 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+const labelLayer = t.layers.add();
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
+	const key = t.lastKeyReleased || '?';
+	t.char(key[0] || '?');
+	t.charColor(140, 220, 255);
+	t.rect(8, 4);
+});
 
-	// Retrieve the property
-	const lastKey = t.lastKeyReleased;
-
-	t.push();
-	t.charColor(255, 140, 180);
-	if (lastKey) {
-		t.char(lastKey.length === 1 ? lastKey : '?');
-		t.rect(10, 10);
-	} else {
-		t.char('.');
-		t.rect(4, 4);
-	}
-	t.pop();
-
-	drawCenteredText('Textmodifier.lastKeyReleased', -20, [255, 255, 255]);
-	drawCenteredText('A property holding the string value of the last key released.', -18, [150, 170, 200]);
-	drawCenteredText('Useful for detecting the end of a specific user action.', -16, [150, 170, 200]);
-
-	drawCenteredText(`t.lastKeyReleased = ${lastKey ? '"' + lastKey + '"' : 'null'}`, 10, [255, 140, 180]);
-	drawCenteredText('Press and RELEASE any key', 18, [100, 100, 120]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.LASTKEYRELEASED', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: LAST KEY UP', x, y++, 100, 220, 255);
+	drawText('Stores latest released key.', x, y++, 140, 160, 190);
+	drawText('Value persists until next up.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('LAST: ' + String(t.lastKeyReleased || 'NONE').slice(0, 20), x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

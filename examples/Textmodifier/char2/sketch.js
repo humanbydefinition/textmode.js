@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.char2
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -10,58 +9,41 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-let currentIndex = 0;
-let currentChar = '';
+let index = 0;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-	t.cellColor(0, 0, 0, 0);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
-labelLayer.draw(() => {
-	t.clear();
-
-	drawCenteredText('Textmodifier.char (Index)', -12, [240, 245, 255]);
-	drawCenteredText('Selecting glyphs using their numeric index in the font.', -10, [150, 170, 200]);
-
-	drawCenteredText('INDEX SELECTOR', 8, [255, 225, 140]);
-	drawCenteredText(
-		`INDEX: ${currentIndex.toString().padStart(3, '0')}  RESULT: "${currentChar}"`,
-		10,
-		[140, 180, 255]
-	);
-
-	drawCenteredText('t.char(indexNumber)', 13, [100, 120, 150]);
-});
-
 t.draw(() => {
 	t.background(6, 10, 22);
+	index = Math.floor(t.frameCount / 5) % 128;
+	t.char(index);
+	t.charColor(255, 210, 120);
+	t.rect(8, 4);
+});
 
-	const time = t.frameCount * 0.2;
-	const count = t.font.characters.length;
-
-	currentIndex = Math.floor(time) % count;
-	t.char(currentIndex);
-
-	currentChar = t.char();
-
-	t.push();
-	t.charColor(120, 255, 180);
-	t.rotateZ(t.frameCount * 3);
-	t.rect(12, 12);
-	t.pop();
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.CHAR2', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: GLYPH INDEX', x, y++, 100, 220, 255);
+	drawText('Numeric indices select glyphs.', x, y++, 140, 160, 190);
+	drawText('Index cycles through the font.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`INDEX: ${index}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

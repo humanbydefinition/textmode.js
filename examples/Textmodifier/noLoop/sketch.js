@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.noLoop
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,58 +7,55 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+const labelLayer = t.layers.add();
+let paused = false;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
-function toggleLoop() {
-	if (t.isLooping) {
+t.mousePressed(() => {
+	if (t.isLooping()) {
+		paused = true;
 		t.noLoop();
+		t.redraw();
 	} else {
+		paused = false;
 		t.loop();
 	}
-}
-
-t.mousePressed(toggleLoop);
-t.keyPressed((e) => {
-	if (e.key === ' ') toggleLoop();
 });
 
 t.draw(() => {
 	t.background(6, 10, 22);
+	t.rotateZ(t.frameCount * 4);
+	t.char('#');
+	t.charColor(255, 210, 120);
+	t.rect(12, 2);
+});
 
-	const looping = t.isLooping;
-	const time = t.secs;
-
-	t.push();
-	t.rotateZ(time * 60);
-	t.charColor(looping ? [100, 255, 150] : [255, 100, 100]);
-	t.char(looping ? '☼' : '×');
-	t.rect(15, 15);
-	t.pop();
-
-	t.push();
-	t.translate(0, 10);
-	const statusText = looping ? 'STATUS: RUNNING' : 'STATUS: STOPPED';
-	drawCenteredText(statusText, 0, looping ? [100, 255, 150] : [255, 100, 100]);
-	drawCenteredText(`Frame Count: ${t.frameCount}`, 2, [140, 180, 255]);
-	t.pop();
-
-	drawCenteredText('Textmodifier.noLoop', -20, [255, 255, 255]);
-	drawCenteredText('Stops the continuous execution of the draw loop.', -18, [150, 170, 200]);
-	drawCenteredText('Use loop() to restart or redraw() for a single frame.', -16, [150, 170, 200]);
-
-	drawCenteredText('Click or Press SPACE to toggle loop', 18, [100, 100, 120]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.NOLOOP', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: PAUSE DRAW LOOP', x, y++, 100, 220, 255);
+	drawText('Click toggles noLoop/loop.', x, y++, 140, 160, 190);
+	drawText('Events still resume drawing.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	const state = paused ? 'PAUSED' : 'LOOPING';
+	drawText(`STATE: ${state}`, x, y++, 140, 255, 180);
+	drawText('CLICK: TOGGLE LOOP', x, y++, 255, 225, 140);
 });
 
 t.windowResized(() => {

@@ -1,6 +1,5 @@
 /**
  * @title TextmodeGrid.offsetX
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,56 +7,49 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+const labelLayer = t.layers.add();
 
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const offset = t.grid.offsetX;
 	const cols = t.grid.cols;
-	const halfWidth = Math.floor(cols / 2);
-
+	const rows = t.grid.rows;
+	const left = -Math.floor(cols / 2);
+	const top = -Math.floor(rows / 2);
+	t.charColor(60, 80, 120);
+	t.char('#');
+	t.rect(cols, rows);
 	t.push();
-	t.translate(-halfWidth, 0);
-	t.charColor(140, 255, 220, 150);
-	t.char('|');
-	t.rect(1, 7);
-
-	t.push();
-	t.translate(-2, 0);
-	t.char('<');
-	t.point();
-	t.translate(-1, 0);
-	t.char('-');
-	t.point();
+	t.translate(0, 1);
+	t.charColor(100, 255, 180);
+	drawText(`OFFSET X: ${t.grid.offsetX}px`, left + 4, 0, 100, 255, 180);
 	t.pop();
-	t.pop();
+});
 
-	t.push();
-	t.char('.');
-	t.charColor(60, 70, 100, 80);
-	t.translate(0, 0);
-	t.rect(cols, 1);
-	t.pop();
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
 
-	// They will overwrite/clip the lines if they occupy the same cells
-	drawCenteredText('TextmodeGrid.offsetX', -8, [240, 245, 255]);
-	drawCenteredText('Horizontal margin from canvas edge to grid.', -6, [150, 170, 200]);
-	drawCenteredText(`${offset} PX`, 4, [140, 255, 220]);
+	drawText('TEXTMODEGRID.OFFSETX', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: HORIZONTAL OFFSET', x, y++, 100, 220, 255);
+	drawText('Grid centers inside canvas.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`PIXELS: ${t.grid.offsetX}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

@@ -8,12 +8,11 @@ import { TextmodeCamera } from '../camera';
 /**
  * A single layer within a multi-layered textmode rendering context.
  *
- * Layers are composited together using various blend modes
- * to create complex visual effects. Each layer can be independently
- * manipulated in terms of visibility, opacity, blend mode, and position.
+ * Each layer has its own draw callback, grid, glyph source, filters, camera state,
+ * opacity, blend mode, offset, and rotation.
  *
- * You can draw on each layer by providing a draw callback function,
- * like you would with the base layer's {@link Textmodifier.draw} method.
+ * Draw on a layer by providing a callback, similar to {@link Textmodifier.draw}
+ * on the base layer.
  *
  * Plugins can extend TextmodeLayer with additional methods using the plugin API's
  * `extendLayer` function. For example, the `textmode-synth` plugin adds a `.synth()`
@@ -41,27 +40,25 @@ export declare class TextmodeLayer {
     private _fontSizeWasExplicitlySet;
     private _pluginState;
     /**
-     * Define this layer's draw callback. The callback is executed each frame
-     * and should contain all drawing commands for this layer.
+     * Set this layer's draw callback.
      *
-     * Inside the callback, use `t` (your `Textmodifier` instance) to access drawing
-     * methods like `char()`, `charColor()`, `translate()`, and `rect()`.
+     * The callback runs each frame and should contain this layer's drawing commands.
      *
-     * @param callback The function to call when drawing this layer.
+     * @param callback Function to run when drawing this layer.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/draw/sketch.js}
      */
     draw(callback: () => void): void;
     /**
-     * Define this layer's post-draw callback.
+     * Set this layer's post-draw callback.
      *
      * The callback is executed after the layer has been converted to ASCII and after
      * any filters queued in {@link filter} during {@link draw} have been applied.
      * Filters queued inside this callback are applied to the layer's final ASCII texture
      * before the layer is composited with the rest of the scene.
      *
-     * @param callback The function to call after this layer has been drawn and filtered.
+     * @param callback Function to run after this layer has been drawn and filtered.
      *
      * @example
      * ```js
@@ -95,45 +92,31 @@ export declare class TextmodeLayer {
      */
     hide(): void;
     /**
-     * Define or retrieve the layer's opacity.
-     * @param opacity The opacity value to set (between 0 and 1).
-     * @returns The current opacity if no parameter is provided.
+     * Set or get this layer's opacity.
+     * @param opacity Opacity from `0` to `1`.
+     * @returns Current opacity when called without arguments.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/opacity/sketch.js}
      */
     opacity(opacity?: number): number | void;
     /**
-     * Set or get the layer's blend mode for compositing with layers below.
+     * Set or get this layer's blend mode.
      *
-     * @param mode The blend mode to set.
-     * @returns The current blend mode if no parameter is provided.
+     * Available modes are listed in {@link TEXTMODE_LAYER_BLEND_MODES}.
      *
-     * **Available blend modes:**
-     * - `'normal'` - Standard alpha compositing
-     * - `'additive'` - Adds colors together (great for glow/energy effects)
-     * - `'multiply'` - Darkens by multiplying colors
-     * - `'screen'` - Lightens; inverse of multiply
-     * - `'subtract'` - Subtracts layer from base
-     * - `'darken'` - Takes minimum of each channel
-     * - `'lighten'` - Takes maximum of each channel
-     * - `'overlay'` - Combines multiply/screen for contrast
-     * - `'softLight'` - Subtle contrast enhancement
-     * - `'hardLight'` - Intense overlay effect
-     * - `'colorDodge'` - Brightens base by blend color
-     * - `'colorBurn'` - Darkens base by blend color
-     * - `'difference'` - Absolute difference; creates inverted effects
-     * - `'exclusion'` - Softer difference effect
+     * @param mode Blend mode to apply.
+     * @returns Current blend mode when called without arguments.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/blendMode/sketch.js}
      */
     blendMode(mode?: TextmodeLayerBlendMode): TextmodeLayerBlendMode | void;
     /**
-     * Set or get the layer's offset in pixels.
-     * @param x The x offset in pixels.
-     * @param y The y offset in pixels.
-     * @returns The current offset if no parameters are provided.
+     * Set or get this layer's compositing offset in pixels.
+     * @param x Horizontal offset in pixels.
+     * @param y Vertical offset in pixels.
+     * @returns Current offset when called without arguments.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/offset/sketch.js}
@@ -143,21 +126,21 @@ export declare class TextmodeLayer {
         y: number;
     } | void;
     /**
-     * Set or get the layer's rotation in degrees around its center.
+     * Set or get this layer's compositing rotation in degrees.
      *
      * The rotation is applied during compositing around the center of the layer's
      * rectangular bounds. The rotation origin remains at the center even when
      * an offset is applied.
      *
-     * @param z The rotation angle in degrees. Positive values rotate clockwise.
-     * @returns The current rotation in degrees if no parameter is provided.
+     * @param z Rotation angle in degrees. Positive values rotate clockwise.
+     * @returns Current rotation in degrees when called without arguments.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/rotateZ/sketch.js}
      */
     rotateZ(z?: number): number | void;
     /**
-     * Create a camera initialized from this layer's camera state and set it active for this layer.
+     * Create and activate a camera initialized from this layer's camera state.
      * @returns The created camera.
      *
      * @example
@@ -165,7 +148,7 @@ export declare class TextmodeLayer {
      */
     createCamera(): TextmodeCamera;
     /**
-     * Set the active camera for this layer.
+     * Activate a camera for this layer.
      * @param camera Camera instance to apply.
      *
      * @example
@@ -208,7 +191,7 @@ export declare class TextmodeLayer {
      */
     ortho(near?: number, far?: number): void;
     /**
-     * Apply a post-processing filter to this layer's rendered output.
+     * Queue a post-processing filter for this layer.
      *
      * Filters are applied after ASCII conversion in the order they are called.
      * Call this method within your layer's draw callback to apply effects.
@@ -219,25 +202,25 @@ export declare class TextmodeLayer {
      * - `'sepia'` - Applies sepia tone (param: amount 0-1, default 1)
      * - `'threshold'` - Black/white threshold (param: threshold 0-1, default 0.5)
      *
-     * @param name The name of the filter to apply (built-in or custom registered filter)
-     * @param params Optional parameters for the filter
+     * @param name Built-in or registered filter name.
+     * @param params Optional filter parameters.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/filter/sketch.js}
      */
     filter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
     /**
-     * Apply a custom filter registered via `t.layers.filters.register()`.
-     * @param name The name of the custom filter
-     * @param params Optional parameters for the custom filter
+     * Queue a registered custom filter for this layer.
+     * @param name Custom filter name.
+     * @param params Optional filter parameters.
      */
     filter<TParams = unknown>(name: FilterName, params?: TParams): void;
     /**
      * Store plugin-specific state on this layer.
      * Plugins can use this to attach their own data to layer instances.
      *
-     * @param pluginName Unique identifier for the plugin.
-     * @param state The state object to store.
+     * @param pluginName Plugin identifier.
+     * @param state State object to store.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/setPluginState/sketch.js}
@@ -246,124 +229,130 @@ export declare class TextmodeLayer {
     /**
      * Retrieve plugin-specific state stored on this layer.
      *
-     * @param pluginName Unique identifier for the plugin.
-     * @returns The stored state object, or undefined if not set.
+     * @param pluginName Plugin identifier.
+     * @returns Stored state, or `undefined` when not set.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/getPluginState/sketch.js}
      */
     getPluginState<T>(pluginName: string): T | undefined;
-    /** Check if plugin-specific state exists on this layer.
+    /**
+     * Check whether plugin-specific state exists on this layer.
      *
-     * @param pluginName Unique identifier for the plugin.
-     * @returns True if state exists, false otherwise.
+     * @param pluginName Plugin identifier.
+     * @returns `true` when state exists.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/hasPluginState/sketch.js}
      */
     hasPluginState(pluginName: string): boolean;
-    /** Delete plugin-specific state from this layer.
+    /**
+     * Delete plugin-specific state from this layer.
      *
-     * @param pluginName Unique identifier for the plugin.
+     * @param pluginName Plugin identifier.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/deletePluginState/sketch.js}
      */
     deletePluginState(pluginName: string): boolean;
     /**
-     * Get or set the font size for this layer.
+     * Get or set this layer's font size.
      *
      * Changing the font size will re-initialize the layer's grid based on the new character dimensions.
      *
-     * @param size The font size to set.
-     * @returns The current font size if called without arguments.
+     * @param size Font size to apply.
+     * @returns Current font size when called without arguments.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/fontSize/sketch.js}
      */
     fontSize(size?: number): number | void;
     /**
-     * Get or set whether this layer should use authored tileset colors directly during the final ASCII pass.
+     * Configure authored tileset color preservation for this layer.
      *
      * When disabled (default), tileset texels are remapped to the current character (`primary`)
      * and cell (`secondary`) colors. Vector/font atlases always use character/cell recoloring
      * regardless of this setting.
      *
-     * @param enabled Whether this layer should use authored tileset colors directly.
-     * @returns The current layer tileset-color mode if called without arguments.
+     * @param enabled Whether to preserve authored tileset colors.
+     * @returns Current tileset-color mode when called without arguments.
      *
      * @example
-     * {@includeCode ../../../examples/TextmodeLayer/loadTileset/sketch.js}
+     * {@includeCode ../../../examples/TextmodeLayer/useTileColors/sketch.js}
      */
     useTileColors(enabled?: boolean): boolean | void;
     /**
-     * Load a font into this layer from a URL/path or from an existing {@link TextmodeFont}.
+     * Load a font into this layer from a URL/path or existing {@link TextmodeFont}.
      *
-     * @param fontSource The URL/path to the font file, or an existing TextmodeFont to fork from.
-     * @returns The loaded TextmodeFont instance.
+     * @param fontSource Font URL/path or TextmodeFont to fork from.
+     * @returns The loaded TextmodeFont.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/loadFont/sketch.js}
      */
     loadFont(fontSource: string | TextmodeFont): Promise<TextmodeFont>;
     /**
-     * Load a tileset into this layer from load options or from an existing {@link TextmodeTileset}.
+     * Load a tileset into this layer from options or an existing {@link TextmodeTileset}.
      *
-     * @param tilesetSource Tileset load options or an existing TextmodeTileset to fork from.
-     * @returns The loaded TextmodeTileset instance.
+     * @param tilesetSource Tileset options or TextmodeTileset to fork from.
+     * @returns The loaded TextmodeTileset.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/loadTileset/sketch.js}
      */
     loadTileset(tilesetSource: TextmodeTilesetOptions | TextmodeTileset): Promise<TextmodeTileset>;
     /**
-     * Returns the WebGL texture of the final ASCII framebuffer.
-     * If the layer is not yet initialized, returns undefined.
+     * WebGL texture of the final ASCII framebuffer.
+     *
+     * Returns `undefined` before the layer is initialized.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/texture/sketch.js}
      */
     get texture(): WebGLTexture | undefined;
     /**
-     * Get the grid associated with this layer.
+     * Grid associated with this layer.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/grid/sketch.js}
      */
     get grid(): TextmodeGrid | undefined;
     /**
-     * The font used by this layer.
+     * Font or tileset used by this layer.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/font/sketch.js}
      */
     get font(): TextmodeFont | TextmodeTileset;
     /**
-     * Returns the width of the final ASCII framebuffer in pixels.
-     * If the layer is not yet initialized, returns 0.
+     * Width of the final ASCII framebuffer in pixels.
+     *
+     * Returns `0` before the layer is initialized.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/width/sketch.js}
      */
     get width(): number;
     /**
-     * Returns the height of the final ASCII framebuffer in pixels.
-     * If the layer is not yet initialized, returns 0.
+     * Height of the final ASCII framebuffer in pixels.
+     *
+     * Returns `0` before the layer is initialized.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/height/sketch.js}
      */
     get height(): number;
     /**
-     * Returns the draw framebuffer for this layer.
-     * If the layer is not yet initialized, returns undefined.
+     * Draw framebuffer for this layer.
+     *
+     * Returns `undefined` before the layer is initialized.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/drawFramebuffer/sketch.js}
      */
     get drawFramebuffer(): GLFramebuffer | undefined;
     /**
-     * Get the framebuffer containing the rendered textmode output for this layer.
+     * Framebuffer containing this layer's rendered textmode output.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/asciiFramebuffer/sketch.js}

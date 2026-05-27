@@ -1,6 +1,5 @@
 /**
  * @title TextmodeSource.height
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,73 +7,71 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-let source;
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+let source = null;
+let disposed = false;
 
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
-
-function createSourceCanvas() {
+function createImageUrl() {
 	const canvas = document.createElement('canvas');
-	canvas.width = 128;
-	canvas.height = 256;
+	canvas.width = 96;
+	canvas.height = 64;
 	const ctx = canvas.getContext('2d');
-	if (!ctx) return canvas;
-
-	ctx.fillStyle = '#1e293b';
-	ctx.fillRect(0, 0, 128, 256);
-	ctx.strokeStyle = '#ffffff';
-	ctx.lineWidth = 4;
-	ctx.strokeRect(10, 10, 108, 236);
-
-	return canvas;
+	const gradient = ctx.createLinearGradient(0, 0, 96, 64);
+	gradient.addColorStop(0, '#0ea5e9');
+	gradient.addColorStop(1, '#f59e0b');
+	ctx.fillStyle = gradient;
+	ctx.fillRect(0, 0, 96, 64);
+	ctx.fillStyle = '#020617';
+	ctx.fillRect(16, 16, 64, 32);
+	ctx.fillStyle = '#f8fafc';
+	ctx.fillRect(28, 26, 40, 12);
+	return canvas.toDataURL();
 }
 
-t.setup(() => {
-	source = t.createTexture(createSourceCanvas());
-	source.characters(' .:-=+*#%@');
+function configureSource(value) {
+	value.characters(' .:-=+*#%@');
+	value.charColorMode('sampled');
+	value.cellColorMode('fixed');
+}
+
+t.setup(async () => {
+	source = await t.loadImage(createImageUrl());
+	configureSource(source);
 });
 
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
 t.draw(() => {
-	t.background(6, 10, 22);
+	t.background(5, 8, 18);
+	if (!source || disposed) return;
+	t.image(source, Math.floor(t.grid.cols * 0.55), Math.floor(t.grid.rows * 0.55));
+});
 
-	if (!source) return;
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
 
-	const h = source.height;
-
-	t.push();
-	t.translate(0, 0);
-	t.charColor(140, 220, 255, 100);
-	t.char('|');
-	t.rect(1, h);
-	t.pop();
-
-	t.push();
-	t.charColor(255, 255, 255);
-	t.translate(0, -Math.floor(h / 2));
-	t.char('-');
-	t.point();
-	t.translate(0, h - 1);
-	t.char('-');
-	t.point();
-	t.pop();
-
-	drawCenteredText('TextmodeSource.height', -12, [240, 245, 255]);
-	drawCenteredText('The ideal height of the source in grid cells.', -10, [150, 170, 200]);
-
-	drawCenteredText(`${h} CELLS`, 12, [140, 220, 255]);
+	drawText('TEXTMODESOURCE.HEIGHT', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: SOURCE SETTINGS', x, y++, 100, 220, 255);
+	drawText('Image source conversion API.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	const h = source ? source.height : 0;
+	drawText(`HEIGHT: ${h}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

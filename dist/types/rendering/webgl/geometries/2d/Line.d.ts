@@ -1,6 +1,3 @@
-/**
- * Instanced line geometry implementation
- */
 import type { InstanceBatch } from '../../batching/InstanceBatch';
 import { type LineParams } from '../../types/GeometryTypes';
 import { BaseGeometry } from '../BaseGeometry';
@@ -11,11 +8,5 @@ import type { IRenderState } from '../../state/RenderState';
  */
 export declare class Line extends BaseGeometry<LineParams> {
     constructor(gl: WebGL2RenderingContext, batch: InstanceBatch);
-    /**
-     * Add a line instance to the batch
-     * @param params Line parameters
-     * @param renderState Current render state
-     * @returns Index of the added instance
-     */
     _addInstance(params: LineParams, renderState: IRenderState): number;
 }

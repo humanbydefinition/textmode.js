@@ -16,7 +16,7 @@ export interface TextmodePlugin {
      * @param context A host-provided context exposing the Textmodifier runtime and plugin hook registration methods.
      *
      * @example
-     * {@includeCode ../../../../examples/plugins/lifecycle/sketch.js}
+     * {@includeCode ../../../../examples/plugins/install/sketch.js}
      */
     install(textmodifier: Textmodifier, context: TextmodePluginContext): void | Promise<void>;
     /**
@@ -25,7 +25,7 @@ export interface TextmodePlugin {
      * @param context A host-provided context exposing the Textmodifier runtime and plugin hook registration methods.
      *
      * @example
-     * {@includeCode ../../../../examples/plugins/lifecycle/sketch.js}
+     * {@includeCode ../../../../examples/plugins/uninstall/sketch.js}
      */
     uninstall?(textmodifier: Textmodifier, context: TextmodePluginContext): void | Promise<void>;
 }

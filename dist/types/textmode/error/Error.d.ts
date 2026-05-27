@@ -1,9 +1,5 @@
 /**
- * Custom error class for textmode.js exceptions.
- *
- * Provides formatted error messages with optional context data to help
- * debug issues.
- *
+ * Formatting controls for textmode.js error messages.
  */
 export interface TextmodeErrorFormatOptions {
     /**
@@ -18,21 +14,18 @@ export interface TextmodeErrorFormatOptions {
     includeFooterArrows?: boolean;
 }
 /**
- * Custom error class for textmode.js exceptions.
- *
- * Provides formatted error messages with optional context data to help
- * debug issues.
+ * Error type that formats optional context data alongside the main message.
  */
 export declare class TextmodeError extends Error {
     /**
-     * Creates a new TextmodeError instance.
+     * Create a textmode.js error.
      * @param message The main error message
      * @param context Optional context data to include in the error message
      * @param options Optional message formatting options
      */
     constructor(message: string, context?: Record<string, unknown>, options?: TextmodeErrorFormatOptions);
     /**
-     * Format values for better display in error messages
+     * Format values for compact display in error messages.
      */
     private static _formatValue;
 }

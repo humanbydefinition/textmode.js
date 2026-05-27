@@ -51,63 +51,63 @@ export declare class TextmodeCamera {
      */
     copy(): TextmodeCamera;
     /**
-     * Get the current x position of the camera eye.
+     * Current X position of the camera eye.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeCamera/eyeX/sketch.js}
      */
     get eyeX(): number;
     /**
-     * Get the current y position of the camera eye.
+     * Current Y position of the camera eye.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeCamera/eyeY/sketch.js}
      */
     get eyeY(): number;
     /**
-     * Get the current z position of the camera eye.
+     * Current Z position of the camera eye.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeCamera/eyeZ/sketch.js}
      */
     get eyeZ(): number;
     /**
-     * Get the current x position of the camera target.
+     * Current X position of the camera target.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeCamera/targetX/sketch.js}
      */
     get targetX(): number;
     /**
-     * Get the current y position of the camera target.
+     * Current Y position of the camera target.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeCamera/targetY/sketch.js}
      */
     get targetY(): number;
     /**
-     * Get the current z position of the camera target.
+     * Current Z position of the camera target.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeCamera/targetZ/sketch.js}
      */
     get targetZ(): number;
     /**
-     * Get the current x component of the camera up vector.
+     * Current X component of the camera up vector.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeCamera/upX/sketch.js}
      */
     get upX(): number;
     /**
-     * Get the current y component of the camera up vector.
+     * Current Y component of the camera up vector.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeCamera/upY/sketch.js}
      */
     get upY(): number;
     /**
-     * Get the current z component of the camera up vector.
+     * Current Z component of the camera up vector.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeCamera/upZ/sketch.js}

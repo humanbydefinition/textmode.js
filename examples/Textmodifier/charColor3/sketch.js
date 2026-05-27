@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.charColor3
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -10,50 +9,41 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-	t.cellColor(0, 0, 0, 0);
+let value = 0;
 
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
-labelLayer.draw(() => {
-	t.clear();
-
-	drawCenteredText('Textmodifier.charColor (Hex)', -12, [240, 245, 255]);
-	drawCenteredText('Passing a hex string (e.g. #RRGGBB) to set the stroke.', -10, [150, 170, 200]);
-
-	drawCenteredText('t.charColor(hexString)', 13, [100, 120, 150]);
-});
-
 t.draw(() => {
 	t.background(6, 10, 22);
+	value = Math.round(80 + 80 * Math.sin(t.frameCount * 0.04));
+	t.char('#');
+	t.charColor(value > 80 ? '#facc15' : '#38bdf8');
+	t.rect(10, 5);
+});
 
-	const cycle = Math.floor(t.frameCount / 60) % 3;
-	const hex = ['#fbbf24', '#34d399', '#60a5fa'][cycle];
-	t.charColor(hex);
-
-	t.push();
-	t.char('=');
-	t.rotateZ(t.frameCount * 2);
-	t.rect(20, 8);
-	t.pop();
-
-	t.push();
-	t.resetCamera();
-	drawCenteredText('HEX STRING MODE', 8, [140, 220, 255]);
-	drawCenteredText(`ACTIVE: ${hex}`, 10, [255, 225, 140]);
-	t.pop();
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.CHARCOLOR3', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: HEX GLYPH COLOR', x, y++, 100, 220, 255);
+	drawText('Hex strings color glyphs.', x, y++, 140, 160, 190);
+	drawText('The value pulses every frame.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(value > 80 ? 'HEX: GOLD' : 'HEX: CYAN', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

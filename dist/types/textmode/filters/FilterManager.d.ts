@@ -1,9 +1,8 @@
 import type { GLShader, UniformValue } from '../../rendering';
 import type { FilterName } from './types';
+type FilterUniformDefinitions = Record<string, [paramName: string, defaultValue: UniformValue]>;
 /**
- * Manages filter registration, shader compilation, and filter chain application.
- *
- * Used both for layer-level filters and global post-processing filters.
+ * Registers filter shaders and applies layer/global filter chains.
  *
  * @example
  * ```ts
@@ -47,7 +46,9 @@ export declare class TextmodeFilterManager {
      * });
      * ```
      */
-    register(id: FilterName, shader: GLShader | string, uniformDefs?: Record<string, [paramName: string, defaultValue: UniformValue]>): Promise<void>;
+    register(id: FilterName, shader: GLShader | string, uniformDefs?: FilterUniformDefinitions): Promise<void>;
+    private _registerSource;
+    private _register;
     /**
      * Unregister a filter by its ID.
      *
@@ -55,7 +56,7 @@ export declare class TextmodeFilterManager {
      * @returns true if the filter was unregistered, false if it wasn't found
      *
      * @example
-     * {@includeCode ../../../examples/filters/registry/sketch.js}
+     * {@includeCode ../../../examples/filters/unregister/sketch.js}
      */
     unregister(id: FilterName): boolean;
     /**
@@ -65,7 +66,7 @@ export declare class TextmodeFilterManager {
      * @returns true if the filter exists
      *
      * @example
-     * {@includeCode ../../../examples/filters/registry/sketch.js}
+     * {@includeCode ../../../examples/filters/has/sketch.js}
      */
     has(id: FilterName): boolean;
     /**
@@ -85,3 +86,4 @@ export declare class TextmodeFilterManager {
      */
     private _registerBuiltInFilters;
 }
+export {};

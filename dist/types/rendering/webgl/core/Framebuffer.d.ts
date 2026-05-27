@@ -5,8 +5,6 @@ export type FramebufferOptions = {
     filter?: 'nearest' | 'linear';
     /** Texture wrapping mode */
     wrap?: 'clamp' | 'repeat';
-    /** Texture format */
-    format?: 'rgba' | 'rgb';
     /** Data type for texture data */
     type?: 'unsigned_byte' | 'float';
     /** Enable depth buffer (defaults to true for 3D support) */
@@ -114,14 +112,14 @@ export declare class GLFramebuffer extends Disposable implements IFramebuffer {
      * Width of the framebuffer in pixels.
      *
      * @example
-     * {@includeCode ../../../../examples/TextmodeFramebuffer/framebuffer/sketch.js}
+     * {@includeCode ../../../../examples/TextmodeFramebuffer/width/sketch.js}
      */
     get width(): number;
     /**
      * Height of the framebuffer in pixels.
      *
      * @example
-     * {@includeCode ../../../../examples/TextmodeFramebuffer/framebuffer/sketch.js}
+     * {@includeCode ../../../../examples/TextmodeFramebuffer/height/sketch.js}
      */
     get height(): number;
     /**
@@ -135,14 +133,14 @@ export declare class GLFramebuffer extends Disposable implements IFramebuffer {
      * The color attachment textures owned by this framebuffer.
      *
      * @example
-     * {@includeCode ../../../../examples/TextmodeFramebuffer/framebuffer/sketch.js}
+     * {@includeCode ../../../../examples/TextmodeFramebuffer/textures/sketch.js}
      */
     get textures(): WebGLTexture[];
     /**
      * Number of color attachments available on this framebuffer.
      *
      * @example
-     * {@includeCode ../../../../examples/TextmodeFramebuffer/framebuffer/sketch.js}
+     * {@includeCode ../../../../examples/TextmodeFramebuffer/attachmentCount/sketch.js}
      */
     get attachmentCount(): number;
 }

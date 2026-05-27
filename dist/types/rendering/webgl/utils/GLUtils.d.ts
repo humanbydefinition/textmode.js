@@ -1,6 +1,5 @@
 /**
  * Update a WebGL texture from a canvas, video, or image source.
- * Handles binding, pixel storage, upload, and unbinding.
  *
  * @param gl WebGL2 rendering context
  * @param texture Target texture to update
@@ -8,20 +7,7 @@
  */
 export declare function updateTextureFromSource(gl: WebGL2RenderingContext, texture: WebGLTexture, source: HTMLCanvasElement | HTMLVideoElement | HTMLImageElement): void;
 /**
- * Create a new WebGL texture from a source element.
- * Sets default parameters (NEAREST/CLAMP) suitable for textmode pixel art.
- *
- * @param gl WebGL2 rendering context
- * @param source Source element to upload
- * @param minFilter Minification filter (default: gl.NEAREST)
- * @param magFilter Magnification filter (default: gl.NEAREST)
- * @param wrapS Horizontal wrapping mode (default: gl.CLAMP_TO_EDGE)
- * @param wrapT Vertical wrapping mode (default: gl.CLAMP_TO_EDGE)
- */
-export declare function createTextureFromSource(gl: WebGL2RenderingContext, source: HTMLCanvasElement | HTMLVideoElement | HTMLImageElement, minFilter?: number, magFilter?: number, wrapS?: number, wrapT?: number): WebGLTexture;
-/**
  * Create a texture from a source element and return both the texture and source dimensions.
- * Reduces duplication in higher-level helpers that need both values together.
  *
  * @param gl WebGL2 rendering context
  * @param source Source element to upload
@@ -49,7 +35,6 @@ export declare function createTextureWithDimensions(gl: WebGL2RenderingContext, 
 export declare function setTextureParameters(gl: WebGL2RenderingContext, minFilter: number, magFilter: number, wrapS: number, wrapT: number): void;
 /**
  * Configure a vertex attribute with pointer and divisor settings.
- * Handles enable, pointer setup, and divisor configuration in one call.
  *
  * @param gl WebGL2 rendering context
  * @param location Attribute location from shader
@@ -63,7 +48,6 @@ export declare function setTextureParameters(gl: WebGL2RenderingContext, minFilt
 export declare function setupVertexAttribute(gl: WebGL2RenderingContext, location: number, size: number, stride: number, offset: number, divisor?: number, type?: number, normalized?: boolean): void;
 /**
  * Allocate or upload data to a buffer (bind → bufferData → unbind pattern).
- * Ensures proper binding/unbinding sequence for safe buffer operations.
  *
  * @param gl WebGL2 rendering context
  * @param target Buffer binding point (gl.ARRAY_BUFFER or gl.ELEMENT_ARRAY_BUFFER)

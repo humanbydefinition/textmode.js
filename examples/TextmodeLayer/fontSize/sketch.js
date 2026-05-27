@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.fontSize
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,18 +8,17 @@ const t = textmode.create({
 });
 
 const detailLayer = t.layers.add({ fontSize: 8, blendMode: 'screen' });
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
@@ -29,17 +27,12 @@ function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 t.draw(() => {
 	t.background(6, 10, 22);
 
-	drawCenteredText('TextmodeLayer.fontSize', -12, [240, 245, 255]);
-	drawCenteredText('FontSize determines the grid resolution of each layer.', -10, [150, 170, 200]);
-
 	t.push();
 	t.translate(0, 0);
 	t.charColor(40, 50, 80);
 	t.char('#');
 	t.rect(20, 10);
 	t.pop();
-
-	drawCenteredText(`BASE LAYER: ${t.layers.base.fontSize()} PX`, 7, [140, 180, 255]);
 });
 
 detailLayer.draw(() => {
@@ -60,8 +53,23 @@ detailLayer.draw(() => {
 		t.pop();
 	}
 	t.pop();
+});
 
-	drawCenteredText(`DETAIL LAYER: ${detailLayer.fontSize()} PX`, 12, [255, 225, 140]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODELAYER.FONTSIZE', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: PER-LAYER RESOLUTION', x, y++, [100, 220, 255]);
+	drawText('Smaller font gives denser cells.', x, y++, [140, 160, 190]);
+	drawText('Layer grids update independently.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(`BASE: ${t.layers.base.fontSize()} PX`, x, y++, [140, 180, 255]);
+	drawText(`DETAIL: ${detailLayer.fontSize()} PX`, x, y++, [255, 225, 140]);
 });
 
 t.windowResized(() => {

@@ -14,7 +14,7 @@ import type { GridPosition } from '../../grid/TextmodeGrid';
  */
 export type MousePosition = GridPosition;
 /**
- * Mouse event data passed to event handlers.
+ * Mouse event payload passed to input callbacks.
  */
 export interface MouseEventData {
     /** Current mouse position in grid coordinates. */
@@ -34,11 +34,11 @@ export interface MouseEventData {
     originalEvent: MouseEvent | WheelEvent;
 }
 /**
- * Mouse event handler function type.
+ * Mouse event callback signature.
  */
 export type MouseEventHandler = (data: MouseEventData) => void;
 /**
- * Event map for all mouse events emitted by the mouse input manager.
+ * Mouse events emitted by the mouse input manager.
  */
 export interface MouseEventMap {
     /** Fires when the mouse button is clicked (full press + release). */

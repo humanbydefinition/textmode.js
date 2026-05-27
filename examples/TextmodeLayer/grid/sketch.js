@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.grid
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,18 +8,17 @@ const t = textmode.create({
 });
 
 const densityLayer = t.layers.add({ fontSize: 8, blendMode: 'screen' });
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
@@ -29,26 +27,16 @@ function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 t.draw(() => {
 	t.background(6, 10, 22);
 
-	const g = t.grid;
-
-	drawCenteredText('TextmodeLayer.grid', -12, [240, 245, 255]);
-	drawCenteredText('Every layer has its own independent coordinate grid.', -10, [150, 170, 200]);
-
 	t.push();
 	t.translate(-10, 0);
 	t.charColor(100, 150, 255, 100);
 	t.char('+');
 	t.rect(14, 10);
 	t.pop();
-
-	drawCenteredText(`BASE GRID: ${g.cols} x ${g.rows}`, 8, [140, 180, 255]);
 });
 
 densityLayer.draw(() => {
 	t.clear();
-
-	// Access this specific layer's grid via the .grid property.
-	const g = densityLayer.grid;
 
 	t.push();
 	t.translate(20, 0);
@@ -56,8 +44,24 @@ densityLayer.draw(() => {
 	t.char('.');
 	t.rect(28, 20);
 	t.pop();
+});
 
-	drawCenteredText(`LAYER GRID: ${g.cols} x ${g.rows}`, 12, [255, 225, 140]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	const g = densityLayer.grid;
+
+	drawText('TEXTMODELAYER.GRID', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: INDEPENDENT GRID', x, y++, [100, 220, 255]);
+	drawText('Each layer gets its own grid.', x, y++, [140, 160, 190]);
+	drawText('Font size changes cell count.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(`BASE: ${t.grid.cols} x ${t.grid.rows}`, x, y++, [140, 180, 255]);
+	drawText(`LAYER: ${g.cols} x ${g.rows}`, x, y++, [255, 225, 140]);
 });
 
 t.windowResized(() => {

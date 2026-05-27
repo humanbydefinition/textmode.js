@@ -56,7 +56,6 @@ export interface IFramebuffer {
     /**
      * Begin drawing to this framebuffer.
      *
-     * This method:
      * - Flushes any pending draw calls to maintain proper render order
      * - Saves the current framebuffer and viewport state
      * - Binds this framebuffer as the render target
@@ -69,7 +68,6 @@ export interface IFramebuffer {
     /**
      * End rendering to this framebuffer and restore previous state.
      *
-     * This method:
      * - Flushes any pending draw calls into this framebuffer
      * - Restores the previously bound framebuffer
      * - Restores the previous viewport settings
@@ -80,7 +78,7 @@ export interface IFramebuffer {
     /**
      * Dispose of WebGL resources used by this framebuffer.
      *
-     * This method is idempotent and safe to call multiple times.
+     * Idempotent and safe to call multiple times.
      * After disposal, the framebuffer should not be used for rendering.
      */
     dispose(): void;

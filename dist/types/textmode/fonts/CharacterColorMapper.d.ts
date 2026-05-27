@@ -1,8 +1,7 @@
 import type { TextmodeGlyph } from './types.ts';
 import type { TyprFont } from './typr/types.ts';
 /**
- * Handles color generation and mapping for characters.
- * This class manages the unique RGB color assignment for character identification.
+ * Builds glyph records with stable RGB identity colors for shader lookups.
  */
 export declare class CharacterColorMapper {
     private _fontTableReader;

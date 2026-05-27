@@ -9,12 +9,12 @@ import type { TextmodeFilterManager } from './filters';
 import type { FilterName, BuiltInFilterName, BuiltInFilterParams } from './filters';
 import { TextmodeConversionManager } from './conversion';
 /**
- * Manages textmode rendering on a [`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) and provides methods for drawing,
- * font management, event handling, layer management, animation control, and more. The heart of the `textmode.js` library.
+ * The main `textmode.js` drawing context.
  *
- * If the `Textmodifier` instance is created without a canvas parameter,
- * it creates a new `HTMLCanvasElement` to draw on using the `textmode.js` drawing API.
- * If a canvas is provided, it will use that canvas instead.
+ * A Textmodifier manages a canvas, renderer, layers, fonts, media sources, input,
+ * animation, and the p5-style drawing API. When no canvas is supplied, it creates
+ * one; when a canvas is supplied, it renders into or over that element depending
+ * on the chosen options.
  */
 export declare class Textmodifier {
     private _managedDisposables;
@@ -23,6 +23,8 @@ export declare class Textmodifier {
     private _destroyRequested;
     private _isDisposed;
     private _pendingCanvasResize;
+    private _pendingInitialDraw;
+    private _queuedRedrawCount;
     private _setupCallback;
     private _resizedCallback;
     private _windowResizeListener;
@@ -34,6 +36,12 @@ export declare class Textmodifier {
     private _applyCanvasResize;
     private _resizeSourcesForGrid;
     private _initialize;
+    private _startAnimationScheduler;
+    private _hasScheduledRenderWork;
+    private _shouldRenderUserFrame;
+    private _renderUserFrameBehindLoadingTransition;
+    private _drainQueuedUserFrames;
+    private _renderUserFrame;
     /**
      * Resize the canvas and adjust all related components accordingly.
      *
@@ -70,39 +78,38 @@ export declare class Textmodifier {
     filter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
     filter<TParams = unknown>(name: FilterName, params?: TParams): void;
     /**
-     * Set a draw callback function for the base layer.
+     * Set the base layer draw callback.
      *
-     * This callback function is where all drawing commands should be placed for textmode rendering on the main layer.
+     * Put drawing commands for the main layer in this callback.
      *
      * If multiple layers are added via {@link Textmodifier.layers}, each layer has its own draw callback set via {@link TextmodeLayer.draw}.
-     * This allows for complex multi-layered compositions with independent rendering logic per layer.
      *
-     * Calling this method is equivalent to setting the draw callback on the base layer,
-     * while the direct layer callback has precedence if both are set.
+     * Calling this method is equivalent to setting the callback on `textmodifier.layers.base`.
+     * The direct base-layer callback has precedence if both are set.
      * ```js
      * textmodifier.layers.base.draw(callback);
      * ```
      *
-     * @param callback The function to call before each render
+     * @param callback Function to run before each base layer render.
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/draw/sketch.js}
      */
     draw(callback: () => void): void;
     /**
-     * Set a post-draw callback function for the base layer.
+     * Set the base layer post-draw callback.
      *
      * This callback runs after the base layer's draw callback, ASCII conversion, and
      * any filters queued on the base layer during draw. Filters queued on
      * `t.layers.base` inside this callback are applied to the base layer before
      * other layers are composited on top.
      *
-     * Calling this method is equivalent to setting the post-draw callback on the base layer:
+     * Calling this method is equivalent to setting the callback on `textmodifier.layers.base`:
      * ```js
      * textmodifier.layers.base.postDraw(callback);
      * ```
      *
-     * @param callback The function to call after the base layer has been drawn and filtered.
+     * @param callback Function to run after the base layer has been drawn and filtered.
      *
      * @example
      * ```js
@@ -120,7 +127,7 @@ export declare class Textmodifier {
      */
     postDraw(callback: () => void): void;
     /**
-     * Set a final draw callback function for the composited output.
+     * Set the final post-processing callback for the composited output.
      *
      * This callback runs after all visible layers have been composited and after
      * global filters queued via {@link filter} during normal draw callbacks have
@@ -130,7 +137,7 @@ export declare class Textmodifier {
      * Use {@link postDraw} when you want to affect only the base layer. Use this
      * method when you want to affect the final image made from all layers.
      *
-     * @param callback The function to call before the final texture is presented.
+     * @param callback Function to run before the final texture is presented.
      *
      * @example
      * ```js
@@ -148,7 +155,7 @@ export declare class Textmodifier {
      */
     finalDraw(callback: () => void): void;
     /**
-     * Load a font, optionally setting it as the base layer's active font.
+     * Load a font and optionally set it as the base layer's active font.
      *
      * Accepts either a URL string to load a new font, or an existing {@link TextmodeFont}
      * instance to use as a reusable source.
@@ -159,16 +166,16 @@ export declare class Textmodifier {
      * The returned font can be reused on other layers via {@link TextmodeLayer.loadFont},
      * which creates a layer-local fork rather than sharing a mutable instance by reference.
      *
-     * @param fontSource The URL of the font to load, or an existing TextmodeFont instance.
-     * @param setActive Whether to set the font as the base layer's active font. Defaults to `true`.
-     * @returns The loaded TextmodeFont instance.
+     * @param fontSource Font URL or reusable TextmodeFont instance.
+     * @param setActive Whether to activate the font on the base layer. Defaults to `true`.
+     * @returns The loaded TextmodeFont.
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/loadFont/sketch.js}
      */
     loadFont(fontSource: string | TextmodeFont, setActive?: boolean): Promise<TextmodeFont>;
     /**
-     * Load a tileset, optionally setting it as the base layer's active glyph source.
+     * Load a tileset and optionally set it as the base layer's active glyph source.
      *
      * Accepts either tileset load options or an existing {@link TextmodeTileset}
      * instance to use as a reusable source.
@@ -179,45 +186,44 @@ export declare class Textmodifier {
      * The returned tileset can be reused on other layers via {@link TextmodeLayer.loadTileset},
      * which creates a layer-local fork rather than sharing a mutable instance by reference.
      *
-     * @param tilesetSource Tileset load options or an existing TextmodeTileset instance.
-     * @param setActive Whether to set the tileset as the base layer's active glyph source. Defaults to `true`.
-     * @returns The loaded TextmodeTileset instance.
+     * @param tilesetSource Tileset options or reusable TextmodeTileset instance.
+     * @param setActive Whether to activate the tileset on the base layer. Defaults to `true`.
+     * @returns The loaded TextmodeTileset.
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/loadTileset/sketch.js}
      */
     loadTileset(tilesetSource: TextmodeTilesetOptions | TextmodeTileset, setActive?: boolean): Promise<TextmodeTileset>;
     /**
-     * Get or set the font size used for rendering.
-     * @param size The font size to set.
-     * @returns The current font size if called without arguments.
+     * Set or get the base layer font size.
+     * @param size Font size to apply.
+     * @returns Current font size when called without arguments.
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/fontSize/sketch.js}
      */
     fontSize(size?: number): number | void;
     /**
-     * Get or set whether the base layer should use authored tileset colors directly during the final ASCII pass.
+     * Configure authored tileset color preservation on the base layer.
      *
-     * This is equivalent to calling {@link TextmodeLayer.useTileColors} on
-     * {@link Textmodifier.layers base layer}.
+     * This is equivalent to calling {@link TextmodeLayer.useTileColors} on the base layer.
      *
      * When disabled (default), tilesets on the base layer are recolored through the current
      * character (`primary`) and cell (`secondary`) colors.
      *
-     * @param enabled Whether the base layer should use authored tileset colors directly.
-     * @returns The current base-layer tileset-color mode if called without arguments.
+     * @param enabled Whether to preserve authored tileset colors.
+     * @returns Current base-layer tileset-color mode when called without arguments.
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/useTileColors/sketch.js}
      */
     useTileColors(enabled?: boolean): boolean | void;
     /**
-     * Get or set the grid used for mouse and touch input coordinate mapping.
+     * Get or set the grid used for mouse and touch coordinate mapping.
      *
      * By default, input coordinates are mapped to the topmost visible layer's grid,
      * which changes dynamically as layers are shown/hidden. Use this method to lock
-     * input mapping to a specific grid or layer, or to return to responsive mode.
+     * input mapping to a specific grid, or to return to responsive mode.
      *
      * When called without arguments, returns the current input grid mode:<br/>
      * - `'topmost'` if using responsive mode (default)<br/>
@@ -228,36 +234,38 @@ export declare class Textmodifier {
      */
     inputGrid(target?: 'topmost' | TextmodeGrid): 'topmost' | TextmodeGrid | void;
     /**
-     * Get the grid used for input coordinate mapping.
-     * Returns the override grid/layer's grid if set, otherwise the topmost visible layer's grid.
+     * Resolve the grid used for input coordinate mapping.
+     *
+     * Uses the override grid when set; otherwise uses the topmost visible layer's grid.
      */
     private _getInputGrid;
     private _handleFatalError;
     /**
-     * Set a setup callback function that will be executed once when initialization is complete.
+     * Set the setup callback that runs once initialization is complete.
      *
      * This callback is called after font loading and grid initialization, allowing access to
      * properties like `textmodifier.grid.cols` for calculating layout or setup variables.
      *
      * The callback can be asynchronous (return a Promise).
      *
-     * @param callback The function to call when setup is complete
+     * @param callback Function to run after setup is complete.
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/setup/sketch.js}
      */
     setup(callback: () => void | Promise<void>): Promise<void>;
     /**
-     * Set a callback function that will be called when the window is resized.
-     * @param callback The function to call when the window is resized.
+     * Set the callback that runs after a window resize.
+     * @param callback Function to run after the window is resized.
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/windowResized/sketch.js}
      */
     windowResized(callback: () => void): void;
     /**
-     * Get the grid whose layer is currently being drawn to.
-     * If called outside of a layers draw callback, returns the base layer's grid.
+     * Grid for the layer currently being drawn.
+     *
+     * Outside a layer draw callback, this returns the base layer's grid.
      *
      * If no grid is set (e.g., before user setup()), returns `undefined`.
      *
@@ -266,64 +274,63 @@ export declare class Textmodifier {
      */
     get grid(): TextmodeGrid | undefined;
     /**
-     * Get the current font object used for rendering the base layer.
+     * Font or tileset used by the current drawing layer.
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/font/sketch.js}
      */
     get font(): TextmodeFont | TextmodeTileset;
     /**
-     * Get the width of the canvas in pixels.
+     * Canvas width in pixels.
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/width/sketch.js}
      */
     get width(): number;
     /**
-     * Get the height of the canvas in pixels.
+     * Canvas height in pixels.
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/height/sketch.js}
      */
     get height(): number;
     /**
-     * Get the canvas containing the rendered output.
+     * Canvas containing the rendered output.
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/canvas/sketch.js}
      */
     get canvas(): HTMLCanvasElement;
     /**
-     * Check if the instance has been disposed/destroyed.
+     * Whether this instance has been destroyed.
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/isDisposed/sketch.js}
      */
     get isDisposed(): boolean;
     /**
-     * If in overlay mode, returns the {@link TextmodeImage} instance capturing the target canvas/video content,
-     * allowing further configuration of the conversion parameters.
+     * Overlay source image for the target canvas or video, when overlay mode is enabled.
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/overlay/sketch.js}
      */
     get overlay(): TextmodeImage | undefined;
     /**
-     * Provides access to the loading layer controller to control boot-time loading UX.
+     * Built-in loading layer controller.
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/loading/sketch.js}
      */
     get loading(): LoadingLayerController;
     /**
-     * Provides access to the error layer controller to display fatal errors in a user-friendly way.
+     * Built-in fatal error layer controller.
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/errors/sketch.js}
      */
     get errors(): ErrorLayerController;
     /**
-     * Access the layer manager for this Textmodifier instance.
+     * Layer manager for this Textmodifier instance.
      *
      * Use this to create and manage multiple layers within the textmode rendering context.
      * Each layer has its own grid, font, draw callback, and filters.
@@ -333,7 +340,7 @@ export declare class Textmodifier {
      */
     get layers(): TextmodeLayerManager;
     /**
-     * Access the filter manager for this Textmodifier instance.
+     * Filter manager for this Textmodifier instance.
      *
      * Use this to register custom filters that can be applied both globally
      * (via {@link filter}) and on individual layers (via {@link TextmodeLayer.filter}).

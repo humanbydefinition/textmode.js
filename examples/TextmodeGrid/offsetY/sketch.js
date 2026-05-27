@@ -1,6 +1,5 @@
 /**
  * @title TextmodeGrid.offsetY
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,55 +7,49 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+const labelLayer = t.layers.add();
 
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const offset = t.grid.offsetY;
+	const cols = t.grid.cols;
 	const rows = t.grid.rows;
-	const halfHeight = Math.floor(rows / 2);
-
+	const left = -Math.floor(cols / 2);
+	const top = -Math.floor(rows / 2);
+	t.charColor(60, 80, 120);
+	t.char('#');
+	t.rect(cols, rows);
 	t.push();
-	t.translate(0, -halfHeight);
-	t.charColor(255, 180, 140, 150);
-	t.char('-');
-	t.rect(11, 1);
-
-	t.push();
-	t.translate(0, -2);
-	t.char('^');
-	t.point();
-	t.translate(0, -1);
-	t.char('|');
-	t.point();
+	t.translate(1, 0);
+	t.charColor(100, 255, 180);
+	drawText(`OFFSET Y: ${t.grid.offsetY}px`, left + 4, 0, 100, 255, 180);
 	t.pop();
-	t.pop();
+});
 
-	t.push();
-	t.char('.');
-	t.charColor(60, 70, 100, 80);
-	t.translate(0, 0);
-	t.rect(1, rows);
-	t.pop();
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
 
-	drawCenteredText('TextmodeGrid.offsetY', -12, [240, 245, 255]);
-	drawCenteredText('Vertical margin from canvas edge to grid.', -10, [150, 170, 200]);
-	drawCenteredText(`${offset} PX`, 4, [255, 180, 140]);
+	drawText('TEXTMODEGRID.OFFSETY', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: VERTICAL OFFSET', x, y++, 100, 220, 255);
+	drawText('Grid centers inside canvas.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`PIXELS: ${t.grid.offsetY}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

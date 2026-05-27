@@ -1,27 +1,4 @@
 /**
- * Core data structure representing a single instance in batched rendering.
- * Contains all necessary data for ASCII character rendering via MRT.
- */
-export interface InstanceData {
-    _position: [number, number];
-    _size: [number, number];
-    _character: [number, number, number];
-    _charColor: [number, number, number, number];
-    _cellColor: [number, number, number, number];
-    _charRotation: number;
-    _charTransform: [number, number, number];
-    _translation: [number, number, number];
-    _rotation: [number, number, number];
-    _depth?: number;
-    _baseZ?: number;
-    _geometryType?: number;
-    _arcAngles?: [number, number];
-    _bezierControlPoint1?: [number, number];
-    _bezierControlPoint2?: [number, number];
-    _bezierStartPoint?: [number, number];
-    _bezierEndPoint?: [number, number];
-}
-/**
  * Optimized packed instance data layout for GPU upload.
  * Designed for efficient WebGL attribute binding and minimal memory usage.
  *

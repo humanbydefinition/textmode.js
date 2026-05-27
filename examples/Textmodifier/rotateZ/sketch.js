@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.rotateZ
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,59 +7,51 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+const labelLayer = t.layers.add();
+
+let value = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const time = t.frameCount * 2;
-	let angle = time;
-
-	if (t.mouse.x !== Number.NEGATIVE_INFINITY) {
-		angle = Math.atan2(t.mouse.y, t.mouse.x) * (180 / Math.PI);
-	}
-
+	const time = t.frameCount * 0.04;
+	value = (time * 70) % 360;
+	t.charColor(50, 60, 90);
+	t.char('.');
+	t.line(-18, 0, 18, 0);
+	t.line(0, -10, 0, 10);
 	t.push();
-	t.charColor(40, 50, 80);
-	for (let i = 0; i < 8; i++) {
-		t.push();
-		t.rotateZ(i * 45);
-		t.char('-');
-		t.translate(15, 0);
-		t.rect(20, 1);
-		t.pop();
-	}
+	t.rotateZ(value);
+	t.char('#');
+	t.charColor(140, 255, 180);
+	t.rect(6, 4);
 	t.pop();
+});
 
-	t.push();
-	t.rotateZ(angle);
-	const currentAngle = t.rotateZ();
-	t.charColor(255, 140, 180);
-	t.char('+');
-	t.rect(20, 20);
-	t.pop();
-
-	drawCenteredText(`Current Z-Angle: ${Math.floor(currentAngle % 360)}°`, 12, [255, 225, 140]);
-
-	drawCenteredText('Textmodifier.rotateZ', -18, [255, 255, 255]);
-	drawCenteredText('Rotates the coordinate system around the Z-axis (Roll).', -16, [150, 170, 200]);
-	drawCenteredText('t.rotateZ(degrees)', 18, [140, 180, 255]);
-
-	if (t.mouse.x === Number.NEGATIVE_INFINITY) {
-		drawCenteredText('Move mouse to control angle', 21, [100, 100, 120]);
-	}
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.ROTATEZ', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: Z AXIS ROTATION', x, y++, 100, 220, 255);
+	drawText('Roll matches 2D rotation.', x, y++, 140, 160, 190);
+	drawText('Grid cross shows original axes.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`DEG: ${value.toFixed(1)}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

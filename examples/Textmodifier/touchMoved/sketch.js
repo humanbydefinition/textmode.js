@@ -1,7 +1,5 @@
 /**
  * @title Textmodifier.touchMoved
- * @description Neon Fluid Touch Brush: paints organic glowing neon trails that expand, animate, and fade in real-time as the user drags their finger across the touch screen or moves their mouse with click-drag fallbacks.
- * @author antigravity
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,92 +7,71 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const trail = [];
-const MAX_TRAIL = 40;
+const labelLayer = t.layers.add();
 
-t.touchMoved((data) => {
-	const { touch } = data;
-	trail.push({ x: touch.x, y: touch.y, age: 0 });
-	if (trail.length > MAX_TRAIL) trail.shift();
-});
+const pulses = [];
+let count = 0;
+let last = 'WAITING';
 
-function drawText(text, x, y, r = 180, g = r, b = r) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(x - Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
+function addPulse(label, x = 0, y = 0) {
+	count++;
+	last = label;
+	pulses.unshift({ label, x, y, life: 1 });
+	if (pulses.length > 12) pulses.length = 12;
+}
+
+t.touchMoved((data) => {
+	const touch = data?.touch || t.mouse;
+	addPulse('MOVES', touch?.x || 0, touch?.y || 0);
+});
+
 t.draw(() => {
-	t.background(6, 8, 14);
+	t.background(6, 10, 22);
 
-	const cols = t.grid.cols;
-	const rows = t.grid.rows;
-
-	// Draw informative title
-	drawText('NEON FLUID TOUCH PAINTBRUSH', 0, -Math.floor(rows / 2) + 4, 100, 200, 255);
-	drawText(
-		'Drag finger or click-and-drag mouse to paint glowing neon vectors',
-		0,
-		-Math.floor(rows / 2) + 6,
-		120,
-		140,
-		160
-	);
-
-	// Desktop mouse drawing fallback
-	if (t.mouse && t.mouseIsPressed) {
-		trail.push({ x: t.mouse.x, y: t.mouse.y, age: 0 });
-		if (trail.length > MAX_TRAIL) trail.shift();
-	}
-
-	// Update ages and draw trail paths
-	for (let i = 0; i < trail.length; i++) {
-		const node = trail[i];
-		node.age++;
-
-		const ratio = i / trail.length;
-		const fade = Math.max(0, 1.0 - node.age / 120);
-
-		if (fade <= 0) continue;
-
-		t.push();
-		t.translate(node.x, node.y);
-
-		// Neon color interpolation: Hot pink to Electric cyan
-		const r = Math.floor((255 * ratio + 100 * (1 - ratio)) * fade);
-		const g = Math.floor((100 * ratio + 255 * (1 - ratio)) * fade);
-		const b = Math.floor(255 * fade);
-
-		t.charColor(r, g, b);
-
-		// Size decreases as particle ages
-		const size = Math.max(1, Math.floor(5 * ratio * fade));
-
-		// Draw pulsing brush cells
-		if (i % 2 === 0) {
-			t.char('💮');
-		} else {
-			t.char('•');
+	for (let i = pulses.length - 1; i >= 0; i--) {
+		const p = pulses[i];
+		p.life -= 0.02;
+		if (p.life <= 0) {
+			pulses.splice(i, 1);
+			continue;
 		}
-
-		t.ellipse(size, size);
+		t.push();
+		t.translate(p.x, p.y - (1 - p.life) * 4);
+		t.char('*');
+		t.charColor(255, 210, 120);
+		t.point();
 		t.pop();
 	}
+});
 
-	// Draw trail count diagnostic footer
-	const sizeStr = `TRAIL_ELEMENTS: ${trail.length} / ${MAX_TRAIL}`;
-	drawText(sizeStr, 0, Math.floor(rows / 2) - 4, 100, 255, 180);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.TOUCHMOVED', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: TOUCH MOVE', x, y++, 100, 220, 255);
+	drawText('Event updates compact state.', x, y++, 140, 160, 190);
+	drawText('Pulses show recent triggers.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('MOVES: ' + count, x, y++, 140, 255, 180);
+	drawText('LAST: ' + last.slice(0, 28), x, y++, 180, 200, 220);
 });
 
 t.windowResized(() => {
 	t.resizeCanvas(window.innerWidth, window.innerHeight);
-	trail.length = 0;
 });

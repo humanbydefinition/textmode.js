@@ -1,9 +1,9 @@
 /**
  * @title TextmodeColor.rgb
- * @author codex
  */
 const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
+const labelLayer = t.layers.add();
 const color = t.color(50, 100, 200);
 const labels = ['R', 'G', 'B'];
 const channelColors = [
@@ -11,22 +11,6 @@ const channelColors = [
 	[120, 255, 140],
 	[120, 180, 255],
 ];
-
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
 
 t.draw(() => {
 	const [r, g, b] = color.rgb;
@@ -50,13 +34,38 @@ t.draw(() => {
 
 	t.push();
 	t.charColor(color);
-	t.char('■');
+	t.char('o');
 	t.rect(8, 4);
 	t.pop();
+});
 
-	drawCenteredText('RGB', -6, [180, 190, 220]);
-	drawCenteredText(`[${r}, ${g}, ${b}]`, 5, color.rgb);
-	drawCenteredText('red, green, blue components', 8, [170, 180, 205]);
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	const [r, g, b] = color.rgb;
+
+	drawText('TEXTMODECOLOR.RGB', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: RGB COLOR COMPONENTS', x, y++, 100, 220, 255);
+	drawText('Accesses red, green, blue channels.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`RGB ARRAY : [${r}, ${g}, ${b}]`, x, y++, color.rgb[0], color.rgb[1], color.rgb[2]);
 });
 
 t.windowResized(() => {

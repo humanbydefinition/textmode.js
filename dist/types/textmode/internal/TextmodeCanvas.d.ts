@@ -37,8 +37,9 @@ export declare class TextmodeCanvas {
      */
     _getWebGLContext(): WebGL2RenderingContext;
     /**
-     * Dispose of this TextmodeCanvas and clean up all resources.
-     * This method is idempotent and safe to call multiple times.
+     * Dispose owned canvas and WebGL resources.
+     *
+     * Safe to call multiple times.
      */
     _dispose(): void;
     private _clearPendingDomListeners;

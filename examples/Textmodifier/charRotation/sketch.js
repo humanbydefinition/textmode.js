@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.charRotation
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -10,69 +9,47 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-let currentAngle = 0;
+let angle = 0;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-	t.cellColor(0, 0, 0, 0);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
-labelLayer.draw(() => {
-	t.clear();
-
-	drawCenteredText('Textmodifier.charRotation', -12, [240, 245, 255]);
-	drawCenteredText('Rotating individual characters within their grid cells.', -10, [150, 170, 200]);
-
-	drawCenteredText('ROTATION GAUGE', 10, [140, 255, 180]);
-	drawCenteredText(`ANGLE: ${currentAngle.toFixed(1).padStart(5, '0')} DEG`, 12, [140, 180, 255]);
-
-	drawCenteredText('t.charRotation(degrees)', 15, [100, 120, 150]);
-});
-
 t.draw(() => {
 	t.background(6, 10, 22);
+	angle = (t.frameCount * 2) % 360;
+	for (let i = 0; i < 8; i++) {
+		t.push();
+		t.translate((i - 3.5) * 3, 0);
+		t.charRotation(angle + i * 30);
+		t.char('+');
+		t.charColor(140, 220, 255);
+		t.point();
+		t.pop();
+	}
+});
 
-	const time = t.frameCount * 1.5;
-	const angle = time % 360;
-
-	t.charRotation(angle);
-
-	currentAngle = t.charRotation();
-
-	t.push();
-	t.charRotation(0); // Ensure crosshair is static
-	t.charColor(60, 70, 100);
-	t.char('.');
-	t.line(-10, 0, 10, 0);
-	t.line(0, -6, 0, 6);
-
-	drawCenteredText('N', -8, [60, 70, 100]);
-	drawCenteredText('S', 8, [60, 70, 100]);
-	t.translate(-12, 0);
-	t.char('W');
-	t.point();
-	t.translate(24, 0);
-	t.char('E');
-	t.point();
-	t.pop();
-
-	t.push();
-	t.charColor(255, 180, 100);
-	t.char('+');
-	t.rect(10, 6);
-	t.pop();
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.CHARROTATION', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: ROTATE GLYPHS', x, y++, 100, 220, 255);
+	drawText('Rotates characters in cells.', x, y++, 140, 160, 190);
+	drawText('Transform matrix is unchanged.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`ANGLE: ${angle}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

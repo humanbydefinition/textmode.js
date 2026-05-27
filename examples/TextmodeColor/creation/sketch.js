@@ -1,6 +1,5 @@
 /**
  * @title TextmodeColor.creation
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,71 +7,43 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
+const labelLayer = t.layers.add();
 
 t.draw(() => {
 	t.background(6, 10, 22);
+});
 
-	drawCenteredText('TextmodeColor.creation', -6, [240, 245, 255]);
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
 
 	const col1 = t.color(255, 120, 80);
-	t.push();
-	t.translate(-6, 0);
-	t.charColor(col1.r, col1.g, col1.b);
-
-	const label1 = 'RGB: 255, 120, 80';
-	for (let i = 0; i < label1.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(label1[i]);
-		t.point();
-		t.pop();
-	}
-	t.pop();
-
 	const col2 = t.color('#80FFB0');
-	t.push();
-	t.translate(-6, 4);
-	t.charColor(col2.r, col2.g, col2.b);
-
-	const label2 = 'Hex: #80FFB0';
-	for (let i = 0; i < label2.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(label2[i]);
-		t.point();
-		t.pop();
-	}
-	t.pop();
-
 	const col3 = t.color(180);
-	t.push();
-	t.translate(-6, 8);
-	t.charColor(col3.r, col3.g, col3.b);
 
-	const label3 = 'Gray: 180';
-	for (let i = 0; i < label3.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(label3[i]);
-		t.point();
-		t.pop();
-	}
-	t.pop();
+	drawText('TEXTMODECOLOR.CREATION', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: STATIC COLOR CREATOR', x, y++, 100, 220, 255);
+	drawText('Supports RGB, Hex strings, Grays.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('RGB : 255, 120, 80', x, y++, col1.r, col1.g, col1.b);
+	drawText('Hex : #80FFB0', x, y++, col2.r, col2.g, col2.b);
+	drawText('Gray: 180', x, y++, col3.r, col3.g, col3.b);
 });
 
 t.windowResized(() => {

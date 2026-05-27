@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.opacity
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,35 +8,36 @@ const t = textmode.create({
 });
 
 const pulseLayer = t.layers.add({ blendMode: 'additive' });
+const labelLayer = t.layers.add();
+let currentOpacity = 1;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
 }
 
-function drawMeter(value, y, rgb) {
+function drawMeter(value, x, y, rgb) {
 	const width = 20;
 	const activeBlocks = Math.round(value * width);
 
 	t.push();
-	t.translate(-width / 2, y);
+	t.translate(x, y);
 	for (let i = 0; i < width; i++) {
 		const active = i < activeBlocks;
+		const color = active ? rgb : [60, 70, 100];
 		t.push();
 		t.translate(i, 0);
 		t.char(active ? '|' : '.');
-		t.charColor(active ? rgb : [60, 70, 100]);
+		t.charColor(color[0], color[1], color[2]);
 		t.point();
 		t.pop();
 	}
@@ -50,7 +50,7 @@ t.draw(() => {
 	const time = t.frameCount * 0.04;
 	const opacity = 0.5 + 0.5 * Math.sin(time);
 
-	// Update the layer's opacity property.
+	currentOpacity = opacity;
 	pulseLayer.opacity(opacity);
 
 	t.push();
@@ -58,12 +58,6 @@ t.draw(() => {
 	t.char('.');
 	t.rect(t.grid.cols, t.grid.rows);
 	t.pop();
-
-	drawCenteredText('TextmodeLayer.opacity', -10, [240, 245, 255]);
-	drawCenteredText('Controlling the alpha transparency of a layer.', -8, [150, 170, 200]);
-
-	drawMeter(opacity, 6, [255, 225, 140]);
-	drawCenteredText(`OPACITY: ${opacity.toFixed(2)}`, 8, [255, 225, 140]);
 });
 
 pulseLayer.draw(() => {
@@ -74,6 +68,23 @@ pulseLayer.draw(() => {
 	t.char('#');
 	t.rect(12, 6);
 	t.pop();
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODELAYER.OPACITY', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: LAYER ALPHA', x, y++, [100, 220, 255]);
+	drawText('Pulse layer fades in and out.', x, y++, [140, 160, 190]);
+	drawText('Opacity is clamped from 0 to 1.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawMeter(currentOpacity, x, y++, [255, 225, 140]);
+	drawText(`OPACITY: ${currentOpacity.toFixed(2)}`, x, y++, [255, 225, 140]);
 });
 
 t.windowResized(() => {

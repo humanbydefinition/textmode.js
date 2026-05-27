@@ -1,12 +1,14 @@
 /**
  * @title TextmodeColor.r
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
 });
+
+const labelLayer = t.layers.add();
+let centerRed = 0;
 
 t.draw(() => {
 	t.background(6, 10, 22);
@@ -29,21 +31,34 @@ t.draw(() => {
 		t.pop();
 	}
 
-	const centerRed = Math.round(80 + Math.abs(Math.sin(time)) * 175);
-	const label = `red: ${t.color(centerRed, 40, 40).r}`;
+	centerRed = Math.round(80 + Math.abs(Math.sin(time)) * 175);
+});
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(label.length / 2), 10);
-	t.charColor(centerRed, 40, 40);
-
-	for (let i = 0; i < label.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(label[i]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODECOLOR.R', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: RED COLOR CHANNEL READ', x, y++, 100, 220, 255);
+	drawText('Accesses red channel of active color.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`RED VALUE : ${centerRed}`, x, y++, centerRed, 40, 40);
 });
 
 t.windowResized(() => {

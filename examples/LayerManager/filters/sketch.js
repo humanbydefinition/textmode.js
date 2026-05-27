@@ -1,6 +1,5 @@
 /**
  * @title LayerManager.filters
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,21 +8,35 @@ const t = textmode.create({
 });
 
 const filteredLayer = t.layers.add({ blendMode: 'screen', opacity: 0.8 });
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
-
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
+}
+
+function drawOrbit(count, speed, radius, rgb, glyph) {
+	const time = t.frameCount * 0.02;
+	for (let i = 0; i < count; i++) {
+		const angle = time * speed + (i / count) * Math.PI * 2;
+		const x = Math.round(Math.cos(angle) * radius * 1.7);
+		const y = Math.round(Math.sin(angle) * radius);
+
+		t.push();
+		t.translate(x, y);
+		t.charColor(rgb[0] + i * 20, rgb[1], rgb[2]);
+		t.char(glyph);
+		t.point();
+		t.pop();
+	}
 }
 
 t.setup(async () => {
@@ -53,48 +66,32 @@ t.setup(async () => {
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const time = t.frameCount * 0.02;
-
-	drawCenteredText('Base Layer', 0, [240, 245, 255]);
-
-	for (let i = 0; i < 4; i++) {
-		const angle = time * 0.5 + (i / 4) * Math.PI * 2;
-		const x = Math.round(Math.cos(angle) * 5 * 1.7);
-		const y = Math.round(Math.sin(angle) * 5);
-
-		t.push();
-		t.translate(x, y);
-		t.charColor(70 + i * 20, 160, 255);
-		t.char('o');
-		t.point();
-		t.pop();
-	}
-
-	t.layers.base.filter('rgbShift', { time, amount: 0.005 });
+	drawOrbit(4, 0.5, 5, [70, 160, 255], 'o');
 });
 
 filteredLayer.draw(() => {
 	t.clear();
 
 	const time = t.frameCount * 0.02;
-
-	drawCenteredText('Filtered Layer', 0, [255, 200, 100]);
-
-	for (let i = 0; i < 3; i++) {
-		const angle = time * -0.7 + (i / 3) * Math.PI * 2;
-		const x = Math.round(Math.cos(angle) * 3 * 1.7);
-		const y = Math.round(Math.sin(angle) * 3);
-
-		t.push();
-		t.translate(x, y);
-		t.charColor(255, 120, 80);
-		t.char('+');
-		t.point();
-		t.pop();
-	}
+	drawOrbit(3, -0.7, 3, [255, 120, 80], '+');
 
 	filteredLayer.filter('rgbShift', { time: time * 1.5, amount: 0.015 });
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('LAYERMANAGER.FILTERS', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: GLOBAL FILTER MANAGER', x, y++, [100, 220, 255]);
+	drawText('Registers a custom RGB shift.', x, y++, [140, 160, 190]);
+	drawText('Applies it only to one layer.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('FILTER: rgbShift', x, y++, [140, 255, 180]);
 });
 
 t.windowResized(() => {

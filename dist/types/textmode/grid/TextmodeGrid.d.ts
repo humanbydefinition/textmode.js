@@ -1,5 +1,5 @@
 /**
- * Represents a position on the grid, typically using center-based coordinates.
+ * Position on a grid, typically in center-based coordinates.
  */
 export interface GridPosition {
     /** The X coordinate (column), often relative to the grid's center. */
@@ -8,15 +8,14 @@ export interface GridPosition {
     y: number;
 }
 /**
- * Function type that returns a Grid instance or undefined.
+ * Function that returns a grid instance when one is available.
  */
 export type GridProvider = () => TextmodeGrid | undefined;
 /**
- * Manages the grid of each `TextmodeLayer` instance.
+ * Grid used by a textmode layer.
  *
- * The grid determines how characters are positioned and sized on the canvas.
- * By default, the grid is responsive, meaning it recalculates the number of columns
- * and rows based on the canvas size and the font size.
+ * The grid determines how characters are positioned and sized. By default, it is
+ * responsive and recalculates columns and rows from the canvas size and glyph cell size.
  *
  * You can manually set `cols` and `rows` to lock the grid to a specific size.
  *
@@ -49,7 +48,7 @@ export declare class TextmodeGrid {
     /** Updates derived metrics (width/height/offset) from current cols/rows. */
     private _syncDerivedDimensions;
     /**
-     * Reset the grid to the default number of columns and rows based on the current canvas dimensions, and the grid cell dimensions.
+     * Recalculate columns and rows from the current canvas and cell dimensions.
      *
      * If either `cols` or `rows` were manually set, this method does nothing.
      * Make sure to call `responsive()` first to restore responsive sizing.
@@ -62,49 +61,49 @@ export declare class TextmodeGrid {
      */
     reset(): void;
     /**
-     * Returns the width of each cell in the grid in screen pixels.
+     * Width of each grid cell in screen pixels.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/cellWidth/sketch.js}
      */
     get cellWidth(): number;
     /**
-     * Returns the height of each cell in the grid in screen pixels.
+     * Height of each grid cell in screen pixels.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/cellHeight/sketch.js}
      */
     get cellHeight(): number;
     /**
-     * Returns the number of columns in the grid.
+     * Number of columns in the grid.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/cols/sketch.js}
      */
     get cols(): number;
     /**
-     * Sets the number of columns and locks grid sizing until `responsive()` is called.
+     * Set the number of columns and lock grid sizing until `responsive()` is called.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/setCols/sketch.js}
      */
     set cols(newCols: number);
     /**
-     * Returns the number of rows in the grid.
+     * Number of rows in the grid.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/rows/sketch.js}
      */
     get rows(): number;
     /**
-     * Sets the number of rows and locks grid sizing until `responsive()` is called.
+     * Set the number of rows and lock grid sizing until `responsive()` is called.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/setRows/sketch.js}
      */
     set rows(newRows: number);
     /**
-     * Returns the total width of the grid in screen pixels.
+     * Total grid width in screen pixels.
      *
      * This is equal to `cols * cellWidth`.
      *
@@ -113,7 +112,7 @@ export declare class TextmodeGrid {
      */
     get width(): number;
     /**
-     * Returns the total height of the grid in screen pixels.
+     * Total grid height in screen pixels.
      *
      * This is equal to `rows * cellHeight`.
      *
@@ -122,21 +121,21 @@ export declare class TextmodeGrid {
      */
     get height(): number;
     /**
-     * Returns the horizontal offset (margin) in pixels from the canvas edge to the grid.
+     * Horizontal offset in pixels from the canvas edge to the grid.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/offsetX/sketch.js}
      */
     get offsetX(): number;
     /**
-     * Returns the vertical offset (margin) in pixels from the canvas edge to the grid.
+     * Vertical offset in pixels from the canvas edge to the grid.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/offsetY/sketch.js}
      */
     get offsetY(): number;
     /**
-     * Restores responsive sizing so subsequent `t.resizeCanvas` calls recompute cols/rows.
+     * Restore responsive sizing so subsequent canvas resizes recompute columns and rows.
      *
      * A grid becomes non-responsive when either `cols` or `rows` is manually set.
      *

@@ -1,54 +1,51 @@
 /**
  * @title Textmodifier.loop
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let paused = false;
-let resumed = 0;
+const labelLayer = t.layers.add();
 
-function drawLabel(text, y, color = 180) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
-t.mouseClicked(() => {
-	if (paused) {
-		paused = false;
-		resumed++;
-		t.loop();
-	}
+t.mousePressed(() => {
+	t.loop();
 });
 
 t.draw(() => {
-	t.background(0);
+	t.background(6, 10, 22);
+	t.rotateZ(t.frameCount * 3);
+	t.char('#');
+	t.charColor(140, 220, 255);
+	t.rect(10, 2);
+});
 
-	if (!paused && resumed === 0 && t.frameCount >= 90) {
-		paused = true;
-		t.noLoop();
-		t.redraw();
-	}
-
-	t.push();
-	t.rotateZ(t.frameCount * 4);
-	t.char(resumed > 0 ? '*' : 'A');
-	t.charColor(paused ? 255 : 100, paused ? 170 : 255, 160);
-	t.rect(14, 14);
-	t.pop();
-
-	drawLabel(paused ? 'click to call loop()' : 'auto-pause at frame 90', -12);
-	drawLabel(`loop() calls: ${resumed}`, -9, paused ? 255 : 140);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.LOOP', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: RESUME DRAW LOOP', x, y++, 100, 220, 255);
+	drawText('Click calls loop().', x, y++, 140, 160, 190);
+	drawText('Spinner shows active frames.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CLICK: LOOP', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

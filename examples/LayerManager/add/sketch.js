@@ -1,6 +1,5 @@
 /**
  * @title LayerManager.add
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -10,21 +9,24 @@ const t = textmode.create({
 
 const layer1 = t.layers.add({ blendMode: 'screen', opacity: 0.8 });
 const layer2 = t.layers.add({ blendMode: 'additive', opacity: 0.6 });
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
+}
+
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+	drawText(text, -Math.floor(text.length / 2), y, rgb);
 }
 
 function drawOrbit(radius, speed, rgb, offset = 0) {
@@ -62,6 +64,22 @@ layer2.draw(() => {
 	drawCenteredText('Layer 2', 8, [120, 255, 180]);
 	drawOrbit(3, 0.07, [80, 255, 140], Math.PI / 4);
 	drawOrbit(3, 0.07, [80, 255, 140], (Math.PI * 5) / 4);
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('LAYERMANAGER.ADD', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: ADD USER LAYERS', x, y++, [100, 220, 255]);
+	drawText('Adds layers above the base layer.', x, y++, [140, 160, 190]);
+	drawText('Blend and opacity stay isolated.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('DEMO LAYERS: 2', x, y++, [140, 255, 180]);
 });
 
 t.windowResized(() => {

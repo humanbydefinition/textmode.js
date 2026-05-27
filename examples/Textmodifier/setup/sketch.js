@@ -1,43 +1,58 @@
 /**
  * @title Textmodifier.setup
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let stamp;
+const labelLayer = t.layers.add();
 
-function drawLabel(label, y, color) {
-	const startX = -label.length / 2;
-	t.charColor(...color);
+let seed = 0;
 
-	for (let i = 0; i < label.length; i++) {
-		t.push();
-		t.translate(startX + i + 0.5, y);
-		t.char(label[i]);
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
+	t.pop();
 }
 
 t.setup(() => {
-	stamp = t.createFramebuffer({ width: 18, height: 6 });
-
-	stamp.begin();
-	t.background(35, 20, 70);
-	drawLabel('READY', 0, [255, 210, 120]);
-	stamp.end();
+	seed = Math.floor(Math.random() * 999);
 });
 
 t.draw(() => {
-	t.background(6, 10, 18);
-	drawLabel('SETUP RUNS ONCE', -8, [220, 240, 255]);
-
-	for (let i = 0; i < 5; i++) {
+	t.background(6, 10, 22);
+	const time = t.frameCount * 0.03;
+	for (let i = 0; i < 8; i++) {
 		t.push();
-		t.translate(Math.sin(t.frameCount * 0.03 + i) * 16, i * 4 - 1);
-		t.image(stamp);
+		t.translate(Math.cos(time + i) * 12, Math.sin(time + i) * 6);
+		t.char(String((seed + i) % 10));
+		t.charColor(120 + i * 12, 220, 255 - i * 10);
+		t.point();
 		t.pop();
 	}
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.SETUP', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: ONE-TIME INIT', x, y++, 100, 220, 255);
+	drawText('setup() runs before drawing.', x, y++, 140, 160, 190);
+	drawText('Seed is created once.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`SEED: ${seed}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

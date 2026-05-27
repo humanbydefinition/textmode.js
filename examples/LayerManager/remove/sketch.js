@@ -1,6 +1,5 @@
 /**
  * @title LayerManager.remove
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,47 +8,36 @@ const t = textmode.create({
 });
 
 const echoes = [];
+const labelLayer = t.layers.add();
 let idCounter = 0;
 
 function spawnEcho() {
 	const id = ++idCounter;
 	const layer = t.layers.add();
 	const color = [255, 120 + (id % 2) * 135, 80 + (id % 3) * 85];
-
 	layer.draw(() => {
 		t.clear();
-		t.push();
-		t.translate(0, 10);
-		t.charColor(color[0], color[1], color[2]);
-
-		const label = String(id);
-		for (let i = 0; i < label.length; i++) {
-			t.push();
-			t.translate(i - Math.floor(label.length / 2), 0);
-			t.char(label[i]);
-			t.point();
-			t.pop();
-		}
-		t.pop();
+		drawCenteredText(String(id), 10, color);
 	});
 
 	echoes.push({ id, layer, born: t.frameCount });
+	t.layers.move(labelLayer, Number.MAX_SAFE_INTEGER);
+}
+
+function drawText(text, x, y, rgb = [255, 255, 255]) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
 }
 
 function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
+	drawText(text, -Math.floor(text.length / 2), y, rgb);
 }
 
 t.setup(() => {
@@ -60,9 +48,6 @@ t.draw(() => {
 	t.background(6, 10, 22);
 
 	const time = t.frameCount * 0.02;
-
-	drawCenteredText('Base Layer', 0, [240, 245, 255]);
-
 	for (let i = 0; i < 4; i++) {
 		const angle = time * 0.5 + (i / 4) * Math.PI * 2;
 		const x = Math.round(Math.cos(angle) * 5 * 1.7);
@@ -91,6 +76,22 @@ t.draw(() => {
 			echoes.splice(i, 1);
 		}
 	}
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('LAYERMANAGER.REMOVE', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: REMOVE LAYERS', x, y++, [100, 220, 255]);
+	drawText('Echo layers fade, then dispose.', x, y++, [140, 160, 190]);
+	drawText('New echoes move HUD back on top.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(`ACTIVE ECHOES: ${echoes.length}`, x, y++, [140, 255, 180]);
 });
 
 t.windowResized(() => {

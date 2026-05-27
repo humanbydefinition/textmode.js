@@ -1,36 +1,64 @@
 /**
  * @title Textmodifier.requestPointerLock
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let cursor = { x: 0, y: 0 };
+const labelLayer = t.layers.add();
+
+let cx = 0;
+let cy = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
 
 t.mouseClicked(() => {
-	if (document.pointerLockElement === t.canvas) {
-		t.exitPointerLock();
-	} else {
-		t.requestPointerLock();
-	}
+	if (document.pointerLockElement === t.canvas) t.exitPointerLock();
+	else t.requestPointerLock();
 });
 
 t.draw(() => {
-	t.background(0);
-
-	if (document.pointerLockElement === t.canvas) {
-		cursor.x += t.movedX * 0.08;
-		cursor.y += t.movedY * 0.08;
+	t.background(6, 10, 22);
+	const locked = document.pointerLockElement === t.canvas;
+	if (locked) {
+		cx += t.movedX * 0.08;
+		cy += t.movedY * 0.08;
 	}
-
-	cursor.x = Math.max(-t.grid.cols / 2, Math.min(t.grid.cols / 2, cursor.x));
-	cursor.y = Math.max(-t.grid.rows / 2, Math.min(t.grid.rows / 2, cursor.y));
-
+	cx = Math.max(-20, Math.min(20, cx));
+	cy = Math.max(-10, Math.min(10, cy));
 	t.push();
-	t.translate(cursor.x, cursor.y);
-	t.char(document.pointerLockElement === t.canvas ? '@' : '+');
-	t.charColor(document.pointerLockElement === t.canvas ? 255 : 180, 220, 120);
+	t.translate(cx, cy);
+	t.char(locked ? '@' : '+');
+	t.charColor(locked ? 140 : 255, locked ? 255 : 210, 180);
 	t.point();
 	t.pop();
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.REQUESTPOINTERLOCK', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: LOCK POINTER', x, y++, 100, 220, 255);
+	drawText('Click toggles pointer lock.', x, y++, 140, 160, 190);
+	drawText('Movement uses movedX/movedY.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(document.pointerLockElement === t.canvas ? 'LOCKED: TRUE' : 'LOCKED: FALSE', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

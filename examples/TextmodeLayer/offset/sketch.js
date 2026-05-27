@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.offset
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,18 +8,18 @@ const t = textmode.create({
 });
 
 const offsetLayer = t.layers.add({ blendMode: 'additive' });
+const labelLayer = t.layers.add();
+let currentOffset = { x: 0, y: 0 };
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
@@ -35,6 +34,7 @@ t.draw(() => {
 	const offX = Math.round(Math.cos(time) * (g.width * 0.25));
 	const offY = Math.round(Math.sin(time * 0.7) * (g.height * 0.25));
 
+	currentOffset = { x: offX, y: offY };
 	offsetLayer.offset(offX, offY);
 
 	const targetGridX = Math.round(offX / g.cellWidth);
@@ -51,12 +51,6 @@ t.draw(() => {
 	t.char('+');
 	t.point();
 	t.pop();
-
-	drawCenteredText('TextmodeLayer.offset', -12, [240, 245, 255]);
-	drawCenteredText('Translating the entire layer coordinate system in pixels.', -10, [150, 170, 200]);
-
-	drawCenteredText(`OFFSET X: ${offX} PX`, 8, [255, 180, 100]);
-	drawCenteredText(`OFFSET Y: ${offY} PX`, 10, [255, 180, 100]);
 });
 
 offsetLayer.draw(() => {
@@ -67,6 +61,23 @@ offsetLayer.draw(() => {
 	t.char('#');
 	t.rect(7, 3);
 	t.pop();
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODELAYER.OFFSET', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: PIXEL OFFSET', x, y++, [100, 220, 255]);
+	drawText('Moves the layer during composite.', x, y++, [140, 160, 190]);
+	drawText('Drawing coordinates stay local.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(`OFFSET X: ${currentOffset.x} PX`, x, y++, [255, 180, 100]);
+	drawText(`OFFSET Y: ${currentOffset.y} PX`, x, y++, [255, 180, 100]);
 });
 
 t.windowResized(() => {

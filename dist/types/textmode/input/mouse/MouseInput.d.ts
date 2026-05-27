@@ -4,7 +4,9 @@ import { InputEventEmitter } from '../core/InputEventEmitter';
 import type { MouseEventMap, MousePosition } from './types';
 /**
  * Manages all mouse interaction for a Textmodifier instance.
- * Handles event listeners, coordinate conversion, and event dispatching.
+ *
+ * Converts browser pointer coordinates into textmode grid coordinates and
+ * dispatches mouse callbacks through the shared input event emitter.
  */
 export declare class MouseInput {
     private _canvas;
@@ -61,8 +63,9 @@ export declare class MouseInput {
     _cleanupListeners(): void;
     /**
      * Force an immediate update of the mouse position.
-     * This is useful when grid dimensions change (font size, window resize, etc.)
-     * and we need to recalculate the mouse coordinates without waiting for a mouse event.
+     *
+     * Use this after grid dimension changes so mouse coordinates can refresh
+     * without waiting for the next browser mouse event.
      */
     _updatePositions(): void;
     /**
@@ -89,7 +92,7 @@ export declare class MouseInput {
     _getIsPressed(): boolean;
     /**
      * Snapshot the current mouse position for frame-synced polling APIs like `pmouse`.
-     * Should be called exactly once at the start of each rendered frame.
+     * Called once at the start of each rendered frame.
      */
     _syncFrameState(): void;
     /**
@@ -97,27 +100,27 @@ export declare class MouseInput {
      */
     private _createEventData;
     /**
-     * Handle mouse moved events
+     * Handle mouse moved events.
      */
     private _handleMouseMoved;
     /**
-     * Handle mouse pressed events
+     * Handle mouse pressed events.
      */
     private _handleMousePressed;
     /**
-     * Handle mouse released events
+     * Handle mouse released events.
      */
     private _handleMouseReleased;
     /**
-     * Handle mouse clicked events
+     * Handle mouse clicked events.
      */
     private _handleMouseClicked;
     /**
-     * Handle mouse double-clicked events
+     * Handle mouse double-clicked events.
      */
     private _handleDoubleClicked;
     /**
-     * Handle mouse scrolled events
+     * Handle mouse scrolled events.
      */
     private _handleMouseScrolled;
     /**

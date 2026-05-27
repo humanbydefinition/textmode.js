@@ -1,41 +1,49 @@
 /**
  * @title Textmodifier.conversions
- * @author codex
  */
-const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let img;
+const labelLayer = t.layers.add();
+
 let hasBrightness = false;
 
-function label(text, y, color = [220, 220, 220]) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
-t.setup(async () => {
+t.draw(() => {
+	t.background(6, 10, 22);
 	hasBrightness = t.conversions.has('brightness');
-	img = await t.loadImage(IMAGE_URL);
-	if (hasBrightness) img.conversionMode('brightness');
-	img.characters(' .:-=+*#%@');
+	t.char(hasBrightness ? '@' : '.');
+	t.charColor(140, 220, 255);
+	t.rect(12, 5);
 });
 
-t.draw(() => {
-	t.background(8, 10, 20);
-	if (img) {
-		t.image(img, t.grid.cols - 8, t.grid.rows - 8);
-	}
-	label('conversions', -Math.floor(t.grid.rows / 2) + 2, [255, 210, 90]);
-	label(`conversions.has('brightness'): ${hasBrightness}`, Math.floor(t.grid.rows / 2) - 3);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.CONVERSIONS', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: IMAGE MAPPING', x, y++, 100, 220, 255);
+	drawText('Conversion registry maps sources.', x, y++, 140, 160, 190);
+	drawText('Built-ins can be queried.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(hasBrightness ? 'BRIGHTNESS: YES' : 'BRIGHTNESS: NO', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

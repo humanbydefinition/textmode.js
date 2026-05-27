@@ -1,56 +1,78 @@
 /**
  * @title TextmodeSource.characters
- * @author codex
  */
-const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let sparseSource;
-let denseSource;
+const labelLayer = t.layers.add();
 
-function drawLabel(text, x, y) {
-	t.push();
-	t.translate(x - Math.floor(text.length / 2), y);
-	t.charColor(255);
+let source = null;
+let disposed = false;
 
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
+function createImageUrl() {
+	const canvas = document.createElement('canvas');
+	canvas.width = 96;
+	canvas.height = 64;
+	const ctx = canvas.getContext('2d');
+	const gradient = ctx.createLinearGradient(0, 0, 96, 64);
+	gradient.addColorStop(0, '#0ea5e9');
+	gradient.addColorStop(1, '#f59e0b');
+	ctx.fillStyle = gradient;
+	ctx.fillRect(0, 0, 96, 64);
+	ctx.fillStyle = '#020617';
+	ctx.fillRect(16, 16, 64, 32);
+	ctx.fillStyle = '#f8fafc';
+	ctx.fillRect(28, 26, 40, 12);
+	return canvas.toDataURL();
+}
 
-	t.pop();
+function configureSource(value) {
+	value.characters(' .:-=+*#%@');
+	value.charColorMode('sampled');
+	value.cellColorMode('fixed');
 }
 
 t.setup(async () => {
-	sparseSource = await t.loadImage(IMAGE_URL);
-	sparseSource.characters(' .oO@');
-
-	denseSource = await t.loadImage(IMAGE_URL);
-	denseSource.characters(' .:-=+*#%@');
+	source = await t.loadImage(createImageUrl());
+	configureSource(source);
+	source.characters(' .oO@');
 });
 
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
 t.draw(() => {
-	t.background(0);
-	if (!sparseSource || !denseSource) return;
+	t.background(5, 8, 18);
+	if (!source || disposed) return;
+	t.image(source, Math.floor(t.grid.cols * 0.55), Math.floor(t.grid.rows * 0.55));
+});
 
-	const size = Math.min(sparseSource.width, sparseSource.height) * 0.7;
-	const offset = Math.floor(size * 0.7);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
 
-	t.push();
-	t.translate(-offset, 0);
-	t.image(sparseSource, size, size);
-	t.pop();
-
-	t.push();
-	t.translate(offset, 0);
-	t.image(denseSource, size, size);
-	t.pop();
-
-	drawLabel("characters(' .oO@')", -offset, Math.floor(t.grid.rows / 2) - 2);
-	drawLabel("characters(' .:-=+*#%@')", offset, Math.floor(t.grid.rows / 2) - 2);
+	drawText('TEXTMODESOURCE.CHARACTERS', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: SOURCE SETTINGS', x, y++, 100, 220, 255);
+	drawText('Image source conversion API.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	const chars = ' .oO@';
+	drawText(`CHARS: ${chars}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

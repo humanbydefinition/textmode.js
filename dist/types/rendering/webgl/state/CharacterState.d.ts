@@ -2,8 +2,6 @@ import type { RGB, RGBA } from '../../../utils/color';
 import type { IRenderState } from './RenderState';
 /**
  * Manages character rendering state: character, colors, flip, invert, rotation, and line weight.
- *
- * Extracted from RenderState to satisfy the Single Responsibility Principle.
  */
 export declare class CharacterState {
     _currentLineWeight: number;

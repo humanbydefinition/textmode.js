@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.getPluginState
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,19 +8,19 @@ const t = textmode.create({
 });
 
 const trackerLayer = t.layers.add();
+const labelLayer = t.layers.add();
 const PLUGIN_NAME = 'tracker';
+let latestX = 0;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
@@ -41,6 +40,7 @@ trackerLayer.draw(() => {
 	if (state) {
 		state.x += state.speed;
 		const xPos = Math.round(Math.cos(state.x) * state.amplitude);
+		latestX = xPos;
 
 		t.push();
 		t.translate(xPos, 0);
@@ -55,13 +55,6 @@ trackerLayer.draw(() => {
 		t.point();
 		t.pop();
 		t.pop();
-
-		drawCenteredText('TextmodeLayer.getPluginState', -10, [240, 245, 255]);
-		drawCenteredText('Retrieving persistent state data from the layer.', -8, [150, 170, 200]);
-
-		drawCenteredText('STATE MONITOR', 6, [140, 255, 180]);
-		drawCenteredText(`X: ${xPos.toString().padStart(3, ' ')}`, 8, [180, 200, 220]);
-		drawCenteredText(`SPEED: ${state.speed.toFixed(2)}`, 10, [180, 200, 220]);
 	}
 });
 
@@ -73,6 +66,25 @@ t.draw(() => {
 	t.char('.');
 	t.rect(t.grid.cols, 1);
 	t.pop();
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	const state = trackerLayer.getPluginState(PLUGIN_NAME);
+	const xText = latestX.toString().padStart(3, ' ');
+
+	drawText('TEXTMODELAYER.GETPLUGINSTATE', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: READ PLUGIN STATE', x, y++, [100, 220, 255]);
+	drawText('Persistent data drives motion.', x, y++, [140, 160, 190]);
+	drawText('The layer owns the stored object.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(`X: ${xText}`, x, y++, [180, 200, 220]);
+	drawText(`SPEED: ${state.speed.toFixed(2)}`, x, y++, [180, 200, 220]);
 });
 
 t.windowResized(() => {

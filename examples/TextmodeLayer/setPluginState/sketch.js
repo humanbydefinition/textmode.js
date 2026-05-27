@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.setPluginState
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,19 +8,19 @@ const t = textmode.create({
 });
 
 const moduleLayer = t.layers.add();
+const labelLayer = t.layers.add();
 const PLUGIN_NAME = 'core-data';
+let currentPower = 0;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
@@ -41,6 +40,7 @@ moduleLayer.draw(() => {
 
 	if (state) {
 		state.power = 0.5 + 0.5 * Math.sin(t.frameCount * 0.05);
+		currentPower = state.power;
 
 		t.push();
 		t.charColor(140, 220, 255);
@@ -48,13 +48,6 @@ moduleLayer.draw(() => {
 		const size = 4 + Math.round(state.power * 4);
 		t.rect(size * 2, size);
 		t.pop();
-
-		drawCenteredText('TextmodeLayer.setPluginState', -12, [240, 245, 255]);
-		drawCenteredText('Attaching persistent data objects to a layer.', -10, [150, 170, 200]);
-
-		drawCenteredText('SYSTEM CONFIGURATION', 8, [255, 225, 140]);
-		drawCenteredText(`ID: ${state.id}  SYNC: ${state.sync}`, 10, [180, 200, 220]);
-		drawCenteredText(`PWR_LOAD: ${Math.round(state.power * 100)}%`, 12, [140, 220, 255]);
 	}
 });
 
@@ -66,6 +59,27 @@ t.draw(() => {
 	t.char('.');
 	t.rect(t.grid.cols, t.grid.rows);
 	t.pop();
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	const state = moduleLayer.getPluginState(PLUGIN_NAME);
+	const load = Math.round(currentPower * 100);
+
+	drawText('TEXTMODELAYER.SETPLUGINSTATE', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: STORE PLUGIN STATE', x, y++, [100, 220, 255]);
+	drawText('Attaches data to a layer.', x, y++, [140, 160, 190]);
+	drawText('The object persists each frame.', x, y++, [140, 160, 190]);
+	if (!state) return;
+
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(`ID: ${state.id}`, x, y++, [180, 200, 220]);
+	drawText(`PWR LOAD: ${load}%`, x, y++, [140, 220, 255]);
 });
 
 t.windowResized(() => {

@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.ellipse
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,56 +7,51 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+const labelLayer = t.layers.add();
+
+let rx = 0;
+let ry = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const time = t.secs;
-
-	const rx = 20 + Math.sin(time * 1.5) * 10;
-	const ry = 12 + Math.cos(time * 2.0) * 8;
-
+	const time = t.frameCount * 0.03;
+	rx = 10 + Math.sin(time) * 4;
+	ry = 5 + Math.cos(time * 0.8) * 2;
 	t.push();
-	t.charColor(100, 200, 255);
-	t.char('•');
+	t.translate(8, 1);
+	t.char('o');
+	t.charColor(140, 220, 255);
+	t.cellColor(15, 25, 50);
 	t.ellipse(rx, ry);
-
-	t.push();
-	t.charColor(255, 100, 100);
-	t.char('-');
-	t.line(0, 0, rx, 0);
-	t.translate(rx, 0);
-	t.char('>');
-	t.point();
 	t.pop();
+});
 
-	t.push();
-	t.charColor(100, 255, 100);
-	t.char('|');
-	t.line(0, 0, 0, ry);
-	t.translate(0, ry);
-	t.char('v');
-	t.point();
-	t.pop();
-	t.pop();
-
-	drawCenteredText('Textmodifier.ellipse', -22, [255, 255, 255]);
-	drawCenteredText('Draws a 2D ellipse with two radii.', -20, [150, 170, 200]);
-	drawCenteredText('radiusX for width, radiusY for height.', -18, [150, 170, 200]);
-	drawCenteredText(`t.ellipse(radiusX: ${rx.toFixed(1)}, radiusY: ${ry.toFixed(1)})`, 18, [140, 180, 255]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.ELLIPSE', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: OVAL PRIMITIVE', x, y++, 100, 220, 255);
+	drawText('Radius X and Y animate.', x, y++, 140, 160, 190);
+	drawText('The shape stays centered locally.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`RX: ${rx.toFixed(1)}`, x, y++, 140, 255, 180);
+	drawText(`RY: ${ry.toFixed(1)}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

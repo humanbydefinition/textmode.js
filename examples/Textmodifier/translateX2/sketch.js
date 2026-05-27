@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.translateX2
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,44 +7,47 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+const labelLayer = t.layers.add();
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
 	const time = t.frameCount * 0.04;
-	const count = 30;
-
-	// Multiple elements oscillating in X
-	for (let i = 0; i < count; i++) {
-		const phase = i / count;
-		const y = (phase - 0.5) * 30;
-		const xOffset = Math.sin(time + phase * 6) * 20;
-
+	for (let i = 0; i < 4; i++) {
 		t.push();
-		t.translateY(y);
-		t.translateX(xOffset);
-
-		t.charColor(120, 255, 180, (phase * 0.8 + 0.2) * 255);
-		t.char('█');
-		t.rect(4, 1);
+		t.translateY((i - 1.5) * 4);
+		t.translateX(Math.sin(time + i) * 14);
+		t.char(String(i + 1));
+		t.charColor(120 + i * 30, 220, 255 - i * 20);
+		t.rect(4, 2);
 		t.pop();
 	}
+});
 
-	drawCenteredText('Textmodifier.translateX (Field)', -16, [255, 255, 255]);
-	drawCenteredText('Applying individual X translations to multiple layers.', -14, [150, 170, 200]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.TRANSLATEX2', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: LAYERED X MOTION', x, y++, 100, 220, 255);
+	drawText('Independent rows move on X.', x, y++, 140, 160, 190);
+	drawText('Each block uses local state.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('API: t.translateX(x)', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

@@ -126,14 +126,14 @@ export interface GamepadAxisEventData {
     /** Semantic axis alias for standard-mapped controllers. */
     standardAxisName?: TextmodeStandardAxisName;
 }
-/** Gamepad connection event handler. */
+/** Gamepad connection event callback signature. */
 export type GamepadConnectionEventHandler = (data: GamepadConnectionEventData) => void;
-/** Gamepad button event handler. */
+/** Gamepad button event callback signature. */
 export type GamepadButtonEventHandler = (data: GamepadButtonEventData) => void;
-/** Gamepad axis event handler. */
+/** Gamepad axis event callback signature. */
 export type GamepadAxisEventHandler = (data: GamepadAxisEventData) => void;
 /**
- * Event map for all gamepad events emitted by the gamepad input manager.
+ * Gamepad events emitted by the gamepad input manager.
  */
 export interface GamepadEventMap {
     /** Fires when a gamepad appears in the current frame snapshot. */

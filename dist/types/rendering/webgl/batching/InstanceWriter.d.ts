@@ -44,15 +44,7 @@ export interface InstanceWriteData {
  */
 export declare function createDefaultInstanceWriteData(curveParams0: [number, number, number, number], curveParams1: [number, number, number, number]): InstanceWriteData;
 /**
- * High-performance instance writer for zero-allocation rendering.
- *
- * Responsibilities:
- * - Direct Float32Array writing without intermediate allocations
- * - Instance data packing according to GPU layout
- * - Write coordination with InstanceBuffer
- *
- * This class knows about the instance data layout but has NO knowledge
- * of WebGL, GPU buffers, or attribute binding.
+ * Packs instance data into the shared Float32Array without intermediate allocations.
  */
 export declare class InstanceWriter {
     private _buffer;

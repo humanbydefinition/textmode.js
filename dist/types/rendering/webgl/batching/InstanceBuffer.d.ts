@@ -1,14 +1,5 @@
 /**
- * Manages raw Float32Array buffer with automatic capacity growth.
- *
- * Responsibilities:
- * - Memory allocation and reallocation
- * - Capacity management with configurable growth factor
- * - Write pointer tracking
- * - Buffer access for GPU upload
- *
- * This class has NO knowledge of WebGL or GPU state.
- * It's purely a CPU-side memory manager.
+ * CPU-side Float32Array storage for packed instances.
  */
 export declare class InstanceBuffer {
     _buffer: Float32Array;
@@ -38,7 +29,7 @@ export declare class InstanceBuffer {
     _commitWrite(floatsWritten: number): void;
     /**
      * Reset buffer to empty state.
-     * Does not deallocate memory, just resets write pointer.
+     * Keeps allocated memory for reuse.
      */
     _reset(): void;
     /**

@@ -1,7 +1,5 @@
 /**
  * @title Textmodifier.rotate
- * @description Real-time 3D Mesh Rotation: demonstrates multi-axis coordinate rotation using native 3D geometry primitives—drawing a 3D Box, Torus, and Cylinder rotating at custom speeds on different axes.
- * @author antigravity
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,69 +7,51 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawText(text, x, y, r = 180, g = r, b = r) {
+const labelLayer = t.layers.add();
+
+let value = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(x - Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
-	t.background(6, 8, 14);
-
-	const cols = t.grid.cols;
-	const rows = t.grid.rows;
-
-	// Title Info
-	drawText('NATIVE 3D ASCII ENGINE VIEWPORT', 0, -Math.floor(rows / 2) + 4, 100, 200, 255);
-	drawText(
-		'Three-dimensional primitives rotating dynamically on multi-axes',
-		0,
-		-Math.floor(rows / 2) + 6,
-		120,
-		140,
-		160
-	);
-
-	const time = t.frameCount;
-	const spacing = Math.floor(cols / 4);
-
-	// Shape 1: 3D Box (Left)
+	t.background(6, 10, 22);
+	const time = t.frameCount * 0.04;
+	value = (time * 60) % 360;
+	t.charColor(50, 60, 90);
+	t.char('.');
+	t.line(-18, 0, 18, 0);
+	t.line(0, -10, 0, 10);
 	t.push();
-	t.translate(-spacing, 2);
-	t.rotate(time * 0.8, time * 0.5, 0);
-	t.char('▒');
-	t.charColor(255, 120, 100);
-	t.box(10, 10, 10);
+	t.rotate(value);
+	t.char('#');
+	t.charColor(140, 255, 180);
+	t.rect(6, 4);
 	t.pop();
-	drawText('3D BOX', -spacing, 10, 255, 120, 100);
+});
 
-	// Shape 2: 3D Torus (Center)
-	t.push();
-	t.translate(0, 2);
-	t.rotate(time, 0, time * 0.6);
-	t.char('█');
-	t.charColor(100, 255, 180);
-	t.torus(8, 3);
-	t.pop();
-	drawText('3D TORUS', 0, 10, 100, 255, 180);
-
-	// Shape 3: 3D Cylinder (Right)
-	t.push();
-	t.translate(spacing, 2);
-	t.rotate(0, time * 1.2, time * 0.4);
-	t.char('░');
-	t.charColor(100, 180, 255);
-	t.cylinder(6, 12);
-	t.pop();
-	drawText('3D CYLINDER', spacing, 10, 100, 180, 255);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.ROTATE', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: ROTATE IN 2D', x, y++, 100, 220, 255);
+	drawText('Rotates around the Z axis.', x, y++, 140, 160, 190);
+	drawText('Grid cross shows original axes.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`DEG: ${value.toFixed(1)}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

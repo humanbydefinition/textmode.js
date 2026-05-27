@@ -1,12 +1,9 @@
 import { TextmodeSource } from './TextmodeSource';
 /**
- * Represents an image uploaded for textmode rendering via {@link Textmodifier.loadImage}.
+ * Image source for textmode rendering.
  *
- * It can be drawn to the canvas via {@link Textmodifier.image}.
- *
- * An image uploaded currently runs through an adjustable brightness-converter that converts
- * the original image into a textmode representation using characters.
- * Those adjustable options are available via chainable methods on this class.
+ * Create one with {@link Textmodifier.loadImage}, draw it with {@link Textmodifier.image},
+ * and configure conversion through inherited chainable methods.
  *
  * @example
  * {@includeCode ../../../examples/TextmodeImage/creation/sketch.js}

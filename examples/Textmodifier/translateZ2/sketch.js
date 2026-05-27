@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.translateZ2
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,78 +7,49 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+const labelLayer = t.layers.add();
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const time = t.frameCount * 0.05;
-	const zOsc = Math.sin(time) * 30;
-
-	t.push();
-	t.charColor(30, 40, 60);
-	t.char('.');
-	t.rect(40, 20);
-	t.pop();
-
-	t.push();
-	t.translateZ(0); // Standard depth
-	t.charColor(100, 120, 150);
-	t.char('O');
-	t.rect(15, 15);
-	t.pop();
-
-	t.push();
-	// Move the core back and forth through the ring
-	t.translateZ(zOsc);
-
-	const currentZ = t.translateZ();
-	const isAhead = currentZ > 0;
-
-	if (isAhead) {
-		t.charColor(255, 200, 100);
-		t.char('☼');
-	} else {
-		t.charColor(100, 150, 255);
-		t.char('•');
-	}
-
-	t.rect(6, 6);
-
-	t.push();
-	t.translate(0, 5);
-	const zLabel = `Z: ${currentZ.toFixed(1)}`;
-	t.translate(-Math.floor(zLabel.length / 2), 0);
-	t.charColor(255);
-	for (let i = 0; i < zLabel.length; i++) {
+	t.perspective(58, 0.1, 4096);
+	t.camera(0, 0, 48, 0, 0, 0);
+	const time = t.frameCount * 0.03;
+	for (let i = 0; i < 4; i++) {
 		t.push();
-		t.translate(i, 0);
-		t.char(zLabel[i]);
-		t.point();
+		t.translate((i - 1.5) * 7, 0, 0);
+		t.translateZ(Math.sin(time + i) * 18);
+		t.char('#');
+		t.charColor(120 + i * 30, 220, 255 - i * 20);
+		t.box(4, 4, 4);
 		t.pop();
 	}
-	t.pop();
-	t.pop();
+});
 
-	drawCenteredText('Textmodifier.translateZ (Depth Interaction)', -12, [255, 255, 255]);
-	drawCenteredText('Objects with higher Z values are rendered in front.', -10, [150, 170, 200]);
-	drawCenteredText(
-		isAhead ? 'Core is IN FRONT of Ring' : 'Core is BEHIND Ring',
-		12,
-		isAhead ? [255, 200, 100] : [100, 150, 255]
-	);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.TRANSLATEZ2', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: DEPTH MOTION', x, y++, 100, 220, 255);
+	drawText('Boxes move toward camera.', x, y++, 140, 160, 190);
+	drawText('Z changes perspective scale.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('API: t.translateZ(z)', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

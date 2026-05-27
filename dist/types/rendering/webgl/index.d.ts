@@ -7,7 +7,6 @@ export * from './pipeline';
 export { GeometryType } from './types/GeometryTypes';
 export type { IGeometry as IInstancedGeometry, UnitGeometryData, RectangleParams, LineParams, EllipseParams, ArcParams, TriangleParams, BezierCurveParams, Mesh3DParams, Mesh3DGeometryType, GeometryParams, } from './types/GeometryTypes';
 export type { RenderContext } from './types/RenderTypes';
-export type { InstanceData } from './batching/InstanceData';
 export { PackedInstanceData, InstanceAttributeLayout } from './batching/InstanceData';
 export { InstanceBatch } from './batching/InstanceBatch';
 export { BaseGeometry } from './geometries/BaseGeometry';

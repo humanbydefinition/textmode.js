@@ -1,6 +1,5 @@
 /**
  * @title TextmodeSource.brightnessRange
- * @author codex
  */
 const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
 const t = textmode.create({
@@ -9,56 +8,20 @@ const t = textmode.create({
 	fontSize: 8,
 });
 
+const labelLayer = t.layers.add();
 const ranges = [
-	{
-		label: '0-84',
-		start: 0,
-		end: 84,
-		characters: ' .:-',
-		charColor: '#38bdf8',
-	},
-	{
-		label: '85-170',
-		start: 85,
-		end: 170,
-		characters: '=+*#',
-		charColor: '#facc15',
-	},
-	{
-		label: '171-255',
-		start: 171,
-		end: 255,
-		characters: '%@',
-		charColor: '#f8fafc',
-	},
+	{ label: '0-84', start: 0, end: 84, characters: ' .:-', charColor: '#38bdf8' },
+	{ label: '85-170', start: 85, end: 170, characters: '=+*#', charColor: '#facc15' },
+	{ label: '171-255', start: 171, end: 255, characters: '%@', charColor: '#f8fafc' },
 ];
 
 let rangeSources = [];
 
-function drawText(text, x, y, color = [235, 240, 255]) {
-	t.push();
-	t.translate(x - Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
-	t.cellColor(0, 0, 0);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
-
-function drawRangeSource(source, x, y, width, height, label, color) {
+function drawRangeSource(source, x, y, width, height) {
 	t.push();
 	t.translate(x, y);
 	t.image(source, width, height);
 	t.pop();
-
-	drawText(label, x, y + Math.floor(height * 0.5) + 3, color);
 }
 
 t.setup(async () => {
@@ -87,14 +50,39 @@ t.draw(() => {
 	const startX = -Math.floor(totalWidth * 0.5) + Math.floor(panelWidth * 0.5);
 	const y = -1;
 
-	drawText('TextmodeSource.brightnessRange()', 0, -Math.floor(t.grid.rows * 0.5) + 2, [255, 225, 120]);
-
 	for (let i = 0; i < rangeSources.length; i++) {
-		const range = ranges[i];
 		const x = startX + i * (panelWidth + gap);
-		const color = i === 0 ? [56, 189, 248] : i === 1 ? [250, 204, 21] : [248, 250, 252];
-		drawRangeSource(rangeSources[i], x, y, panelWidth, panelHeight, range.label, color);
+		drawRangeSource(rangeSources[i], x, y, panelWidth, panelHeight);
 	}
+});
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODESOURCE.BRIGHTNESSRANGE', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: SUB-BRIGHTNESS CONVERSIONS', x, y++, 100, 220, 255);
+	drawText('Filters characters by brightness range.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('Left  : 0-84   (Shadows)', x, y++, 56, 189, 248);
+	drawText('Mid   : 85-170 (Midtones)', x, y++, 250, 204, 21);
+	drawText('Right : 171-255(Highlights)', x, y++, 248, 250, 252);
 });
 
 t.windowResized(() => {

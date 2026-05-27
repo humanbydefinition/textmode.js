@@ -1,92 +1,55 @@
 /**
  * @title Textmodifier.noLights
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
-	fontSize: 8,
-	frameRate: 60,
+	fontSize: 16,
 });
 
-function drawReactorCluster(centerX, time, mode) {
-	const armColors =
-		mode === 'lit'
-			? [
-					[255, 170, 110],
-					[110, 190, 255],
-					[180, 120, 255],
-				]
-			: [
-					[255, 120, 120],
-					[120, 220, 160],
-					[120, 190, 255],
-				];
+const labelLayer = t.layers.add();
 
+let value = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(centerX, 0, 0);
-	t.rotateX(18);
-	t.rotateY(time * 24);
-
-	t.push();
-	t.rotateY(time * 55);
-	t.char(mode === 'lit' ? '@' : '#');
-	t.charColor(255, 235, 180);
-	t.cellColor(28, 20, 24);
-	t.sphere(4.8);
-	t.pop();
-
-	for (let i = 0; i < 3; i++) {
-		const orbit = i * 120 + time * 40;
-
-		t.push();
-		t.rotateY(orbit);
-		t.translate(15, Math.sin(time * 2 + i) * 3, 0);
-		t.rotateX(time * 70 + i * 40);
-		t.rotateZ(time * 45 + i * 25);
-		t.char(mode === 'lit' ? 'X' : '+');
-		t.charColor(armColors[i][0], armColors[i][1], armColors[i][2]);
-		t.cellColor(armColors[i][0] * 0.12, armColors[i][1] * 0.12, armColors[i][2] * 0.14);
-		t.box(4, 12, 4);
-		t.pop();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
 	}
-
-	t.push();
-	t.translate(0, -9 + Math.sin(time * 1.6) * 2, 0);
-	t.rotateX(90);
-	t.rotateY(-time * 50);
-	t.char(mode === 'lit' ? '*' : '=');
-	t.charColor(220, 240, 255);
-	t.cellColor(16, 18, 28);
-	t.torus(12, 2.2);
-	t.pop();
-
 	t.pop();
 }
 
 t.draw(() => {
-	const time = t.frameCount * 0.02;
-	const leftX = -24;
+	t.background(6, 8, 18);
+	const time = t.frameCount * 0.025;
+	value = 0.5 + 0.5 * Math.sin(time);
+	t.perspective(58, 0.1, 4096);
+	t.camera(16, -10, 42, 0, 0, 0);
+	if (value > 0.5) t.noLights();
+	else t.pointLight([255, 210, 120], { x: 18, y: -18, z: 28 });
+	t.rotateY(time * 40);
+	t.char('#');
+	t.charColor(140, 220, 255);
+	t.sphere(7);
+});
 
-	t.background(4, 5, 12);
-	t.camera(0, -6, 118, 0, -2, 0);
-
-	t.ambientLight(28, 30, 40);
-	t.lightFalloff(1, 0.025, 0.001);
-	t.pointLight([255, 170, 100], {
-		x: leftX + Math.cos(time * 1.1) * 18,
-		y: -10 + Math.sin(time * 1.7) * 6,
-		z: Math.sin(time * 1.1) * 18,
-	});
-	t.pointLight([90, 180, 255], {
-		x: leftX + Math.cos(time * 1.4 + Math.PI) * 16,
-		y: 8 + Math.cos(time * 1.3) * 4,
-		z: Math.sin(time * 1.4 + Math.PI) * 16,
-	});
-	drawReactorCluster(leftX, time, 'lit');
-
-	t.noLights();
-	drawReactorCluster(24, time, 'flat');
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.NOLIGHTS', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: DISABLE LIGHTS', x, y++, 100, 220, 255);
+	drawText('Lighting changes surface shade.', x, y++, 140, 160, 190);
+	drawText('Scene keeps focus on one sphere.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(value > 0.5 ? 'LIGHTS: OFF' : 'LIGHTS: ON', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

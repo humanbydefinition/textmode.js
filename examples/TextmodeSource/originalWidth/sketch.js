@@ -1,6 +1,5 @@
 /**
  * @title TextmodeSource.originalWidth
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,45 +7,71 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-let source;
-const PIXEL_WIDTH = 512;
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+let source = null;
+let disposed = false;
+
+function createImageUrl() {
+	const canvas = document.createElement('canvas');
+	canvas.width = 96;
+	canvas.height = 64;
+	const ctx = canvas.getContext('2d');
+	const gradient = ctx.createLinearGradient(0, 0, 96, 64);
+	gradient.addColorStop(0, '#0ea5e9');
+	gradient.addColorStop(1, '#f59e0b');
+	ctx.fillStyle = gradient;
+	ctx.fillRect(0, 0, 96, 64);
+	ctx.fillStyle = '#020617';
+	ctx.fillRect(16, 16, 64, 32);
+	ctx.fillStyle = '#f8fafc';
+	ctx.fillRect(28, 26, 40, 12);
+	return canvas.toDataURL();
+}
+
+function configureSource(value) {
+	value.characters(' .:-=+*#%@');
+	value.charColorMode('sampled');
+	value.cellColorMode('fixed');
+}
+
+t.setup(async () => {
+	source = await t.loadImage(createImageUrl());
+	configureSource(source);
+});
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
-t.setup(() => {
-	const canvas = document.createElement('canvas');
-	canvas.width = PIXEL_WIDTH;
-	canvas.height = 128;
-	source = t.createTexture(canvas);
-	source.characters(' .:-=+*#%@');
+t.draw(() => {
+	t.background(5, 8, 18);
+	if (!source || disposed) return;
+	t.image(source, Math.floor(t.grid.cols * 0.55), Math.floor(t.grid.rows * 0.55));
 });
 
-t.draw(() => {
-	t.background(6, 10, 22);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
 
-	if (!source) return;
-
-	const ow = source.originalWidth;
-
-	drawCenteredText('TextmodeSource.originalWidth', -8, [240, 245, 255]);
-	drawCenteredText('The raw pixel width of the source asset.', -6, [150, 170, 200]);
-
-	drawCenteredText(`${ow} PIXELS`, 6, [255, 225, 140]);
-	drawCenteredText('This value is independent of the grid resolution.', 9, [100, 120, 150]);
+	drawText('TEXTMODESOURCE.ORIGINALWIDTH', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: SOURCE SETTINGS', x, y++, 100, 220, 255);
+	drawText('Image source conversion API.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	const w = source ? source.originalWidth : 0;
+	drawText(`ORIG W: ${w}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

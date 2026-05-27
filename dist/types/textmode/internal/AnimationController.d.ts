@@ -1,12 +1,13 @@
 /**
- * Manages animation loop timing and frame rate control for textmode rendering.
- * Provides precise frame rate limiting and smooth animation timing.
+ * Owns animation-loop timing, frame-rate limiting, and p5-style time counters.
  */
 export declare class AnimationController {
     private _frameInterval;
     _targetFrameRate: number;
     private _animationFrameId;
     private _lastFrameTime;
+    private _renderCallback;
+    private _shouldContinueCallback;
     _isLooping: boolean;
     _currentFrameRate: number;
     private _lastRenderTime;
@@ -23,8 +24,9 @@ export declare class AnimationController {
     /**
      * Start the animation loop with the provided render callback.
      * @param renderCallback Function to call for each frame render
+     * @param shouldContinueCallback Optional internal work predicate that can keep RAF alive while user loop is paused
      */
-    _start(renderCallback: () => void): void;
+    _start(renderCallback: () => void, shouldContinueCallback?: () => boolean): void;
     /**
      * Stop the animation loop.
      */
@@ -46,14 +48,14 @@ export declare class AnimationController {
      */
     _frameRate(fps?: number, renderCallback?: () => void): number | void;
     /**
-     * Update frame rate measurement. Should be called on each render.
+     * Update frame-rate measurement for the current render.
      * Uses a rolling average for smoother frame rate reporting.
      */
     _measureFrameRate(): void;
     _setTargetFrameRate(value: number): void;
+    private _hasScheduledWork;
     /**
-     * Increment the frame count by one.
-     * Should be called on each render to track total frames rendered.
+     * Increment the total rendered frame count.
      */
     _incrementFrame(): void;
     /**
@@ -62,7 +64,7 @@ export declare class AnimationController {
      */
     get _millis(): number;
     /**
-     * Set the elapsed milliseconds by adjusting the start time.
+     * Set elapsed milliseconds by adjusting the start time.
      * This allows seeking/scrubbing in animations.
      * @param value The new elapsed time in milliseconds
      */
@@ -73,7 +75,7 @@ export declare class AnimationController {
      */
     get _secs(): number;
     /**
-     * Set the elapsed seconds by adjusting the start time.
+     * Set elapsed seconds by adjusting the start time.
      * This allows seeking/scrubbing in animations.
      * @param value The new elapsed time in seconds
      */

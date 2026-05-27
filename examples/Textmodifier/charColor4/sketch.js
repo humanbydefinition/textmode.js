@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.charColor4
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -10,54 +9,45 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-const colorA = t.color(255, 200, 100); // Gold
-const colorB = t.color(100, 200, 255); // Sky Blue
+const colorA = t.color('#64ffd0');
+const colorB = t.color('#ffc878');
+let active = 'colorA';
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+t.draw(() => {
+	t.background(6, 10, 22);
+	const useA = Math.floor(t.frameCount / 45) % 2 === 0;
+	active = useA ? 'colorA' : 'colorB';
+	t.charColor(useA ? colorA : colorB);
+	t.char('@');
+	t.rotateZ(t.frameCount * 2);
+	t.rect(10, 10);
+});
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-	t.cellColor(0, 0, 0, 0);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 labelLayer.draw(() => {
 	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
 
-	drawCenteredText('Textmodifier.charColor (Color Object)', -12, [240, 245, 255]);
-	drawCenteredText('Passing a TextmodeColor object directly for reuse.', -10, [150, 170, 200]);
-
-	drawCenteredText('t.charColor(colorObject)', 13, [100, 120, 150]);
-});
-
-t.draw(() => {
-	t.background(6, 10, 22);
-
-	const cycle = Math.floor(t.frameCount / 60) % 2;
-	const activeColor = cycle === 0 ? colorA : colorB;
-
-	t.charColor(activeColor);
-
-	t.push();
-	t.char('$');
-	t.rotateZ(t.frameCount * 3);
-	t.rect(14, 6);
-	t.pop();
-
-	t.push();
-	t.resetCamera();
-	drawCenteredText('REUSABLE COLOR OBJECT', 8, [140, 255, 180]);
-	drawCenteredText(`ACTIVE_ID: ${cycle === 0 ? 'colorA' : 'colorB'}`, 10, [140, 180, 255]);
-	t.pop();
+	drawText('TEXTMODIFIER.CHARCOLOR4', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: COLOR OBJECT INPUT', x, y++, 100, 220, 255);
+	drawText('Compact API demonstration.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`ACTIVE: ${active}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

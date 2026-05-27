@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.box
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -10,61 +9,52 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-let w = 0,
-	h = 0,
-	d = 0;
+let spin = 0;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
-labelLayer.draw(() => {
-	t.clear();
-
-	drawCenteredText('Textmodifier.box', -12, [240, 245, 255]);
-	drawCenteredText('A 3D box primitive with width, height, and depth.', -10, [150, 170, 200]);
-
-	drawCenteredText(`WIDTH:  ${w.toFixed(1)}`, 8, [140, 180, 255]);
-	drawCenteredText(`HEIGHT: ${h.toFixed(1)}`, 10, [140, 255, 180]);
-	drawCenteredText(`DEPTH:  ${d.toFixed(1)}`, 12, [255, 225, 140]);
-
-	drawCenteredText('t.box(width, height, depth)', 15, [100, 120, 150]);
+t.draw(() => {
+	t.background(6, 8, 18);
+	const time = t.frameCount * 0.025;
+	spin = (time * 40) % 360;
+	t.perspective(58, 0.1, 4096);
+	t.camera(18, -10, 42, 0, 0, 0);
+	t.ambientLight(24, 28, 38);
+	t.pointLight([255, 210, 140], { x: 18, y: -18, z: 28 });
+	t.push();
+	t.translate(5, 1, 0);
+	t.rotateY(spin);
+	t.rotateX(18);
+	t.char('#');
+	t.charColor(140, 220, 255);
+	t.cellColor(16, 24, 42);
+	t.box(9, 7, 8);
+	t.pop();
 });
 
-t.draw(() => {
-	t.background(6, 10, 22);
-
-	const time = t.frameCount * 0.02;
-
-	w = 12 + Math.sin(time) * 4;
-	h = 8 + Math.cos(time * 0.7) * 3;
-	d = 10 + Math.sin(time * 0.5) * 4;
-
-	t.ambientLight(30, 40, 60);
-	t.pointLight([255, 225, 140], 0, -20, 30);
-	t.camera(15, -10, 40, 0, 0, 0);
-
-	t.push();
-	t.rotateX(time * 20);
-	t.rotateY(time * 30);
-	t.char('#');
-	t.charColor(140, 180, 255);
-	t.cellColor(20, 30, 60);
-
-	t.box(w, h, d);
-	t.pop();
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.BOX', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: 3D BOX', x, y++, 100, 220, 255);
+	drawText('Width, height, and depth vary.', x, y++, 140, 160, 190);
+	drawText('Camera and light reveal depth.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`SPIN: ${spin.toFixed(1)}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

@@ -1,6 +1,5 @@
 /**
  * @title LayerManager.swap
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -10,21 +9,24 @@ const t = textmode.create({
 
 const warmLayer = t.layers.add();
 const coolLayer = t.layers.add();
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
+}
+
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+	drawText(text, -Math.floor(text.length / 2), y, rgb);
 }
 
 warmLayer.draw(() => {
@@ -60,8 +62,23 @@ t.draw(() => {
 	if (t.frameCount % 90 === 0) {
 		t.layers.swap(warmLayer, coolLayer);
 	}
+});
 
-	drawCenteredText(t.frameCount % 180 < 90 ? 'Swap!' : 'Swap!', 8, [200, 200, 200]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	const warmOnTop = Math.floor(t.frameCount / 90) % 2 === 1;
+
+	drawText('LAYERMANAGER.SWAP', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: SWAP TWO LAYERS', x, y++, [100, 220, 255]);
+	drawText('Warm and cool layers trade order.', x, y++, [140, 160, 190]);
+	drawText('HUD remains last in the stack.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(warmOnTop ? 'TOP DEMO: WARM' : 'TOP DEMO: COOL', x, y++, [140, 255, 180]);
 });
 
 t.windowResized(() => {

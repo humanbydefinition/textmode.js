@@ -1,68 +1,58 @@
 /**
  * @title Textmodifier.createTexture
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
+
+const labelLayer = t.layers.add();
 
 const sourceCanvas = document.createElement('canvas');
-sourceCanvas.width = 180;
-sourceCanvas.height = 120;
+sourceCanvas.width = 64;
+sourceCanvas.height = 64;
+const ctx = sourceCanvas.getContext('2d');
+let texture;
 
-const sourceContext = sourceCanvas.getContext('2d');
-const texture = t.createTexture(sourceCanvas);
-texture.characters(' .:-=+*#%@');
-
-function drawSourceCanvas() {
-	if (!sourceContext) {
-		return;
-	}
-
-	const time = t.frameCount * 0.05;
-	sourceContext.fillStyle = '#050816';
-	sourceContext.fillRect(0, 0, sourceCanvas.width, sourceCanvas.height);
-
-	const gradient = sourceContext.createLinearGradient(0, 0, sourceCanvas.width, sourceCanvas.height);
-	gradient.addColorStop(0, '#1d4ed8');
-	gradient.addColorStop(1, '#fb7185');
-	sourceContext.fillStyle = gradient;
-	sourceContext.fillRect(18, 18, sourceCanvas.width - 36, sourceCanvas.height - 36);
-
-	sourceContext.save();
-	sourceContext.translate(sourceCanvas.width / 2, sourceCanvas.height / 2);
-	sourceContext.rotate(time * 0.8);
-	sourceContext.fillStyle = '#fef08a';
-	sourceContext.fillRect(-18, -44, 36, 88);
-	sourceContext.restore();
-}
-
-function drawLabel(text, y, color = [220, 220, 220]) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
+t.setup(() => {
+	texture = t.createTexture(sourceCanvas);
+});
+
 t.draw(() => {
-	drawSourceCanvas();
+	t.background(6, 10, 22);
+	ctx.fillStyle = '#10183a';
+	ctx.fillRect(0, 0, 64, 64);
+	ctx.fillStyle = '#facc15';
+	ctx.fillRect(8 + (t.frameCount % 32), 20, 16, 16);
+	if (texture) t.image(texture, 24, 14);
+});
 
-	t.background(5, 7, 18);
-	t.image(texture, t.grid.cols - 8, t.grid.rows - 10);
-
-	drawLabel('createTexture(canvas)', -Math.floor(t.grid.rows * 0.34), [255, 225, 140]);
-	drawLabel(
-		`source matches ${texture.source === sourceCanvas ? 'yes' : 'no'}`,
-		Math.floor(t.grid.rows * 0.3),
-		[120, 205, 255]
-	);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.CREATETEXTURE', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: CANVAS TEXTURE', x, y++, 100, 220, 255);
+	drawText('Wraps a 2D canvas source.', x, y++, 140, 160, 190);
+	drawText('Source canvas is animated.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(texture ? 'TEXTURE: READY' : 'TEXTURE: WAIT', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

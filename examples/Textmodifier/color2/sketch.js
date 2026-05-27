@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.color2
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -10,56 +9,50 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-const colorCyan = t.color(100, 220, 255);
-const colorGold = t.color(255, 225, 140, 150); // Semi-transparent
+const goldLayer = t.layers.add();
+const cyan = t.color(100, 220, 255);
+const gold = t.color(255, 225, 140, 150);
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+t.draw(() => {
+	t.background(6, 10, 22);
+	t.charColor(cyan);
+	t.char('o');
+	t.translate(Math.cos(t.frameCount * 0.03) * 10, 0);
+	t.ellipse(12, 10);
+});
+
+goldLayer.draw(() => {
+	t.clear();
+	t.charColor(gold);
+	t.char('#');
+	t.rect(12, 8);
+});
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-	t.cellColor(0, 0, 0, 0);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 labelLayer.draw(() => {
 	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
 
-	drawCenteredText('Textmodifier.color (RGB)', -12, [240, 245, 255]);
-	drawCenteredText('Creating reusable colors from RGB or RGBA values.', -10, [150, 170, 200]);
-
-	drawCenteredText('t.color(r, g, b, a)', 12, [100, 120, 150]);
-});
-
-t.draw(() => {
-	t.background(6, 10, 22);
-
-	const time = t.frameCount * 0.03;
-
-	t.push();
-	t.char('o');
-
-	t.push();
-	t.translate(Math.cos(time) * 10, Math.sin(time) * 5);
-	t.charColor(colorCyan);
-	t.ellipse(14, 14);
-	t.pop();
-
-	// Static golden core (semi-transparent)
-	t.push();
-	t.charColor(colorGold);
-	t.rect(10, 10);
-	t.pop();
-
-	t.pop();
+	drawText('TEXTMODIFIER.COLOR2', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: RGBA COLOR OBJECT', x, y++, 100, 220, 255);
+	drawText('Compact API demonstration.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('RGBA ALPHA: 150', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

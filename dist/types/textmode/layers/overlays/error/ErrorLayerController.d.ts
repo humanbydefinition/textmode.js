@@ -11,7 +11,7 @@ export declare class ErrorLayerController extends InternalLayerController<ErrorS
     private _errorMessage;
     private _errorDetails;
     /**
-     * Initializes a new ErrorLayerController.
+     * Create an internal error-layer controller.
      * @param textmodifier Textmodifier instance to render on.
      */
     constructor(textmodifier: Textmodifier);

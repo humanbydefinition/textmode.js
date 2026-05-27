@@ -2,13 +2,9 @@ import { InputEventEmitter } from '../core/InputEventEmitter';
 import type { KeyboardEventMap } from './types';
 /**
  * Manages all keyboard interaction for a Textmodifier instance.
- * Handles event listeners, key state tracking, and event dispatching.
  *
- * Provides keyboard functionality including:
- * - keyPressed() and keyReleased() callbacks
- * - Current key state tracking
- * - Special key handling (arrows, function keys, etc.)
- * - Modifier key support (Ctrl, Shift, Alt, Meta)
+ * Tracks key state, exposes the most recent press/release, and dispatches
+ * keyboard callbacks through the shared input event emitter.
  */
 export declare class KeyboardInput {
     private _keyStates;
@@ -59,11 +55,11 @@ export declare class KeyboardInput {
         meta: boolean;
     };
     /**
-     * Clear all key states (useful for focus loss scenarios).
+     * Reset keyboard state after focus loss.
      */
     _clearKeyStates(): void;
     /**
-     * Handle key down events
+     * Handle key down events.
      */
     private _handleKeyDown;
     /**
@@ -71,11 +67,11 @@ export declare class KeyboardInput {
      */
     private _createEventData;
     /**
-     * Handle key up events
+     * Handle key up events.
      */
     private _handleKeyUp;
     /**
-     * Normalize key names for consistency
+     * Normalize browser key names to p5-style aliases where available.
      */
     private _normalizeKey;
     private _isTypedCharacter;

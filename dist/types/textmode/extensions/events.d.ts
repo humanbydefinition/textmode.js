@@ -2,7 +2,9 @@ import type { InputEventMap } from '../input/core/InputEventRegistry';
 declare module '../Textmodifier' {
     interface Textmodifier {
         /**
-         * Register an event listener. Multiple listeners can coexist on the same event —
+         * Register an input event listener.
+         *
+         * Multiple listeners can coexist on the same event;
          * unlike the legacy single-callback methods (e.g. `mousePressed()`), calling `on()`
          * never replaces existing listeners.
          *
@@ -24,7 +26,7 @@ declare module '../Textmodifier' {
          */
         on<K extends keyof InputEventMap>(event: K, handler: InputEventMap[K]): () => void;
         /**
-         * Remove a previously registered event listener.
+         * Remove a previously registered input event listener.
          *
          * The handler reference must be the same function instance that was passed to `on()` or `once()`.
          *
@@ -43,7 +45,7 @@ declare module '../Textmodifier' {
          */
         off<K extends keyof InputEventMap>(event: K, handler: InputEventMap[K]): void;
         /**
-         * Register a one-shot event listener that automatically removes itself after the first invocation.
+         * Register an input event listener that removes itself after the first invocation.
          *
          * @template K - Event name from the {@link InputEventMap}.
          * @param event  The event to listen for.

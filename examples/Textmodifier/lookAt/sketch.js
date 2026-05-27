@@ -1,70 +1,61 @@
 /**
  * @title Textmodifier.lookAt
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
-
-const scene = [
-	{ x: -16, y: 0, z: 0, char: 'L', color: [255, 120, 120] },
-	{ x: 0, y: 6, z: -14, char: 'M', color: [120, 255, 160] },
-	{ x: 16, y: 0, z: 0, char: 'R', color: [120, 180, 255] },
-];
-
-function drawScene(targetX, targetY, targetZ) {
-	for (let i = 0; i < scene.length; i++) {
-		const item = scene[i];
-
-		t.push();
-		t.translate(item.x, item.y, item.z);
-		t.rotateY(t.frameCount * (1 + i * 0.2));
-		t.rotateZ(t.frameCount * (0.7 + i * 0.15));
-		t.char(item.char);
-		t.charColor(item.color[0], item.color[1], item.color[2]);
-		t.rect(8, 8);
-		t.pop();
-	}
-
-	t.push();
-	t.translate(targetX, targetY, targetZ);
-	t.char('*');
-	t.charColor(255, 255, 120);
-	t.point();
-	t.pop();
-}
-
-function drawLabel(text, y) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y, 0);
-	t.charColor(220);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
-
-t.setup(() => {
-	t.perspective(58, 0.1, 4096);
-	t.camera(0, 14, 42, 0, 0, 0);
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
 });
 
+const labelLayer = t.layers.add();
+
+let targetX = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
 t.draw(() => {
-	t.background(8, 10, 24);
-
+	t.background(6, 8, 18);
 	const time = t.frameCount * 0.03;
-	const targetX = Math.cos(time) * 12;
-	const targetY = Math.sin(time * 0.7) * 8;
-	const targetZ = Math.sin(time) * 12;
+	targetX = Math.sin(time) * 10;
+	t.perspective(58, 0.1, 4096);
+	t.camera(0, 0, 44);
+	t.lookAt(targetX, 0, 0);
+	t.ambientLight(20, 24, 34);
+	t.pointLight([255, 210, 140], { x: 16, y: -16, z: 28 });
+	t.push();
+	t.translate(targetX, 0, 0);
+	t.char('*');
+	t.charColor(255, 220, 120);
+	t.box(4, 4, 4);
+	t.pop();
+	t.char('#');
+	t.charColor(120, 220, 255);
+	t.box(8, 8, 8);
+});
 
-	t.lookAt(targetX, targetY, targetZ);
-	drawScene(targetX, targetY, targetZ);
-
-	drawLabel('lookAt() follows the moving target marker', Math.floor(t.grid.rows / 2) - 3);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.LOOKAT', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: AIM CAMERA', x, y++, 100, 220, 255);
+	drawText('Camera eye remains fixed.', x, y++, 140, 160, 190);
+	drawText('Target slides across X.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`TARGET X: ${targetX.toFixed(1)}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.loadTileset
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,22 +7,18 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-// Each layer can have its own tileset and color behavior.
 const tilesLayer = t.layers.add();
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, color = [200, 220, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-
+	t.translate(x, y);
+	t.charColor(color[0], color[1], color[2]);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
@@ -34,47 +29,63 @@ t.setup(async () => {
 		rows: 16,
 		count: 256,
 	});
+
+	// Use authored colors from the tileset PNG
+	tilesLayer.useTileColors(true);
 });
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	drawCenteredText('TextmodeLayer.loadTileset', -12, [240, 245, 255]);
-	drawCenteredText('Bitmaps repacked into per-layer glyph atlases.', -10, [150, 170, 200]);
-
-	t.push();
-	t.charColor(40, 50, 80);
-	t.char('.');
-	t.rect(t.grid.cols, 1);
-	t.pop();
-
-	drawCenteredText('CLICK TO TOGGLE useTileColors()', 10, [140, 220, 255]);
 });
 
 tilesLayer.draw(() => {
 	t.clear();
+
 	const font = tilesLayer.font;
 	if (!font || font.characters.length === 0) return;
 
-	const time = t.frameCount * 0.05;
+	const time = t.frameCount * 0.04;
 	const activeTile = Math.floor(time) % font.characters.length;
 
-	t.push();
-	t.translate(0, 0);
-	t.char(activeTile);
+	const cols = 16;
+	const startX = -Math.floor(cols / 2);
+	const startY = -4;
 
-	t.charColor(120, 255, 180);
-	t.cellColor(20, 40, 60);
-	t.rect(10, 6);
-	t.pop();
+	// Draw all tiles in a grid
+	for (let i = 0; i < font.characters.length; i++) {
+		const col = i % cols;
+		const row = Math.floor(i / cols);
+		t.push();
+		t.translate(startX + col, startY + row);
+		t.char(i);
 
-	const mode = tilesLayer.useTileColors();
-	const statusColor = mode ? [255, 225, 140] : [140, 180, 255];
-	drawCenteredText('MODE: ' + (mode ? 'AUTHORED COLORS' : 'RECOLORED'), 6, statusColor);
+		// Highlight the currently cycled tile
+		if (i === activeTile) {
+			t.charColor(255, 255, 100);
+		}
+
+		t.point();
+		t.pop();
+	}
 });
 
-t.mouseClicked(() => {
-	tilesLayer.useTileColors(!tilesLayer.useTileColors());
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	const font = tilesLayer.font;
+	const count = font ? font.characters.length : 0;
+
+	drawText('TEXTMODELAYER.LOADTILESET', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: LOAD TILESET', x, y++, [100, 220, 255]);
+	drawText('Loads bitmap glyphs into a layer.', x, y++, [140, 160, 190]);
+	drawText('Tile colors are authored in PNG.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(`TILES LOADED: ${count}`, x, y++, [120, 255, 180]);
+	drawText('SOURCE: T64 PNG, 16 x 16', x, y++, [160, 160, 160]);
 });
 
 t.windowResized(() => {

@@ -1,46 +1,56 @@
 /**
  * @title Textmodifier.resetMatrix
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-function drawLabel(text, y, color = [220, 220, 220]) {
+const labelLayer = t.layers.add();
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 t.draw(() => {
-	t.background(5, 7, 18);
-
+	t.background(6, 10, 22);
+	const time = t.frameCount * 0.04;
 	t.push();
-	t.translate(-8, 0);
-	t.rotateZ(t.frameCount * 1.6);
-	t.charColor(255, 140, 120);
-	t.rect(10, 10);
-	t.pop();
-
-	t.push();
-	t.translate(8, 0);
-	t.rotateZ(t.frameCount * 1.6);
+	t.rotateZ(time * 40);
+	t.translate(12, 0);
+	t.charColor(120, 220, 255);
+	t.char('#');
+	t.rect(6, 3);
 	t.resetMatrix();
-	t.translate(8, 0);
-	t.charColor(120, 205, 255);
-	t.rect(10, 10);
+	t.charColor(255, 210, 120);
+	t.translate(8, 3);
+	t.char('+');
+	t.rect(5, 1);
 	t.pop();
+});
 
-	drawLabel('left keeps rotation', -Math.floor(t.grid.rows * 0.34), [255, 225, 140]);
-	drawLabel('right calls resetMatrix()', Math.floor(t.grid.rows * 0.3), [120, 205, 255]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.RESETMATRIX', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: CLEAR TRANSFORM', x, y++, 100, 220, 255);
+	drawText('resetMatrix drops transforms.', x, y++, 140, 160, 190);
+	drawText('Yellow bar uses fresh matrix.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('API: t.resetMatrix()', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

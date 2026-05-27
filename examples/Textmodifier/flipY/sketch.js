@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.flipY
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,54 +7,53 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+const labelLayer = t.layers.add();
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const count = 30;
-	const time = t.frameCount * 0.04;
-
-	for (let i = 0; i < count; i++) {
-		const x = (i / (count - 1) - 0.5) * t.grid.cols * 0.75;
-		const wave = Math.sin(time * 1.5 + i * 0.35) * 2.5;
-		const glow = 0.5 + 0.5 * Math.sin(time + i * 0.15);
-		const skyY = -7 + wave;
-		const waterY = 7 + wave;
-
+	for (let i = 0; i < 8; i++) {
+		const xPos = (i - 3.5) * 3;
 		t.push();
-		t.translate(x, skyY);
-		t.charColor(Math.round(160 + 95 * glow), Math.round(160 + 95 * glow), 255);
-		t.char('^');
+		t.translate(xPos, -3);
+		t.char('V');
+		t.charColor(140, 220, 255);
 		t.point();
 		t.pop();
-
 		t.push();
-		t.translate(x, waterY);
+		t.translate(xPos, 5);
 		t.flipY(true);
-		t.charColor(Math.round(30 + 40 * glow), Math.round(80 + 60 * glow), Math.round(150 + 105 * glow));
-		t.char('^');
+		t.char('V');
+		t.charColor(255, 210, 120);
 		t.point();
 		t.pop();
 	}
+});
 
-	drawCenteredText('Textmodifier.flipY', -4, [240, 245, 255]);
-	drawCenteredText('Reflecting glyphs vertically.', -2, [150, 170, 200]);
-	drawCenteredText('t.flipY(false)  original  |  t.flipY(true)  reflected', 0, [255, 200, 100]);
-
-	drawCenteredText(`t.flipY() = ${t.flipY()}`, 12, [140, 180, 255]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.FLIPY', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: MIRROR GLYPH Y', x, y++, 100, 220, 255);
+	drawText('Top row is normal.', x, y++, 140, 160, 190);
+	drawText('Bottom row is flipped.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`FLIP Y: ${t.flipY()}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

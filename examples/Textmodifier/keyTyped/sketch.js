@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.keyTyped
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,78 +7,51 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-let inputText = '';
-let lastChar = '';
-let charPulse = 0;
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+let typed = '';
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.keyTyped((data) => {
-	lastChar = data.key;
-	charPulse = 1.0;
-
-	// Append to our string
-	inputText += data.key;
-	if (inputText.length > 20) inputText = inputText.slice(-20);
-});
-
-t.keyPressed((data) => {
-	if (data.key === 'Backspace') {
-		inputText = inputText.slice(0, -1);
-	}
+	typed = (typed + (data.key || '')).slice(-16);
 });
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const cursor = t.frameCount % 60 < 30 ? '_' : ' ';
-	const display = `> ${inputText}${cursor}`;
-
-	t.push();
-	t.charColor(100, 255, 150);
-	t.translate(-Math.floor(display.length / 2), 2);
-	t.push();
-	t.cellColor(20, 40, 30);
-	t.translate(Math.floor(display.length / 2), 0);
-	t.rect(display.length + 4, 3);
-	t.pop();
-
-	for (let i = 0; i < display.length; i++) {
+	for (let i = 0; i < typed.length; i++) {
 		t.push();
-		t.translate(i, 0);
-		t.char(display[i]);
+		t.translate(i - typed.length / 2, 0);
+		t.char(typed[i]);
+		t.charColor(255, 210, 120);
 		t.point();
 		t.pop();
 	}
-	t.pop();
+});
 
-	if (charPulse > 0) {
-		t.push();
-		t.translate(0, -8);
-		t.char(lastChar);
-		t.charColor(100, 200, 255, charPulse * 255);
-		t.rect(10 + charPulse * 10, 10 + charPulse * 10);
-		t.pop();
-		charPulse *= 0.92;
-	}
-
-	drawCenteredText('Textmodifier.keyTyped', -20, [255, 255, 255]);
-	drawCenteredText('Triggers when a printable character is typed.', -18, [150, 170, 200]);
-	drawCenteredText('Best for text input, as it handles case and symbols.', -17, [150, 170, 200]);
-
-	drawCenteredText('Type on your keyboard to enter text', 14, [100, 100, 120]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.KEYTYPED', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: PRINTABLE INPUT', x, y++, 100, 220, 255);
+	drawText('Collects typed characters.', x, y++, 140, 160, 190);
+	drawText('Buffer keeps the last 16.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('TEXT: ' + typed.slice(-20), x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

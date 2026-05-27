@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.show
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,18 +8,18 @@ const t = textmode.create({
 });
 
 const displayLayer = t.layers.add({ visible: false, blendMode: 'additive' });
+const labelLayer = t.layers.add();
+let isVisible = false;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
@@ -30,11 +29,12 @@ t.draw(() => {
 	t.background(6, 10, 22);
 
 	if (t.frameCount % 120 === 0) {
-		if (displayLayer._visible) {
+		if (isVisible) {
 			displayLayer.hide();
 		} else {
 			displayLayer.show();
 		}
+		isVisible = !isVisible;
 	}
 
 	t.push();
@@ -42,15 +42,6 @@ t.draw(() => {
 	t.char('.');
 	t.rect(t.grid.cols, t.grid.rows);
 	t.pop();
-
-	drawCenteredText('TextmodeLayer.show', -10, [240, 245, 255]);
-	drawCenteredText('Revealing a hidden layer for compositing.', -8, [150, 170, 200]);
-
-	const isVisible = displayLayer._visible;
-	const statusColor = isVisible ? [140, 255, 180] : [255, 100, 100];
-
-	drawCenteredText(isVisible ? 'LAYER: VISIBLE' : 'LAYER: HIDDEN', 6, statusColor);
-	drawCenteredText('The show() method restores a layer to the stack.', 9, [100, 120, 150]);
 });
 
 displayLayer.draw(() => {
@@ -69,6 +60,23 @@ displayLayer.draw(() => {
 	t.char('+');
 	t.point();
 	t.pop();
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	const statusColor = isVisible ? [140, 255, 180] : [255, 100, 100];
+
+	drawText('TEXTMODELAYER.SHOW', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: SHOW HIDDEN LAYER', x, y++, [100, 220, 255]);
+	drawText('show() restores compositing.', x, y++, [140, 160, 190]);
+	drawText('hide() pauses visible output.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(isVisible ? 'LAYER: VISIBLE' : 'LAYER: HIDDEN', x, y++, statusColor);
 });
 
 t.windowResized(() => {

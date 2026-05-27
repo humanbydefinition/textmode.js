@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.flipX
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,76 +7,53 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+const labelLayer = t.layers.add();
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const rows = 10;
-	const time = t.frameCount * 0.04;
-
-	// Gently rock the whole field to contrast normal vs mirrored rows
-	t.push();
-	t.rotateZ(Math.sin(time * 0.4) * 6);
-
-	for (let i = 0; i < rows; i++) {
-		const phase = i / (rows - 1);
-		const y = (phase - 0.5) * t.grid.rows * 0.75;
-		const wave = Math.sin(time + i * 0.6) * 5;
-		const pulse = 0.6 + 0.4 * Math.sin(time * 2 + i * 0.9);
-
+	for (let i = 0; i < 8; i++) {
+		const y = (i - 3.5) * 2;
 		t.push();
-		t.translate(wave - 4, y);
-		t.charColor(Math.round(180 + 75 * pulse), Math.round(180 + 75 * pulse), 100);
+		t.translate(-6, y);
 		t.char('R');
+		t.charColor(140, 220, 255);
 		t.point();
 		t.pop();
-
 		t.push();
-		t.translate(-wave + 4, y);
+		t.translate(8, y);
 		t.flipX(true);
-		t.charColor(Math.round(180 + 75 * pulse), 100, Math.round(180 + 75 * pulse));
 		t.char('R');
+		t.charColor(255, 210, 120);
 		t.point();
 		t.pop();
-
-		if (i % 2 === 0) {
-			t.push();
-			t.translate(wave * 2 - 12, y);
-			t.charColor(100, Math.round(180 + 75 * pulse), 80);
-			t.char('R');
-			t.point();
-			t.pop();
-
-			t.push();
-			t.translate(-wave * 2 + 12, y);
-			t.flipX(true);
-			t.charColor(100, 80, Math.round(180 + 75 * pulse));
-			t.char('R');
-			t.point();
-			t.pop();
-		}
 	}
+});
 
-	t.pop();
-
-	drawCenteredText('Textmodifier.flipX', -14, [240, 245, 255]);
-	drawCenteredText('Mirroring glyphs horizontally.', -12, [150, 170, 200]);
-	drawCenteredText('t.flipX(false)  original  |  t.flipX(true)  mirrored', -10, [255, 200, 100]);
-
-	drawCenteredText(`t.flipX() = ${t.flipX()}`, 12, [140, 180, 255]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.FLIPX', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: MIRROR GLYPH X', x, y++, 100, 220, 255);
+	drawText('Left column is normal.', x, y++, 140, 160, 190);
+	drawText('Right column is flipped.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`FLIP X: ${t.flipX()}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

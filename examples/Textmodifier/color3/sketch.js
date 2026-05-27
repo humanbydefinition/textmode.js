@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.color3
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -10,46 +9,42 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-const baseColor = t.color('#6366f1'); // Indigo
+let value = 0;
 
-const clonedColor = t.color(baseColor);
-
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-	t.cellColor(0, 0, 0, 0);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
-labelLayer.draw(() => {
-	t.clear();
-
-	drawCenteredText('Textmodifier.color (Hex/Clone)', -12, [240, 245, 255]);
-	drawCenteredText('Creating colors from hex strings or existing objects.', -10, [150, 170, 200]);
-
-	drawCenteredText('t.color("#RRGGBB") / t.color(otherColor)', 12, [100, 120, 150]);
-});
-
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	t.push();
-	t.charColor(clonedColor);
+	value = Math.round(80 + 80 * Math.sin(t.frameCount * 0.04));
 	t.char('#');
-	t.rect(14, 6);
-	t.pop();
+	const c = t.color(value > 80 ? '#facc15' : '#38bdf8');
+	t.charColor(c);
+	t.rect(10, 5);
+});
 
-	drawCenteredText('CLONED INDIGO COLOR', 8, [140, 180, 255]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.COLOR3', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: HEX COLOR', x, y++, 100, 220, 255);
+	drawText('Creates color from hex string.', x, y++, 140, 160, 190);
+	drawText('The value pulses every frame.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(value > 80 ? 'HEX: GOLD' : 'HEX: CYAN', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

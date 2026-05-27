@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.hasPluginState
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,19 +8,19 @@ const t = textmode.create({
 });
 
 const layer = t.layers.add();
+const labelLayer = t.layers.add();
 const PLUGIN_NAME = 'module';
+let exists = false;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
@@ -38,11 +37,8 @@ t.draw(() => {
 		}
 	}
 
-	const exists = layer.hasPluginState(PLUGIN_NAME);
+	exists = layer.hasPluginState(PLUGIN_NAME);
 	const statusColor = exists ? [120, 255, 150] : [255, 100, 100];
-
-	drawCenteredText('TextmodeLayer.hasPluginState', -10, [240, 245, 255]);
-	drawCenteredText('Checking for the presence of specific plugin data.', -8, [150, 170, 200]);
 
 	t.push();
 	t.translate(0, 0);
@@ -57,9 +53,24 @@ t.draw(() => {
 	t.point();
 	t.pop();
 	t.pop();
+});
 
-	drawCenteredText(exists ? 'STATUS: CONNECTED' : 'STATUS: DISCONNECTED', 6, statusColor);
-	drawCenteredText(`hasPluginState('${PLUGIN_NAME}'): ${exists}`, 9, [140, 180, 255]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	const statusColor = exists ? [120, 255, 150] : [255, 100, 100];
+
+	drawText('TEXTMODELAYER.HASPLUGINSTATE', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: CHECK PLUGIN STATE', x, y++, [100, 220, 255]);
+	drawText('The module state toggles on/off.', x, y++, [140, 160, 190]);
+	drawText('hasPluginState returns a boolean.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(exists ? 'STATUS: CONNECTED' : 'STATUS: DISCONNECTED', x, y++, statusColor);
+	drawText(`HAS '${PLUGIN_NAME}': ${exists}`, x, y++, [140, 180, 255]);
 });
 
 t.windowResized(() => {

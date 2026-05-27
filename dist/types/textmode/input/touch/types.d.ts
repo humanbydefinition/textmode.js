@@ -25,11 +25,11 @@ export interface TouchPosition extends GridPosition {
     radiusX?: number;
     /** Contact ellipse radius on the Y axis in CSS pixels. */
     radiusY?: number;
-    /** Contact ellipse angle in radians when provided. */
+    /** Contact ellipse angle in degrees when provided. */
     rotationAngle?: number;
 }
 /**
- * Touch event data.
+ * Touch event payload passed to input callbacks.
  *
  * The coordinate system uses center-based coordinates matching the main rendering space:
  * - `(0, 0)` is the center cell of the grid
@@ -136,20 +136,20 @@ export interface TouchRotateEventData {
     /** Original browser event. */
     originalEvent: TouchEvent;
 }
-/** Touch event handler function type. */
+/** Touch event callback signature. */
 export type TouchEventHandler = (data: TouchEventData) => void;
-/** Touch tap event handler function type. */
+/** Tap event callback signature. */
 export type TouchTapHandler = (data: TouchTapEventData) => void;
-/** Touch long press event handler function type. */
+/** Long-press event callback signature. */
 export type TouchLongPressHandler = (data: TouchLongPressEventData) => void;
-/** Touch swipe event handler function type. */
+/** Swipe event callback signature. */
 export type TouchSwipeHandler = (data: TouchSwipeEventData) => void;
-/** Touch pinch event handler function type. */
+/** Pinch event callback signature. */
 export type TouchPinchHandler = (data: TouchPinchEventData) => void;
-/** Touch rotate event handler function type. */
+/** Rotate-gesture event callback signature. */
 export type TouchRotateHandler = (data: TouchRotateEventData) => void;
 /**
- * Event map for all touch events emitted by the touch input manager.
+ * Touch and gesture events emitted by the touch input manager.
  */
 export interface TouchEventMap {
     /** Fires when a touch point begins on the canvas. */

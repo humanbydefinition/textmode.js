@@ -1,6 +1,3 @@
-/**
- * Instanced triangle geometry implementation
- */
 import type { InstanceBatch } from '../../batching/InstanceBatch';
 import { type TriangleParams } from '../../types/GeometryTypes';
 import { BaseGeometry } from '../BaseGeometry';
@@ -11,11 +8,5 @@ import type { IRenderState } from '../../state/RenderState';
  */
 export declare class Triangle extends BaseGeometry<TriangleParams> {
     constructor(gl: WebGL2RenderingContext, batch: InstanceBatch);
-    /**
-     * Add a triangle instance to the batch
-     * @param params Triangle parameters
-     * @param renderState Current render state
-     * @returns Index of the added instance
-     */
     _addInstance(params: TriangleParams, renderState: IRenderState): number;
 }

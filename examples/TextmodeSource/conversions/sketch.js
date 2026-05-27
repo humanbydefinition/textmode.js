@@ -1,101 +1,97 @@
 /**
  * @title TextmodeSource.conversions
- * @author codex
  */
-const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
-	fontSize: 8,
+	fontSize: 16,
 });
 
-const brightnessPasses = [
-	{
-		mode: 'brightness',
-		brightnessStart: 0,
-		brightnessEnd: 78,
-		characters: ' .,:;',
-		charColorMode: 'fixed',
-		charColor: '#38bdf8',
-		cellColorMode: 'fixed',
-		cellColor: '#00000000',
-	},
-	{
-		mode: 'brightness',
-		brightnessStart: 79,
-		brightnessEnd: 168,
-		characters: '--==++**',
-		charColorMode: 'fixed',
-		charColor: '#facc15',
-		cellColorMode: 'fixed',
-		cellColor: '#00000000',
-	},
-	{
-		mode: 'brightness',
-		brightnessStart: 169,
-		brightnessEnd: 255,
-		characters: '##%%@@',
-		charRotation: 90,
-		charColorMode: 'fixed',
-		charColor: '#f8fafc',
-		cellColorMode: 'fixed',
-		cellColor: '#00000000',
-	},
-];
+const labelLayer = t.layers.add();
 
-let plainSource;
-let stackedSource;
+let source = null;
 
-function drawText(text, x, y, color = [235, 240, 255]) {
-	t.push();
-	t.translate(x - Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
-	t.cellColor(0, 0, 0);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
+function createImageUrl() {
+	const canvas = document.createElement('canvas');
+	Object.assign(canvas, { width: 128, height: 80 });
+	const ctx = canvas.getContext('2d');
+	const gradient = ctx.createLinearGradient(0, 0, 128, 80);
+	gradient.addColorStop(0, '#020617');
+	gradient.addColorStop(0.45, '#0ea5e9');
+	gradient.addColorStop(1, '#f8fafc');
+	ctx.fillStyle = gradient;
+	ctx.fillRect(0, 0, 128, 80);
+	ctx.fillStyle = '#f97316';
+	ctx.fillRect(15, 16, 34, 44);
+	ctx.fillStyle = '#fde68a';
+	ctx.fillRect(78, 22, 34, 34);
+	return canvas.toDataURL();
 }
 
-function drawPanel(source, x, y, width, height, label, accent) {
-	t.push();
-	t.translate(x, y);
-	t.image(source, width, height);
-	t.pop();
+function configureSource(source) {
+	source.characters(' .:-=+*#%@').charColorMode('sampled').cellColorMode('fixed').cellColor('#020617');
+}
 
-	drawText(label, x, y + Math.floor(height * 0.5) + 3, accent);
+function brightnessPass(start, end, characters, charColor) {
+	return {
+		mode: 'brightness',
+		brightnessStart: start,
+		brightnessEnd: end,
+		characters,
+		charColorMode: 'fixed',
+		charColor,
+	};
 }
 
 t.setup(async () => {
-	plainSource = await t.loadImage(IMAGE_URL);
-	plainSource.characters(' .:-=+*#%@');
-	plainSource.charColorMode('sampled');
-	plainSource.cellColorMode('fixed');
-
-	stackedSource = await t.loadImage(IMAGE_URL);
-	stackedSource.conversions(brightnessPasses);
+	source = await t.loadImage(createImageUrl());
+	configureSource(source);
+	source.conversions([
+		brightnessPass(0, 84, ' .:', '#38bdf8'),
+		brightnessPass(85, 169, '-=+', '#facc15'),
+		brightnessPass(170, 255, '*#@', '#f8fafc'),
+	]);
 });
 
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
 t.draw(() => {
-	t.background(4, 7, 18);
-	if (!plainSource || !stackedSource) return;
+	t.background(4, 7, 16);
+	if (!source) return;
 
-	const gap = Math.max(5, Math.floor(t.grid.cols * 0.06));
-	const panelWidth = Math.max(16, Math.floor((t.grid.cols - gap * 3) / 2));
-	const panelHeight = Math.max(12, Math.min(t.grid.rows - 12, Math.floor(panelWidth * 0.67)));
-	const leftX = -Math.floor(panelWidth * 0.5) - Math.floor(gap * 0.5);
-	const rightX = Math.floor(panelWidth * 0.5) + Math.floor(gap * 0.5);
-	const y = -1;
+	const width = Math.max(12, Math.floor(t.grid.cols * 0.42));
+	const height = Math.max(8, Math.floor(t.grid.rows * 0.4));
+	const y = Math.floor(t.grid.rows * 0.12);
+	t.push();
+	t.translate(0, y);
+	t.image(source, width, height);
+	t.pop();
+	drawText('STACKED SOURCE', -7, y - Math.floor(height / 2) - 2, 255, 225, 140);
+});
 
-	drawText('TextmodeSource.conversions()', 0, -Math.floor(t.grid.rows * 0.5) + 2, [255, 225, 120]);
-	drawPanel(plainSource, leftX, y, panelWidth, panelHeight, 'single brightness', [150, 180, 210]);
-	drawPanel(stackedSource, rightX, y, panelWidth, panelHeight, 'stacked ranges', [255, 255, 255]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODESOURCE.CONVERSIONS', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: ORDERED SOURCE PASSES', x, y++, 100, 220, 255);
+	drawText('Three brightness ranges stack.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('PASSES: 3', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

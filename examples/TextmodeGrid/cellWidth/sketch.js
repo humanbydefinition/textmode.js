@@ -1,6 +1,5 @@
 /**
  * @title TextmodeGrid.cellWidth
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,56 +7,44 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
+const labelLayer = t.layers.add();
 
 t.draw(() => {
 	t.background(6, 10, 22);
 
-	const w = t.grid.cellWidth;
+	t.push();
+	t.translate(0, 0);
+	t.charColor(255, 180, 100);
+	t.char('◄');
+	t.rect(t.grid.cellWidth, 1);
+	t.pop();
+});
 
-	drawCenteredText('TextmodeGrid.cellWidth', -8, [240, 245, 255]);
-	drawCenteredText(`${w} PIXELS`, 6, [120, 255, 180]);
-
-	for (let x = -3; x <= 3; x++) {
-		const isTarget = x === 0;
-
-		t.push();
-		t.translate(x, 0);
-
-		if (isTarget) {
-			t.char('#');
-			t.charColor(120, 255, 180);
-
-			t.push();
-			t.translate(0, -3);
-			t.char('v');
-			t.point();
-			t.translate(0, 6);
-			t.char('^');
-			t.point();
-			t.pop();
-		} else {
-			t.char('.');
-			t.charColor(100, 120, 150);
-		}
-
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODEGRID.CELLWIDTH', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: INDIVIDUAL CELL PIXEL WIDTH', x, y++, 100, 220, 255);
+	drawText('Width in pixels of a single cell.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`CELL PIXEL WIDTH: ${t.grid.cellWidth} px`, x, y++, 255, 180, 100);
 });
 
 t.windowResized(() => {

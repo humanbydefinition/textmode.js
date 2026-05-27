@@ -1,60 +1,83 @@
 /**
  * @title TextmodeTileset.dispose
- * @author codex
  */
+const T64_URL = 'https://littlebitspace.com/resources/fonts/T64.png';
 const TILE_COLUMNS = 16;
 const TILE_ROWS = 16;
 const TILE_COUNT = TILE_COLUMNS * TILE_ROWS;
 
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
-
-let tileset = null;
-let disposed = false;
-
-function label(text, y, color = [220, 220, 220]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
-
-t.setup(async () => {
-	tileset = await t.loadTileset(
-		{
-			source: 'https://littlebitspace.com/resources/fonts/T64.png',
-			columns: TILE_COLUMNS,
-			rows: TILE_ROWS,
-			count: TILE_COUNT,
-		},
-		false
-	);
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
 });
 
-t.draw(() => {
-	t.background(5, 7, 18);
+const labelLayer = t.layers.add();
 
-	label('click to dispose tileset', -4, [255, 225, 140]);
-	label(disposed ? 'tileset disposed' : 'tileset active', 0);
-	label('T64  16 x 16  8 x 8 cells', 4);
-	label('this frees atlas resources early', 8, [120, 205, 255]);
+let tileset = null;
+
+function tilesetOptions() {
+	return {
+		source: T64_URL,
+		columns: TILE_COLUMNS,
+		rows: TILE_ROWS,
+		count: TILE_COUNT,
+		fontSize: 16,
+	};
+}
+
+let disposed = false;
+
+t.setup(async () => {
+	await t.loadTileset(tilesetOptions());
+	tileset = await t.loadTileset(tilesetOptions(), false);
 });
 
 t.mouseClicked(() => {
-	if (!tileset || disposed) {
-		return;
+	if (tileset && !disposed) {
+		tileset.dispose();
+		disposed = true;
 	}
+});
 
-	tileset.dispose();
-	disposed = true;
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+t.draw(() => {
+	t.background(5, 7, 18);
+	if (!tileset) return;
+	const startX = -Math.floor(TILE_COLUMNS / 2);
+	const startY = -Math.floor(TILE_ROWS / 2);
+	for (let i = 0; i < TILE_COUNT; i++) {
+		t.push();
+		t.translate(startX + (i % TILE_COLUMNS), startY + Math.floor(i / TILE_COLUMNS));
+		t.char(i);
+		t.charColor(120 + i * 6, 220, 255 - i * 7);
+		t.point();
+		t.pop();
+	}
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	let y = -Math.floor(t.grid.rows / 2) + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODETILESET.DISPOSE', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: TILESET ATLAS DATA', x, y++, 100, 220, 255);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`STATUS: ${disposed ? 'OFF' : 'ON'}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.asciiFramebuffer
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,17 +8,16 @@ const t = textmode.create({
 });
 
 const layer = t.layers.add({ blendMode: 'screen' });
+const labelLayer = t.layers.add();
 
-function drawLabel(text, x, y, col = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
 	t.translate(x, y);
-	t.charColor(...col);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
@@ -36,26 +34,28 @@ layer.draw(() => {
 
 t.draw(() => {
 	t.background(8, 10, 18);
+});
 
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
 	const fb = layer.asciiFramebuffer;
-	const { cols, rows } = t.grid;
 
-	if (fb) {
-		const pixels = fb.readPixels(0);
-		const cx = Math.floor(fb.width / 2);
-		const cy = Math.floor(fb.height / 2);
-		const index = (cy * fb.width + cx) * 4;
+	drawText('TEXTMODELAYER.ASCIIFRAMEBUFFER', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: READ ASCII OUTPUT', x, y++, [100, 220, 255]);
+	drawText('Samples the converted texture.', x, y++, [140, 160, 190]);
+	drawText('Center pixel updates each frame.', x, y++, [140, 160, 190]);
+	if (!fb) return;
 
-		const r = pixels[index];
-		const g = pixels[index + 1];
-		const b = pixels[index + 2];
-
-		const title = '--- ASCII FRAMEBUFFER ---';
-		drawLabel(title, -(title.length - 1) / 2, -(rows - 1) / 2 + 2, [255, 220, 100]);
-
-		const info = `Read center pixel: rgb(${r}, ${g}, ${b})`;
-		drawLabel(info, -(info.length - 1) / 2, (rows - 1) / 2 - 2, [150, 180, 255]);
-	}
+	const pixels = fb.readPixels(0);
+	const index = (Math.floor(fb.height / 2) * fb.width + Math.floor(fb.width / 2)) * 4;
+	const rgb = `${pixels[index]}, ${pixels[index + 1]}, ${pixels[index + 2]}`;
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(`RGB: ${rgb}`, x, y++, [140, 255, 180]);
 });
 
 t.windowResized(() => {

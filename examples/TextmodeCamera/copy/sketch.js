@@ -1,6 +1,5 @@
 /**
  * @title TextmodeCamera.copy
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,20 +7,35 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+const labelLayer = t.layers.add();
 
+function drawText(text, x, y, r = 200, g = 220, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+function drawScene() {
+	t.push();
+	t.char('#');
+	t.charColor(60, 80, 120);
+	for (let x = -20; x <= 20; x += 4) t.line(x, 0, -20, x, 0, 20);
+	for (let z = -20; z <= 20; z += 4) t.line(-20, 0, z, 20, 0, z);
+	t.pop();
+	for (let i = 0; i < 3; i++) {
+		t.push();
+		t.translate((i - 1) * 8, 3, 0);
+		t.char(['A', 'B', 'C'][i]);
+		t.charColor(120 + i * 50, 180, 255 - i * 40);
+		t.box(4, 6, 4);
 		t.pop();
 	}
-
-	t.pop();
 }
 
 t.setup(() => {
@@ -31,26 +45,29 @@ t.setup(() => {
 t.draw(() => {
 	t.background(6, 10, 22);
 
-	const original = t.createCamera().setPosition(-10, 5, 20).lookAt(0, 0, 0);
-	const clone = original.copy().setPosition(10, 5, 20);
+	const original = t.createCamera().setPosition(-10, 8, 28).lookAt(0, 0, 0);
+	const clone = original.copy().setPosition(10, 8, 28);
 
 	const active = Math.floor(t.frameCount / 120) % 2 === 0 ? original : clone;
 	t.setCamera(active);
-
-	for (let i = 0; i < 3; i++) {
-		t.push();
-		t.translate((i - 1) * 8, 0, -i * 6);
-		t.char(['A', 'B', 'C'][i]);
-		t.charColor(120 + i * 40, 180, 255);
-		t.ellipse(4, 3);
-		t.pop();
-	}
-
+	drawScene();
 	t.resetCamera();
+});
 
-	drawCenteredText('TextmodeCamera.copy', -8, [240, 245, 255]);
-	drawCenteredText('original: ' + original.eyeX + ', ' + original.eyeY + ', ' + original.eyeZ, 6, [180, 200, 220]);
-	drawCenteredText('clone: ' + clone.eyeX + ', ' + clone.eyeY + ', ' + clone.eyeZ, 10, [80, 255, 140]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	const which = Math.floor(t.frameCount / 120) % 2 === 0 ? 'original' : 'clone';
+	drawText('COPY', x, y++, 100, 255, 140);
+	drawText('--------------------------------', x, y++, 80, 100, 150);
+	drawText('Clone a camera with its state.', x, y++, 100, 220, 255);
+	drawText('Switches view every 120 frames.', x, y++, 140, 160, 190);
+	drawText('--------------------------------', x, y++, 80, 100, 150);
+	drawText(`Active: ${which}`, x, y++, 120, 255, 180);
 });
 
 t.windowResized(() => {

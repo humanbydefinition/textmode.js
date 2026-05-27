@@ -1,15 +1,6 @@
 import { GLShader } from '../core/Shader';
 /**
- * Manages WebGL attribute binding and GPU buffer synchronization.
- *
- * Responsibilities:
- * - WebGL buffer creation and management
- * - GPU data upload (full buffer or sub-buffer updates)
- * - Attribute location caching per shader program
- * - Vertex attribute binding/unbinding
- *
- * This class is the ONLY one that knows about WebGL state.
- * It has NO knowledge of instance data layout details (delegates to InstanceAttributeLayout).
+ * Owns the GPU instance buffer and cached attribute setup for instanced rendering.
  */
 export declare class InstanceAttributeBinder {
     private _gl;
@@ -50,10 +41,10 @@ export declare class InstanceAttributeBinder {
      * - Avoid redundant buffer bindings
      * - Use streaming pattern for per-frame data
      *
-     * @param data Float32Array containing instance data to upload
-     * @param instanceCount Number of instances in the data
+     * @param data Float32Array backing store containing instance data
+     * @param floatsToUpload Number of live floats to upload
      */
-    _upload(data: Float32Array, instanceCount: number): void;
+    _upload(data: Float32Array, floatsToUpload: number): void;
     /**
      * Get cached attribute locations for a shader program.
      * Queries locations once per program and caches them for performance.
@@ -65,7 +56,7 @@ export declare class InstanceAttributeBinder {
     /**
      * Bind instance buffer and configure vertex attributes for instanced rendering.
      *
-     * IMPORTANT: Assumes instance buffer is already bound to gl.ARRAY_BUFFER from upload().
+     * Assumes instance buffer is already bound to gl.ARRAY_BUFFER from upload().
      * If upload() was not called immediately before this, the buffer will not be bound correctly.
      * The buffer remains bound after this call for use by the draw command.
      *

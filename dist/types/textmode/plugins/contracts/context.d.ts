@@ -51,7 +51,7 @@ export interface TextmodePluginContext {
      * @returns A function to unregister the hook.
      *
      * @example
-     * {@includeCode ../../../../examples/plugins/lifecycle/sketch.js}
+     * {@includeCode ../../../../examples/plugins/registerPreDrawHook/sketch.js}
      */
     registerPreDrawHook(callback: TextmodePluginHook): () => void;
     /**
@@ -60,7 +60,7 @@ export interface TextmodePluginContext {
      * @returns A function to unregister the hook.
      *
      * @example
-     * {@includeCode ../../../../examples/plugins/lifecycle/sketch.js}
+     * {@includeCode ../../../../examples/plugins/registerPostDrawHook/sketch.js}
      */
     registerPostDrawHook(callback: TextmodePluginHook): () => void;
     /**
@@ -69,7 +69,7 @@ export interface TextmodePluginContext {
      * @returns A function to unregister the hook.
      *
      * @example
-     * {@includeCode ../../../../examples/plugins/lifecycle/sketch.js}
+     * {@includeCode ../../../../examples/plugins/registerLayerDisposedHook/sketch.js}
      */
     registerLayerDisposedHook(callback: LayerLifecycleHook): () => void;
     /**
@@ -80,7 +80,7 @@ export interface TextmodePluginContext {
      * @returns A function to unregister the hook.
      *
      * @example
-     * {@includeCode ../../../../examples/plugins/lifecycle/sketch.js}
+     * {@includeCode ../../../../examples/plugins/registerLayerPreRenderHook/sketch.js}
      */
     registerLayerPreRenderHook(callback: LayerRenderHook): () => void;
     /**
@@ -90,7 +90,7 @@ export interface TextmodePluginContext {
      * @returns A function to unregister the hook.
      *
      * @example
-     * {@includeCode ../../../../examples/plugins/lifecycle/sketch.js}
+     * {@includeCode ../../../../examples/plugins/registerLayerPostRenderHook/sketch.js}
      */
     registerLayerPostRenderHook(callback: LayerRenderHook): () => void;
     /**
@@ -102,7 +102,7 @@ export interface TextmodePluginContext {
      * @returns A function to unregister the hook.
      *
      * @example
-     * {@includeCode ../../../../examples/plugins/lifecycle/sketch.js}
+     * {@includeCode ../../../../examples/plugins/registerPreSetupHook/sketch.js}
      */
     registerPreSetupHook(callback: SetupLifecycleHook): () => void;
     /**
@@ -114,7 +114,7 @@ export interface TextmodePluginContext {
      * @returns A function to unregister the hook.
      *
      * @example
-     * {@includeCode ../../../../examples/plugins/lifecycle/sketch.js}
+     * {@includeCode ../../../../examples/plugins/registerPostSetupHook/sketch.js}
      */
     registerPostSetupHook(callback: SetupLifecycleHook): () => void;
     /**

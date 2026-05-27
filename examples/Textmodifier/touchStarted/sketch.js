@@ -1,7 +1,5 @@
 /**
  * @title Textmodifier.touchStarted
- * @description Generative galaxy seeder: initial touch or mouse click events seed new expanding, spinning spiral galaxies made of colorful ASCII stars.
- * @author antigravity
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,119 +7,69 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const galaxies = [];
+const labelLayer = t.layers.add();
 
-t.touchStarted((data) => {
-	spawnGalaxy(data.touch.x, data.touch.y);
-});
+const pulses = [];
+let count = 0;
+let last = 'WAITING';
 
-// Interactive mouse fallback for desktop browsers
-t.mousePressed(() => {
-	if (t.mouse) {
-		spawnGalaxy(t.mouse.x, t.mouse.y);
-	}
-});
-
-function spawnGalaxy(x, y) {
-	galaxies.push({
-		x: x,
-		y: y,
-		radius: 0.1,
-		maxRadius: 18 + Math.random() * 12,
-		speed: 0.05 + Math.random() * 0.05,
-		rotSpeed: 0.02 + Math.random() * 0.05,
-		angleOffset: Math.random() * Math.PI,
-		color: [255, Math.floor(100 + Math.random() * 155), Math.floor(180 + Math.random() * 75)],
-		alpha: 255,
-	});
-}
-
-function drawText(text, x, y, r = 180, g = r, b = r) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(x - Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(r, g, b);
-
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
+function addPulse(label, x = 0, y = 0) {
+	count++;
+	last = label;
+	pulses.unshift({ label, x, y, life: 1 });
+	if (pulses.length > 12) pulses.length = 12;
+}
+
+t.touchStarted((data) => {
+	const touch = data?.touch || t.mouse;
+	addPulse('STARTS', touch?.x || 0, touch?.y || 0);
+});
+
 t.draw(() => {
-	t.background(6, 8, 14);
+	t.background(6, 10, 22);
 
-	const cols = t.grid.cols;
-	const rows = t.grid.rows;
-
-	// Telemetry hud instructions
-	drawText('GENERATIVE CEL-GALAXY SEEDER', 0, -Math.floor(rows / 2) + 4, 100, 200, 255);
-	drawText(
-		'Tap anywhere on screen or click to seed new spinning spiral systems',
-		0,
-		-Math.floor(rows / 2) + 6,
-		120,
-		140,
-		160
-	);
-
-	// Update and render active generative galaxies
-	for (let idx = galaxies.length - 1; idx >= 0; idx--) {
-		const g = galaxies[idx];
-		g.radius += g.speed * 6; // Growth rate
-
-		const ageRatio = g.radius / g.maxRadius;
-		g.alpha = Math.max(0, 255 * (1.0 - ageRatio));
-
-		if (g.alpha <= 0 || g.radius >= g.maxRadius) {
-			galaxies.splice(idx, 1);
+	for (let i = pulses.length - 1; i >= 0; i--) {
+		const p = pulses[i];
+		p.life -= 0.02;
+		if (p.life <= 0) {
+			pulses.splice(i, 1);
 			continue;
 		}
-
 		t.push();
-		t.translate(g.x, g.y);
-
-		// Render a gorgeous 4-arm spiral galaxy structure
-		const arms = 4;
-		const starsPerArm = 18;
-		for (let arm = 0; arm < arms; arm++) {
-			const baseAngle = (arm / arms) * Math.PI * 2 + g.angleOffset;
-
-			for (let s = 0; s < starsPerArm; s++) {
-				const starRatio = s / starsPerArm;
-				// Spiral wrapping physics
-				const angle = baseAngle + starRatio * 4.5 + t.frameCount * g.rotSpeed;
-				const currentR = starRatio * g.radius;
-
-				const px = Math.cos(angle) * currentR * 1.5;
-				const py = Math.sin(angle) * currentR;
-
-				t.push();
-				t.translate(px, py);
-
-				// Star character density matching center-to-edge
-				const starChars = ['█', '☼', 'O', 'o', '*', '·'];
-				const charIdx = Math.floor(starRatio * starChars.length) % starChars.length;
-				t.char(starChars[charIdx]);
-
-				// Dynamic core-glow gradient
-				t.charColor(
-					g.color[0],
-					Math.floor(g.color[1] * (1 - starRatio)),
-					g.color[2],
-					g.alpha * (1 - starRatio * 0.5)
-				);
-				t.point();
-				t.pop();
-			}
-		}
-
+		t.translate(p.x, p.y - (1 - p.life) * 4);
+		t.char('*');
+		t.charColor(255, 210, 120);
+		t.point();
 		t.pop();
 	}
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.TOUCHSTARTED', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: TOUCH BEGIN', x, y++, 100, 220, 255);
+	drawText('Event updates compact state.', x, y++, 140, 160, 190);
+	drawText('Pulses show recent triggers.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('STARTS: ' + count, x, y++, 140, 255, 180);
+	drawText('LAST: ' + last.slice(0, 28), x, y++, 180, 200, 220);
 });
 
 t.windowResized(() => {

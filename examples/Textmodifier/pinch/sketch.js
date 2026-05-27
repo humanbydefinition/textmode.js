@@ -1,7 +1,5 @@
 /**
  * @title Textmodifier.pinch
- * @description Gestural scaling: zoom and rotate an intricate glowing ASCII geometric mandala using mobile touch pinch gestures or desktop mouse scroll wheels.
- * @author antigravity
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,86 +7,53 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-let targetScale = 1.0;
-let currentScale = 1.0;
+const labelLayer = t.layers.add();
 
-t.pinch((data) => {
-	targetScale = Math.max(0.2, Math.min(5.0, data.scale));
-});
+let scale = 1;
 
-// Fallback scroll wheel support for desktop browsers
-window.addEventListener(
-	'wheel',
-	(e) => {
-		targetScale = Math.max(0.2, Math.min(5.0, targetScale - e.deltaY * 0.0015));
-	},
-	{ passive: true }
-);
-
-function drawText(text, x, y, r = 180, g = r, b = r) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(x - Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(r, g, b);
-
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
+t.pinch((data) => {
+	scale = Math.max(0.3, Math.min(4, data.scale));
+});
+
+t.mouseScrolled((data) => {
+	scale = Math.max(0.3, Math.min(4, scale - data.delta.y * 0.01));
+});
+
 t.draw(() => {
-	t.background(6, 8, 14);
-
-	const cols = t.grid.cols;
-	const rows = t.grid.rows;
-
-	// Easing for super smooth zooming transitions
-	currentScale += (targetScale - currentScale) * 0.1;
-
-	// Draw instructions
-	drawText('MANDALA PINCH & SCROLL VIEWER', 0, -Math.floor(rows / 2) + 4, 100, 200, 255);
-	drawText('Pinch on touchpads or use mouse scroll wheel to scale', 0, -Math.floor(rows / 2) + 6, 120, 140, 160);
-	drawText(`SCALE: ${currentScale.toFixed(2)}x`, 0, Math.floor(rows / 2) - 4, 255, 220, 100);
-
-	// Render the complex concentric geometric mandala
+	t.background(6, 10, 22);
 	t.push();
-	t.rotateZ(t.frameCount * 0.5 + currentScale * 30); // Rotate based on frame and zoom level
-
-	const rings = 8;
-	for (let ring = 1; ring <= rings; ring++) {
-		const points = 6 + ring * 4;
-		const r = ring * 3 * currentScale;
-
-		for (let i = 0; i < points; i++) {
-			const angle = (i / points) * Math.PI * 2 + ring * 0.1;
-			const px = Math.cos(angle) * r * 1.5;
-			const py = Math.sin(angle) * r;
-
-			t.push();
-			t.translate(px, py);
-
-			// Choose character based on ring layer
-			const chars = ['·', 'o', '*', '+', 'X', '☼', '▒', '█'];
-			const charSym = chars[(ring - 1) % chars.length];
-			t.char(charSym);
-
-			// Dynamic rainbow/gold gradients
-			const hueR = Math.floor(130 + 125 * Math.sin(angle + currentScale));
-			const hueG = Math.floor(180 + 75 * Math.cos(angle * 2));
-			const hueB = Math.floor(255 - ring * 20);
-			t.charColor(hueR, hueG, hueB);
-
-			t.point();
-			t.pop();
-		}
-	}
-
+	t.rotateZ(t.frameCount * 0.5);
+	t.char('#');
+	t.charColor(140, 220, 255);
+	t.rect(8 * scale, 8 * scale);
 	t.pop();
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.PINCH', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: PINCH SCALE', x, y++, 100, 220, 255);
+	drawText('Pinch or scroll changes scale.', x, y++, 140, 160, 190);
+	drawText('Shape size follows gesture.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`SCALE: ${scale.toFixed(2)}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

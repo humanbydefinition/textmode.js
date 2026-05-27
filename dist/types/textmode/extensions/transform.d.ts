@@ -1,7 +1,7 @@
 declare module '../Textmodifier' {
     interface Textmodifier {
         /**
-         * Sets the rotation angles for subsequent shape rendering operations.
+         * Set rotation for subsequent shape drawing.
          *
          * All geometries rotate around the center of the shape.
          *
@@ -17,97 +17,97 @@ declare module '../Textmodifier' {
         }): void;
         rotate(degreesX?: number, degreesY?: number, degreesZ?: number): void;
         /**
-         * Sets the X-axis rotation angle for subsequent shape rendering operations, or gets the current angle.
+         * Set X-axis rotation for subsequent shape drawing, or get the current angle.
          *
          * All geometries rotate around the center of the shape.
          *
-         * @param degrees The rotation angle in degrees around the X-axis. If not provided, returns the current accumulated rotation.
-         * @returns The current X-axis rotation in degrees if called without arguments.
+         * @param degrees Rotation angle in degrees around the X axis.
+         * @returns Current X-axis rotation in degrees when called without arguments.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/rotateX/sketch.js}
          */
         rotateX(degrees?: number): number | void;
         /**
-         * Sets the Y-axis rotation angle for subsequent shape rendering operations, or gets the current angle.
+         * Set Y-axis rotation for subsequent shape drawing, or get the current angle.
          *
          * All geometries rotate around the center of the shape.
          *
-         * @param degrees The rotation angle in degrees around the Y-axis. If not provided, returns the current accumulated rotation.
-         * @returns The current Y-axis rotation in degrees if called without arguments.
+         * @param degrees Rotation angle in degrees around the Y axis.
+         * @returns Current Y-axis rotation in degrees when called without arguments.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/rotateY/sketch.js}
          */
         rotateY(degrees?: number): number | void;
         /**
-         * Sets the Z-axis rotation angle for subsequent shape rendering operations, or gets the current angle.
+         * Set Z-axis rotation for subsequent shape drawing, or get the current angle.
          *
          * All geometries rotate around the center of the shape.
          *
-         * @param degrees The rotation angle in degrees around the Z-axis. If not provided, returns the current accumulated rotation.
-         * @returns The current Z-axis rotation in degrees if called without arguments.
+         * @param degrees Rotation angle in degrees around the Z axis.
+         * @returns Current Z-axis rotation in degrees when called without arguments.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/rotateZ/sketch.js}
          */
         rotateZ(degrees?: number): number | void;
         /**
-         * Sets the translation offsets for subsequent shape rendering operations.
+         * Translate subsequent shape drawing.
          *
          * All geometries are displaced by the specified amounts. Similar to p5.js translate().
          *
-         * @param x Translation along the X-axis in grid cells (optional, defaults to 0)
-         * @param y Translation along the Y-axis in grid cells (optional, defaults to 0)
-         * @param z Translation along the Z-axis in grid cells (optional, defaults to 0)
+         * @param x Translation along the X axis in grid cells. Defaults to 0.
+         * @param y Translation along the Y axis in grid cells. Defaults to 0.
+         * @param z Translation along the Z axis in grid cells. Defaults to 0.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/translate/sketch.js}
          */
         translate(x?: number, y?: number, z?: number): void;
         /**
-         * Gets the current accumulated X-axis translation offset.
-         * @returns The current X-axis translation in grid cells.
+         * Current accumulated X-axis translation.
+         * @returns Current X-axis translation in grid cells.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/translateX/sketch.js}
          */
         translateX(): number;
         /**
-         * Sets the X-axis translation offset for subsequent shape rendering operations.
-         * @param pixels The translation offset in grid cells along the X-axis.
+         * Translate subsequent shapes along the X axis.
+         * @param pixels Translation offset in grid cells.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/translateX2/sketch.js}
          */
         translateX(pixels: number): void;
         /**
-         * Gets the current accumulated Y-axis translation offset.
-         * @returns The current Y-axis translation in grid cells.
+         * Current accumulated Y-axis translation.
+         * @returns Current Y-axis translation in grid cells.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/translateY/sketch.js}
          */
         translateY(): number;
         /**
-         * Sets the Y-axis translation offset for subsequent shape rendering operations.
-         * @param pixels The translation offset in grid cells along the Y-axis.
+         * Translate subsequent shapes along the Y axis.
+         * @param pixels Translation offset in grid cells.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/translateY2/sketch.js}
          */
         translateY(pixels: number): void;
         /**
-         * Gets the current accumulated Z-axis translation offset.
-         * @returns The current Z-axis translation in grid cells.
+         * Current accumulated Z-axis translation.
+         * @returns Current Z-axis translation in grid cells.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/translateZ/sketch.js}
          */
         translateZ(): number;
         /**
-         * Sets the Z-axis translation offset for subsequent shape rendering operations.
-         * @param pixels The translation offset in grid cells along the Z-axis.
+         * Translate subsequent shapes along the Z axis.
+         * @param pixels Translation offset in grid cells.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/translateZ2/sketch.js}
@@ -121,7 +121,7 @@ declare module '../Textmodifier' {
          * @param z Scale factor for Z. Defaults to `x` for uniform scale, or `1` when only `x` and `y` are provided.
          *
          * @example
-         * {@includeCode ../../../examples/Textmodifier/applyMatrix/sketch.js}
+         * {@includeCode ../../../examples/Textmodifier/scale/sketch.js}
          */
         scale(x: number, y?: number, z?: number): void;
         /**

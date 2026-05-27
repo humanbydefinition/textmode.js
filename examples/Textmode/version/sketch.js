@@ -1,31 +1,42 @@
 /**
  * @title Textmode.version
- * @author humanbydefinition
- * @instagram https://www.instagram.com/textmode.art/
- * @mastodon https://mastodon.social/@humanbydefinition
- * @bluesky https://bsky.app/profile/textmode.art
- * @website https://textmode.art
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+});
 
-const versionLabel = `VERSION: ${textmode.version}`;
+const labelLayer = t.layers.add();
 
 t.draw(() => {
-	t.background(0, 20, 0);
+	t.background(6, 12, 10);
+});
 
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-versionLabel.length / 2, 0);
-	t.charColor(0, 255, 0);
-
-	for (let i = 0; i < versionLabel.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(versionLabel[i]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODE.VERSION', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: EXPOSES LIBRARY VERSION', x, y++, 100, 220, 255);
+	drawText('Retrieves active semantic version.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`VERSION: ${textmode.version}`, x, y++, 140, 190, 255);
 });
 
 t.windowResized(() => {

@@ -1,7 +1,5 @@
 /**
  * @title Textmodifier.touchEnded
- * @description ASCII firework launcher: releasing a touch or mouse click triggers vibrant, gravity-affected particle explosions that shoot outward in colorful neon sparks.
- * @author antigravity
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,94 +7,69 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const sparks = [];
+const labelLayer = t.layers.add();
 
-t.touchEnded((data) => {
-	explode(data.touch.x, data.touch.y);
-});
+const pulses = [];
+let count = 0;
+let last = 'WAITING';
 
-// Interactive mouse fallback for desktop browsers
-t.mouseReleased(() => {
-	if (t.mouse) {
-		explode(t.mouse.x, t.mouse.y);
-	}
-});
-
-function explode(x, y) {
-	const sparkCount = 24 + Math.floor(Math.random() * 16);
-	const baseColor = [Math.floor(120 + Math.random() * 135), Math.floor(120 + Math.random() * 135), 255];
-
-	for (let i = 0; i < sparkCount; i++) {
-		const angle = Math.random() * Math.PI * 2;
-		const speed = 0.5 + Math.random() * 1.5;
-		sparks.push({
-			x: x,
-			y: y,
-			vx: Math.cos(angle) * speed * 1.5,
-			vy: Math.sin(angle) * speed - 0.2, // Shoot slightly upward initial impulse
-			char: ['*', 'o', '+', '·', '°'][Math.floor(Math.random() * 5)],
-			color: baseColor,
-			alpha: 255,
-			size: 1 + Math.random() * 2,
-		});
-	}
-}
-
-function drawText(text, x, y, r = 180, g = r, b = r) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(x - Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(r, g, b);
-
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
+function addPulse(label, x = 0, y = 0) {
+	count++;
+	last = label;
+	pulses.unshift({ label, x, y, life: 1 });
+	if (pulses.length > 12) pulses.length = 12;
+}
+
+t.touchEnded((data) => {
+	const touch = data?.touch || t.mouse;
+	addPulse('ENDS', touch?.x || 0, touch?.y || 0);
+});
+
 t.draw(() => {
-	t.background(6, 8, 14);
+	t.background(6, 10, 22);
 
-	const cols = t.grid.cols;
-	const rows = t.grid.rows;
-
-	// Telemetry instruction labels
-	drawText('CELESTIAL FIREWORK LAUNCHER', 0, -Math.floor(rows / 2) + 4, 100, 200, 255);
-	drawText(
-		'Tap or drag-and-release anywhere on screen to detonate sparks',
-		0,
-		-Math.floor(rows / 2) + 6,
-		120,
-		140,
-		160
-	);
-
-	// Update and draw active firework sparks
-	for (let i = sparks.length - 1; i >= 0; i--) {
-		const s = sparks[i];
-		s.vy += 0.04; // Gravity drift
-		s.x += s.vx;
-		s.y += s.vy;
-
-		s.alpha -= 3.5; // Easing fade out
-		if (s.alpha <= 0) {
-			sparks.splice(i, 1);
+	for (let i = pulses.length - 1; i >= 0; i--) {
+		const p = pulses[i];
+		p.life -= 0.02;
+		if (p.life <= 0) {
+			pulses.splice(i, 1);
 			continue;
 		}
-
 		t.push();
-		t.translate(s.x, s.y);
-		t.char(s.char);
-		// Random sparkling flicker
-		const flicker = Math.random() > 0.3 ? s.alpha : s.alpha * 0.4;
-		t.charColor(s.color[0], s.color[1], s.color[2], flicker);
-		t.rect(s.size, s.size);
+		t.translate(p.x, p.y - (1 - p.life) * 4);
+		t.char('*');
+		t.charColor(255, 210, 120);
+		t.point();
 		t.pop();
 	}
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.TOUCHENDED', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: TOUCH END', x, y++, 100, 220, 255);
+	drawText('Event updates compact state.', x, y++, 140, 160, 190);
+	drawText('Pulses show recent triggers.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('ENDS: ' + count, x, y++, 140, 255, 180);
+	drawText('LAST: ' + last.slice(0, 28), x, y++, 180, 200, 220);
 });
 
 t.windowResized(() => {

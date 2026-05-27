@@ -1,6 +1,3 @@
-/**
- * Represents a snapshot of the current rendering state
- */
 import type { RGB, RGBA } from '../../../utils/color';
 import { TransformState } from './TransformState';
 import { CameraState } from './CameraState';
@@ -48,21 +45,11 @@ export interface IRenderState {
     _pointLightColors: Float32Array;
     _ambientLightColor: Float32Array;
     _lightFalloff: Float32Array;
+    _useLighting: boolean;
     _lightingVersion: number;
 }
 /**
- * Manages rendering state and provides push/pop functionality for state management.
- *
- * Delegates to focused subsystem classes for each state domain:
- * - {@link TransformState} - translation, rotation, scale, model matrix
- * - {@link CameraState} - perspective/ortho, eye, target, up, near/far
- * - {@link LightingState} - point lights, falloff, version tracking
- * - {@link CharacterState} - character, colors, flip, invert, line weight
- *
- * Performance optimizations:
- * - Object pooling for push/pop operations reduces GC pressure
- * - Subsystems use inlined array copies for CPU cache efficiency
- * - Direct property assignment maintains V8 hidden classes
+ * Coordinates the mutable render-state domains and pooled push/pop snapshots.
  */
 export declare class RenderState {
     readonly _transform: TransformState;

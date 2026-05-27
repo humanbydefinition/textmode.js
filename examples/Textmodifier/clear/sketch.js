@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.clear
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,63 +8,52 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
+
 let clearEnabled = true;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-	t.cellColor(0, 0, 0, 0);
+t.mouseClicked(() => {
+	clearEnabled = !clearEnabled;
+	if (clearEnabled) t.clear();
+});
 
+t.draw(() => {
+	if (clearEnabled) t.clear();
+	const time = t.frameCount * 0.05;
+	t.push();
+	t.translate(Math.cos(time) * 15, Math.sin(time) * 6);
+	t.charColor(255, 225, 140);
+	t.char('#');
+	t.rect(4, 2);
+	t.pop();
+});
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 labelLayer.draw(() => {
 	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
 
-	drawCenteredText('Textmodifier.clear', -12, [240, 245, 255]);
-	drawCenteredText('Resetting the current layer buffer to a blank state.', -10, [150, 170, 200]);
-
-	const statusColor = clearEnabled ? [140, 255, 180] : [255, 100, 100];
-	drawCenteredText('STATUS: ' + (clearEnabled ? 'CLEAR ACTIVE' : 'CLEAR DISABLED'), 6, statusColor);
-	drawCenteredText(
-		clearEnabled ? 'The drawing buffer is wiped every frame.' : 'Buffer persists, creating motion trails.',
-		9,
-		[100, 120, 150]
-	);
-
-	drawCenteredText('t.clear()', 13, [100, 120, 150]);
-});
-
-t.draw(() => {
-	if (t.frameCount % 180 === 0) {
-		clearEnabled = !clearEnabled;
-		// Ensure a fresh start when re-enabling clear.
-		if (clearEnabled) t.clear();
-	}
-
-	if (clearEnabled) {
-		t.clear();
-	}
-
-	const time = t.frameCount * 0.05;
-	const x = Math.round(Math.cos(time) * 15);
-	const y = Math.round(Math.sin(time * 0.7) * 4);
-
-	t.push();
-	t.translate(x, y);
-	t.charColor(255, 225, 140);
-	t.char('#');
-	t.rect(4, 2);
-	t.pop();
+	drawText('TEXTMODIFIER.CLEAR', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: CLEAR LAYER BUFFER', x, y++, 100, 220, 255);
+	drawText('Compact API demonstration.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	const state = clearEnabled ? 'ON' : 'OFF';
+	drawText(`CLEAR: ${state}`, x, y++, 140, 255, 180);
+	drawText('CLICK TO TOGGLE', x, y++, 255, 225, 140);
 });
 
 t.windowResized(() => {

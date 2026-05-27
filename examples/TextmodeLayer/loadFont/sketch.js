@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.loadFont
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,18 +8,17 @@ const t = textmode.create({
 });
 
 const detailedLayer = t.layers.add({ blendMode: 'screen' });
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
@@ -33,17 +31,12 @@ t.setup(async () => {
 t.draw(() => {
 	t.background(6, 10, 22);
 
-	drawCenteredText('TextmodeLayer.loadFont', -12, [240, 245, 255]);
-	drawCenteredText('Fonts are isolated to their specific layer.', -10, [150, 170, 200]);
-
 	t.push();
 	t.translate(0, 0);
 	t.charColor(40, 50, 80);
 	t.char('#');
 	t.rect(14, 8);
 	t.pop();
-
-	drawCenteredText('BASE FONT: URSA (DEFAULT)', 10, [140, 180, 255]);
 });
 
 detailedLayer.draw(() => {
@@ -55,8 +48,23 @@ detailedLayer.draw(() => {
 	t.char('0'); // A distinctive glyph in Frogblock
 	t.rect(8, 4);
 	t.pop();
+});
 
-	drawCenteredText('LOADED FONT: FROGBLOCK', 12, [255, 225, 140]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODELAYER.LOADFONT', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: LOAD FONT PER LAYER', x, y++, [100, 220, 255]);
+	drawText('Base keeps the default font.', x, y++, [140, 160, 190]);
+	drawText('Overlay loads Frogblock.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('BASE: URSA DEFAULT', x, y++, [140, 180, 255]);
+	drawText('LAYER: FROGBLOCK', x, y++, [255, 225, 140]);
 });
 
 t.windowResized(() => {

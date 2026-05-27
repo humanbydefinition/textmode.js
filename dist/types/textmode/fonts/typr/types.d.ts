@@ -1,25 +1,16 @@
 import type { GlyphOutlineData } from '../types.ts';
 /**
- * Type definitions for Typr.js - Font parsing library
- *
- * Comprehensive TypeScript types for all Typr font parsing structures,
- * tables, and interfaces used throughout the font processing pipeline.
+ * Type definitions for the internal Typr font parser.
  */
 /**
- * Binary reading utilities interface
+ * Big-endian binary readers and their shared scratch buffer.
  */
 export interface TyprBinary {
-    /** Read signed 16-bit integer */
     readShort: (buff: Uint8Array, p: number) => number;
-    /** Read unsigned 16-bit integer */
     readUshort: (buff: Uint8Array, p: number) => number;
-    /** Read array of unsigned 16-bit integers */
     readUshorts: (buff: Uint8Array, p: number, len: number) => number[];
-    /** Read unsigned 32-bit integer */
     readUint: (buff: Uint8Array, p: number) => number;
-    /** Read ASCII string */
     readASCII: (buff: Uint8Array, p: number, l: number) => string;
-    /** Shared typed array buffers for efficient reading */
     t: {
         uint8: Uint8Array;
         int16: Int16Array;
@@ -28,10 +19,29 @@ export interface TyprBinary {
     };
 }
 /**
- * Interface for cmap table Format 4 (Basic Multilingual Plane)
- * Used for Unicode BMP character mapping
+ * Mapping metadata for one cmap encoding record.
  */
-export interface CmapTableFormat4 {
+export interface CmapEncodingRecord {
+    /** OpenType platform ID. */
+    platformID: number;
+    /** OpenType platform-specific encoding ID. */
+    encodingID: number;
+    /** Cmap subtable format. */
+    format: number;
+    /** Index into the deduplicated `cmap.tables` array. */
+    tableIndex: number;
+}
+/**
+ * Shared metadata carried by parsed cmap subtables.
+ */
+export interface CmapTableMetadata {
+    /** Encoding records that reference this deduplicated subtable. */
+    encodings?: CmapEncodingRecord[];
+}
+/**
+ * cmap format 4, used for Basic Multilingual Plane mappings.
+ */
+export interface CmapTableFormat4 extends CmapTableMetadata {
     format: 4;
     searchRange: number;
     entrySelector: number;
@@ -43,34 +53,33 @@ export interface CmapTableFormat4 {
     glyphIdArray: number[];
 }
 /**
- * Interface for cmap table Format 12 (Extended Unicode ranges)
- * Used for full Unicode character mapping including supplementary planes
+ * cmap format 12, used for full Unicode mappings including supplementary planes.
  */
-export interface CmapTableFormat12 {
+export interface CmapTableFormat12 extends CmapTableMetadata {
     format: 12;
     groups: Uint32Array;
 }
 /**
- * Union type for supported cmap table formats
+ * Supported cmap table formats.
  */
-export type CmapTable = CmapTableFormat4 | CmapTableFormat12 | {
+export type CmapTable = CmapTableFormat4 | CmapTableFormat12 | (CmapTableMetadata & {
     format: number;
-};
+});
 /**
- * Character map data from OpenType/TrueType font
- * Contains multiple encoding tables and platform-specific mappings
+ * Character map data from an OpenType/TrueType font.
  */
 export interface CmapData {
     /** Array of character mapping tables */
     tables: CmapTable[];
     /** Platform+encoding ID mappings to table indices */
     ids: Record<string, number>;
+    /** Encoding records for the deduplicated cmap tables. */
+    encodings?: CmapEncodingRecord[];
     /** Offset of cmap table in font data */
     off: number;
 }
 /**
- * Head table from OpenType/TrueType font
- * Contains global font metrics and metadata
+ * Global font metrics and metadata from the `head` table.
  */
 export interface HeadTable {
     /** Units per EM square */
@@ -87,8 +96,7 @@ export interface HeadTable {
     indexToLocFormat: number;
 }
 /**
- * Horizontal header table from OpenType/TrueType font
- * Contains horizontal layout metrics
+ * Horizontal layout metrics from the `hhea` table.
  */
 export interface HheaTable {
     /** Typographic ascender */
@@ -122,8 +130,7 @@ export interface HheaTable {
     numberOfHMetrics: number;
 }
 /**
- * Horizontal metrics table from OpenType/TrueType font
- * Contains advance widths and left side bearings for all glyphs
+ * Advance widths and left side bearings from the `hmtx` table.
  */
 export interface HmtxTable {
     /** Array of advance widths for each glyph */
@@ -132,34 +139,31 @@ export interface HmtxTable {
     lsBearing: number[];
 }
 /**
- * Maximum profile table from OpenType/TrueType font
- * Contains the number of glyphs and other maximums
+ * Glyph-count data from the `maxp` table.
  */
 export interface MaxpTable {
     /** Total number of glyphs in the font */
     numGlyphs: number;
 }
 /**
- * Location table for glyph offsets
- * Maps glyph indices to their byte offsets in the glyf table
+ * Glyph offsets into the `glyf` table.
  */
 export type LocaTable = number[];
 /**
- * Font table parser interface
- * Each table parser implements this interface
+ * Parser contract for a single font table.
  */
 export interface TableParser<T = unknown> {
     parseTab: (data: Uint8Array, offset: number, length: number, font: TyprFont) => T;
 }
 /**
- * Extended cmap parser with format-specific methods
+ * cmap parser with format-specific methods.
  */
 export interface CmapParser extends TableParser<CmapData> {
     parse4: (data: Uint8Array, offset: number) => CmapTableFormat4;
     parse12: (data: Uint8Array, offset: number) => CmapTableFormat12;
 }
 /**
- * Collection of all table parsers
+ * Parser collection keyed by table tag.
  */
 export interface TyprTableParsers {
     cmap: CmapParser;
@@ -173,8 +177,7 @@ export interface TyprTableParsers {
     };
 }
 /**
- * Complete TyprFont interface representing a parsed OpenType/TrueType font
- * This interface describes the structure returned by Typr.parse()
+ * Parsed OpenType/TrueType sfnt font returned by `Typr.parse()`.
  */
 export interface TyprFont {
     /** Internal font data buffer */
@@ -199,21 +202,15 @@ export interface TyprFont {
     glyf: (GlyphOutlineData | null)[];
 }
 /**
- * Union type of all valid font table values
- * Derived from the TyprFont interface to ensure consistency with parser keys
+ * Union of parsed table values.
  */
 export type TyprTableValue = TyprFont[keyof TyprTableParsers];
 /**
- * Main Typr interface
- * Provides font parsing and table lookup functionality
+ * Internal Typr parser surface.
  */
 export interface TyprStatic {
-    /** Parse font buffer and return array of fonts */
     parse: (buffer: ArrayBuffer) => TyprFont[];
-    /** Find a specific table in font data */
     findTable: (data: Uint8Array, tableName: string, offset: number) => [number, number] | null;
-    /** Collection of table parsers */
     T: TyprTableParsers;
-    /** Binary reading utilities */
     B: TyprBinary;
 }

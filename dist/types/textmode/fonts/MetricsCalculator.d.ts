@@ -1,9 +1,7 @@
 import type { GlyphDimensions, TextmodeGlyph } from './types.ts';
 import type { TyprFont } from './typr/types.ts';
 /**
- * Handles calculation of font metrics and glyph dimensions.
- * This class encapsulates the logic for measuring text and calculating font properties
- * directly from font data using Typr.ts, eliminating the need for Canvas-based measurement.
+ * Measures glyph cells from parsed font tables instead of Canvas text metrics.
  */
 export declare class FontMetricsCalculator {
     private _tableReader;

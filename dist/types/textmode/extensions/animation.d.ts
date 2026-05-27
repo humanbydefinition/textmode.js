@@ -1,8 +1,8 @@
 declare module '../Textmodifier' {
     interface Textmodifier {
         /**
-         * Set the target frame rate. If called without arguments, returns the current measured frame rate.
-         * @param fps The maximum frames per second for rendering (optional).
+         * Set the target frame rate, or get the current measured frame rate when called without arguments.
+         * @param fps Maximum frames per second for rendering.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/frameRate/sketch.js}
@@ -11,10 +11,10 @@ declare module '../Textmodifier' {
         /**
          * Set or get the target frame rate limit.
          *
-         * Works similarly to {@link frameRate}, but gets the target frame rate instead of the current measured frame rate.
+         * Unlike {@link frameRate}, the getter returns the configured target instead of the measured rate.
          *
-         * @param fps Optional new target frame rate. If not provided, returns current target frame rate.
-         * @returns Current target frame rate when getting, void when setting
+         * @param fps New target frame rate.
+         * @returns Current target frame rate when called without arguments.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/targetFrameRate/sketch.js}
@@ -23,9 +23,7 @@ declare module '../Textmodifier' {
         /**
          * Stop the automatic rendering loop.
          *
-         * This method pauses the render loop without, allowing
-         * it to be resumed later with {@link loop}. This is useful for temporarily pausing
-         * animation while maintaining the ability to continue it.
+         * Rendering can be resumed later with {@link loop}.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/noLoop/sketch.js}
@@ -39,47 +37,47 @@ declare module '../Textmodifier' {
          */
         loop(): void;
         /**
-         * Execute the render function a specified number of times.
+         * Render a fixed number of frames on demand.
          *
          * This method is useful when the render loop has been stopped with {@link noLoop},
          * allowing you to trigger rendering on demand.
          *
-         * @param n The number of times to execute the render function. Defaults to 1.
+         * @param n Number of frames to render. Defaults to 1.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/redraw/sketch.js}
          */
         redraw(n?: number): void;
         /**
-         * Check whether the textmodifier is currently running the automatic render loop.
-         * @returns True if the render loop is currently active, false otherwise.
+         * Whether the automatic render loop is currently running.
+         * @returns `true` when the render loop is active.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/isLooping/sketch.js}
          */
         isLooping(): boolean;
         /**
-         * Returns the time in milliseconds between the current frame and the previous frame.
+         * Time in milliseconds between the current frame and the previous frame.
          *
          * `deltaTime()` is useful for creating frame-rate-independent animations. By multiplying
          * velocities and movements by `deltaTime()`, animations will run at consistent speeds
          * regardless of the actual frame rate.
          *
-         * @returns Time elapsed between current and previous frame in milliseconds.
+         * @returns Milliseconds elapsed since the previous frame.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/deltaTime/sketch.js}
          */
         deltaTime(): number;
         /**
-         * Get the current frame count.
+         * Current frame count.
          *
          * The frame count starts at 0, but is incremented at the beginning of each draw cycle.
          * This means that inside the first call to `draw()`, `frameCount` is 1.
          *
          * This value is useful for timing-based animations, patterns, and state changes.
          *
-         * @returns The number of frames rendered since the sketch started.
+         * @returns Number of frames rendered since the sketch started.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/frameCount/sketch.js}
@@ -91,14 +89,14 @@ declare module '../Textmodifier' {
          * Modifying the frame count can be used to reset animations or jump to a specific
          * point in time-based patterns.
          *
-         * @param value The new frame count value.
+         * @param value New frame count value.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/frameCount2/sketch.js}
          */
         set frameCount(value: number);
         /**
-         * Get the number of milliseconds since the sketch started running.
+         * Milliseconds since the sketch started running.
          *
          * `millis` keeps track of how long a sketch has been running in milliseconds
          * (thousandths of a second). This information is often helpful for timing events
@@ -109,7 +107,7 @@ declare module '../Textmodifier' {
          *
          * This property is connected to {@link secs} - setting one will affect the other.
          *
-         * @returns Number of milliseconds since starting the sketch.
+         * @returns Milliseconds since the sketch started.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/millis/sketch.js}
@@ -122,19 +120,19 @@ declare module '../Textmodifier' {
          */
         get millis(): number;
         /**
-         * Set the elapsed milliseconds by adjusting the internal start time.
+         * Set elapsed milliseconds by adjusting the internal start time.
          *
          * This allows seeking/scrubbing in animations. Setting `millis` will also
          * affect the value returned by {@link secs} since they are connected.
          *
-         * @param value The new elapsed time in milliseconds
+         * @param value New elapsed time in milliseconds.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/millis4/sketch.js}
          */
         set millis(value: number);
         /**
-         * Get the number of seconds since the sketch started running.
+         * Seconds since the sketch started running.
          *
          * `secs` is a convenience property that returns the elapsed time in seconds
          * instead of milliseconds. Equivalent to `millis / 1000`.
@@ -144,7 +142,7 @@ declare module '../Textmodifier' {
          *
          * This property is connected to {@link millis} - setting one will affect the other.
          *
-         * @returns Number of seconds since starting the sketch.
+         * @returns Seconds since the sketch started.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/secs/sketch.js}
@@ -154,12 +152,12 @@ declare module '../Textmodifier' {
          */
         get secs(): number;
         /**
-         * Set the elapsed seconds by adjusting the internal start time.
+         * Set elapsed seconds by adjusting the internal start time.
          *
          * This allows seeking/scrubbing in animations. Setting `secs` will also
          * affect the value returned by {@link millis} since they are connected.
          *
-         * @param value The new elapsed time in seconds
+         * @param value New elapsed time in seconds.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/secs3/sketch.js}

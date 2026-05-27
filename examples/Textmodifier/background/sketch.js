@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.background
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,46 +7,48 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+const labelLayer = t.layers.add();
 
+let r = 0;
+let g = 0;
+let b = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 t.draw(() => {
-	const time = t.frameCount * 0.02;
-
-	const r = Math.round(40 + 40 * Math.sin(time));
-	const b = Math.round(60 + 40 * Math.cos(time * 0.7));
-	t.background(r, 20, b);
-
-	const bg = t.background();
-
-	drawCenteredText('Textmodifier.background', -12, [240, 245, 255]);
-	drawCenteredText('Setting and retrieving the canvas background color.', -10, [150, 170, 200]);
-
-	t.push();
-	t.charColor(255, 225, 140);
+	const time = t.frameCount * 0.03;
+	r = Math.round(40 + 30 * Math.sin(time));
+	g = Math.round(30 + 30 * Math.sin(time + 2));
+	b = Math.round(60 + 40 * Math.sin(time + 4));
+	t.background(r, g, b);
 	t.char('#');
-	t.rect(14, 6);
-	t.pop();
+	t.charColor(240, 245, 255);
+	t.rect(12, 5);
+});
 
-	drawCenteredText('RGB GETTER READOUT', 8, [140, 255, 180]);
-	drawCenteredText(
-		`R: ${bg.r.toString().padStart(3, '0')}  G: ${bg.g.toString().padStart(3, '0')}  B: ${bg.b.toString().padStart(3, '0')}`,
-		10,
-		[140, 180, 255]
-	);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.BACKGROUND', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: CANVAS COLOR', x, y++, 100, 220, 255);
+	drawText('Sets and reads scene backdrop.', x, y++, 140, 160, 190);
+	drawText('RGB values animate softly.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`RGB: ${r},${g},${b}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

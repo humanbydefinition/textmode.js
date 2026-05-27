@@ -244,7 +244,7 @@ export interface IRenderer {
     /**
      * Dispose of all WebGL resources managed by this renderer.
      * This releases buffers, shaders, geometries, and other GPU resources.
-     * This method is idempotent and safe to call multiple times.
+     * Idempotent and safe to call multiple times.
      * After disposal, the renderer should not be used.
      */
     _dispose(): void;

@@ -1,21 +1,24 @@
 /**
  * @title TextmodeLayer.texture
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
-const layer = t.layers.add({ fontSize: 16, blendMode: 'screen' });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-function label(text, y, color = [220, 220, 220]) {
+const layer = t.layers.add({ fontSize: 16, blendMode: 'screen' });
+const labelLayer = t.layers.add();
+
+function drawText(text, x, y, rgb = [220, 230, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
+	t.translate(x, y);
+	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
@@ -23,14 +26,6 @@ function label(text, y, color = [220, 220, 220]) {
 
 t.draw(() => {
 	t.background(5, 7, 18);
-
-	const textureMatches = layer.texture === layer.asciiFramebuffer.textures[0];
-	label('TextmodeLayer.texture', -Math.floor(t.grid.rows * 0.34), [255, 225, 140]);
-	label(
-		textureMatches ? 'texture matches ascii framebuffer' : 'texture pending',
-		Math.floor(t.grid.rows * 0.3),
-		[120, 205, 255]
-	);
 });
 
 layer.draw(() => {
@@ -40,6 +35,23 @@ layer.draw(() => {
 	t.charColor(120, 205, 255);
 	t.rect(18, 8);
 	t.pop();
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	const ready = layer.texture === layer.asciiFramebuffer.textures[0];
+
+	drawText('TEXTMODELAYER.TEXTURE', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: ASCII TEXTURE HANDLE', x, y++, [100, 220, 255]);
+	drawText('Exposes the composited texture.', x, y++, [140, 160, 190]);
+	drawText('Matches asciiFramebuffer tex 0.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(ready ? 'TEXTURE: READY' : 'TEXTURE: PENDING', x, y++, [140, 255, 180]);
 });
 
 t.windowResized(() => {

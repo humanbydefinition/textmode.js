@@ -3,8 +3,7 @@ import { type InstanceWriteData } from '../batching/InstanceWriter';
 import type { IGeometry, GeometryType, UnitGeometryData, GeometryParams } from '../types/GeometryTypes';
 import type { IRenderState } from '../state/RenderState';
 /**
- * Abstract base class for all instanced geometries.
- * Provides common functionality for instance data creation and batch management.
+ * Shared unit-buffer setup and packed instance writing for instanced geometries.
  */
 export declare abstract class BaseGeometry<P = GeometryParams> implements IGeometry<P> {
     protected readonly _gl: WebGL2RenderingContext;
@@ -27,8 +26,7 @@ export declare abstract class BaseGeometry<P = GeometryParams> implements IGeome
     _dispose(): void;
     abstract _addInstance(params: P, renderState: IRenderState): number;
     /**
-     * Write instance data directly to batch buffer (zero-allocation helper).
-     * Handles all common instance data setup to eliminate code duplication.
+     * Write one packed instance into the batch buffer.
      *
      * @param x - X position
      * @param y - Y position
@@ -48,6 +46,7 @@ export declare abstract class BaseGeometry<P = GeometryParams> implements IGeome
      * @param geometryData.bezEndY - Optional Bezier end Y coordinate
      * @param geometryData.depth - Optional geometry depth
      * @param geometryData.baseZ - Optional base Z coordinate
+     * @param rotationZOverride - Optional Z rotation override for geometry-specific orientation
      * @returns Index of the written instance
      */
     protected _writeInstance(x: number, y: number, width: number, height: number, renderState: IRenderState, geometryData?: {
@@ -63,5 +62,5 @@ export declare abstract class BaseGeometry<P = GeometryParams> implements IGeome
         bezEndY?: number;
         depth?: number;
         baseZ?: number;
-    }): number;
+    } | null, rotationZOverride?: number): number;
 }

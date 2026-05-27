@@ -1,27 +1,7 @@
 import type { DrawCommand } from '../types/DrawCommand';
 /**
- * Material-based rendering pipeline with strict draw order preservation.
- *
- * Responsibilities:
- * - Manages all geometry instances (one per type)
- * - Batches consecutive commands with the same material + geometry type
- * - Executes instanced draw calls
- *
- * Key principles:
- * - Batches consecutive commands with the same material + geometry type
- * - NEVER reorders commands (preserves user draw order)
- * - Single rendering path for all geometry (no special-casing custom shaders)
- *
- * Architecture:
- * 1. Scan commands in insertion order
- * 2. Group consecutive runs of same material+type into batches
- * 3. Render each batch with a single instanced draw call
- *
- * Performance:
- * - Best case: All commands use same material → 1 draw call
- * - Worst case: Alternating materials → same as unbatched
- * - Real-world: 50-70% reduction in draw calls
- * - Optimized to avoid per-frame allocations
+ * Executes draw commands in order while batching consecutive commands that share
+ * material, geometry type, projection, camera, and lighting state.
  */
 export declare class MaterialBatchPipeline {
     private _gl;

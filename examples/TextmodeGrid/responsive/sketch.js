@@ -1,6 +1,5 @@
 /**
  * @title TextmodeGrid.responsive
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,21 +7,8 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
+const labelLayer = t.layers.add();
 let isLocked = false;
-
-function drawLabel(text, x, y, col = [255, 255, 255]) {
-	t.push();
-	t.translate(x, y);
-	t.charColor(...col);
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-	t.pop();
-}
 
 t.draw(() => {
 	t.background(10, 20, 15);
@@ -45,12 +31,6 @@ t.draw(() => {
 	t.char(' ');
 	t.charColor(isLocked ? [255, 100, 100] : [100, 255, 150]);
 	t.rect(cols - 2, rows - 2);
-
-	const modeText = isLocked ? 'GRID: LOCKED (26x12)' : 'GRID: RESPONSIVE';
-	drawLabel(modeText, -(modeText.length - 1) / 2, 0, isLocked ? [255, 150, 150] : [150, 255, 200]);
-
-	const hint = 'Click to toggle';
-	drawLabel(hint, -(hint.length - 1) / 2, (rows - 1) / 2 - 2, [100, 100, 100]);
 });
 
 t.mousePressed(() => {
@@ -63,6 +43,35 @@ t.mousePressed(() => {
 		t.grid.responsive();
 		t.grid.reset();
 	}
+});
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	const modeText = isLocked ? 'LOCKED (26x12)' : 'RESPONSIVE';
+
+	drawText('TEXTMODEGRID.RESPONSIVE', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: AUTO-RESPONSIVE GRID', x, y++, 100, 220, 255);
+	drawText(`GRID STATE: ${modeText}`, x, y++, isLocked ? 255 : 150, isLocked ? 150 : 255, isLocked ? 150 : 200);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('Click anywhere to toggle grid lock.', x, y++, 140, 190, 255);
 });
 
 t.windowResized(() => {

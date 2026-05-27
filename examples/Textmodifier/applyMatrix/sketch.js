@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.applyMatrix
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,58 +7,47 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function trsMatrixY(angle, tx, ty, tz, sx, sy, sz) {
-	const c = Math.cos(angle);
-	const s = Math.sin(angle);
+const labelLayer = t.layers.add();
 
-	return new Float32Array([c * sx, 0, -s * sx, 0, 0, sy, 0, 0, s * sz, 0, c * sz, 0, tx, ty, tz, 1]);
-}
-
-function drawLabel(text, y, color = [220, 220, 220]) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
-t.setup(() => {
-	t.perspective(60, 0.1, 4096);
-	const camera = t.createCamera();
-	camera.setPosition(0, 6, 54).lookAt(0, 0, 0);
-	t.setCamera(camera);
+t.draw(() => {
+	t.background(6, 10, 22);
+	const time = t.frameCount * 0.03;
+	const c = Math.cos(time);
+	const s = Math.sin(time);
+	t.push();
+	t.translate(8, 1);
+	t.applyMatrix(c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+	t.char('#');
+	t.charColor(140, 220, 255);
+	t.rect(12, 4);
+	t.pop();
 });
 
-t.draw(() => {
-	const time = t.frameCount * 0.02;
-	t.background(5, 7, 18);
-
-	const left = trsMatrixY(time * 1.4, -12, 0, 0, 1.1, 1.1, 1.1);
-	t.push();
-	t.applyMatrix(left);
-	t.char('M');
-	t.charColor(255, 140, 120);
-	t.box(8, 8, 8);
-	t.pop();
-
-	const right = trsMatrixY(time * 2.0, 12, 0, 0, 1.0, 1.0, 1.0);
-	t.push();
-	t.applyMatrix(right);
-	t.scale(1.0 + Math.sin(time * 2.2) * 0.2);
-	t.char('S');
-	t.charColor(120, 205, 255);
-	t.torus(3.2, 1.3);
-	t.pop();
-
-	drawLabel('applyMatrix() + scale()', -Math.floor(t.grid.rows * 0.36), [255, 225, 140]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.APPLYMATRIX', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: CUSTOM MATRIX', x, y++, 100, 220, 255);
+	drawText('Applies a 4x4 transform.', x, y++, 140, 160, 190);
+	drawText('Matrix rotates the rectangle.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('API: t.applyMatrix(...)', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

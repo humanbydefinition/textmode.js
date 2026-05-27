@@ -1,52 +1,60 @@
 /**
  * @title Textmodifier.sphere
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-function label(text, y) {
+const labelLayer = t.layers.add();
+
+let spin = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y, 0);
-	t.charColor(220);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
-	const time = t.frameCount * 0.02;
-	t.background(4, 6, 16);
-	t.ambientLight(18, 20, 26);
-	t.pointLight([120, 210, 255], { x: 18, y: -10, z: 26 });
-	t.pointLight([255, 150, 100], { x: -20, y: 8, z: -18 });
-	t.camera(Math.cos(time * 0.45) * 16, -5, 76, 0, 0, 0);
-
+	t.background(6, 8, 18);
+	const time = t.frameCount * 0.025;
+	spin = (time * 40) % 360;
+	t.perspective(58, 0.1, 4096);
+	t.camera(18, -10, 42, 0, 0, 0);
+	t.ambientLight(24, 28, 38);
+	t.pointLight([255, 210, 140], { x: 18, y: -18, z: 28 });
 	t.push();
-	t.rotateY(time * 38);
-	t.rotateX(16);
-	t.char('@');
-	t.charColor(230, 240, 255);
-	t.cellColor(18, 24, 34);
-	t.sphere(10 + Math.sin(time * 1.3) * 1.5);
+	t.translate(5, 1, 0);
+	t.rotateY(spin);
+	t.rotateX(18);
+	t.char('#');
+	t.charColor(140, 220, 255);
+	t.cellColor(16, 24, 42);
+	t.sphere(7);
 	t.pop();
+});
 
-	for (let i = 0; i < 3; i++) {
-		t.push();
-		t.rotateY(i * 120 + time * (46 + i * 12));
-		t.translate(20, Math.sin(time * 2 + i) * 4, 0);
-		t.char(['o', '*', '+'][i]);
-		t.charColor(255, 180 - i * 30, 120 + i * 50);
-		t.cellColor(18, 12, 22 + i * 6);
-		t.sphere(2.2 + i * 0.7);
-		t.pop();
-	}
-
-	label('sphere(radius)', Math.floor(t.grid.rows / 2) - 3);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.SPHERE', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: 3D SPHERE', x, y++, 100, 220, 255);
+	drawText('Radius defines all axes.', x, y++, 140, 160, 190);
+	drawText('Camera and light reveal depth.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`SPIN: ${spin.toFixed(1)}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

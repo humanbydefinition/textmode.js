@@ -1,11 +1,10 @@
 import type { TyprFont } from './typr/types.ts';
 /**
- * Handles extraction of characters from font cmap tables.
- * This class encapsulates the complex logic for reading different cmap table formats.
+ * Extracts supported Unicode characters from parsed cmap tables.
  */
 export declare class CharacterExtractor {
     /**
-     * Extracts all available characters from a font's cmap tables.
+     * Extracts Unicode characters from the selected cmap tables.
      * @param font The parsed font object from Typr
      * @returns Array of unique character strings
      */

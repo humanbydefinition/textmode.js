@@ -1,44 +1,53 @@
 /**
  * @title Textmodifier.destroy
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let destroyed = false;
-const status = document.createElement('div');
-status.style.cssText =
-	'position:fixed;left:12px;top:12px;padding:8px 10px;background:#09090bcc;color:#e4e4e7;font:12px JetBrains Mono,monospace;border:1px solid #27272a;';
-status.textContent = 'destroy() will run after 3 seconds';
-document.body.appendChild(status);
+const labelLayer = t.layers.add();
 
-function label(text, y, color = [220, 220, 220]) {
+let requested = false;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
-t.draw(() => {
-	const remaining = Math.max(0, 180 - t.frameCount);
-	t.background(10, 12, 24);
-	label('destroy()', -2, [255, 210, 90]);
-	label(`frames until cleanup: ${remaining}`, 1);
+t.mouseClicked(() => {
+	requested = true;
+});
 
-	if (!destroyed && remaining === 0) {
-		destroyed = true;
-		status.textContent = 'destroy() called...';
-		t.destroy();
-		setTimeout(() => {
-			status.textContent = `destroyed, isDisposed = ${t.isDisposed}`;
-		}, 0);
-	}
+t.draw(() => {
+	t.background(12, 6, 8);
+	t.char(requested ? '!' : '#');
+	t.charColor(requested ? 255 : 140, requested ? 120 : 220, 120);
+	t.rect(12, 5);
+	if (requested && t.frameCount % 120 === 0) t.destroy();
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.DESTROY', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: DISPOSE INSTANCE', x, y++, 100, 220, 255);
+	drawText('Click requests cleanup.', x, y++, 140, 160, 190);
+	drawText('Destroy runs on next cycle.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(requested ? 'REQUESTED: YES' : 'REQUESTED: NO', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

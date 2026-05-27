@@ -4,7 +4,7 @@ import type { TextmodeOptions } from './types';
 /**
  * The main entry point for the `textmode.js` library.
  *
- * Provides static methods for creating {@link Textmodifier} instances and managing global settings.
+ * Use it to create {@link Textmodifier} instances and configure global library settings.
  *
  * @example
  * {@includeCode ../../examples/Textmode/creation/sketch.js}
@@ -12,25 +12,25 @@ import type { TextmodeOptions } from './types';
 export declare class Textmode {
     private constructor();
     /**
-     * Create a new {@link Textmodifier} instance with optional configuration.
-     * @param opts Configuration options for the Textmodifier instance
-     * @returns A new Textmodifier instance
+     * Create a {@link Textmodifier} instance.
+     * @param opts Optional instance configuration.
+     * @returns The created Textmodifier instance.
      *
      * @example
      * {@includeCode ../../examples/Textmode/create/sketch.js}
      */
     static create(opts?: TextmodeOptions): Textmodifier;
     /**
-     * Set the global error handling level for the library. This applies to all {@link Textmodifier} instances present.
-     * @param level The error handling level to set.
+     * Set the global error handling level for all {@link Textmodifier} instances.
+     * @param level Error handling level to use.
      *
      * @example
      * {@includeCode ../../examples/Textmode/setErrorLevel/sketch.js}
      */
     static setErrorLevel(level: TextmodeErrorLevel): void;
     /**
-     * Returns the version of `textmode.js` being used.
-     * @returns The version string of the library.
+     * The current `textmode.js` package version.
+     * @returns The package version string.
      *
      * @example
      * {@includeCode ../../examples/Textmode/version/sketch.js}

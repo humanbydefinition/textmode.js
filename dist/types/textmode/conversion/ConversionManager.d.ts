@@ -1,12 +1,6 @@
 import type { TextmodeConversionMode, TextmodeConversionStrategy } from './ConversionRegistry';
 /**
- * Manages conversion strategy registration and retrieval.
- *
- * This class provides:
- * - A registry for custom and built-in conversion strategies
- * - Instance-scoped conversion strategies per Textmodifier
- *
- * Used for image-to-ASCII conversion modes.
+ * Registers image-to-textmode conversion strategies for a Textmodifier instance.
  *
  * Access via {@link Textmodifier.conversions}.
  *
@@ -48,7 +42,7 @@ export declare class TextmodeConversionManager {
      * @returns true if the strategy was unregistered, false if it wasn't found
      *
      * @example
-     * {@includeCode ../../../examples/conversion/registry/sketch.js}
+     * {@includeCode ../../../examples/conversion/unregister/sketch.js}
      */
     unregister(id: TextmodeConversionMode): boolean;
     /**
@@ -58,7 +52,7 @@ export declare class TextmodeConversionManager {
      * @returns true if the strategy exists
      *
      * @example
-     * {@includeCode ../../../examples/conversion/registry/sketch.js}
+     * {@includeCode ../../../examples/conversion/has/sketch.js}
      */
     has(id: TextmodeConversionMode): boolean;
     /**

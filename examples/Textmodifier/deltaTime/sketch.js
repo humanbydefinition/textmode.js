@@ -1,44 +1,58 @@
 /**
  * @title Textmodifier.deltaTime
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let x = -40;
-const speed = 0.05;
+const labelLayer = t.layers.add();
 
-function drawLabel(text, y) {
+let xPos = -18;
+let dt = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(180);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 t.draw(() => {
-	t.background(0);
-
-	x += speed * t.deltaTime();
-	if (x > t.grid.cols / 2 + 5) {
-		x = -t.grid.cols / 2 - 5;
-	}
-
+	t.background(6, 10, 22);
+	dt = t.deltaTime();
+	xPos += dt * 0.01;
+	if (xPos > 18) xPos = -18;
+	t.charColor(60, 70, 100);
+	t.char('-');
+	t.line(-18, 0, 18, 0);
 	t.push();
-	t.translate(x, 0);
-	t.char('>');
-	t.charColor(255, 100, 50);
-	t.rect(4, 2);
+	t.translate(xPos, 0);
+	t.char('@');
+	t.charColor(140, 255, 180);
+	t.point();
 	t.pop();
+});
 
-	drawLabel(`deltaTime(): ${t.deltaTime().toFixed(2)} ms`, -12);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.DELTATIME', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: FRAME ELAPSED MS', x, y++, 100, 220, 255);
+	drawText('Motion scales by deltaTime.', x, y++, 140, 160, 190);
+	drawText('Speed stays frame-rate aware.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`DT: ${dt.toFixed(1)} MS`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

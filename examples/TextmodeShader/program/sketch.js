@@ -1,6 +1,5 @@
 /**
  * @title TextmodeShader.program
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,85 +7,69 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
+const labelLayer = t.layers.add();
 let customShader = null;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 t.setup(async () => {
-	const vert = `#version 300 es
-		in vec4 a_position;
-		in vec2 a_uv;
-		out vec2 v_uv;
-		void main() {
-			gl_Position = a_position;
-			v_uv = a_uv;
-		}
-	`;
-
-	const frag = `#version 300 es
-		precision highp float;
-		in vec2 v_uv;
-		layout(location = 0) out vec4 o_character;
-		layout(location = 1) out vec4 o_primaryColor;
-		layout(location = 2) out vec4 o_secondaryColor;
-
-		void main() {
-			float mask = step(0.5, fract(v_uv.x * 8.0 + v_uv.y * 8.0));
-			o_character = vec4(mask, 0.0, 0.0, 0.0);
-			o_primaryColor = vec4(1.0, 0.8, 0.4, 1.0);
-			o_secondaryColor = vec4(0.05, 0.07, 0.12, 1.0);
-		}
-	`;
-
-	customShader = await t.createShader(vert, frag);
+	customShader = await t.createFilterShader(`#version 300 es
+precision highp float;
+in vec2 v_uv;
+uniform float u_time;
+layout(location = 0) out vec4 o_character;
+layout(location = 1) out vec4 o_primaryColor;
+layout(location = 2) out vec4 o_secondaryColor;
+void main() {
+	vec2 centered = v_uv - 0.5;
+	float rings = sin(length(centered) * 42.0 - u_time * 3.0);
+	float scan = sin((v_uv.x + v_uv.y) * 26.0 + u_time * 2.0);
+	float glyph = step(0.0, rings + scan * 0.45);
+	o_character = vec4(glyph, 0.0, 0.0, 1.0);
+	o_primaryColor = vec4(0.28 + glyph * 0.6, 0.82, 1.0, 1.0);
+	o_secondaryColor = vec4(0.02, 0.04, 0.09, 1.0);
+}`);
 });
 
 t.draw(() => {
-	t.background(6, 10, 22);
+	t.background(4, 7, 18);
 
-	drawCenteredText('TextmodeShader.program', -12, [240, 245, 255]);
-	drawCenteredText('Accessing the underlying WebGLProgram handle.', -10, [150, 170, 200]);
+	if (!customShader) return;
 
-	if (customShader && customShader.program) {
-		const time = t.frameCount * 0.05;
-		const pulse = 0.5 + 0.5 * Math.sin(time);
+	t.shader(customShader);
+	t.setUniform('u_time', t.frameCount * 0.025);
+	t.rect(t.grid.cols, t.grid.rows);
+	t.resetShader();
+});
 
-		t.push();
-		t.shader(customShader);
-		t.charColor(255, 200, 100);
-		t.rect(14, 6);
-		t.resetShader();
-		t.pop();
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
 
-		t.push();
-		t.charColor(60, 70, 100);
-		t.char('.');
-		t.line(-12, 0, -8, 0);
-		t.line(8, 0, 12, 0);
-		t.pop();
+	drawText('TEXTMODESHADER.PROGRAM', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: WEBGL PROGRAM HANDLE', x, y++, 100, 220, 255);
+	drawText('Filter shader draws the grid.', x, y++, 140, 160, 190);
+	drawText('program exposes the raw handle.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
 
-		drawCenteredText('SHADER MODULE: ACTIVE', 6, [140, 255, 180]);
-		drawCenteredText(
-			`GL_PROGRAM_ID: ${customShader.program instanceof WebGLProgram ? 'READY' : 'ERROR'}`,
-			9,
-			[140, 180, 255]
-		);
-		drawCenteredText('The program property returns the raw GL handle.', 12, [100, 120, 150]);
-	}
+	const ready = customShader && customShader.program instanceof WebGLProgram;
+	const state = ready ? 'READY' : 'WAIT';
+	drawText(`PROGRAM: ${state}`, x, y++, 140, 255, 180);
+	drawText('TYPE: WEBGLPROGRAM', x, y++, 255, 225, 140);
 });
 
 t.windowResized(() => {

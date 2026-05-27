@@ -1,46 +1,50 @@
 /**
  * @title Textmodifier.isDisposed
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
-
-const button = document.createElement('button');
-button.textContent = 'destroy';
-button.style.cssText =
-	'position:fixed;left:12px;top:12px;padding:8px 10px;background:#18181b;color:#e4e4e7;border:1px solid #27272a;font:12px JetBrains Mono,monospace;cursor:pointer;';
-document.body.appendChild(button);
-
-const status = document.createElement('div');
-status.style.cssText =
-	'position:fixed;left:12px;top:50px;padding:8px 10px;background:#09090bcc;color:#e4e4e7;font:12px JetBrains Mono,monospace;border:1px solid #27272a;';
-status.textContent = `isDisposed = ${t.isDisposed}`;
-document.body.appendChild(status);
-
-button.addEventListener('click', () => {
-	t.destroy();
-	setTimeout(() => {
-		status.textContent = `isDisposed = ${t.isDisposed}`;
-	}, 0);
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
 });
 
-function label(text, y, color = [220, 220, 220]) {
+const labelLayer = t.layers.add();
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
+t.mouseClicked(() => {
+	if (!t.isDisposed) t.destroy();
+});
+
 t.draw(() => {
-	t.background(10, 12, 24);
-	label('isDisposed', -2, [255, 210, 90]);
-	label('click the destroy button', 1);
+	t.background(6, 10, 22);
+	t.char(t.isDisposed ? 'X' : '#');
+	t.charColor(t.isDisposed ? 255 : 140, t.isDisposed ? 120 : 220, 180);
+	t.rect(12, 5);
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.ISDISPOSED', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: DISPOSED FLAG', x, y++, 100, 220, 255);
+	drawText('Click calls destroy().', x, y++, 140, 160, 190);
+	drawText('Flag reports lifecycle state.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(t.isDisposed ? 'DISPOSED: YES' : 'DISPOSED: NO', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

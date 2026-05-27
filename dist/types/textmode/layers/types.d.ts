@@ -20,35 +20,35 @@ import type { TextmodeFont } from '../fonts';
 export declare const TEXTMODE_LAYER_BLEND_MODES: readonly ["normal", "additive", "multiply", "screen", "subtract", "darken", "lighten", "overlay", "softLight", "hardLight", "colorDodge", "colorBurn", "difference", "exclusion"];
 export type TextmodeLayerBlendMode = (typeof TEXTMODE_LAYER_BLEND_MODES)[number];
 /**
- * Options for configuring a new TextmodeLayer via {@link TextmodeLayerManager.add}.
+ * Options for layers created with {@link TextmodeLayerManager.add}.
  */
 export interface TextmodeLayerOptions {
     /**
-     * Whether the layer is visible. Default is `true`.
+     * Whether the layer is visible. Defaults to `true`.
      */
     visible?: boolean;
     /**
-     * The opacity of the layer, between 0 (fully transparent) and 1 (fully opaque). Default is `1`.
+     * Layer opacity from `0` (transparent) to `1` (opaque). Defaults to `1`.
      */
     opacity?: number;
     /**
-     * The blend mode used when rendering this layer. Default is `'normal'`.
+     * Blend mode used when compositing this layer. Defaults to `'normal'`.
      */
     blendMode?: TextmodeLayerBlendMode;
     /**
-     * The horizontal offset of the layer in pixels. Default is `0`.
+     * Horizontal layer offset in pixels. Defaults to `0`.
      */
     offsetX?: number;
     /**
-     * The vertical offset of the layer in pixels. Default is `0`.
+     * Vertical layer offset in pixels. Defaults to `0`.
      */
     offsetY?: number;
     /**
-     * The z-rotation of the layer in degrees around its center. Default is `0`.
+     * Z rotation in degrees around the layer center. Defaults to `0`.
      */
     rotationZ?: number;
     /**
-     * The font size for the layer's text. Default is `16`.
+     * Font size for the layer's glyph source. Defaults to `16`.
      */
     fontSize?: number;
     /**

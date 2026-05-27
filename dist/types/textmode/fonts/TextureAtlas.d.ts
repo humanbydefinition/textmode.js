@@ -1,29 +1,16 @@
 import type { GLRenderer } from '../../rendering/webgl/core/Renderer.ts';
 import type { GLFramebuffer } from '../../rendering/webgl/core/Framebuffer.ts';
+import { CanvasAtlasSurface } from './CanvasAtlasSurface.ts';
 /**
- * Handles creation of texture atlases for font rendering.
- * This class manages the Canvas 2D rendering and WebGL framebuffer creation.
- * Supports both Typr.js path-based rendering for uniform cross-browser text
- * and fallback fillText rendering.
+ * Builds normalized glyph atlases from Typr outline data.
  */
 export declare class TextureAtlas {
-    private _textureCanvas;
-    private _textureContext;
-    private _renderer;
-    private _framebuffer;
-    private _columns;
-    private _rows;
+    _surface: CanvasAtlasSurface;
     /**
      * Creates a new TextureAtlas instance.
      * @param renderer The WebGL renderer instance
      */
     constructor(renderer: GLRenderer);
-    /**
-     * Sets up the canvas for rendering.
-     * @param width Canvas buffer width
-     * @param height Canvas buffer height
-     */
-    private _setupCanvas;
     /**
      * Renders all characters to the canvas in a grid layout using Typr.js paths.
      * @param characters Array of characters to render
@@ -35,6 +22,7 @@ export declare class TextureAtlas {
     private _renderCharacters;
     /**
      * Renders a glyph to the canvas using direct path rendering from glyph outline data.
+     * @param context Canvas 2D context to draw into
      * @param glyphData Glyph data from Typr.js
      * @param x X position
      * @param y Y position (baseline position)

@@ -1,27 +1,55 @@
 /**
  * @title Textmodifier.lineWeight
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
+
+const labelLayer = t.layers.add();
+
+let weight = 1;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
 
 t.draw(() => {
-	t.background('#050810');
+	t.background(6, 10, 22);
+	weight = 1 + Math.floor((t.frameCount / 60) % 4);
+	t.charColor(70, 80, 110);
+	t.char('.');
+	t.line(-20, -6, 20, -6);
+	t.line(-20, 6, 20, 6);
+	t.lineWeight(weight);
+	t.charColor(120, 255, 180);
+	t.char('#');
+	t.line(-20, 0, 20, 0);
+	t.lineWeight(1);
+});
 
-	const layers = 6;
-	const spacing = 4;
-
-	for (let i = 0; i < layers; i++) {
-		const phase = t.frameCount * 0.03 + i * 0.8;
-		const pulse = 1 + 4 * (0.5 + 0.5 * Math.sin(phase));
-		const wobble = Math.sin(phase * 1.6) * 5;
-
-		t.lineWeight(Math.round(pulse));
-		t.charColor(160 + i * 12, 200, 255);
-		t.char(['-', '+', '×'][i % 3]);
-
-		const y = (i - (layers - 1) / 2) * spacing;
-		t.line(-20, y + wobble, 20, y - wobble);
-	}
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.LINEWEIGHT', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: LINE THICKNESS', x, y++, 100, 220, 255);
+	drawText('Controls stroke cell thickness.', x, y++, 140, 160, 190);
+	drawText('Weight resets after the demo line.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`WEIGHT: ${weight}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

@@ -11,6 +11,7 @@ export declare class LightingState {
     _pointLightPositions: Float32Array;
     _pointLightColors: Float32Array;
     _lightFalloff: Float32Array;
+    _useLighting: boolean;
     _lightingVersion: number;
     /**
      * Copy lighting fields to a state snapshot.

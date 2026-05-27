@@ -1,5 +1,5 @@
 import type { GLRenderer, GLFramebuffer } from '../../rendering';
-import type { TextmodeLayer } from './TextmodeLayer';
+import { type TextmodeLayerBlendMode } from './types';
 /**
  * Parameters for the composite operation.
  */
@@ -18,12 +18,25 @@ export interface CompositeParams {
     canvasHeight: number;
 }
 /**
+ * Minimal render state needed by the compositor for each composited texture.
+ */
+export interface CompositeLayerState {
+    /** Whether the texture should be included in the composite. */
+    _visible: boolean;
+    /** Texture opacity applied during compositing. */
+    _opacity: number;
+    /** Rotation in degrees around the texture center. */
+    _rotation: number;
+    /** Blend mode used when compositing over the current result. */
+    _blendMode: TextmodeLayerBlendMode;
+}
+/**
  * Represents the placement and sizing of a single layer within the composite operation.
  * Used to position layers relative to the base canvas during compositing.
  */
 export interface CompositeLayerPlacement {
-    /** The {@link TextmodeLayer} instance being composited. */
-    layer: TextmodeLayer;
+    /** Render state for the texture being composited. */
+    layer: CompositeLayerState;
     /** The WebGL texture containing the layer's rendered content. */
     texture: WebGLTexture;
     /** The width of the layer's texture in pixels. */
@@ -36,16 +49,8 @@ export interface CompositeLayerPlacement {
     offsetY: number;
 }
 /**
- * Handles the compositing of multiple layers using shader-based blending.
- *
- * This class is responsible for:
- * - Managing ping-pong framebuffers for layer compositing
- * - Applying blend modes via the composite shader
- * - Rendering the final composited result to a target framebuffer
- *
- * @remarks
- * The compositor uses a ping-pong buffer technique to avoid WebGL feedback loops
- * when reading from and writing to textures during blend operations.
+ * Shader compositor for layer framebuffers.
+ * Uses ping-pong buffers so blend passes never read from and write to the same texture.
  */
 export declare class Layer2DCompositor {
     private readonly _renderer;
@@ -53,7 +58,7 @@ export declare class Layer2DCompositor {
     private _pingPongBuffers;
     private _currentPingPongIndex;
     /**
-     * Create a new LayerCompositor.
+     * Create a new 2D layer compositor.
      * @param renderer The WebGL renderer instance.
      * @param canvasWidth The canvas width in pixels.
      * @param canvasHeight The canvas height in pixels.

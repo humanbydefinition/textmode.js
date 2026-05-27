@@ -1,47 +1,74 @@
 /**
  * @title Textmodifier.doubleClicked
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-const bursts = [];
+const labelLayer = t.layers.add();
 
-t.doubleClicked((data) => {
-	if (data.position.x === Number.NEGATIVE_INFINITY) return;
+const pulses = [];
+let count = 0;
+let last = 'WAITING';
 
-	for (let i = 0; i < 16; i++) {
-		const angle = (Math.PI * 2 * i) / 16;
-		bursts.push({
-			x: data.position.x,
-			y: data.position.y,
-			vx: Math.cos(angle) * 0.8,
-			vy: Math.sin(angle) * 0.8,
-			life: 1,
-		});
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
 	}
+	t.pop();
+}
+
+function addPulse(label, x = 0, y = 0) {
+	count++;
+	last = label;
+	pulses.unshift({ label, x, y, life: 1 });
+	if (pulses.length > 12) pulses.length = 12;
+}
+
+t.doubleClicked(() => {
+	addPulse('DOUBLE CLICK', t.mouse.x, t.mouse.y);
 });
 
 t.draw(() => {
-	t.background(0);
+	t.background(6, 10, 22);
 
-	for (let i = bursts.length - 1; i >= 0; i--) {
-		const burst = bursts[i];
-		burst.x += burst.vx;
-		burst.y += burst.vy;
-		burst.life -= 0.02;
-
-		if (burst.life <= 0) {
-			bursts.splice(i, 1);
+	for (let i = pulses.length - 1; i >= 0; i--) {
+		const p = pulses[i];
+		p.life -= 0.02;
+		if (p.life <= 0) {
+			pulses.splice(i, 1);
 			continue;
 		}
-
 		t.push();
-		t.translate(burst.x, burst.y);
-		t.char(['*', '+', '·'][i % 3]);
-		t.charColor(255, 180 + burst.life * 75, 80, burst.life * 255);
+		t.translate(p.x, p.y - (1 - p.life) * 4);
+		t.char('*');
+		t.charColor(255, 210, 120);
 		t.point();
 		t.pop();
 	}
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.DOUBLECLICKED', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: DOUBLE CLICK', x, y++, 100, 220, 255);
+	drawText('Event updates compact state.', x, y++, 140, 160, 190);
+	drawText('Pulses show recent triggers.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('DOUBLE: ' + count, x, y++, 140, 255, 180);
+	drawText('LAST: ' + last.slice(0, 28), x, y++, 180, 200, 220);
 });
 
 t.windowResized(() => {

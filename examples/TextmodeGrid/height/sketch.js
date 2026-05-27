@@ -1,6 +1,5 @@
 /**
  * @title TextmodeGrid.height
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,48 +7,57 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
+const labelLayer = t.layers.add();
 
 t.draw(() => {
 	t.background(6, 10, 22);
 
-	const h = t.grid.height;
 	const rows = t.grid.rows;
 	const halfHeight = Math.floor(rows / 2);
 
 	t.push();
-	t.translate(0, 0);
+	t.translate(14, 0);
 	t.char('|');
-	t.charColor(255, 140, 180, 100);
+	t.charColor(140, 255, 180, 100);
 	t.rect(1, rows);
 	t.pop();
 
 	t.push();
 	t.charColor(255, 255, 255);
-	t.translate(0, -halfHeight);
-	t.char('-');
+	t.translate(14, -halfHeight);
+	t.char('▲');
 	t.point();
 	t.translate(0, rows - 1);
-	t.char('-');
+	t.char('▼');
 	t.point();
 	t.pop();
+});
 
-	drawCenteredText('TextmodeGrid.height', -12, [240, 245, 255]);
-	drawCenteredText(`${h} PIXELS`, 12, [255, 140, 180]);
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODEGRID.HEIGHT', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: TOTAL GRID PIXEL HEIGHT', x, y++, 100, 220, 255);
+	drawText('Returns pixel height of grid.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`GRID PIXEL HEIGHT: ${t.grid.height} px`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

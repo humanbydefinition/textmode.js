@@ -1,55 +1,54 @@
 /**
  * @title Textmodifier.millis4
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-function drawLabel(text, y) {
+const labelLayer = t.layers.add();
+
+let value = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(200);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 t.draw(() => {
-	t.background(0);
+	t.background(6, 10, 22);
+	value = Math.sin(t.millis * 0.002);
+	const angle = (value % 6.28) * 1;
+	t.push();
+	t.translate(8, 2);
+	t.rotateZ((angle * 180) / Math.PI);
+	t.char('#');
+	t.charColor(140, 220, 255);
+	t.rect(12, 1);
+	t.pop();
+});
 
-	if (t.isKeyPressed(' ')) {
-		const progress = (t.mouse.x + t.grid.cols / 2) / t.grid.cols;
-		t.millis = Math.max(0, Math.min(10000, progress * 10000));
-		t.cursor('ew-resize');
-	} else {
-		t.cursor('default');
-	}
-
-	const time = t.millis;
-	const count = 120;
-	const maxRadius = Math.min(t.grid.cols, t.grid.rows) * 0.35;
-
-	for (let i = 0; i < count; i++) {
-		const pct = i / count;
-		const angle = i * 0.45 + time * 0.002;
-		const radius = pct * maxRadius;
-
-		t.push();
-		t.translate(Math.cos(angle) * radius, Math.sin(angle) * radius);
-		t.char(i % 3 === 0 ? 'O' : '.');
-		t.charColor((time * 0.1 + i * 5) % 255, 255 - ((time * 0.1 + i * 5) % 255), 200);
-		t.point();
-		t.pop();
-	}
-
-	drawLabel('hold SPACE and move mouse to set millis', Math.floor(t.grid.rows / 2) - 3);
-	drawLabel(`${Math.floor(t.millis)} ms`, Math.floor(t.grid.rows / 2) - 1);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.MILLIS4', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: SMOOTH OSCILLATOR', x, y++, 100, 220, 255);
+	drawText('Numeric time drives motion.', x, y++, 140, 160, 190);
+	drawText('Rows stay fixed-width short.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`VALUE: ${value.toFixed(2)}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

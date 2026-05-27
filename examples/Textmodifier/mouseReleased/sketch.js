@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.mouseReleased
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,73 +7,68 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-let dragStart = null;
-let lastRelease = null;
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+const pulses = [];
+let count = 0;
+let last = 'WAITING';
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
-t.mousePressed((data) => {
-	if (data.position.x === Number.NEGATIVE_INFINITY) return;
-	dragStart = { x: data.position.x, y: data.position.y };
-});
+function addPulse(label, x = 0, y = 0) {
+	count++;
+	last = label;
+	pulses.unshift({ label, x, y, life: 1 });
+	if (pulses.length > 12) pulses.length = 12;
+}
 
-t.mouseReleased((data) => {
-	if (!dragStart) return;
-	lastRelease = {
-		x: data.position.x,
-		y: data.position.y,
-		sx: dragStart.x,
-		sy: dragStart.y,
-		time: t.secs,
-	};
-	dragStart = null;
+t.mouseReleased(() => {
+	addPulse('MOUSE UP', t.mouse.x, t.mouse.y);
 });
 
 t.draw(() => {
 	t.background(6, 10, 22);
 
-	if (dragStart && t.mouse.x !== Number.NEGATIVE_INFINITY) {
+	for (let i = pulses.length - 1; i >= 0; i--) {
+		const p = pulses[i];
+		p.life -= 0.02;
+		if (p.life <= 0) {
+			pulses.splice(i, 1);
+			continue;
+		}
 		t.push();
-		t.charColor(100, 200, 255);
-		t.char('.');
-		t.line(dragStart.x, dragStart.y, t.mouse.x, t.mouse.y);
-		t.translate(dragStart.x, dragStart.y);
-		t.char('O');
+		t.translate(p.x, p.y - (1 - p.life) * 4);
+		t.char('*');
+		t.charColor(255, 210, 120);
 		t.point();
 		t.pop();
 	}
+});
 
-	if (lastRelease) {
-		const life = Math.max(0, 1.0 - (t.secs - lastRelease.time) * 1.5);
-		if (life > 0) {
-			t.push();
-			t.charColor(255, 140, 180, life * 255);
-			t.char('-');
-			t.line(lastRelease.sx, lastRelease.sy, lastRelease.x, lastRelease.y);
-			t.translate(lastRelease.x, lastRelease.y);
-			t.char('X');
-			t.point();
-			t.pop();
-		}
-	}
-
-	drawCenteredText('Textmodifier.mouseReleased', -22, [255, 255, 255]);
-	drawCenteredText('Triggers once when a button is let go.', -20, [150, 170, 200]);
-	drawCenteredText('Used to finalize drags or projectiles.', -18, [150, 170, 200]);
-
-	drawCenteredText('Click, Drag, and RELEASE to "slingshot"', 18, [255, 140, 180]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.MOUSERELEASED', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: RELEASE EVENT', x, y++, 100, 220, 255);
+	drawText('Event updates compact state.', x, y++, 140, 160, 190);
+	drawText('Pulses show recent triggers.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('RELEASES: ' + count, x, y++, 140, 255, 180);
+	drawText('LAST: ' + last.slice(0, 28), x, y++, 180, 200, 220);
 });
 
 t.windowResized(() => {

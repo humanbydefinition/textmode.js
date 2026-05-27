@@ -1,35 +1,56 @@
 /**
  * @title Textmodifier.layers
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
-
-const topLayer = t.layers.add();
-
-t.draw(() => {
-	t.background(0);
-
-	t.push();
-	t.rotateZ(t.frameCount);
-	t.char('▼');
-	t.charColor(50, 100, 150);
-	t.rect(40, 40);
-	t.pop();
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
 });
+
+const labelLayer = t.layers.add();
+
+const topLayer = t.layers.add({ blendMode: 'additive' });
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
 
 topLayer.draw(() => {
 	t.clear();
+	t.char('+');
+	t.charColor(255, 210, 120);
+	t.rect(8, 4);
+});
 
-	const time = t.frameCount * 0.05;
-	const x = Math.sin(time) * 10;
+t.draw(() => {
+	t.background(6, 10, 22);
+	t.char('#');
+	t.charColor(140, 220, 255);
+	t.rect(12, 5);
+	topLayer.offset(Math.sin(t.frameCount * 0.03) * 30, 0);
+});
 
-	t.push();
-	t.char('æ');
-	t.charColor(255, 200, 0);
-	t.cellColor(0, 0, 0, 0);
-	t.translate(x, 0);
-	t.point();
-	t.pop();
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.LAYERS', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: LAYER MANAGER', x, y++, 100, 220, 255);
+	drawText('Accesses the layer stack.', x, y++, 140, 160, 190);
+	drawText('Overlay layer moves in pixels.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`LAYERS: ${t.layers.all.length}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

@@ -1,7 +1,5 @@
 /**
  * @title Textmodifier.image
- * @description Offscreen Composition Matrix: creates an offscreen framebuffer, draws a highly dynamic rotating cosmic galaxy using custom character coordinates, and presents multiple copies across the screen using translation, scaling, and rotation.
- * @author antigravity
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,93 +7,48 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-// Create offscreen framebuffer for rendering the nebula texture
-const fb = t.createFramebuffer({ width: 40, height: 40 });
+const labelLayer = t.layers.add();
 
-t.draw(() => {
-	// ── Phase 1: Render Procedural Nebula to Offscreen Framebuffer ──
-	fb.begin();
-	t.clear();
+const fb = t.createFramebuffer({ width: 24, height: 14 });
 
-	const time = t.frameCount * 0.03;
-	const count = 48;
-
-	for (let i = 0; i < count; i++) {
-		const angle = (i / count) * Math.PI * 4 + time;
-		const r = (i / count) * 16 + 2;
-
-		const x = Math.cos(angle) * r;
-		const y = Math.sin(angle) * r;
-
-		t.push();
-		t.translate(x, y);
-
-		// Dynamic color transition based on node index
-		const red = Math.floor(128 + 127 * Math.sin(i * 0.2 + time));
-		const green = Math.floor(80 + 175 * Math.cos(i * 0.15 - time));
-		const blue = Math.floor(200 + 55 * Math.sin(time));
-
-		t.charColor(red, green, blue);
-
-		// Multi-layered visual shapes
-		if (i % 3 === 0) {
-			t.char('✦');
-		} else if (i % 3 === 1) {
-			t.char('•');
-		} else {
-			t.char('﹡');
-		}
-
-		t.point();
-		t.pop();
-	}
-	fb.end();
-
-	// ── Phase 2: Composite FBO Instances onto Main Responsive Canvas ──
-	t.background(8, 10, 16);
-
-	const cols = t.grid.cols;
-	const rows = t.grid.rows;
-
-	// Draw beautiful grid of nested FBO viewports
-	const gridX = Math.floor(cols / 4);
-	const gridY = Math.floor(rows / 3);
-
-	// Display labels
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(cols / 2) + 4, -Math.floor(rows / 2) + 4);
-	t.charColor(100, 200, 255);
-	t.char('✦');
-	t.point();
-	// Inline draw title
-	t.translate(2, 0);
-	const title = 'OFFSCREEN FRAMEBUFFER MULTI-COMPOSITING GRID';
-	for (let i = 0; i < title.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(title[i]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
+}
 
-	// Draw 3 FBO instances with different transformation parameters
-	for (let slot = 0; slot < 3; slot++) {
-		const posX = (slot - 1) * gridX * 1.3;
-		const posY = 2;
+t.draw(() => {
+	t.background(6, 10, 22);
+	fb.begin();
+	t.clear();
+	t.background(20, 30, 60);
+	t.rotateZ(t.frameCount * 2);
+	t.char('#');
+	t.charColor(255, 210, 120);
+	t.rect(12, 4);
+	fb.end();
+	t.image(fb, 24, 14);
+});
 
-		t.push();
-		t.translate(posX, posY);
-
-		// Varying spin speeds and scales per slot
-		const spin = t.frameCount * 0.015 * (slot + 1);
-		t.rotateZ(spin);
-
-		const scaleVal = 1.0 + Math.sin(t.frameCount * 0.05 + slot) * 0.15;
-		t.image(fb, Math.floor(28 * scaleVal), Math.floor(28 * scaleVal));
-
-		t.pop();
-	}
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.IMAGE', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: DRAW IMAGE SOURCE', x, y++, 100, 220, 255);
+	drawText('Framebuffer is drawn as image.', x, y++, 140, 160, 190);
+	drawText('Offscreen content rotates.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('SOURCE: FRAMEBUFFER', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

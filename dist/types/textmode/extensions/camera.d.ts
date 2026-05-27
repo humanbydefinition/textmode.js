@@ -2,20 +2,20 @@ import { TextmodeCamera } from '../camera';
 declare module '../Textmodifier' {
     interface Textmodifier {
         /**
-         * Enables perspective projection and optionally sets projection parameters.
+         * Enable perspective projection and optionally set projection parameters.
          *
          * The default perspective is tuned to match textmode.js legacy depth behavior.
          *
-         * @param fov Vertical field-of-view in degrees (optional).
-         * @param near Near clipping plane distance (optional, must be > 0).
-         * @param far Far clipping plane distance (optional, must be > near).
+         * @param fov Vertical field-of-view in degrees.
+         * @param near Near clipping plane distance; must be greater than 0.
+         * @param far Far clipping plane distance; must be greater than `near`.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/perspective/sketch.js}
          */
         perspective(fov?: number, near?: number, far?: number): void;
         /**
-         * Creates a camera object initialized from the current render camera state and sets it active.
+         * Create and activate a camera initialized from the current render camera state.
          *
          * Useful for workflows where camera properties are mutated over time and
          * reapplied via {@link setCamera}.
@@ -25,7 +25,7 @@ declare module '../Textmodifier' {
          */
         createCamera(): TextmodeCamera;
         /**
-         * Sets the active camera from a previously created camera object.
+         * Activate a previously created camera object.
          *
          * @param camera Camera instance to activate.
          *
@@ -34,7 +34,7 @@ declare module '../Textmodifier' {
          */
         setCamera(camera: TextmodeCamera): void;
         /**
-         * Resets to the default auto camera behavior.
+         * Reset to the default auto camera behavior.
          *
          * This clears any active explicit camera and returns view calculation to renderer-managed defaults.
          *
@@ -43,7 +43,7 @@ declare module '../Textmodifier' {
          */
         resetCamera(): void;
         /**
-         * Sets an explicit camera transform (eye, target, up) for subsequent draw calls.
+         * Set an explicit camera transform for subsequent draw calls.
          *
          * @param eyeX Camera eye X position.
          * @param eyeY Camera eye Y position.
@@ -60,7 +60,7 @@ declare module '../Textmodifier' {
          */
         camera(eyeX: number, eyeY: number, eyeZ: number, targetX?: number, targetY?: number, targetZ?: number, upX?: number, upY?: number, upZ?: number): void;
         /**
-         * Updates the current look-at target (and optional up vector) for the active camera.
+         * Update the look-at target and optional up vector for the active camera.
          *
          * @param targetX Look-at target X position.
          * @param targetY Look-at target Y position.
@@ -74,15 +74,15 @@ declare module '../Textmodifier' {
          */
         lookAt(targetX: number, targetY: number, targetZ: number, upX?: number, upY?: number, upZ?: number): void;
         /**
-         * Enables orthographic projection for subsequent shape rendering operations.
+         * Enable orthographic projection for subsequent shape drawing.
          *
          * By default, textmode uses a perspective projection. Calling this method switches to an
          * orthographic projection, where objects maintain their size regardless of depth (Z position).
          *
          * The projection mode is reset to perspective at the beginning of each frame.
          *
-         * @param near Optional near clipping plane distance.
-         * @param far Optional far clipping plane distance.
+         * @param near Near clipping plane distance.
+         * @param far Far clipping plane distance.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/ortho/sketch.js}

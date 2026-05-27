@@ -1,41 +1,57 @@
 /**
  * @title TextmodeVideo.creation
- * @author codex
+ * @author Assistant
  */
 const VIDEO_URL = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let video;
-
-function drawLabel(text, y) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(255);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
+const labelLayer = t.layers.add();
+let video = null;
 
 t.setup(async () => {
 	video = await t.loadVideo(VIDEO_URL);
+	video.characters(' .:-=+*#%@');
+	video.volume(0);
 	await video.play();
 	video.loop();
-	video.characters(' .:-=+*#%@');
 });
 
 t.draw(() => {
-	t.background(0);
-	if (!video) return;
+	t.background(6, 12, 10);
+	if (video) {
+		t.image(video);
+	}
+});
 
-	t.image(video);
-	drawLabel('TextmodeVideo via loadVideo()', Math.floor(t.grid.rows / 2) - 2);
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODEVIDEO.CREATION', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: VIDEO LOADING & PLAYBACK', x, y++, 100, 220, 255);
+	drawText('Demonstrates loadVideo API.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(video ? 'STATUS: VIDEO LOADED AND PLAYING' : 'STATUS: LOADING VIDEO...', x, y++, 255, 210, 90);
 });
 
 t.windowResized(() => {

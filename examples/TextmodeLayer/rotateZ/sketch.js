@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.rotateZ
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,18 +8,18 @@ const t = textmode.create({
 });
 
 const scannerLayer = t.layers.add({ blendMode: 'additive' });
+const labelLayer = t.layers.add();
+let currentAngle = 0;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
@@ -32,6 +31,7 @@ t.draw(() => {
 	const time = t.frameCount * 1.5;
 	const angle = time % 360;
 
+	currentAngle = angle;
 	scannerLayer.rotateZ(angle);
 
 	t.push();
@@ -40,11 +40,6 @@ t.draw(() => {
 	t.line(-15, 0, 15, 0);
 	t.line(0, -8, 0, 8);
 	t.pop();
-
-	drawCenteredText('TextmodeLayer.rotateZ', -12, [240, 245, 255]);
-	drawCenteredText('Rotating the entire layer coordinate system in degrees.', -10, [150, 170, 200]);
-
-	drawCenteredText(`ANGLE: ${angle.toFixed(1).padStart(5, '0')} DEG`, 10, [140, 180, 255]);
 });
 
 scannerLayer.draw(() => {
@@ -62,6 +57,22 @@ scannerLayer.draw(() => {
 	t.charColor(255, 225, 140);
 	t.point();
 	t.pop();
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODELAYER.ROTATEZ', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: COMPOSITE ROTATION', x, y++, [100, 220, 255]);
+	drawText('Layer output rotates around center.', x, y++, [140, 160, 190]);
+	drawText('Draw callback remains unrotated.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(`ANGLE: ${currentAngle.toFixed(1)} DEG`, x, y++, [140, 255, 180]);
 });
 
 t.windowResized(() => {

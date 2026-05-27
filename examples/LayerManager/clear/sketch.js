@@ -1,6 +1,5 @@
 /**
  * @title LayerManager.clear
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,22 +7,41 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
+let labelLayer = t.layers.add();
 let mode = 0;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
+}
+
+function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+	drawText(text, -Math.floor(text.length / 2), y, rgb);
+}
+
+function drawHud() {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('LAYERMANAGER.CLEAR', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: CLEAR USER LAYERS', x, y++, [100, 220, 255]);
+	drawText('Rebuilds a fresh layer stack.', x, y++, [140, 160, 190]);
+	drawText('HUD is recreated after clear().', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(`MODE: ${(mode % 9) + 1}`, x, y++, [140, 255, 180]);
 }
 
 function rebuildLayers() {
@@ -48,7 +66,12 @@ function rebuildLayers() {
 			drawCenteredText(labels[index], (index - 1) * 6, colors[index]);
 		});
 	}
+
+	labelLayer = t.layers.add();
+	labelLayer.draw(drawHud);
 }
+
+labelLayer.draw(drawHud);
 
 t.setup(() => {
 	rebuildLayers();
@@ -58,7 +81,6 @@ t.draw(() => {
 	t.background(6, 10, 22);
 
 	drawCenteredText('Base Layer', -12, [240, 245, 255]);
-	drawCenteredText(`Mode: ${(mode % 9) + 1}`, 12, [200, 200, 200]);
 
 	if (t.frameCount % 180 === 0) {
 		rebuildLayers();

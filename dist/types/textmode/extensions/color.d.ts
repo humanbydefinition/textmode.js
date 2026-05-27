@@ -39,8 +39,8 @@ declare module '../Textmodifier' {
          */
         color(value: string | TextmodeColor): TextmodeColor;
         /**
-         * Get the current background color.
-         * @returns The current background color as a {@link TextmodeColor}.
+         * Current canvas background color.
+         * @returns Current background color.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/background/sketch.js}
@@ -84,8 +84,8 @@ declare module '../Textmodifier' {
          */
         clear(): void;
         /**
-         * Get the current character color.
-         * @returns The current character color as a {@link TextmodeColor}.
+         * Current character color.
+         * @returns Current character color.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/charColor/sketch.js}
@@ -120,8 +120,8 @@ declare module '../Textmodifier' {
          */
         charColor(value: string | TextmodeColor): void;
         /**
-         * Alias for {@link charColor}. Get the current stroke (character) color.
-         * @returns The current character color as a {@link TextmodeColor}.
+         * Alias for {@link charColor}. Current stroke (character) color.
+         * @returns Current character color.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/stroke/sketch.js}
@@ -156,8 +156,8 @@ declare module '../Textmodifier' {
          */
         stroke(value: string | TextmodeColor): void;
         /**
-         * Get the current cell background color.
-         * @returns The current cell color as a {@link TextmodeColor}.
+         * Current cell background color.
+         * @returns Current cell color.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/cellColor/sketch.js}
@@ -192,11 +192,11 @@ declare module '../Textmodifier' {
          */
         cellColor(value: string | TextmodeColor): void;
         /**
-         * Alias for {@link cellColor}. Get the current fill (cell background) color.
-         * @returns The current cell color as a {@link TextmodeColor}.
+         * Alias for {@link cellColor}. Current fill (cell background) color.
+         * @returns Current cell color.
          *
          * @example
-         * {@includeCode ../../../examples/Textmodifier/stroke/sketch.js}
+         * {@includeCode ../../../examples/Textmodifier/fill/sketch.js}
          */
         fill(): TextmodeColor;
         /**
@@ -205,7 +205,7 @@ declare module '../Textmodifier' {
          * @param alpha Optional alpha value (0-255)
          *
          * @example
-         * {@includeCode ../../../examples/Textmodifier/stroke/sketch.js}
+         * {@includeCode ../../../examples/Textmodifier/fill/sketch.js}
          */
         fill(gray: number, alpha?: number): void;
         /**
@@ -216,7 +216,7 @@ declare module '../Textmodifier' {
          * @param a Optional alpha component (0-255)
          *
          * @example
-         * {@includeCode ../../../examples/Textmodifier/stroke/sketch.js}
+         * {@includeCode ../../../examples/Textmodifier/fill/sketch.js}
          */
         fill(r: number, g: number, b: number, a?: number): void;
         /**
@@ -224,7 +224,7 @@ declare module '../Textmodifier' {
          * @param value Hex string, `rgb()`/`rgba()` string, or an existing color object
          *
          * @example
-         * {@includeCode ../../../examples/Textmodifier/stroke/sketch.js}
+         * {@includeCode ../../../examples/Textmodifier/fill/sketch.js}
          */
         fill(value: string | TextmodeColor): void;
     }

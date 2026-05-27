@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.font
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,19 +7,18 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const bigFontLayer = t.layers.add({ fontSize: 24, blendMode: 'additive' });
+const bigFontLayer = t.layers.add({ fontSize: 32, blendMode: 'additive' });
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
@@ -29,17 +27,11 @@ function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 t.draw(() => {
 	t.background(6, 10, 22);
 
-	drawCenteredText('TextmodeLayer.font', -12, [240, 245, 255]);
-	drawCenteredText('Each layer maintains its own independent font state.', -10, [150, 170, 200]);
-
 	t.push();
 	t.charColor(40, 50, 80);
 	t.char('.');
 	t.rect(t.grid.cols, t.grid.rows);
 	t.pop();
-
-	const baseFont = t.layers.base.font;
-	drawCenteredText(`BASE FONT: ${baseFont.fontSize} PX`, 12, [140, 180, 255]);
 });
 
 bigFontLayer.draw(() => {
@@ -64,9 +56,25 @@ bigFontLayer.draw(() => {
 			t.pop();
 		}
 	}
+});
 
-	drawCenteredText('LAYER FONT (ADDITIVE)', -4, [255, 225, 140]);
-	drawCenteredText(`${font.fontSize} PX`, 6, [255, 225, 140]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	const baseSize = t.layers.base.font.fontSize;
+	const layerSize = bigFontLayer.font.fontSize;
+
+	drawText('TEXTMODELAYER.FONT', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: LAYER FONT STATE', x, y++, [100, 220, 255]);
+	drawText('Base and overlay keep fonts apart.', x, y++, [140, 160, 190]);
+	drawText('Large font layer uses additive.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(`BASE FONT: ${baseSize} PX`, x, y++, [140, 180, 255]);
+	drawText(`LAYER FONT: ${layerSize} PX`, x, y++, [255, 225, 140]);
 });
 
 t.windowResized(() => {

@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.frameRate
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,59 +7,53 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+const labelLayer = t.layers.add();
 
+let measured = 0;
+let target = 60;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
-t.mouseClicked(() => {
-	const current = Math.round(t.targetFrameRate());
-	t.frameRate(current === 60 ? 10 : 60);
-});
-
 t.draw(() => {
 	t.background(6, 10, 22);
+	target = Math.floor(t.frameCount / 180) % 2 === 0 ? 60 : 30;
+	t.frameRate(target);
+	measured = t.frameRate();
+	const bars = Math.round(measured / 5);
+	for (let i = 0; i < bars; i++) {
+		t.push();
+		t.translate(-18 + i, 3);
+		t.char('|');
+		t.charColor(120, 220, 255);
+		t.point();
+		t.pop();
+	}
+});
 
-	const measured = t.frameRate();
-	const targetRounded = Math.round(t.targetFrameRate());
-	const nearTarget = Math.abs(measured - targetRounded) < 5;
-
-	// Rotating arm (smooth at 60 fps, visibly choppy at 10 fps)
-	t.push();
-	t.rotateZ(t.frameCount * 3);
-	t.charColor(255, 200, 100);
-	t.cellColor(60, 40, 20);
-	t.char('#');
-	t.rect(10, 3);
-	t.pop();
-
-	t.push();
-	t.rotateZ(t.frameCount * 0.5);
-	t.translate(8, 0);
-	t.charColor(100, 200, 255);
-	t.cellColor(20, 40, 60);
-	t.char('*');
-	t.rect(3, 3);
-	t.pop();
-
-	drawCenteredText('Textmodifier.frameRate', -12, [240, 245, 255]);
-	drawCenteredText('Setting target and reading measured frame rate.', -10, [150, 170, 200]);
-
-	drawCenteredText(`t.frameRate() = ${measured.toFixed(1)} fps`, -6, nearTarget ? [140, 255, 180] : [255, 140, 100]);
-	drawCenteredText(`t.targetFrameRate() = ${targetRounded} fps`, -3, [140, 180, 255]);
-
-	drawCenteredText('click to toggle 10 / 60 fps', 11, [80, 90, 120]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.FRAMERATE', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: FPS CONTROL', x, y++, 100, 220, 255);
+	drawText('Target alternates 60 and 30.', x, y++, 140, 160, 190);
+	drawText('Bars show measured rate.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`TARGET: ${target}`, x, y++, 140, 255, 180);
+	drawText(`FPS: ${measured.toFixed(1)}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

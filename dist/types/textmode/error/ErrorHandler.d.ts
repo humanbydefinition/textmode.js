@@ -1,12 +1,9 @@
 /**
- * Error handling levels to control how errors are reported and handled.
- *
- * Determines how validation failures and errors are processed throughout the library.
- * Each level provides different behavior for error reporting and execution flow control.
+ * Controls how validation failures are reported.
  *
  * > [!NOTE]
- * > This feature is currently not fully implemented across all modules,
- * > and most `textmode.js` functions will still throw errors if used incorrectly.
+ * > This setting currently covers validation paths that use the shared error handler.
+ * > Other runtime failures may still throw.
  *
  * @example
  * ```js
@@ -34,16 +31,14 @@ export declare enum TextmodeErrorLevel {
     THROW = 3
 }
 /**
- * Options for configuring the error handler.
+ * Error handler configuration.
  */
 export interface ErrorHandlerOptions {
     /** Global error level */
     globalLevel: TextmodeErrorLevel;
 }
 /**
- * Singleton error handler for textmode.js
- * This class handles errors based on the configured error level.
- * It can log warnings, errors, or throw exceptions based on the global error level.
+ * Shared validation error handler for textmode.js.
  */
 export declare class TextmodeErrorHandler {
     private static _instance;
@@ -52,8 +47,8 @@ export declare class TextmodeErrorHandler {
     private constructor();
     static _getInstance(): TextmodeErrorHandler;
     /**
-     * Handle an error based on the configured settings
-     * @returns true if execution should continue, false if error was handled
+     * Report a validation failure according to the configured level.
+     * @returns true if execution should continue, false if the failure was handled.
      */
     private _handle;
     private _shouldEmit;

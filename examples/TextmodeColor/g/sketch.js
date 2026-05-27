@@ -1,12 +1,14 @@
 /**
  * @title TextmodeColor.g
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
 });
+
+const labelLayer = t.layers.add();
+let centerGreen = 0;
 
 t.draw(() => {
 	t.background(6, 10, 22);
@@ -15,7 +17,6 @@ t.draw(() => {
 
 	for (let y = -6; y <= 6; y++) {
 		const phase = y * 0.3 + time;
-		const wave = Math.sin(phase);
 		const shapedWave = 0.7 * Math.sin(phase) + 0.3 * Math.sin(phase * 3);
 		const green = Math.round(50 + shapedWave * 180);
 		const c = t.color(80, green, 120);
@@ -30,21 +31,34 @@ t.draw(() => {
 		t.pop();
 	}
 
-	const centerGreen = Math.round(50 + Math.abs(Math.sin(time)) * 180);
-	const label = `green: ${t.color(80, centerGreen, 120).g}`;
+	centerGreen = Math.round(50 + Math.abs(Math.sin(time)) * 180);
+});
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(label.length / 2), 10);
-	t.charColor(80, centerGreen, 120);
-
-	for (let i = 0; i < label.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(label[i]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODECOLOR.G', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: GREEN COLOR CHANNEL READ', x, y++, 100, 220, 255);
+	drawText('Accesses green channel of active color.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`GREEN VALUE : ${centerGreen}`, x, y++, 80, centerGreen, 120);
 });
 
 t.windowResized(() => {

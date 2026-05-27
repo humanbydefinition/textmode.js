@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.cursor
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -10,62 +9,42 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-// Configuration for the interactive "Hot Zone"
-const ZONE_W = 20;
-const ZONE_H = 10;
+let hovering = false;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-	t.cellColor(0, 0, 0, 0);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
-labelLayer.draw(() => {
-	t.clear();
-
-	drawCenteredText('Textmodifier.cursor', -12, [240, 245, 255]);
-	drawCenteredText('Updating the system cursor based on grid interaction.', -10, [150, 170, 200]);
-
-	const mx = t.mouse.x === Number.NEGATIVE_INFINITY ? 'OFF' : Math.round(t.mouse.x);
-	const my = t.mouse.y === Number.NEGATIVE_INFINITY ? 'OFF' : Math.round(t.mouse.y);
-
-	const halfW = ZONE_W / 2;
-	const halfH = ZONE_H / 2;
-	const isHovering = t.mouse.x >= -halfW && t.mouse.x < halfW && t.mouse.y >= -halfH && t.mouse.y < halfH;
-
-	drawCenteredText('INTERACTION MONITOR', 8, [140, 255, 180]);
-	drawCenteredText(`MOUSE: [${mx}, ${my}]  HOVER: ${isHovering}`, 10, [140, 180, 255]);
-	drawCenteredText(`CURSOR: ${isHovering ? 'pointer' : 'default'}`, 12, [255, 225, 140]);
-
-	drawCenteredText('t.cursor(typeString)', 15, [100, 120, 150]);
-});
-
 t.draw(() => {
 	t.background(6, 10, 22);
+	hovering = Math.abs(t.mouse.x) < 8 && Math.abs(t.mouse.y) < 5;
+	t.cursor(hovering ? 'pointer' : 'default');
+	t.char(hovering ? '@' : '+');
+	t.charColor(hovering ? 255 : 120, hovering ? 210 : 180, 120);
+	t.rect(16, 10);
+});
 
-	const halfW = ZONE_W / 2;
-	const halfH = ZONE_H / 2;
-
-	const isHovering = t.mouse.x >= -halfW && t.mouse.x < halfW && t.mouse.y >= -halfH && t.mouse.y < halfH;
-
-	t.cursor(isHovering ? 'pointer' : 'default');
-
-	t.push();
-	t.char(isHovering ? '#' : '.');
-	t.charColor(isHovering ? [140, 255, 180] : [60, 70, 100]);
-	t.rect(ZONE_W, ZONE_H);
-	t.pop();
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.CURSOR', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: SYSTEM CURSOR', x, y++, 100, 220, 255);
+	drawText('Hover center box for pointer.', x, y++, 140, 160, 190);
+	drawText('Cursor changes with state.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(hovering ? 'CURSOR: POINTER' : 'CURSOR: DEFAULT', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

@@ -1,42 +1,50 @@
 /**
  * @title Textmodifier.stroke
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-function drawLabel(text, y, color = [220, 220, 220]) {
+const labelLayer = t.layers.add();
+
+let red = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 t.draw(() => {
-	const pulse = (Math.sin(t.frameCount * 0.04) + 1) * 0.5;
-	t.background(5, 7, 18);
+	t.background(6, 10, 22);
+	red = Math.round(120 + 100 * Math.sin(t.frameCount * 0.04));
+	t.fill(20, 30, 60);
+	t.stroke(red, 0, 0);
+	t.char('.');
+	t.rect(14, 6);
+});
 
-	t.stroke(255, 140 + pulse * 80, 90);
-	t.fill(20, 50 + pulse * 90, 140 + pulse * 80);
-
-	t.push();
-	t.rotateZ(t.frameCount * 1.1);
-	t.rect(t.grid.cols - 12, t.grid.rows - 12);
-	t.pop();
-
-	const stroke = t.stroke();
-	const fill = t.fill();
-
-	drawLabel(`stroke ${stroke.r},${stroke.g},${stroke.b}`, -Math.floor(t.grid.rows * 0.34), [255, 225, 140]);
-	drawLabel(`fill ${fill.r},${fill.g},${fill.b}`, Math.floor(t.grid.rows * 0.3), [120, 205, 255]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.STROKE', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: SHAPE OUTLINE', x, y++, 100, 220, 255);
+	drawText('stroke colors shape edges.', x, y++, 140, 160, 190);
+	drawText('fill controls interior cells.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`STROKE R: ${red}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

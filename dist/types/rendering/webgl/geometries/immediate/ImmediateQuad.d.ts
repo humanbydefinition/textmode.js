@@ -1,13 +1,5 @@
 /**
- * Immediate-mode quad renderer for full-screen passes and framebuffer presentation.
- *
- * This is NOT an instanced geometry - it's a simple, stateless utility for drawing
- * a single textured quad immediately. Used primarily for presenting final framebuffer
- * results to the screen or for filter passes.
- */
-/**
- * Simple immediate-mode quad renderer.
- * No instancing, no batching, just a single quad drawn with vertex positions in NDC.
+ * Direct quad renderer for framebuffer presentation and filter passes.
  */
 export declare class ImmediateQuad {
     private _gl;

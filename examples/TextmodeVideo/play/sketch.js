@@ -1,47 +1,72 @@
 /**
  * @title TextmodeVideo.play
- * @author codex
+ * @author Assistant
  */
 const VIDEO_URL = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let video;
-
-function drawLabel(text, y) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(255);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
+const labelLayer = t.layers.add();
+let video = null;
+let playing = false;
 
 t.setup(async () => {
 	video = await t.loadVideo(VIDEO_URL);
 	video.characters(' .:-=+*#%@');
+	video.volume(0);
 	await video.play();
 	video.pause();
 	video.time(0);
 });
 
 t.draw(() => {
-	t.background(0);
+	t.background(6, 8, 20);
 	if (!video) return;
 
 	t.image(video);
-	drawLabel(video.isPlaying ? 'click to restart playback' : 'click to call play()', Math.floor(t.grid.rows / 2) - 2);
+	playing = video.isPlaying;
+});
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODEVIDEO.PLAY', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: INITIATING VIDEO PLAYBACK', x, y++, 100, 220, 255);
+	drawText('Plays or restarts a loaded video.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+
+	if (video) {
+		const actionStr = playing ? 'CLICK TO RESTART PLAYBACK' : 'CLICK TO CALL PLAY()';
+		drawText(actionStr, x, y++, 255, 210, 90);
+		const state = playing ? 'PLAYING' : 'PAUSED';
+		drawText(`PLAY: ${state}`, x, y++, 120, 205, 255);
+	} else {
+		drawText('LOADING VIDEO...', x, y++, 255, 180, 120);
+	}
 });
 
 t.mouseClicked(async () => {
 	if (!video) return;
-
 	video.time(0);
 	await video.play();
 });

@@ -1,6 +1,5 @@
 /**
  * @title TextmodeFramebuffer.dispose
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,78 +7,74 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-let fb;
-let fbSize = 10;
+const labelLayer = t.layers.add();
+let fb = null;
+let fbSize = 12;
 let growing = true;
 
-function drawLabel(text, x, y, col = [255, 255, 255]) {
+function drawText(text, x, y, r = 200, g = 220, b = 255) {
 	t.push();
 	t.translate(x, y);
-	t.charColor(...col);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 function rebuildFramebuffer() {
-	if (fb) {
-		fb.dispose();
-	}
+	if (fb) fb.dispose();
 
 	if (growing) {
-		fbSize += 4;
-		if (fbSize >= 26) growing = false;
+		fbSize += 2;
+		if (fbSize >= 20) growing = false;
 	} else {
-		fbSize -= 4;
+		fbSize -= 2;
 		if (fbSize <= 10) growing = true;
 	}
 
 	fb = t.createFramebuffer({ width: fbSize, height: fbSize });
-
 	fb.begin();
-	t.background(10, 5, 20);
+	t.background(15, 10, 30);
 	t.charColor(255, 100, 150);
 	t.char('+');
 	t.rect(fbSize, fbSize);
-
-	const sizeText = `${fbSize}x${fbSize}`;
-	drawLabel(sizeText, -(sizeText.length - 1) / 2, 0, [255, 200, 100]);
 	fb.end();
 }
 
-rebuildFramebuffer();
+t.setup(() => {
+	rebuildFramebuffer();
+});
 
 t.draw(() => {
-	t.background(10, 15, 25);
-	const { rows } = t.grid;
-	const time = t.frameCount * 0.05;
+	t.background(8, 10, 18);
 
-	if (t.frameCount % 60 === 0) {
-		rebuildFramebuffer();
-	}
+	if (t.frameCount % 90 === 0) rebuildFramebuffer();
 
 	t.push();
-	t.translate(0, -2);
-	t.rotateZ(Math.sin(time) * 4);
-
-	t.char(' ');
-	t.charColor(255, 255, 255);
-	t.cellColor(150, 50, 100, 100);
-	t.rect(fb.width + 2, fb.height + 2);
-
+	t.translate(0, 2);
+	t.rotateZ(t.frameCount * 1.5);
 	t.image(fb);
 	t.pop();
+});
 
-	const title = '--- DISPOSE & REBUILD ---';
-	drawLabel(title, -(title.length - 1) / 2, -(rows - 1) / 2 + 2, [180, 220, 255]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
 
-	const hint = 'FBO is destroyed and recreated every 60 frames';
-	drawLabel(hint, -(hint.length - 1) / 2, (rows - 1) / 2 - 2, [150, 150, 200]);
+	drawText('DISPOSE', x, y++, 100, 255, 140);
+	drawText('--------------------------------', x, y++, 80, 100, 150);
+	drawText('Releases GPU resources early.', x, y++, 100, 220, 255);
+	drawText('FBO is rebuilt every 90 frames.', x, y++, 140, 160, 190);
+	drawText('--------------------------------', x, y++, 80, 100, 150);
+	drawText(`Size: ${fbSize}x${fbSize} cells`, x, y++, 120, 255, 180);
+	const rem = 90 - (t.frameCount % 90);
+	drawText(`Rebuild in: ${rem} frames`, x, y++, 160, 160, 160);
 });
 
 t.windowResized(() => {

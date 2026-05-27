@@ -1,114 +1,78 @@
 /**
  * @title TextmodeSource.clearConversions
- * @author codex
  */
-const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
-	fontSize: 8,
+	fontSize: 16,
 });
 
-const stackedBrightnessPasses = [
-	{
-		mode: 'brightness',
-		brightnessStart: 0,
-		brightnessEnd: 70,
-		characters: ' .,:',
-		charColorMode: 'fixed',
-		charColor: '#0ea5e9',
-		cellColorMode: 'fixed',
-		cellColor: '#00000000',
-	},
-	{
-		mode: 'brightness',
-		brightnessStart: 71,
-		brightnessEnd: 160,
-		characters: '==++**',
-		flipX: true,
-		charColorMode: 'fixed',
-		charColor: '#fb7185',
-		cellColorMode: 'fixed',
-		cellColor: '#00000000',
-	},
-	{
-		mode: 'brightness',
-		brightnessStart: 161,
-		brightnessEnd: 255,
-		characters: '##@@',
-		charRotation: 90,
-		charColorMode: 'fixed',
-		charColor: '#fef3c7',
-		cellColorMode: 'fixed',
-		cellColor: '#00000000',
-	},
-];
+const labelLayer = t.layers.add();
 
-let stackedSource;
-let clearedSource;
+let source = null;
+let disposed = false;
 
-function drawText(text, x, y, color = [235, 240, 255]) {
-	t.push();
-	t.translate(x - Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
-	t.cellColor(0, 0, 0);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
+function createImageUrl() {
+	const canvas = document.createElement('canvas');
+	canvas.width = 96;
+	canvas.height = 64;
+	const ctx = canvas.getContext('2d');
+	const gradient = ctx.createLinearGradient(0, 0, 96, 64);
+	gradient.addColorStop(0, '#0ea5e9');
+	gradient.addColorStop(1, '#f59e0b');
+	ctx.fillStyle = gradient;
+	ctx.fillRect(0, 0, 96, 64);
+	ctx.fillStyle = '#020617';
+	ctx.fillRect(16, 16, 64, 32);
+	ctx.fillStyle = '#f8fafc';
+	ctx.fillRect(28, 26, 40, 12);
+	return canvas.toDataURL();
 }
 
-function applyStack(source) {
-	source.conversions(stackedBrightnessPasses);
-}
-
-function clearToSingleBrightness(source) {
-	source.clearConversions();
-	source.conversionMode('brightness');
-	source.brightnessRange(0, 255);
-	source.characters(' .:-=+*#%@');
-	source.charColorMode('sampled');
-	source.cellColorMode('fixed');
-}
-
-function drawPanel(source, x, y, width, height, label, accent) {
-	t.push();
-	t.translate(x, y);
-	t.image(source, width, height);
-	t.pop();
-
-	drawText(label, x, y + Math.floor(height * 0.5) + 3, accent);
+function configureSource(value) {
+	value.characters(' .:-=+*#%@');
+	value.charColorMode('sampled');
+	value.cellColorMode('fixed');
 }
 
 t.setup(async () => {
-	stackedSource = await t.loadImage(IMAGE_URL);
-	applyStack(stackedSource);
-
-	clearedSource = await t.loadImage(IMAGE_URL);
-	applyStack(clearedSource);
-	clearToSingleBrightness(clearedSource);
+	source = await t.loadImage(createImageUrl());
+	configureSource(source);
+	source.conversions([{ mode: 'brightness', characters: ' .:', charColor: '#38bdf8' }]);
+	source.clearConversions();
 });
 
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
 t.draw(() => {
-	t.background(4, 7, 18);
-	if (!stackedSource || !clearedSource) return;
+	t.background(5, 8, 18);
+	if (!source || disposed) return;
+	t.image(source, Math.floor(t.grid.cols * 0.55), Math.floor(t.grid.rows * 0.55));
+});
 
-	const gap = Math.max(5, Math.floor(t.grid.cols * 0.06));
-	const panelWidth = Math.max(16, Math.floor((t.grid.cols - gap * 3) / 2));
-	const panelHeight = Math.max(12, Math.min(t.grid.rows - 12, Math.floor(panelWidth * 0.65)));
-	const leftX = -Math.floor(panelWidth * 0.5) - Math.floor(gap * 0.5);
-	const rightX = Math.floor(panelWidth * 0.5) + Math.floor(gap * 0.5);
-	const y = -1;
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
 
-	drawText('TextmodeSource.clearConversions()', 0, -Math.floor(t.grid.rows * 0.5) + 2, [255, 225, 120]);
-	drawPanel(stackedSource, leftX, y, panelWidth, panelHeight, 'stack active', [255, 255, 255]);
-	drawPanel(clearedSource, rightX, y, panelWidth, panelHeight, 'cleared to single', [150, 180, 210]);
+	drawText('TEXTMODESOURCE.CLEARCONVERSIONS', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: SOURCE SETTINGS', x, y++, 100, 220, 255);
+	drawText('Image source conversion API.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('STACK: CLEARED', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

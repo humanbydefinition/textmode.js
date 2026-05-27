@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.cellColor4
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -10,54 +9,43 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-const colorA = t.color(120, 20, 40); // Dark Red-Brown
-const colorB = t.color(20, 60, 100);
+let value = 0;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-	t.cellColor(0, 0, 0, 0);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
-labelLayer.draw(() => {
-	t.clear();
-
-	drawCenteredText('Textmodifier.cellColor (Color Object)', -12, [240, 245, 255]);
-	drawCenteredText('Passing a TextmodeColor object directly for reuse.', -10, [150, 170, 200]);
-
-	drawCenteredText('t.cellColor(colorObject)', 13, [100, 120, 150]);
-});
-
 t.draw(() => {
 	t.background(6, 10, 22);
+	value = Math.round(80 + 80 * Math.sin(t.frameCount * 0.04));
+	t.char('#');
+	const c = t.color(value, 40, 90);
+	t.cellColor(c);
+	t.charColor(240, 245, 255);
+	t.rect(10, 5);
+});
 
-	const cycle = Math.floor(t.frameCount / 60) % 2;
-	const activeColor = cycle === 0 ? colorA : colorB;
-
-	t.cellColor(activeColor);
-
-	t.push();
-	t.charColor(255, 225, 140);
-	t.char('@');
-	t.rect(14, 6);
-	t.pop();
-
-	t.push();
-	t.resetCamera();
-	drawCenteredText('REUSABLE COLOR OBJECT', 8, [140, 255, 180]);
-	drawCenteredText(`ACTIVE_ID: ${cycle === 0 ? 'colorA' : 'colorB'}`, 10, [140, 180, 255]);
-	t.pop();
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.CELLCOLOR4', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: CELL COLOR OBJECT', x, y++, 100, 220, 255);
+	drawText('TextmodeColor can be reused.', x, y++, 140, 160, 190);
+	drawText('The value pulses every frame.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`R: ${value}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

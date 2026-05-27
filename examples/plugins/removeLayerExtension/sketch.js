@@ -1,6 +1,5 @@
 /**
  * @title plugins.TextmodePluginContext.removeLayerExtension
- * @author codex
  */
 let removePulse = null;
 let extensionRemoved = false;
@@ -27,22 +26,7 @@ const t = textmode.create({
 });
 
 const layer = t.layers.add({ fontSize: 16 });
-
-function label(text, y, color = [220, 220, 220]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
+const labelLayer = t.layers.add();
 
 t.setup(() => {
 	layer.pulse(0.6);
@@ -50,9 +34,6 @@ t.setup(() => {
 
 t.draw(() => {
 	t.background(5, 7, 18);
-	label('removeLayerExtension()', -6, [255, 225, 140]);
-	label(extensionRemoved ? 'pulse() removed from layers' : 'pulse() available on every layer', -2);
-	label('click to remove extension', 2, [120, 205, 255]);
 });
 
 layer.draw(() => {
@@ -61,6 +42,7 @@ layer.draw(() => {
 	const amount = state?.amount ?? 0;
 
 	t.push();
+	t.char('#');
 	t.rotateZ(t.frameCount * (1 + amount));
 	t.charColor(255, 180, 120);
 	t.rect(14, 8);
@@ -71,8 +53,36 @@ t.mouseClicked(() => {
 	if (!removePulse || extensionRemoved) {
 		return;
 	}
-
 	removePulse();
+});
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('PLUGINS.REMOVELAYEREXTENSION', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: REMOVE LAYER EXTENSIONS', x, y++, 100, 220, 255);
+	const statusMsg = extensionRemoved ? 'pulse() was removed.' : 'pulse() is available on layer.';
+	drawText(statusMsg, x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	const clickMsg = extensionRemoved ? 'pulse() removed successfully.' : 'Click to remove pulse() extension.';
+	drawText(clickMsg, x, y++, 120, 205, 255);
 });
 
 t.windowResized(() => {

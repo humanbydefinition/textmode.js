@@ -1,27 +1,51 @@
 /**
  * @title Textmodifier.loadVideo
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let video;
+const labelLayer = t.layers.add();
+
+let source;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
 
 t.setup(async () => {
-	const url = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
-	video = await t.loadVideo(url);
-
-	video.play();
-	video.loop();
-
-	video.characters(' .:-=+*#%@');
+	source = await t.loadVideo('https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4');
+	source.play();
 });
 
 t.draw(() => {
 	t.background(0);
-	if (video) {
-		t.rotateY(t.frameCount);
-		t.image(video, 40, 30);
-	}
+	if (source) t.image(source, t.grid.cols, t.grid.rows);
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.LOADVIDEO', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: LOAD VIDEO', x, y++, 100, 220, 255);
+	drawText('Loads media for this example.', x, y++, 140, 160, 190);
+	drawText('HUD stays on a top layer.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(source ? 'VIDEO: READY' : 'VIDEO: WAIT', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

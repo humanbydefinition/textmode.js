@@ -1,52 +1,60 @@
 /**
  * @title Textmodifier.pmouse
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-const segments = [];
+const labelLayer = t.layers.add();
+
+let px = 0;
+let py = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
 
 t.draw(() => {
-	t.background(0);
-
-	const mouseInside = t.mouse.x !== Number.NEGATIVE_INFINITY;
-	const previousInside = t.pmouse.x !== Number.NEGATIVE_INFINITY;
-
-	if (mouseInside && previousInside) {
-		segments.push({
-			x1: t.pmouse.x,
-			y1: t.pmouse.y,
-			x2: t.mouse.x,
-			y2: t.mouse.y,
-			life: 1,
-		});
-	}
-
-	for (let i = segments.length - 1; i >= 0; i--) {
-		const segment = segments[i];
-		segment.life -= 0.03;
-
-		if (segment.life <= 0) {
-			segments.splice(i, 1);
-			continue;
-		}
-
-		t.push();
-		t.char('-');
-		t.lineWeight(1);
-		t.charColor(100, 180 + segment.life * 75, 255, segment.life * 255);
-		t.line(segment.x1, segment.y1, segment.x2, segment.y2);
-		t.pop();
-	}
-
-	if (mouseInside) {
+	t.background(6, 10, 22);
+	px = t.pmouse.x;
+	py = t.pmouse.y;
+	if (t.mouse.x !== Number.NEGATIVE_INFINITY) {
+		t.charColor(60, 80, 120);
+		t.char('.');
+		t.line(px, py, t.mouse.x, t.mouse.y);
 		t.push();
 		t.translate(t.mouse.x, t.mouse.y);
 		t.char('@');
-		t.charColor(255, 220, 120);
+		t.charColor(255, 210, 120);
 		t.point();
 		t.pop();
 	}
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.PMOUSE', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: PREVIOUS MOUSE', x, y++, 100, 220, 255);
+	drawText('Draws a trail from last point.', x, y++, 140, 160, 190);
+	drawText('Updates whenever pointer moves.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`PX: ${px}`, x, y++, 180, 200, 220);
+	drawText(`PY: ${py}`, x, y++, 180, 200, 220);
 });
 
 t.windowResized(() => {

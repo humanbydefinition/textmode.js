@@ -1,23 +1,11 @@
-/**
- * Instanced bezier curve geometry implementation
- */
 import type { InstanceBatch } from '../../batching/InstanceBatch';
 import { type BezierCurveParams } from '../../types/GeometryTypes';
 import { BaseGeometry } from '../BaseGeometry';
 import type { IRenderState } from '../../state/RenderState';
 /**
- * TRUE INSTANCED bezier curve geometry renderer.
- *
- * APPROACH: Use a fixed multi-segment unit geometry shared by all curves.
- * Each instance provides Bezier control points via instance attributes, and the
- * vertex shader evaluates the curve mathematically to transform each segment.
- *
- * This maintains true instanced rendering: one draw call for all curves.
+ * Instanced Bezier curve geometry backed by shader-evaluated control points.
  */
 export declare class BezierCurve extends BaseGeometry<BezierCurveParams> {
     constructor(gl: WebGL2RenderingContext, batch: InstanceBatch);
-    /**
-     * Add a bezier curve instance to the batch - TRUE INSTANCED APPROACH
-     */
     _addInstance(params: BezierCurveParams, renderState: IRenderState): number;
 }

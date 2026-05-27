@@ -1,42 +1,60 @@
 /**
  * @title Textmodifier.cylinder
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 8 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-function label(text, y) {
+const labelLayer = t.layers.add();
+
+let spin = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y, 0);
-	t.charColor(220);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
-	const time = t.frameCount * 0.02;
-	t.background(4, 7, 15);
-	t.ambientLight(22, 24, 30);
-	t.pointLight([120, 220, 255], { x: 20, y: -12, z: 24 });
-	t.camera(Math.sin(time * 0.35) * 14, -6, 88, 0, 2, -8);
+	t.background(6, 8, 18);
+	const time = t.frameCount * 0.025;
+	spin = (time * 40) % 360;
+	t.perspective(58, 0.1, 4096);
+	t.camera(18, -10, 42, 0, 0, 0);
+	t.ambientLight(24, 28, 38);
+	t.pointLight([255, 210, 140], { x: 18, y: -18, z: 28 });
+	t.push();
+	t.translate(5, 1, 0);
+	t.rotateY(spin);
+	t.rotateX(18);
+	t.char('#');
+	t.charColor(140, 220, 255);
+	t.cellColor(16, 24, 42);
+	t.cylinder(4, 12);
+	t.pop();
+});
 
-	for (let i = 0; i < 6; i++) {
-		t.push();
-		t.translate((i - 2.5) * 9, 10 - i * 2, -i * 8);
-		t.rotateY(time * 22 + i * 12);
-		t.char(i % 2 === 0 ? '|' : 'I');
-		t.charColor(110 + i * 18, 180 + i * 10, 255 - i * 18);
-		t.cellColor(14 + i * 2, 18 + i * 2, 24 + i * 3);
-		t.cylinder(2.4 + i * 0.35, 8 + i * 3);
-		t.pop();
-	}
-
-	label('cylinder(radius, height)', Math.floor(t.grid.rows / 2) - 3);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.CYLINDER', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: 3D CYLINDER', x, y++, 100, 220, 255);
+	drawText('Radius and height define form.', x, y++, 140, 160, 190);
+	drawText('Camera and light reveal depth.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`SPIN: ${spin.toFixed(1)}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

@@ -1,42 +1,46 @@
 /**
  * @title Textmodifier.height
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
+
+const labelLayer = t.layers.add();
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
 
 t.draw(() => {
-	t.background(0);
+	t.background(6, 10, 22);
+	t.char('|');
+	t.charColor(140, 220, 255);
+	t.rect(1, t.grid.rows);
+});
 
-	const height = t.height;
-	const info = `HEIGHT: ${height}px`;
-	const arrowLength = Math.floor(t.grid.rows / 2) - 3;
-
-	for (let i = 0; i < arrowLength; i++) {
-		t.push();
-		t.translate(0, -arrowLength + i);
-		t.char(i === 0 ? '╩' : '|');
-		t.charColor(100, 255, 100);
-		t.point();
-		t.pop();
-	}
-
-	for (let i = 0; i < arrowLength; i++) {
-		t.push();
-		t.translate(0, arrowLength - i);
-		t.char(i === 0 ? '╚' : '|');
-		t.charColor(100, 255, 100);
-		t.point();
-		t.pop();
-	}
-
-	for (let i = 0; i < info.length; i++) {
-		t.push();
-		t.translate(i - info.length / 2, 0);
-		t.char(info[i]);
-		t.charColor(255);
-		t.point();
-		t.pop();
-	}
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.HEIGHT', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: CANVAS HEIGHT', x, y++, 100, 220, 255);
+	drawText('Returns pixel height.', x, y++, 140, 160, 190);
+	drawText('Line spans grid rows.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`HEIGHT: ${t.height}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

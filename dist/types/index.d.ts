@@ -12,6 +12,7 @@ export { TextmodeGrid } from './textmode/grid/TextmodeGrid';
 export { TextmodeFont, TextmodeTileset } from './textmode/fonts';
 export { TextmodeLayer, TextmodeLayerManager } from './textmode/layers';
 export { TextmodeImage, TextmodeSource, TextmodeTexture, TextmodeVideo } from './textmode/media';
+export { TextmodeRandom } from './textmode/random';
 export { TextmodeConversionManager } from './textmode/conversion';
 export { TextmodeFilterManager } from './textmode/filters';
 export { TextmodeError, TextmodeErrorLevel, ErrorLayerController } from './textmode/error';
@@ -19,6 +20,7 @@ export { LoadingLayerController } from './textmode/layers/overlays/loading';
 export { INPUT_EVENT_NAMES } from './textmode/input';
 export { TEXTMODE_LAYER_BLEND_MODES } from './textmode/layers';
 export type { TextmodeOptions } from './textmode/types';
+export type { TextmodeRandomSeed } from './textmode/random';
 export type { TextmodeFramebufferOptions } from './rendering/webgl';
 export type { TextmodeLayerBlendMode, TextmodeLayerOptions } from './textmode/layers/types';
 export type { TextmodeGlyph, TextmodeTilesetOptions, GlyphData } from './textmode/fonts';
@@ -29,23 +31,23 @@ export type { LoadingScreenOptions, LoadingScreenRendererContext, LoadingScreenS
 export type { InputEventMap, InputEventName, InputEventOwner } from './textmode/input';
 export type { TextmodeCanvasHandle, TextmodePlugin, TextmodePluginContext, TextmodePluginHook, LayerLifecycleHook, LayerRenderHook, SetupLifecycleHook, LayerExtensionImplementation, SourceExtensionImplementation, } from './textmode/plugins';
 /**
- * All media conversion related modules and types.
+ * Media conversion modules and types.
  *
- * Responsible for converting images and videos into textmode-renderable formats
- * using various conversion strategies, like brightness- or edge-detection-based conversion.
+ * Use this namespace to configure or extend the strategies that convert images,
+ * videos, and textures into textmode-renderable data.
  *
- * `textmode.js` only comes with a built-in `'brightness'`-based conversion strategy,
- * but custom strategies can be registered via {@link TextmodeConversionManager.register}.
+ * `textmode.js` includes the built-in `'brightness'` strategy. Custom strategies
+ * can be registered via {@link TextmodeConversionManager.register}.
  */
 export * as conversion from './textmode/conversion';
 /**
- * Plugin system types for extending textmode.js functionality.
+ * Plugin system types for extending textmode.js.
  *
  * Plugins can:
- * - Add methods to TextmodeLayer instances (e.g., `.synth()`)
- * - Hook into the render lifecycle (pre/post draw, per-layer rendering)
- * - React to layer creation and disposal events
- * - Access the WebGL renderer, framebuffers, and other internals
+ * - Add methods to `TextmodeLayer` instances (for example, `.synth()`)
+ * - Hook into setup, draw, and per-layer render lifecycle events
+ * - React to layer creation and disposal
+ * - Access renderer, framebuffer, and source internals through the plugin context
  *
  * @example
  * ```ts
@@ -74,30 +76,31 @@ export * as conversion from './textmode/conversion';
  */
 export * as plugins from './textmode/plugins';
 /**
- * All filter related modules and types.
+ * Filter modules and types.
  *
- * Provides various image processing filters that can be applied in sequence on a layer's textmode-converted output,
- * such as blur, sharpen, edge detection, and color adjustments.
- * Filters can also be applied globally to all layers as post-processing effects.
+ * Filters can be queued on a layer's textmode-converted output or applied globally
+ * after all visible layers have been composited.
  *
- * While `textmode.js` only offers a basic set of filters,
- * additional filters can be implemented and registered via the {@link TextmodeFilterManager},
- * which is accessible through {@link Textmodifier.filters}.
+ * `textmode.js` includes a small built-in filter set. Additional filters can be
+ * implemented and registered via {@link TextmodeFilterManager}, available through
+ * {@link Textmodifier.filters}.
  */
 export * as filters from './textmode/filters';
 /**
- * All error handling related modules and types.
+ * Error handling modules and types.
  */
 export * as errors from './textmode/error';
 export { GLShader as TextmodeShader } from './rendering/webgl/core/Shader';
 export { Textmode as textmode } from './textmode/Textmode';
-/** All loading screen related modules and types. */
+/** Loading screen modules and types. */
 export * as loading from './textmode/layers/overlays/loading';
-/** All media asset related modules and types. */
+/** Media asset modules and types. */
 export * as media from './textmode/media';
-/** All font rendering related modules and types. */
+/** Font and tileset modules and types. */
 export * as fonts from './textmode/fonts';
-/** All types and interfaces related to input event handling. */
+/** Input event modules and types. */
 export * as input from './textmode/input';
-/** All modules and types related to multi-layered textmode rendering. */
+/** Layering modules and types. */
 export * as layering from './textmode/layers';
+/** Deterministic pseudo-random number modules and types. */
+export * as random from './textmode/random';

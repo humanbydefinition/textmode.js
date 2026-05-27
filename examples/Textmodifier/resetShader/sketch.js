@@ -1,61 +1,71 @@
 /**
  * @title Textmodifier.resetShader
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-let portalShader;
+const labelLayer = t.layers.add();
+
+let shaderObj;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
 
 t.setup(async () => {
-	portalShader = await t.createFilterShader(`#version 300 es
-    precision highp float;
-    in vec2 v_uv;
-    uniform float u_time;
-    layout(location = 0) out vec4 o_char;
-    layout(location = 1) out vec4 o_prim;
-    layout(location = 2) out vec4 o_sec;
-
-    void main() {
-      vec2 p = v_uv * 2.0 - 1.0;
-      float r = length(p);
-      float a = atan(p.y, p.x);
-
-      float charPattern = floor(r * 8.0) / 8.0 + sin(a * 6.0 + u_time * 0.3) * 0.1;
-      o_char = vec4(charPattern, 0.0, 0.0, 1.0);
-
-      float wave = sin(r * 20.0 - u_time * 5.0 + sin(a * 10.0));
-      o_prim = vec4(0.5 + 0.5 * cos(u_time + r * 2.0), 0.2 + wave * 0.3, 0.8, 1.0);
-      o_sec = vec4(0.0);
-    }
-  `);
+	const vert = `#version 300 es
+	in vec4 a_position;
+	in vec2 a_texCoord;
+	out vec2 v_uv;
+	void main(){gl_Position=a_position;v_uv=a_texCoord;}`;
+	const frag = `#version 300 es
+	precision highp float;
+	in vec2 v_uv;
+	uniform float u_time;
+	layout(location=0) out vec4 o_character;
+	layout(location=1) out vec4 o_primaryColor;
+	layout(location=2) out vec4 o_secondaryColor;
+	void main(){float v=fract(v_uv.x*8.0+u_time);o_character=vec4(v,0,0,1);o_primaryColor=vec4(v,0.8,1.0,1);o_secondaryColor=vec4(0.02,0.04,0.08,1);}`;
+	shaderObj = await t.createShader(vert, frag);
 });
 
 t.draw(() => {
-	t.background(0);
-
-	if (portalShader) {
-		t.shader(portalShader);
+	t.background(6, 10, 22);
+	if (shaderObj && Math.floor(t.frameCount / 90) % 2 === 0) {
+		t.shader(shaderObj);
 		t.setUniform('u_time', t.frameCount * 0.02);
-
-		t.rect(t.grid.cols, t.grid.rows);
 	}
-
+	t.rect(t.grid.cols, t.grid.rows);
 	t.resetShader();
+	t.char('#');
+	t.charColor(255, 210, 120);
+	t.rect(10, 5);
+});
 
-	const count = 8;
-	for (let i = 0; i < count; i++) {
-		const angle = t.frameCount * 0.05 + (i / count) * Math.PI * 2;
-		const x = Math.cos(angle) * 15;
-		const y = Math.sin(angle) * 15;
-
-		t.push();
-		t.translate(x, y);
-		t.rotateZ(angle * 2);
-		t.char('♦');
-		t.charColor(255, 200, 100);
-		t.rect(5, 5);
-		t.pop();
-	}
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.RESETSHADER', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: RESTORE SHADER', x, y++, 100, 220, 255);
+	drawText('Shader affects the main drawing.', x, y++, 140, 160, 190);
+	drawText('resetShader restores default.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('RESET AFTER FULLSCREEN', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

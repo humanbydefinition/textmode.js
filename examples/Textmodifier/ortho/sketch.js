@@ -1,46 +1,54 @@
 /**
  * @title Textmodifier.ortho
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-function drawLabel(text, y) {
+const labelLayer = t.layers.add();
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y, 0);
-	t.charColor(220);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 t.draw(() => {
-	t.background(0);
+	t.background(6, 8, 18);
 	t.ortho();
-
-	const count = 12;
-
-	for (let i = 0; i < count; i++) {
-		const angle = (i / count) * Math.PI * 2 + t.frameCount * 0.02;
-		const x = Math.cos(angle) * 20;
-		const y = Math.sin(angle) * 20;
-		const z = Math.sin(t.frameCount * 0.05 + i) * 50;
-
+	t.camera(0, 0, 42);
+	for (let i = 0; i < 3; i++) {
 		t.push();
-		t.translate(x, y, z);
-		t.charColor(200, 255, 100);
-		t.char('#');
-		t.rect(5, 5);
+		t.translate((i - 1) * 9, 0, i * -12);
+		t.rotateY(t.frameCount + i * 35);
+		t.char('+');
+		t.charColor(120 + i * 40, 220, 255);
+		t.box(6, 6, 6);
 		t.pop();
 	}
+});
 
-	drawLabel('ortho(): z depth no longer changes size', Math.floor(t.grid.rows / 2) - 3);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.ORTHO', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: ORTHO PROJECTION', x, y++, 100, 220, 255);
+	drawText('Depth no longer changes scale.', x, y++, 140, 160, 190);
+	drawText('Boxes keep equal apparent size.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('API: t.ortho()', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

@@ -1,5 +1,5 @@
 /**
- * Key event data passed to event handlers.
+ * Keyboard event payload passed to input callbacks.
  */
 export interface KeyboardEventData {
     /** The key that was pressed/released (e.g., 'a', 'Enter', 'ArrowLeft'). */
@@ -14,13 +14,13 @@ export interface KeyboardEventData {
     altKey: boolean;
     /** Whether Meta key (Windows/Cmd) is held down. */
     metaKey: boolean;
-    /** Whether this key is currently being held down (for keyPressed) or was released (for keyReleased). */
+    /** Whether this key is currently held down for this event. */
     isPressed: boolean;
     /** Original DOM keyboard event. */
     originalEvent: KeyboardEvent;
 }
 /**
- * Keyboard event handler function type.
+ * Keyboard event callback signature.
  */
 export type KeyboardEventHandler = (data: KeyboardEventData) => void;
 /**
@@ -35,7 +35,7 @@ export interface KeyState {
     lastReleaseTime: number;
 }
 /**
- * Event map for all keyboard events emitted by the {@link KeyboardInput}.
+ * Keyboard events emitted by {@link KeyboardInput}.
  */
 export interface KeyboardEventMap {
     /** Fires when a key is pressed down (no repeat). */

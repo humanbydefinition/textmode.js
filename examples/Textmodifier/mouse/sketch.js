@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.mouse
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,68 +7,58 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+const labelLayer = t.layers.add();
+
+let mx = 0;
+let my = 0;
+let inside = false;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const mx = t.mouse.x;
-	const my = t.mouse.y;
-	const isInside = mx !== Number.NEGATIVE_INFINITY;
-
-	if (isInside) {
-		t.push();
-		t.translate(mx, 0);
-		t.charColor(40, 50, 80);
-		t.char('|');
-		t.rect(1, t.grid.rows);
-		t.pop();
-
-		t.push();
-		t.translate(0, my);
-		t.charColor(40, 50, 80);
-		t.char('-');
-		t.rect(t.grid.cols, 1);
-		t.pop();
-
+	mx = t.mouse.x;
+	my = t.mouse.y;
+	inside = mx !== Number.NEGATIVE_INFINITY;
+	t.charColor(50, 60, 90);
+	t.char('.');
+	t.line(-18, 0, 18, 0);
+	t.line(0, -10, 0, 10);
+	if (inside) {
 		t.push();
 		t.translate(mx, my);
-		t.char('☼');
-		t.charColor(255, 200, 100);
+		t.char('+');
+		t.charColor(255, 210, 120);
 		t.point();
-
-		t.translate(2, 0);
-		const coordText = `(${mx.toFixed(1)}, ${my.toFixed(1)})`;
-		t.charColor(255);
-		for (let i = 0; i < coordText.length; i++) {
-			t.push();
-			t.translate(i, 0);
-			t.char(coordText[i]);
-			t.point();
-			t.pop();
-		}
 		t.pop();
 	}
+});
 
-	drawCenteredText('Textmodifier.mouse', -20, [255, 255, 255]);
-	drawCenteredText('A property holding the current mouse position in grid cells.', -18, [150, 170, 200]);
-	drawCenteredText('Values are Number.NEGATIVE_INFINITY if outside the canvas.', -16, [150, 170, 200]);
-
-	if (!isInside) {
-		drawCenteredText('Move mouse into the canvas to track', 14, [100, 100, 120]);
-	}
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.MOUSE', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: POINTER POSITION', x, y++, 100, 220, 255);
+	drawText('Reads current mouse grid cell.', x, y++, 140, 160, 190);
+	drawText('Outside canvas returns infinity.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(inside ? 'INSIDE: TRUE' : 'INSIDE: FALSE', x, y++, 140, 255, 180);
+	drawText(`X: ${mx}`, x, y++, 180, 200, 220);
+	drawText(`Y: ${my}`, x, y++, 180, 200, 220);
 });
 
 t.windowResized(() => {

@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.filter
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,6 +8,7 @@ const t = textmode.create({
 });
 
 const effectLayer = t.layers.add();
+const labelLayer = t.layers.add();
 
 const filters = [
 	{ name: 'invert', params: undefined, label: 'INVERT' },
@@ -17,17 +17,15 @@ const filters = [
 	{ name: 'threshold', params: 0.5, label: 'THRESHOLD (0.5)' },
 ];
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
@@ -41,9 +39,6 @@ t.draw(() => {
 	t.char('.');
 	t.rect(t.grid.cols, t.grid.rows);
 	t.pop();
-
-	drawCenteredText('TextmodeLayer.filter', -12, [240, 245, 255]);
-	drawCenteredText('Applying post-processing to specific layers.', -10, [150, 170, 200]);
 });
 
 effectLayer.draw(() => {
@@ -66,11 +61,25 @@ effectLayer.draw(() => {
 	if (filterIdx < filters.length) {
 		const active = filters[filterIdx];
 		effectLayer.filter(active.name, active.params);
-
-		drawCenteredText('ACTIVE FILTER: ' + active.label, 10, [140, 255, 180]);
-	} else {
-		drawCenteredText('NO FILTER (NORMAL)', 10, [255, 100, 100]);
 	}
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	const filterIdx = Math.floor(t.frameCount / 120) % (filters.length + 1);
+	const active = filterIdx < filters.length ? filters[filterIdx].label : 'NORMAL';
+
+	drawText('TEXTMODELAYER.FILTER', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: LAYER POST FILTERS', x, y++, [100, 220, 255]);
+	drawText('Only the effect layer changes.', x, y++, [140, 160, 190]);
+	drawText('Base grid remains unfiltered.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(`ACTIVE: ${active}`, x, y++, [140, 255, 180]);
 });
 
 t.windowResized(() => {

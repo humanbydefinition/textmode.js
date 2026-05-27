@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.background2
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,42 +7,43 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-	t.cellColor(0, 0, 0, 0);
+const labelLayer = t.layers.add();
 
+let gray = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 t.draw(() => {
-	const time = t.frameCount * 0.05;
-	const gray = Math.round(127 + 127 * Math.sin(time));
-
+	gray = Math.round(30 + 40 * Math.sin(t.frameCount * 0.03));
 	t.background(gray);
+	t.char('@');
+	t.charColor(255, 210, 120);
+	t.rect(10, 5);
+});
 
-	// that remains perfectly visible regardless of the background brightness.
-	t.push();
-	t.cellColor(255 - gray);
-	t.charColor(gray);
-	t.char('+');
-	t.rect(20, 10);
-	t.pop();
-
-	drawCenteredText('Textmodifier.background (Grayscale)', -12, [240, 120, 255]);
-	drawCenteredText('Passing a single number sets an R=G=B gray level.', -10, [150, 170, 200]);
-
-	drawCenteredText('INVERTED CELL SCHEMATIC', 8, [255, 225, 140]);
-	drawCenteredText(`BG_VAL: ${gray.toString().padStart(3, '0')}`, 10, [140, 180, 255]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.BACKGROUND2', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: GRAY BACKGROUND', x, y++, 100, 220, 255);
+	drawText('One number sets R, G, and B.', x, y++, 140, 160, 190);
+	drawText('Gray value animates.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`GRAY: ${gray}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

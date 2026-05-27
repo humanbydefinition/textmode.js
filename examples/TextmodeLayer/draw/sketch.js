@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.draw
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -10,18 +9,17 @@ const t = textmode.create({
 
 const backLayer = t.layers.add({ opacity: 0.6 });
 const effectLayer = t.layers.add({ blendMode: 'additive' });
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
@@ -29,7 +27,6 @@ function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 
 t.draw(() => {
 	t.background(6, 10, 22);
-	drawCenteredText('TextmodeLayer.draw', -12, [240, 245, 255]);
 
 	t.push();
 	t.charColor(40, 50, 80);
@@ -71,8 +68,22 @@ effectLayer.draw(() => {
 	t.char('#');
 	t.rect(8, 4);
 	t.pop();
+});
 
-	drawCenteredText('INDEPENDENT LAYER CONTEXTS', 10, [150, 170, 200]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODELAYER.DRAW', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: LAYER DRAW CALLBACK', x, y++, [100, 220, 255]);
+	drawText('Base, back, and effect draw apart.', x, y++, [140, 160, 190]);
+	drawText('Each callback owns its buffer.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('LAYERS: BASE + 2', x, y++, [140, 255, 180]);
 });
 
 t.windowResized(() => {

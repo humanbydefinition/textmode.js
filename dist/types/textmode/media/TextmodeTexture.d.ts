@@ -2,23 +2,20 @@ import type { GLRenderer } from '../../rendering/webgl/core/Renderer';
 import { TextmodeSource } from './TextmodeSource';
 import type { TextmodeConversionManager } from '../conversion';
 /**
- * Represents an external texture source for textmode rendering via {@link Textmodifier.createTexture}.
+ * Dynamic texture source for external canvas or video content.
  *
- * This class enables integration with other WebGL-based libraries like three.js, p5.js, Babylon.js,
- * hydra-synth, or any library that renders to a canvas element.
- *
- * It can be drawn to the canvas via {@link Textmodifier.image}.
- *
- * The texture automatically updates each frame to capture the latest content from the source canvas or video.
+ * Create one with {@link Textmodifier.createTexture} and draw it with
+ * {@link Textmodifier.image}. The texture refreshes each frame so it can mirror
+ * renderers such as three.js, p5.js, Babylon.js, or hydra-synth.
  */
 export declare class TextmodeTexture extends TextmodeSource {
     protected _source: HTMLCanvasElement | HTMLVideoElement;
     protected constructor(gl: WebGL2RenderingContext, renderer: GLRenderer, texture: WebGLTexture, conversionManager: TextmodeConversionManager, originalWidth: number, originalHeight: number, gridCols: number, gridRows: number, source: HTMLCanvasElement | HTMLVideoElement);
     /**
-     * The source element this texture captures from.
+     * Source element this texture captures.
      *
      * @example
-     * {@includeCode ../../../examples/Textmodifier/createTexture/sketch.js}
+     * {@includeCode ../../../examples/TextmodeTexture/source/sketch.js}
      */
     get source(): HTMLCanvasElement | HTMLVideoElement;
 }

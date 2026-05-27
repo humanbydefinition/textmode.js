@@ -1,31 +1,17 @@
 /**
  * @title TextmodeSource.charColor
- * @author codex
  */
 const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
-	fontSize: 16,
+	fontSize: 8,
 });
 
-let techSource;
-
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
+const labelLayer = t.layers.add();
+let techSource = null;
+let r = 150;
+let g = 150;
 
 t.setup(async () => {
 	techSource = await t.loadImage(IMAGE_URL);
@@ -39,21 +25,42 @@ t.draw(() => {
 	if (!techSource) return;
 
 	const time = t.frameCount * 0.04;
-	const r = Math.round(150 + 105 * Math.sin(time));
-	const g = Math.round(150 + 105 * Math.cos(time * 0.7));
+	r = Math.round(150 + 105 * Math.sin(time));
+	g = Math.round(150 + 105 * Math.cos(time * 0.7));
 
 	techSource.charColor(r, g, 100);
-
-	drawCenteredText('TextmodeSource.charColor', -12, [240, 245, 255]);
-	drawCenteredText('Overriding the character color of every cell in a source.', -10, [150, 170, 200]);
 
 	t.push();
 	t.translate(0, 0);
 	t.image(techSource, 24, 14);
 	t.pop();
+});
 
-	drawCenteredText('MODE: FIXED', 9, [140, 255, 180]);
-	drawCenteredText(`CHAR_COLOR: [${r}, ${g}, 100]`, 11, [255, 225, 140]);
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODESOURCE.CHARCOLOR', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: SET CONSTANT CHARACTER COLOR', x, y++, 100, 220, 255);
+	drawText('Sets color used in fixed coloring mode.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`CHAR COLOR: RGB(${r},${g},100)`, x, y++, 140, 190, 255);
 });
 
 t.windowResized(() => {

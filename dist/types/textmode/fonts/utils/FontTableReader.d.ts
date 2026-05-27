@@ -1,12 +1,11 @@
 import type { TyprFont } from '../typr/types.ts';
 /**
- * Centralized font table reader that eliminates redundant font data access.
- * Provides access to font tables and metrics with consistent error handling.
+ * Reads glyph indices and metrics from parsed font tables.
  */
 export declare class FontTableReader {
     /**
      * Gets the glyph index for a given Unicode code point.
-     * Searches through all available cmap tables to find the character.
+     * Searches Unicode cmap tables first, with legacy cmap fallback only for legacy-only fonts.
      */
     _getGlyphIndex(font: TyprFont, codePoint: number): number;
     /**

@@ -1,6 +1,7 @@
 import type { TextmodeGlyph, GlyphDimensions } from './types.ts';
 import type { GLRenderer } from '../../rendering/webgl/core/Renderer.ts';
 import type { GLFramebuffer } from '../../rendering/webgl/core/Framebuffer.ts';
+import { CanvasAtlasSurface } from './CanvasAtlasSurface.ts';
 type ResolvedTilesetLayout = {
     columns: number;
     rows: number;
@@ -15,16 +16,10 @@ type ResolvedTilesetLayout = {
  * Handles repacking authored tileset sheets into the normalized glyph atlas layout.
  */
 export declare class TilesetTextureAtlas {
-    private _textureCanvas;
-    private _textureContext;
-    private _renderer;
-    private _framebuffer;
-    private _columns;
-    private _rows;
+    _surface: CanvasAtlasSurface;
     constructor(renderer: GLRenderer);
     _createTextureAtlas(characters: readonly TextmodeGlyph[], nativeCellDimensions: GlyphDimensions, source: CanvasImageSource, layout: ResolvedTilesetLayout): void;
     _dispose(): void;
-    private _setupCanvas;
     private _renderTiles;
     get framebuffer(): GLFramebuffer | null;
     get columns(): number;

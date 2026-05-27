@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.mouseClicked
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,75 +7,68 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const echoes = [];
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+const pulses = [];
+let count = 0;
+let last = 'WAITING';
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
-t.mouseClicked((data) => {
-	if (data.position.x === Number.NEGATIVE_INFINITY) return;
+function addPulse(label, x = 0, y = 0) {
+	count++;
+	last = label;
+	pulses.unshift({ label, x, y, life: 1 });
+	if (pulses.length > 12) pulses.length = 12;
+}
 
-	echoes.push({
-		x: data.position.x,
-		y: data.position.y,
-		time: t.secs,
-		life: 1.0,
-	});
-
-	if (echoes.length > 10) echoes.shift();
+t.mouseClicked(() => {
+	addPulse('CLICK', t.mouse.x, t.mouse.y);
 });
 
 t.draw(() => {
 	t.background(6, 10, 22);
 
-	for (let i = 0; i < echoes.length; i++) {
-		const e = echoes[i];
-		e.life *= 0.95;
-
-		if (e.life < 0.01) {
-			echoes.splice(i, 1);
-			i--;
+	for (let i = pulses.length - 1; i >= 0; i--) {
+		const p = pulses[i];
+		p.life -= 0.02;
+		if (p.life <= 0) {
+			pulses.splice(i, 1);
 			continue;
 		}
-
 		t.push();
-		t.translate(e.x, e.y);
-
-		const radius = (1.0 - e.life) * 20;
-		t.charColor(100, 200, 255, e.life * 255);
-		t.char('○');
-		t.ellipse(radius, radius);
-
-		t.charColor(50, 100, 255, e.life * 100);
-		t.char('·');
-		t.ellipse(radius * 0.6, radius * 0.6);
-
-		t.pop();
-	}
-
-	if (t.mouse.x !== Number.NEGATIVE_INFINITY) {
-		t.push();
-		t.translate(t.mouse.x, t.mouse.y);
-		t.char('+');
-		t.charColor(255);
+		t.translate(p.x, p.y - (1 - p.life) * 4);
+		t.char('*');
+		t.charColor(255, 210, 120);
 		t.point();
 		t.pop();
 	}
+});
 
-	drawCenteredText('Textmodifier.mouseClicked', -20, [255, 255, 255]);
-	drawCenteredText('An event callback that triggers on a full mouse click.', -18, [150, 170, 200]);
-	drawCenteredText('Click anywhere to create a ripple effect.', -16, [150, 170, 200]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.MOUSECLICKED', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: CLICK EVENT', x, y++, 100, 220, 255);
+	drawText('Event updates compact state.', x, y++, 140, 160, 190);
+	drawText('Pulses show recent triggers.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CLICKS: ' + count, x, y++, 140, 255, 180);
+	drawText('LAST: ' + last.slice(0, 28), x, y++, 180, 200, 220);
 });
 
 t.windowResized(() => {

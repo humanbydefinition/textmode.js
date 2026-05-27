@@ -1,30 +1,10 @@
 /**
  * @title TextmodeColor.rgba
- * @author codex
  */
 const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
+const labelLayer = t.layers.add();
 const color = t.color(255, 128, 0, 100);
-
-function drawText(text, x, y, rgb = [255, 255, 255], alpha = 255) {
-	t.push();
-	t.translate(x, y);
-	t.charColor(rgb[0], rgb[1], rgb[2], alpha);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
-
-function drawCenteredText(text, y, rgb = [255, 255, 255], alpha = 255) {
-	drawText(text, -Math.floor(text.length / 2), y, rgb, alpha);
-}
 
 function drawChecker(x, y, width, height) {
 	for (let row = 0; row < height; row++) {
@@ -32,7 +12,6 @@ function drawChecker(x, y, width, height) {
 			if ((row + col) % 2 !== 0) {
 				continue;
 			}
-
 			t.push();
 			t.translate(x + col, y + row);
 			t.charColor(90, 100, 120, 90);
@@ -43,7 +22,7 @@ function drawChecker(x, y, width, height) {
 	}
 }
 
-function drawSwatch(x, label, swatchColor, alpha = 255) {
+function drawSwatch(x, swatchColor, alpha = 255) {
 	const left = x - 4;
 	drawChecker(left, -2, 8, 4);
 
@@ -53,8 +32,6 @@ function drawSwatch(x, label, swatchColor, alpha = 255) {
 	t.char('@');
 	t.rect(8, 4);
 	t.pop();
-
-	drawText(label, x - Math.floor(label.length / 2), 4, [220, 225, 235]);
 }
 
 t.draw(() => {
@@ -63,13 +40,38 @@ t.draw(() => {
 
 	t.background(12, 16, 24);
 
-	drawCenteredText('RGBA', -7, [180, 190, 220]);
-	drawCenteredText(`[${r}, ${g}, ${b}, ${a}]`, -5, [230, 235, 245]);
+	drawSwatch(-offset, [r, g, b], 255);
+	drawSwatch(offset, [r, g, b], a);
+});
 
-	drawSwatch(-offset, 'RGBA 255', [r, g, b], 255);
-	drawSwatch(offset, `RGBA ${a}`, [r, g, b], a);
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
 
-	drawCenteredText('alpha changes opacity', 7, [170, 180, 205]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	const [r, g, b, a] = color.rgba;
+
+	drawText('TEXTMODECOLOR.RGBA', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: RGBA COLOR SPECIFICATION', x, y++, 100, 220, 255);
+	drawText(`COLOR ARY : [${r}, ${g}, ${b}, ${a}]`, x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('Left Swatch : Alpha = 255', x, y++, 140, 190, 255);
+	drawText(`Right Swatch: Alpha = ${a}`, x, y++, 140, 190, 255);
 });
 
 t.windowResized(() => {

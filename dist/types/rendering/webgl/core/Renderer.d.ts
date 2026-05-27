@@ -60,8 +60,6 @@ export declare class GLRenderer implements IRenderer {
      * @param g Green component (0-1)
      * @param b Blue component (0-1)
      * @param a Alpha component (0-1)
-     * @param preserveCharData If true, clears attachment 0 to the transparent-cell sentinel
-     * `(1, 1, 0, 0)` consumed by `ascii.frag`; if false, clears to `(0, 0, 0, 0)`.
      */
     private _clearMRT;
     _resetViewport(): void;

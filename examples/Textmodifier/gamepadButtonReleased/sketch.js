@@ -1,60 +1,59 @@
 /**
  * @title Textmodifier.gamepadButtonReleased
- * @description Show a cooldown board of button release edges, distinct from the press callback.
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
-const releases = [];
+const labelLayer = t.layers.add();
 
-function drawText(text, x, y, r = 220, g = r, b = r, a = 255) {
+let lastRelease = 'waiting';
+
+t.gamepadButtonReleased((data) => {
+	lastRelease = data.standardButtonName || 'button ' + data.buttonIndex;
+});
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
 	t.translate(x, y);
-	t.charColor(r, g, b, a);
-
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
-t.gamepadButtonReleased((data) => {
-	const label = data.standardButtonName || `btn[${data.buttonIndex}]`;
-	releases.unshift({
-		text: `slot ${data.gamepad.index}  ${label}`,
-		age: 0,
-	});
-
-	if (releases.length > 10) releases.length = 10;
+t.draw(() => {
+	t.background(4, 6, 12);
+	const count = Math.max(1, t.gamepads.length);
+	for (let i = 0; i < 16; i++) {
+		t.push();
+		const angle = (i / 16) * Math.PI * 2 + t.frameCount * 0.03;
+		t.translate(Math.cos(angle) * (6 + count), Math.sin(angle) * 4);
+		t.char(t.gamepads.length ? '@' : '.');
+		t.charColor(80 + i * 8, 180, 255);
+		t.point();
+		t.pop();
+	}
 });
 
-t.draw(() => {
-	t.background(0);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
 
-	drawText('gamepadButtonReleased()', -28, -18, 255, 255, 255);
-	drawText('release a held button to log its edge transition', -28, -16, 140, 140, 140);
-	drawText('release log', -28, -12, 180, 180, 180);
-	drawText('----------------------------------------', -28, -11, 60, 60, 60);
-
-	if (releases.length === 0) {
-		drawText('hold a button, then let go', -28, -6, 100, 100, 100);
-	}
-
-	for (let i = 0; i < releases.length; i++) {
-		const entry = releases[i];
-		entry.age++;
-		const fade = Math.max(0.2, 1 - entry.age / 240);
-		const a = Math.round(255 * fade);
-		const cool = 100 + Math.round(120 * fade);
-
-		drawText('v', -28, -8 + i * 2, 120, 160, 255, a);
-		drawText(entry.text, -26, -8 + i * 2, 140, 180, cool, a);
-	}
+	drawText('TEXTMODIFIER.GAMEPADBUTTONRELEASED', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: GAMEPAD INPUT', x, y++, 100, 220, 255);
+	drawText('Works with browser pads.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`RELEASE: ${lastRelease}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

@@ -1,5 +1,5 @@
 /**
- * Represents a color in the `textmode.js` rendering system.
+ * Color value used by textmode drawing APIs.
  *
  * Values are stored as `0-255` integers for compatibility with public APIs.
  * Normalized versions are also available for shader uploads.
@@ -42,7 +42,7 @@ export declare class TextmodeColor {
     readonly a: number;
     private constructor();
     /**
-     * Returns a plain RGB array with integer components.
+     * Plain RGB tuple with integer components.
      *
      * @returns A [r, g, b] tuple with values between 0 and 255.
      *
@@ -51,7 +51,7 @@ export declare class TextmodeColor {
      */
     get rgb(): [number, number, number];
     /**
-     * Returns a plain RGBA array with integer components.
+     * Plain RGBA tuple with integer components.
      *
      * @returns A [r, g, b, a] tuple with values between 0 and 255.
      *
@@ -60,7 +60,7 @@ export declare class TextmodeColor {
      */
     get rgba(): [number, number, number, number];
     /**
-     * Returns the normalized *(0-1)* RGBA array.
+     * Normalized *(0-1)* RGBA tuple.
      *
      * Useful for passing color data to WebGL shaders.
      *

@@ -1,50 +1,60 @@
 /**
  * @title Textmodifier.ellipsoid
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
-	fontSize: 8, // Higher resolution for 3D geometry
+	fontSize: 16,
 });
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+const labelLayer = t.layers.add();
+
+let spin = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
-	t.background(6, 10, 22);
-	t.ambientLight(30, 35, 50);
-	t.pointLight([255, 200, 150], { x: 30, y: -20, z: 40 });
-
-	const time = t.secs;
-
-	const rx = 15 + Math.sin(time * 1.2) * 5;
-	const ry = 10 + Math.cos(time * 1.5) * 4;
-	const rz = 20 + Math.sin(time * 0.8) * 8;
-
+	t.background(6, 8, 18);
+	const time = t.frameCount * 0.025;
+	spin = (time * 40) % 360;
+	t.perspective(58, 0.1, 4096);
+	t.camera(18, -10, 42, 0, 0, 0);
+	t.ambientLight(24, 28, 38);
+	t.pointLight([255, 210, 140], { x: 18, y: -18, z: 28 });
 	t.push();
-	t.rotateY(time * 20);
-	t.rotateX(time * 10);
-
-	t.charColor(150, 160, 200);
-	t.char('0');
-	t.ellipsoid(rx, ry, rz);
+	t.translate(5, 1, 0);
+	t.rotateY(spin);
+	t.rotateX(18);
+	t.char('#');
+	t.charColor(140, 220, 255);
+	t.cellColor(16, 24, 42);
+	t.ellipsoid(8, 5, 6);
 	t.pop();
+});
 
-	drawCenteredText('Textmodifier.ellipsoid', -35, [255, 255, 255]);
-	drawCenteredText('Draws a 3D ellipsoid with independent radii for X, Y, and Z axes.', -32, [150, 170, 200]);
-	drawCenteredText(`t.ellipsoid(${rx.toFixed(1)}, ${ry.toFixed(1)}, ${rz.toFixed(1)})`, 32, [140, 180, 255]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.ELLIPSOID', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: 3D ELLIPSOID', x, y++, 100, 220, 255);
+	drawText('Independent X, Y, Z radii.', x, y++, 140, 160, 190);
+	drawText('Camera and light reveal depth.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`SPIN: ${spin.toFixed(1)}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

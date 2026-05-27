@@ -11,10 +11,6 @@ interface MeshData {
 }
 /**
  * Generic instanced geometry for 3D mesh primitives (box, sphere, torus, etc.).
- *
- * All 3D mesh geometries share the same structure: a pre-generated unit mesh,
- * a geometry type enum, and an `_addInstance` that forwards width/height/depth.
- * This class eliminates the per-shape boilerplate by parameterising those differences.
  */
 export declare class MeshGeometry<P extends Mesh3DParams = Mesh3DParams> extends BaseGeometry<P> {
     constructor(gl: WebGL2RenderingContext, batch: InstanceBatch, type: GeometryType, mesh: MeshData);

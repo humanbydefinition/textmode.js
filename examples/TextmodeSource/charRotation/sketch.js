@@ -1,65 +1,25 @@
 /**
  * @title TextmodeSource.charRotation
- * @author codex
  */
+const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
-	fontSize: 16,
+	fontSize: 8,
 });
 
-let pointerSource;
+const labelLayer = t.layers.add();
+let pointerSource = null;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
-
-function createPointerCanvas() {
-	const canvas = document.createElement('canvas');
-	canvas.width = 128;
-	canvas.height = 128;
-	const ctx = canvas.getContext('2d');
-	if (!ctx) return canvas;
-
-	ctx.fillStyle = '#000000';
-	ctx.fillRect(0, 0, 128, 128);
-
-	ctx.fillStyle = '#ffffff';
-	ctx.beginPath();
-	ctx.moveTo(64, 20); // Top
-	ctx.lineTo(100, 100); // Bottom Right
-	ctx.lineTo(28, 100); // Bottom Left
-	ctx.closePath();
-	ctx.fill();
-
-	return canvas;
-}
-
-t.setup(() => {
-	const canvas = createPointerCanvas();
-	pointerSource = t.createTexture(canvas);
-	pointerSource.characters('#+- ');
+t.setup(async () => {
+	pointerSource = await t.loadImage(IMAGE_URL);
+	pointerSource.characters(' .:-=+*#%@');
 });
 
 t.draw(() => {
 	t.background(6, 10, 22);
 
 	if (!pointerSource) return;
-
-	drawCenteredText('TextmodeSource.charRotation', -12, [240, 245, 255]);
-	drawCenteredText('Rotating the individual characters within their cells.', -10, [150, 170, 200]);
 
 	const imgW = 20;
 	const imgH = 12;
@@ -69,14 +29,39 @@ t.draw(() => {
 	pointerSource.charRotation(0);
 	t.image(pointerSource, imgW, imgH);
 	t.pop();
-	drawCenteredText('0 DEGREES', 8, [140, 180, 255]);
 
 	t.push();
 	t.translate(12, 0);
 	pointerSource.charRotation(90);
 	t.image(pointerSource, imgW, imgH);
 	t.pop();
-	drawCenteredText('90 DEGREES', 12, [255, 180, 100]);
+});
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODESOURCE.CHARROTATION', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: GLYPH ROTATION ANGLE', x, y++, 100, 220, 255);
+	drawText('Rotates mapped characters in degrees.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('ROTATION ANGLE: 0 & 90 deg', x, y++, 140, 190, 255);
 });
 
 t.windowResized(() => {

@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.translateY2
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,45 +7,47 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+const labelLayer = t.layers.add();
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const count = 40;
-	const speed = 0.5;
-
-	// Cascading elements using translateY
-	for (let i = 0; i < count; i++) {
-		const x = (i / count - 0.5) * 60;
-		const offset = (i * 7.5) % 30;
-		const y = ((t.frameCount * speed + offset) % 30) - 15;
-
+	const time = t.frameCount * 0.04;
+	for (let i = 0; i < 5; i++) {
 		t.push();
-		t.translateX(x);
-		t.translateY(y);
-
-		const brightness = (1 - (y + 15) / 30) * 255;
-		t.charColor(255, 140, 180, brightness);
+		t.translateX((i - 2) * 6);
+		t.translateY(Math.sin(time + i) * 7);
 		t.char('|');
-		t.point();
+		t.charColor(120, 180 + i * 12, 255);
+		t.rect(2, 5);
 		t.pop();
 	}
+});
 
-	drawCenteredText('Textmodifier.translateY (Cascading)', -16, [255, 255, 255]);
-	drawCenteredText('Simulating vertical motion with wrapping translateY.', -14, [150, 170, 200]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.TRANSLATEY2', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: STACKED Y MOTION', x, y++, 100, 220, 255);
+	drawText('Columns move vertically.', x, y++, 140, 160, 190);
+	drawText('translateY keeps X unchanged.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('API: t.translateY(y)', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

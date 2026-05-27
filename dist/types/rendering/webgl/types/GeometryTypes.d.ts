@@ -1,6 +1,3 @@
-/**
- * Core interfaces and types for the instanced geometry system
- */
 import type { InstanceBatch } from '../batching/InstanceBatch';
 import type { IRenderState } from '../state/RenderState';
 /**
@@ -26,6 +23,8 @@ export declare enum GeometryType {
  * - GEOMETRY_TYPE_FLAT = 2 (rectangle, line, ellipse, triangle)
  * - GEOMETRY_TYPE_ARC = 3
  * - GEOMETRY_TYPE_BEZIER = 4
+ * - 3D mesh types use the shader-specific IDs below; cylinder and ellipsoid
+ *   reuse the generic box/sphere mesh paths.
  */
 export declare const GEOMETRY_TYPE_ID: Record<GeometryType, number>;
 /**

@@ -1,6 +1,5 @@
 /**
  * @title TextmodeSource.background
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,23 +7,8 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
+const labelLayer = t.layers.add();
 let sourceA, sourceB;
-
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
 
 function createTransparentCanvas() {
 	const canvas = document.createElement('canvas');
@@ -38,7 +22,6 @@ function createTransparentCanvas() {
 	ctx.strokeStyle = '#ffffff';
 	ctx.strokeRect(20, 20, 88, 88);
 
-	// Inner solid white circle
 	ctx.fillStyle = '#ffffff';
 	ctx.beginPath();
 	ctx.arc(64, 64, 30, 0, Math.PI * 2);
@@ -50,7 +33,6 @@ function createTransparentCanvas() {
 t.setup(() => {
 	const canvas = createTransparentCanvas();
 
-	// Source A: Default transparency behavior (falls back to black)
 	sourceA = t.createTexture(canvas);
 	sourceA.characters(' .:-=+*#%@');
 
@@ -60,16 +42,11 @@ t.setup(() => {
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
 	if (!sourceA || !sourceB) return;
 
 	const time = t.frameCount * 0.05;
 	const pulse = 0.5 + 0.5 * Math.sin(time);
-
 	sourceB.background(pulse * 255, 100, 255 - pulse * 155);
-
-	drawCenteredText('TextmodeSource.background', -12, [240, 245, 255]);
-	drawCenteredText('Fills transparent source pixels before conversion.', -10, [150, 170, 200]);
 
 	const imgW = 20;
 	const imgH = 12;
@@ -78,13 +55,39 @@ t.draw(() => {
 	t.translate(-12, 0);
 	t.image(sourceA, imgW, imgH);
 	t.pop();
-	drawCenteredText('DEFAULT FALLBACK', 8, [140, 180, 255]);
 
 	t.push();
 	t.translate(12, 0);
 	t.image(sourceB, imgW, imgH);
 	t.pop();
-	drawCenteredText('CUSTOM BACKGROUND', 12, [255, 180, 100]);
+});
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODESOURCE.BACKGROUND', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: TRANSPARENT PIXEL FILL', x, y++, 100, 220, 255);
+	drawText('Fills transparent pixels before mapping.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('Left  : DEFAULT BLACK FALLBACK', x, y++, 140, 180, 255);
+	drawText('Right : CUSTOM BG PULSE FILL', x, y++, 255, 180, 100);
 });
 
 t.windowResized(() => {

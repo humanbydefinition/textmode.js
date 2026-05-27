@@ -1,31 +1,16 @@
 /**
  * @title TextmodeSource.flipX
- * @author codex
  */
 const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
-	fontSize: 16,
+	fontSize: 8,
 });
 
-let sourceA, sourceB;
-
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
-}
+const labelLayer = t.layers.add();
+let sourceA = null;
+let sourceB = null;
 
 t.setup(async () => {
 	sourceA = await t.loadImage(IMAGE_URL);
@@ -42,9 +27,6 @@ t.draw(() => {
 
 	if (!sourceA || !sourceB) return;
 
-	drawCenteredText('TextmodeSource.flipX', -12, [240, 245, 255]);
-	drawCenteredText('Mirroring the source texture horizontally.', -10, [150, 170, 200]);
-
 	const imgW = 20;
 	const imgH = 12;
 
@@ -52,13 +34,38 @@ t.draw(() => {
 	t.translate(-12, 0);
 	t.image(sourceA, imgW, imgH);
 	t.pop();
-	drawCenteredText('NORMAL', 8, [140, 180, 255]);
 
 	t.push();
 	t.translate(12, 0);
 	t.image(sourceB, imgW, imgH);
 	t.pop();
-	drawCenteredText('FLIP_X', 12, [255, 180, 100]);
+});
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+
+	drawText('TEXTMODESOURCE.FLIPX', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: FLIP SOURCE HORIZONTALLY', x, y++, 100, 220, 255);
+	drawText('Flips image horizontally before mapping.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('FLIP X STATUS: false & true', x, y++, 140, 190, 255);
 });
 
 t.windowResized(() => {

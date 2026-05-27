@@ -1,56 +1,76 @@
 /**
  * @title TextmodeTileset.framebuffer
- * @author codex
  */
+const T64_URL = 'https://littlebitspace.com/resources/fonts/T64.png';
 const TILE_COLUMNS = 16;
 const TILE_ROWS = 16;
 const TILE_COUNT = TILE_COLUMNS * TILE_ROWS;
 
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
+
+const labelLayer = t.layers.add();
 
 let tileset = null;
 
-function label(text, y, color = [220, 220, 220]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(color[0], color[1], color[2]);
-
-	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
-		t.char(text[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.pop();
+function tilesetOptions() {
+	return {
+		source: T64_URL,
+		columns: TILE_COLUMNS,
+		rows: TILE_ROWS,
+		count: TILE_COUNT,
+		fontSize: 16,
+	};
 }
 
 t.setup(async () => {
-	tileset = await t.loadTileset(
-		{
-			source: 'https://littlebitspace.com/resources/fonts/T64.png',
-			columns: TILE_COLUMNS,
-			rows: TILE_ROWS,
-			count: TILE_COUNT,
-		},
-		false
-	);
+	tileset = await t.loadTileset(tilesetOptions());
 });
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
+	for (let i = 0; i < text.length; i++) {
+		t.char(text[i]);
+		t.point();
+		t.translate(1, 0);
+	}
+	t.pop();
+}
 
 t.draw(() => {
 	t.background(5, 7, 18);
-
-	if (!tileset) {
-		label('loading tileset...', 0, [255, 225, 140]);
-		return;
+	if (!tileset) return;
+	const startX = -Math.floor(TILE_COLUMNS / 2);
+	const startY = -Math.floor(TILE_ROWS / 2);
+	for (let i = 0; i < TILE_COUNT; i++) {
+		t.push();
+		t.translate(startX + (i % TILE_COLUMNS), startY + Math.floor(i / TILE_COLUMNS));
+		t.char(i);
+		t.charColor(120 + i * 6, 220, 255 - i * 7);
+		t.point();
+		t.pop();
 	}
+});
 
-	const atlas = tileset.framebuffer;
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
 
-	label('TextmodeTileset.framebuffer', -6, [255, 225, 140]);
-	label(atlas.width + ' x ' + atlas.height + ' px', 0, [180, 200, 220]);
-	label(tileset.columns + ' cols x ' + tileset.rows + ' rows', 4, [150, 170, 200]);
+	drawText('TEXTMODETILESET.FRAMEBUFFER', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: TILESET ATLAS DATA', x, y++, 100, 220, 255);
+	drawText('T64 web tileset feeds glyphs.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	const ready = Boolean(tileset.framebuffer);
+	drawText(`FBO READY: ${ready}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

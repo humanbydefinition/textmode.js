@@ -1,6 +1,5 @@
 /**
  * @title TextmodeLayer.deletePluginState
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -9,19 +8,20 @@ const t = textmode.create({
 });
 
 const layer = t.layers.add();
+const labelLayer = t.layers.add();
 const PLUGIN_NAME = 'monitor';
+let stateDeleted = false;
+let latestAngle = 0;
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
+	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
 
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 
 	t.pop();
@@ -30,6 +30,7 @@ function drawCenteredText(text, y, rgb = [255, 255, 255]) {
 t.mousePressed(() => {
 	if (layer.hasPluginState(PLUGIN_NAME)) {
 		layer.deletePluginState(PLUGIN_NAME);
+		stateDeleted = true;
 	}
 });
 
@@ -43,6 +44,7 @@ layer.draw(() => {
 	const state = layer.getPluginState(PLUGIN_NAME);
 
 	state.angle += 0.05;
+	latestAngle = state.angle;
 
 	t.push();
 	t.rotateZ((state.angle * 180) / Math.PI);
@@ -50,17 +52,29 @@ layer.draw(() => {
 	t.char('#');
 	t.rect(8, 4);
 	t.pop();
-
-	drawCenteredText('TextmodeLayer.deletePluginState', -10, [240, 245, 255]);
-	drawCenteredText('Click to delete the "monitor" plugin state.', -8, [150, 170, 200]);
-
-	const statusColor = layer.hasPluginState(PLUGIN_NAME) ? [120, 255, 150] : [255, 100, 100];
-	drawCenteredText('STATE: ' + (layer.hasPluginState(PLUGIN_NAME) ? 'ACTIVE' : 'DELETED'), 6, statusColor);
-	drawCenteredText('VALUE: ' + state.angle.toFixed(2), 8, [180, 200, 220]);
 });
 
 t.draw(() => {
 	t.background(6, 10, 22);
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	const statusColor = stateDeleted ? [255, 180, 100] : [120, 255, 150];
+
+	drawText('TEXTMODELAYER.DELETEPLUGINSTATE', x, y++, [100, 255, 140]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText('CONCEPT: DELETE PLUGIN STATE', x, y++, [100, 220, 255]);
+	drawText('Click clears the monitor state.', x, y++, [140, 160, 190]);
+	drawText('Draw recreates it next frame.', x, y++, [140, 160, 190]);
+	drawText('------------------------------------', x, y++, [80, 100, 150]);
+	drawText(stateDeleted ? 'STATE: RECREATED' : 'STATE: ACTIVE', x, y++, statusColor);
+	drawText(`ANGLE: ${latestAngle.toFixed(2)}`, x, y++, [180, 200, 220]);
+	stateDeleted = false;
 });
 
 t.windowResized(() => {

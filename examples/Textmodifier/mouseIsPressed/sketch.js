@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.mouseIsPressed
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,54 +7,46 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-let charge = 0;
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+let pressed = false;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const mx = t.mouse.x;
-	const my = t.mouse.y;
-	const isInside = mx !== Number.NEGATIVE_INFINITY;
-
-	if (t.mouseIsPressed && isInside) {
-		charge = Math.min(1.0, charge + 0.05);
-	} else {
-		charge = Math.max(0, charge - 0.02);
+	pressed = t.mouseIsPressed;
+	if (pressed && t.mouse.x !== Number.NEGATIVE_INFINITY) {
+		t.translate(t.mouse.x, t.mouse.y);
 	}
+	t.char(pressed ? '@' : '.');
+	t.charColor(pressed ? 140 : 80, pressed ? 255 : 90, pressed ? 180 : 100);
+	t.rect(8, 4);
+});
 
-	if (isInside) {
-		t.push();
-		t.translate(mx, my);
-		const size = 5 + charge * 20;
-		t.charColor(255, 200, 100, charge * 255);
-		t.char('☼');
-		t.ellipse(size, size);
-		t.char(t.mouseIsPressed ? '@' : '+');
-		t.charColor(255, 255, 255);
-		t.point();
-		t.pop();
-	}
-
-	drawCenteredText('Textmodifier.mouseIsPressed', -20, [255, 255, 255]);
-	drawCenteredText('Boolean state: true if any button is held.', -18, [150, 170, 200]);
-	drawCenteredText('Checked every frame in the draw loop.', -16, [150, 170, 200]);
-
-	drawCenteredText(`mouseIsPressed = ${t.mouseIsPressed}`, 10, t.mouseIsPressed ? [100, 255, 150] : [255, 100, 100]);
-	drawCenteredText('Hold Click to "Charge" the cursor', 18, [255, 200, 100]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.MOUSEISPRESSED', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: BUTTON STATE', x, y++, 100, 220, 255);
+	drawText('True while mouse is held.', x, y++, 140, 160, 190);
+	drawText('Shape follows held pointer.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(pressed ? 'PRESSED: TRUE' : 'PRESSED: FALSE', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.arc
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,61 +7,52 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+const labelLayer = t.layers.add();
 
+let startDeg = 0;
+let endDeg = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
+	t.push();
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const time = t.frameCount * 0.02;
-	const startAngle = (time * 50) % 360;
-	const endAngle = startAngle + 90 + Math.sin(time) * 45;
-
+	const time = t.frameCount * 0.03;
+	startDeg = (time * 60) % 360;
+	endDeg = startDeg + 110 + Math.sin(time) * 35;
 	t.push();
-	t.charColor(40, 50, 80);
-	t.char('.');
-	t.rect(t.grid.cols, t.grid.rows);
-	t.pop();
-
-	drawCenteredText('Textmodifier.arc', -12, [240, 245, 255]);
-	drawCenteredText('Drawing circular or elliptical paths.', -10, [150, 170, 200]);
-
-	t.push();
+	t.translate(8, 1);
 	t.char('#');
 	t.charColor(140, 180, 255);
-	t.lineWeight(1);
-
-	// Params: width, height, startAngle (deg), endAngle (deg)
-	t.arc(24, 14, startAngle, endAngle);
-
-	t.push();
-	t.charColor(60, 70, 100, 150);
-	t.char('.');
-
-	const startRad = (startAngle * Math.PI) / 180;
-	t.line(0, 0, Math.cos(startRad) * 12, Math.sin(startRad) * 7);
-
-	const endRad = (endAngle * Math.PI) / 180;
-	t.line(0, 0, Math.cos(endRad) * 12, Math.sin(endRad) * 7);
+	t.arc(22, 12, startDeg, endDeg);
+	t.charColor(60, 70, 100);
+	t.line(0, 0, Math.cos((startDeg * Math.PI) / 180) * 11, Math.sin((startDeg * Math.PI) / 180) * 6);
 	t.pop();
-	t.pop();
+});
 
-	drawCenteredText(`START: ${startAngle.toFixed(1).padStart(5, '0')} DEG`, 8, [255, 225, 140]);
-	drawCenteredText(`END:   ${endAngle.toFixed(1).padStart(5, '0')} DEG`, 10, [140, 255, 180]);
-	drawCenteredText('t.arc(width, height, start, end)', 13, [100, 120, 150]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.ARC', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: PARTIAL ELLIPSE', x, y++, 100, 220, 255);
+	drawText('Animated start and end angles.', x, y++, 140, 160, 190);
+	drawText('Guide line marks the start.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`START: ${startDeg.toFixed(1)}`, x, y++, 255, 210, 120);
+	drawText(`END: ${endDeg.toFixed(1)}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

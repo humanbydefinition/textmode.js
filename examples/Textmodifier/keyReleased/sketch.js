@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.keyReleased
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,50 +7,49 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-let releaseInfo = null;
-let fade = 0;
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+let last = 'NONE';
+let count = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.keyReleased((data) => {
-	releaseInfo = {
-		key: data.key,
-		code: data.code,
-	};
-	fade = 1.0;
+	last = data.key || 'UNKNOWN';
+	count++;
 });
 
 t.draw(() => {
 	t.background(6, 10, 22);
+	t.char(last[0] || '?');
+	t.charColor(140, 220, 255);
+	t.rect(8, 4);
+});
 
-	if (releaseInfo) {
-		t.push();
-		t.charColor(255, 100, 100, fade * 255);
-		t.char(releaseInfo.key.length === 1 ? releaseInfo.key : '?');
-		t.rect(12, 12);
-		t.pop();
-
-		drawCenteredText(`Released: "${releaseInfo.key}"`, 8, [255, 150, 150, fade * 255]);
-		fade *= 0.95;
-	}
-
-	drawCenteredText('Textmodifier.keyReleased', -20, [255, 255, 255]);
-	drawCenteredText('An event callback that triggers when a key is released.', -18, [150, 170, 200]);
-	drawCenteredText('Useful for stopping actions like movement or charging.', -16, [150, 170, 200]);
-
-	drawCenteredText('Press and RELEASE any key', 18, [100, 100, 120]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.KEYRELEASED', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: KEY UP EVENT', x, y++, 100, 220, 255);
+	drawText('Fires when a key is released.', x, y++, 140, 160, 190);
+	drawText('Useful for edge transitions.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`COUNT: ${count}`, x, y++, 140, 255, 180);
+	drawText('LAST: ' + last.slice(0, 20), x, y++, 180, 200, 220);
 });
 
 t.windowResized(() => {

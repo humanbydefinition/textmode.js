@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.rotateX
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,59 +7,51 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-function drawCenteredText(text, row, rgb = [240, 245, 255]) {
+const labelLayer = t.layers.add();
+
+let value = 0;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), row);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const time = t.frameCount * 2;
-	let angle = time;
-
-	if (t.mouse.y !== Number.NEGATIVE_INFINITY) {
-		angle = t.mouse.y * 10;
-	}
-
+	const time = t.frameCount * 0.04;
+	value = (time * 70) % 360;
+	t.charColor(50, 60, 90);
+	t.char('.');
+	t.line(-18, 0, 18, 0);
+	t.line(0, -10, 0, 10);
 	t.push();
-	t.charColor(40, 50, 80);
-	for (let i = -2; i <= 2; i++) {
-		t.push();
-		t.translate(0, i * 10, 0);
-		t.char('-');
-		t.rect(60, 1);
-		t.pop();
-	}
+	t.rotateX(value);
+	t.char('#');
+	t.charColor(140, 255, 180);
+	t.rect(6, 4);
 	t.pop();
+});
 
-	t.push();
-	t.rotateX(angle);
-	const currentAngle = t.rotateX();
-	const intensity = Math.abs(Math.cos((currentAngle * Math.PI) / 180));
-	t.charColor(120, 255, 180);
-	t.char(intensity > 0.3 ? '█' : '▒');
-	t.rect(30, 15);
-	t.pop();
-
-	drawCenteredText(`Current X-Angle: ${Math.floor(currentAngle % 360)}°`, 12, [255, 225, 140]);
-
-	drawCenteredText('Textmodifier.rotateX', -18, [255, 255, 255]);
-	drawCenteredText('Rotates the coordinate system around the X-axis (Pitch).', -16, [150, 170, 200]);
-	drawCenteredText('t.rotateX(degrees)', 18, [140, 180, 255]);
-
-	if (t.mouse.y === Number.NEGATIVE_INFINITY) {
-		drawCenteredText('Move mouse Y to control rotation', 21, [100, 100, 120]);
-	}
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.ROTATEX', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: X AXIS ROTATION', x, y++, 100, 220, 255);
+	drawText('Pitch changes vertical plane.', x, y++, 140, 160, 190);
+	drawText('Grid cross shows original axes.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`DEG: ${value.toFixed(1)}`, x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {

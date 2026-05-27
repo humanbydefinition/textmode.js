@@ -1,6 +1,5 @@
 /**
  * @title Textmodifier.fontSize
- * @author codex
  */
 const t = textmode.create({
 	width: window.innerWidth,
@@ -8,66 +7,44 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const sizes = [8, 16, 32];
-let sizeIndex = 1;
+const labelLayer = t.layers.add();
 
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
+let size = 16;
+
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y);
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
-	const currentSize = t.fontSize();
-	const time = t.frameCount * 0.03;
-
-	t.push();
-	t.charColor(15, 24, 42);
-	t.char('.');
-	t.rect(t.grid.cols, t.grid.rows);
-	t.pop();
-
-	t.push();
-	t.charColor(255, 180, 100);
-	t.cellColor(40, 65, 140);
+	size = t.fontSize();
 	t.char('#');
-	t.rotateZ(time * 80);
-	t.rect(6, 6);
-	t.pop();
-
-	for (let i = 0; i < 4; i++) {
-		const angle = time + (i / 4) * Math.PI * 2;
-		t.push();
-		t.translate(Math.round(Math.cos(angle) * 5), Math.round(Math.sin(angle) * 5));
-		t.charColor(100 + i * 50, 200, 255 - i * 30);
-		t.char('*');
-		t.point();
-		t.pop();
-	}
-
-	drawCenteredText('Textmodifier.fontSize', -12, [240, 245, 255]);
-	drawCenteredText('Setting and retrieving the current font size.', -10, [150, 170, 200]);
-
-	drawCenteredText(`t.fontSize() = ${currentSize}px  |  Grid: ${t.grid.cols}x${t.grid.rows}`, -6, [140, 180, 255]);
-
-	drawCenteredText('click to cycle: 8 / 16 / 32', 11, [80, 90, 120]);
+	t.charColor(140, 220, 255);
+	t.rect(12, 5);
 });
 
-t.mouseClicked(() => {
-	sizeIndex = (sizeIndex + 1) % sizes.length;
-	t.fontSize(sizes[sizeIndex]);
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.FONTSIZE', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: ACTIVE FONT SIZE', x, y++, 100, 220, 255);
+	drawText('Reads the current font size.', x, y++, 140, 160, 190);
+	drawText('Grid derives from cell size.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(`SIZE: ${size}`, x, y++, 140, 255, 180);
+	drawText(`COLS: ${t.grid.cols}`, x, y++, 180, 200, 220);
 });
 
 t.windowResized(() => {

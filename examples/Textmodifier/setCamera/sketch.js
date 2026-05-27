@@ -1,69 +1,68 @@
 /**
  * @title Textmodifier.setCamera
- * @author codex
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
+
+const labelLayer = t.layers.add();
 
 let cameraA;
 let cameraB;
-let useA = true;
+let active = false;
 
-const scene = [
-	{ x: -16, y: 0, z: 0, char: 'L', color: [255, 120, 120] },
-	{ x: 0, y: 0, z: -12, char: 'M', color: [120, 255, 160] },
-	{ x: 16, y: 0, z: 0, char: 'R', color: [120, 180, 255] },
-];
-
-function drawScene() {
-	for (let i = 0; i < scene.length; i++) {
-		const item = scene[i];
-
-		t.push();
-		t.translate(item.x, item.y, item.z);
-		t.rotateY(t.frameCount * (0.9 + i * 0.2));
-		t.rotateZ(t.frameCount * (0.7 + i * 0.15));
-		t.char(item.char);
-		t.charColor(item.color[0], item.color[1], item.color[2]);
-		t.rect(8, 8);
-		t.pop();
-	}
-}
-
-function drawLabel(text, y) {
+function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(-Math.floor(text.length / 2), y, 0);
-	t.charColor(220);
-
+	t.translate(x, y);
+	t.charColor(r, g, b);
 	for (let i = 0; i < text.length; i++) {
-		t.push();
-		t.translate(i, 0, 0);
 		t.char(text[i]);
 		t.point();
-		t.pop();
+		t.translate(1, 0);
 	}
-
 	t.pop();
 }
 
 t.setup(() => {
 	t.perspective(58, 0.1, 4096);
 	cameraA = t.createCamera();
-	cameraA.setPosition(-32, 10, 24).lookAt(0, 0, 0);
-
-	cameraB = cameraA.copy().setPosition(32, 10, 24).lookAt(0, 0, 0);
-	t.setCamera(cameraA);
-});
-
-t.mouseClicked(() => {
-	useA = !useA;
-	t.setCamera(useA ? cameraA : cameraB);
+	cameraA.setPosition(-28, 10, 36).lookAt(0, 0, 0);
+	cameraB = t.createCamera();
+	cameraB.setPosition(28, 10, 36).lookAt(0, 0, 0);
 });
 
 t.draw(() => {
-	t.background(8, 10, 24);
-	drawScene();
-	drawLabel('click to switch setCamera(cameraA / cameraB)', Math.floor(t.grid.rows / 2) - 3);
-	drawLabel(useA ? 'cameraA active' : 'cameraB active', Math.floor(t.grid.rows / 2) - 1);
+	t.background(6, 8, 18);
+	active = Math.floor(t.frameCount / 120) % 2 === 0;
+	t.setCamera(active ? cameraA : cameraB);
+	t.ambientLight(25, 28, 36);
+	t.pointLight([255, 210, 140], { x: 18, y: -16, z: 28 });
+	for (let i = 0; i < 3; i++) {
+		t.push();
+		t.translate((i - 1) * 9, 0, i * -8);
+		t.rotateY(t.frameCount + i * 30);
+		t.char('#');
+		t.charColor(120 + i * 40, 220, 255 - i * 20);
+		t.box(5, 5, 5);
+		t.pop();
+	}
+});
+
+labelLayer.draw(() => {
+	t.clear();
+	const left = -Math.floor(t.grid.cols / 2);
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
+	const x = left + 3;
+	drawText('TEXTMODIFIER.SETCAMERA', x, y++, 100, 255, 140);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText('CONCEPT: ACTIVATE CAMERA', x, y++, 100, 220, 255);
+	drawText('Two camera objects alternate.', x, y++, 140, 160, 190);
+	drawText('Scene proves viewpoint change.', x, y++, 140, 160, 190);
+	drawText('------------------------------------', x, y++, 80, 100, 150);
+	drawText(active ? 'ACTIVE: CAMERA A' : 'ACTIVE: CAMERA B', x, y++, 140, 255, 180);
 });
 
 t.windowResized(() => {
