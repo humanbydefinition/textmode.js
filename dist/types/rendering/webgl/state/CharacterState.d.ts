@@ -1,5 +1,6 @@
 import type { RGB, RGBA } from '../../../utils/color';
 import type { IRenderState } from './RenderState';
+import type { TextmodeColorMode, TextmodeColorModeState } from '../../../textmode/color/ColorMode';
 /**
  * Manages character rendering state: character, colors, flip, invert, rotation, and line weight.
  */
@@ -9,6 +10,8 @@ export declare class CharacterState {
     _currentCharacterString: string;
     _currentCharColor: RGBA;
     _currentCellColor: RGBA;
+    _colorMode: TextmodeColorMode;
+    _colorModeMaxes: [number, number, number, number];
     _flipHorizontally: boolean;
     _flipVertically: boolean;
     _invert: boolean;
@@ -34,4 +37,6 @@ export declare class CharacterState {
     _setInvert(invert: boolean): void;
     _setCharRotation(rotation: number): void;
     _setCanvasBackground(r: number, g: number, b: number, a: number): void;
+    _getColorModeState(): TextmodeColorModeState;
+    _setColorMode(mode: TextmodeColorMode, maxes: readonly [number, number, number, number]): void;
 }

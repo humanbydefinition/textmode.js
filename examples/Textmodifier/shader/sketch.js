@@ -2,6 +2,7 @@
  * @title Textmodifier.shader
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -12,7 +13,7 @@ const labelLayer = t.layers.add();
 let customShader = null;
 
 t.setup(async () => {
-	customShader = await t.createFilterShader(`#version 300 es
+	customShader = await t.createMaterialShader(`#version 300 es
 precision highp float;
 in vec2 v_uv;
 uniform float u_time;
@@ -32,13 +33,9 @@ void main() {
 
 function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(x, y);
+	t.printAlign('left', 'top');
 	t.charColor(r, g, b);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
+	t.print(text, x, y);
 	t.pop();
 }
 

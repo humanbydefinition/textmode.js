@@ -6,12 +6,13 @@
 export { Textmodifier } from './textmode/Textmodifier';
 import './textmode/extensions';
 export { GLFramebuffer as TextmodeFramebuffer } from './rendering';
-export { TextmodeColor } from './textmode/color';
 export { TextmodeCamera } from './textmode/camera';
 export { TextmodeGrid } from './textmode/grid/TextmodeGrid';
 export { TextmodeFont, TextmodeTileset } from './textmode/fonts';
 export { TextmodeLayer, TextmodeLayerManager } from './textmode/layers';
 export { TextmodeImage, TextmodeSource, TextmodeTexture, TextmodeVideo } from './textmode/media';
+export { TextmodeVector } from './textmode/math';
+export { TextmodeGlyphRamp } from './textmode/glyph';
 export { TextmodeRandom } from './textmode/random';
 export { TextmodeConversionManager } from './textmode/conversion';
 export { TextmodeFilterManager } from './textmode/filters';
@@ -19,14 +20,17 @@ export { TextmodeError, TextmodeErrorLevel, ErrorLayerController } from './textm
 export { LoadingLayerController } from './textmode/layers/overlays/loading';
 export { INPUT_EVENT_NAMES } from './textmode/input';
 export { TEXTMODE_LAYER_BLEND_MODES } from './textmode/layers';
+export { TEXTMODE_EASE_NAMES } from './utils/math';
 export type { TextmodeOptions } from './textmode/types';
-export type { TextmodeRandomSeed } from './textmode/random';
+export type { TextmodeEaseName } from './utils/math';
 export type { TextmodeFramebufferOptions } from './rendering/webgl';
 export type { TextmodeLayerBlendMode, TextmodeLayerOptions } from './textmode/layers/types';
-export type { TextmodeGlyph, TextmodeTilesetOptions, GlyphData } from './textmode/fonts';
+export type { TextmodeGlyph, TextmodeGlyphAtlas, TextmodeTilesetOptions, GlyphData } from './textmode/fonts';
+export type { GridPosition } from './textmode/grid';
+export type { TextmodeLightColorInput } from './textmode/extensions/lighting';
 export type { BuiltInConversionMode, TextmodeConversionMode, TextmodeConversionContext, TextmodeConversionPassContext, TextmodeConversionStep, TextmodeConversionStepOptions, TextmodeColorInput, TextmodeConversionStrategy, } from './textmode/conversion';
-export type { BuiltInFilterName, BuiltInFilterParams, FilterName } from './textmode/filters';
-export type { ErrorScreenRendererContext } from './textmode/error';
+export type { BuiltInFilterName, BuiltInFilterParams, FilterContext, FilterName, TextmodeFilterStrategy, TextmodeFilterUniformDefinitions, } from './textmode/filters';
+export type { ErrorScreenRendererContext, TextmodeErrorFormatOptions } from './textmode/error';
 export type { LoadingScreenOptions, LoadingScreenRendererContext, LoadingScreenState, } from './textmode/layers/overlays/loading';
 export type { InputEventMap, InputEventName, InputEventOwner } from './textmode/input';
 export type { TextmodeCanvasHandle, TextmodePlugin, TextmodePluginContext, TextmodePluginHook, LayerLifecycleHook, LayerRenderHook, SetupLifecycleHook, LayerExtensionImplementation, SourceExtensionImplementation, } from './textmode/plugins';
@@ -40,6 +44,10 @@ export type { TextmodeCanvasHandle, TextmodePlugin, TextmodePluginContext, Textm
  * can be registered via {@link TextmodeConversionManager.register}.
  */
 export * as conversion from './textmode/conversion';
+/**
+ * Color objects, color modes, and types.
+ */
+export * as color from './textmode/color';
 /**
  * Plugin system types for extending textmode.js.
  *

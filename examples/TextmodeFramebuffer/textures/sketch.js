@@ -2,6 +2,7 @@
  * @title TextmodeFramebuffer.textures
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -23,7 +24,7 @@ function drawText(text, x, y, r = 200, g = 220, b = 255) {
 }
 
 t.setup(() => {
-	// 3-attachment FBO: char data, primary color, secondary color
+	// 3-attachment framebuffer: char data, charColor, cellColor
 	fb = t.createFramebuffer({ width: 14, height: 10, attachments: 3 });
 });
 
@@ -61,7 +62,7 @@ labelLayer.draw(() => {
 
 	const arr = fb ? fb.textures : [];
 	drawText(`Count: ${arr.length} textures`, x, y++, 120, 255, 180);
-	const labels = ['Char/transform', 'Primary color', 'Secondary color'];
+	const labels = ['Char/transform', 'charColor', 'cellColor'];
 	for (let i = 0; i < arr.length; i++) {
 		const ok = arr[i] instanceof WebGLTexture;
 		const label = labels[i] ?? 'extra';

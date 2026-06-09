@@ -1,6 +1,6 @@
-import { GLShader } from '../core/Shader';
+import type { GLShader } from '../core/Shader';
 /**
- * Owns the GPU instance buffer and cached attribute setup for instanced rendering.
+ * Owns the GPU instance buffer and cached attribute locations for instanced rendering.
  */
 export declare class InstanceAttributeBinder {
     private _gl;
@@ -8,7 +8,6 @@ export declare class InstanceAttributeBinder {
     _bufferCapacity: number;
     private _attributeLocationCache;
     private _version;
-    private _programSetupCache;
     /**
      * Create a new attribute binder.
      * @param gl WebGL2 rendering context
@@ -34,7 +33,7 @@ export declare class InstanceAttributeBinder {
      * Optimizations applied:
      * - Only uploads used portion of buffer (not full capacity)
      * - Uses bufferSubData for partial updates (faster than bufferData)
-     * - Binds buffer once and keeps it bound for attribute setup
+     * - Avoids allocating a subarray view for the live range
      *
      * Pattern follows modern graphics engines (three.js, babylon.js):
      * - Minimize data transfer size
@@ -46,6 +45,10 @@ export declare class InstanceAttributeBinder {
      */
     _upload(data: Float32Array, floatsToUpload: number): void;
     /**
+     * Current generation of the GPU instance buffer.
+     */
+    get _bufferVersion(): number;
+    /**
      * Get cached attribute locations for a shader program.
      * Queries locations once per program and caches them for performance.
      *
@@ -54,15 +57,15 @@ export declare class InstanceAttributeBinder {
      */
     private _getAttributeLocations;
     /**
-     * Bind instance buffer and configure vertex attributes for instanced rendering.
+     * Configure instance attributes on the currently bound VAO.
      *
-     * Assumes instance buffer is already bound to gl.ARRAY_BUFFER from upload().
-     * If upload() was not called immediately before this, the buffer will not be bound correctly.
-     * The buffer remains bound after this call for use by the draw command.
+     * Assumes the target VAO is already bound. Attribute pointers capture the
+     * instance buffer into that VAO, so this must only run during VAO creation
+     * or recreation.
      *
      * @param shader The shader program to bind attributes for
      */
-    _bindAttributes(shader: GLShader): void;
+    _configureForBoundVAO(shader: GLShader): void;
     /**
      * Dispose of WebGL resources.
      */

@@ -1,5 +1,4 @@
 import type { GLShader } from '../../rendering/webgl';
-import type { UniformValue } from '../../rendering/webgl/types/UniformTypes';
 declare module '../Textmodifier' {
     interface Textmodifier {
         /**
@@ -32,7 +31,7 @@ declare module '../Textmodifier' {
          * @example
          * {@includeCode ../../../examples/Textmodifier/setUniform/sketch.js}
          */
-        setUniform(name: string, value: UniformValue): void;
+        setUniform(name: string, value: unknown): void;
         /**
          * Set multiple uniform values on the current custom shader.
          * @param uniforms Uniform name-value pairs.
@@ -40,11 +39,31 @@ declare module '../Textmodifier' {
          * @example
          * {@includeCode ../../../examples/Textmodifier/setUniforms/sketch.js}
          */
-        setUniforms(uniforms: Record<string, UniformValue>): void;
+        setUniforms(uniforms: Record<string, unknown>): void;
         /**
-         * Create a custom filter shader from fragment shader source or a file path.
-         * The fragment shader automatically receives the standard vertex shader inputs
-         * and must output to the 3 MRT attachments (character/transform, primary color, secondary color).
+         * Create a material shader from fragment shader source or a file path.
+         *
+         * The shader uses textmode.js' standard instanced geometry vertex shader and
+         * can be applied to subsequent shape drawing with {@link shader}.
+         * The fragment shader must output to the MRT attachments used by textmode geometry
+         * (character/transform data, charColor, and cellColor).
+         *
+         * @param fragmentSource Fragment shader source or file path (e.g. './shader.frag').
+         * @returns A compiled shader ready for use with {@link shader}.
+         *
+         * @example
+         * {@includeCode ../../../examples/Textmodifier/createMaterialShader/sketch.js}
+         */
+        createMaterialShader(fragmentSource: string): Promise<GLShader>;
+        /**
+         * Create a material shader from fragment shader source or a file path.
+         *
+         * @deprecated Use {@link createMaterialShader} for geometry shaders, or `filters.register()`
+         * to register a postprocess filter.
+         *
+         * This compatibility alias creates a fragment-only geometry shader for use with
+         * {@link shader}; it does not register a postprocess filter for {@link filter}.
+         *
          * @param fragmentSource Fragment shader source or file path (e.g. './shader.frag').
          * @returns A compiled shader ready for use with {@link shader}.
          *

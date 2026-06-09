@@ -1,4 +1,3 @@
-import type { GridPosition } from '../../grid/TextmodeGrid';
 /**
  * Mouse coordinates in grid space using center-based coordinates.
  *
@@ -12,7 +11,10 @@ import type { GridPosition } from '../../grid/TextmodeGrid';
  * When the mouse is outside the grid bounds, both `x` and `y` are set to
  * `Number.NEGATIVE_INFINITY` to indicate an invalid/outside position.
  */
-export type MousePosition = GridPosition;
+export type MousePosition = {
+    x: number;
+    y: number;
+};
 /**
  * Mouse event payload passed to input callbacks.
  */

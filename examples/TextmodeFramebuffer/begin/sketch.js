@@ -2,6 +2,7 @@
  * @title TextmodeFramebuffer.begin
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -57,7 +58,7 @@ labelLayer.draw(() => {
 
 	drawText('BEGIN', x, y++, 100, 255, 140);
 	drawText('--------------------------------', x, y++, 80, 100, 150);
-	drawText('Redirect draw calls to the FBO.', x, y++, 100, 220, 255);
+	drawText('Redirect draw calls to the framebuffer.', x, y++, 100, 220, 255);
 	drawText('4 copies orbit the screen using', x, y++, 140, 160, 190);
 	drawText('the same offscreen buffer.', x, y++, 140, 160, 190);
 	drawText('--------------------------------', x, y++, 80, 100, 150);

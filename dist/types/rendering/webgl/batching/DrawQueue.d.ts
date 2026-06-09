@@ -13,6 +13,7 @@ export declare class DrawQueue implements Iterable<DrawCommand> {
     private _nextId;
     private _size;
     private _acquireSlot;
+    private _ensureGlyphRunCapacity;
     /**
      * Enqueue a rectangle draw command.
      * Zero-allocation in steady state (reuses pooled slots).
@@ -98,6 +99,11 @@ export declare class DrawQueue implements Iterable<DrawCommand> {
      * All 3D mesh types share the same params shape and enqueue logic.
      */
     _enqueue3D(type: Mesh3DGeometryType, width: number, height: number, depth: number, renderState: RenderState, material: Material): number;
+    /**
+     * Enqueue an internal glyph run with already-packed rectangle instances.
+     * The queue owns a pooled copy so callers can reuse or discard their source buffer.
+     */
+    _enqueueGlyphRun(sourceData: Float32Array, instanceCount: number, renderState: RenderState, material: Material): number;
     /** Clear all queued commands */
     _clear(): void;
     /** Iterate in the exact order of insertion */

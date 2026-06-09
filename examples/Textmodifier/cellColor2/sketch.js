@@ -2,6 +2,7 @@
  * @title Textmodifier.cellColor2
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -13,13 +14,9 @@ let value = 0;
 
 function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(x, y);
+	t.printAlign('left', 'top');
 	t.charColor(r, g, b);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
+	t.print(text, x, y);
 	t.pop();
 }
 
@@ -40,8 +37,8 @@ labelLayer.draw(() => {
 	const x = left + 3;
 	drawText('TEXTMODIFIER.CELLCOLOR2', x, y++, 100, 255, 140);
 	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: GRAY CELL FILL', x, y++, 100, 220, 255);
-	drawText('One number sets cell fill.', x, y++, 140, 160, 190);
+	drawText('CONCEPT: GRAY CELL BACKGROUND', x, y++, 100, 220, 255);
+	drawText('One number sets cellColor.', x, y++, 140, 160, 190);
 	drawText('The value pulses every frame.', x, y++, 140, 160, 190);
 	drawText('------------------------------------', x, y++, 80, 100, 150);
 	drawText(`GRAY: ${value}`, x, y++, 140, 255, 180);

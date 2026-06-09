@@ -1,5 +1,4 @@
-import { InputEventEmitter } from '../core/InputEventEmitter';
-import type { KeyboardEventMap } from './types';
+import { InputEventBus } from '../core/InputEventBus';
 /**
  * Manages all keyboard interaction for a Textmodifier instance.
  *
@@ -12,9 +11,14 @@ export declare class KeyboardInput {
     private _lastKeyReleased;
     private readonly _listeners;
     private _areListenersSetup;
-    /** Multi-listener event emitter */
-    readonly _emitter: InputEventEmitter<KeyboardEventMap>;
+    /** Shared input event bus */
+    readonly _emitter: InputEventBus;
     private readonly _specialKeyMap;
+    /**
+     * Create a new KeyboardInput.
+     * @param bus Shared input event bus.
+     */
+    constructor(bus: InputEventBus);
     /**
      * Setup keyboard event listeners.
      */

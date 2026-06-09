@@ -1,7 +1,7 @@
 import type { TextmodeCanvas } from '../../internal/TextmodeCanvas';
 import type { GridProvider } from '../../grid/TextmodeGrid';
-import { InputEventEmitter } from '../core/InputEventEmitter';
-import type { MouseEventMap, MousePosition } from './types';
+import { InputEventBus } from '../core/InputEventBus';
+import type { MousePosition } from './types';
 /**
  * Manages all mouse interaction for a Textmodifier instance.
  *
@@ -22,14 +22,15 @@ export declare class MouseInput {
     private _suppressUntil;
     private readonly _listeners;
     private _areListenersSetup;
-    /** Multi-listener event emitter */
-    readonly _emitter: InputEventEmitter<MouseEventMap>;
+    /** Shared input event bus */
+    readonly _emitter: InputEventBus;
     /**
      * Create a new MouseInput.
      * @param canvas The canvas to track mouse events on.
      * @param getGrid A function that returns the grid to use for coordinate calculations.
+     * @param bus Shared input event bus.
      */
-    constructor(canvas: TextmodeCanvas, getGrid: GridProvider);
+    constructor(canvas: TextmodeCanvas, getGrid: GridProvider, bus: InputEventBus);
     /**
      * Temporarily suppress mouse event callbacks for a duration in milliseconds.
      * Used to prevent synthetic mouse events from touch interactions from firing twice.

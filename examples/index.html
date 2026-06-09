@@ -84,412 +84,53 @@
 		</div>
 
 		<script>
-			const GROUPS = [
-				{
-					name: 'LayerManager',
-					description: 'User layer collection access and management',
-					entries: ['add', 'all', 'base', 'clear', 'filters', 'move', 'remove', 'resultFramebuffer', 'swap'],
-				},
-				{
-					name: 'Textmode',
-					description: 'Core factory and static utilities',
-					entries: ['create', 'creation', 'setErrorLevel', 'version'],
-				},
-				{
-					name: 'TextmodeColor',
-					description: 'RGBA color creation and channel access',
-					entries: ['a', 'b', 'creation', 'g', 'normalized', 'r', 'rgb', 'rgba', 'withAlpha'],
-				},
-				{
-					name: 'TextmodeFont',
-					description: 'Font loading, atlas inspection, and glyph metadata',
-					entries: [
-						'characterMap',
-						'characters',
-						'creation',
-						'dispose',
-						'font',
-						'fontSize',
-						'framebuffer',
-						'maxGlyphDimensions',
-						'textureColumns',
-						'textureRows',
-					],
-				},
-				{
-					name: 'TextmodeTileset',
-					description: 'Tileset atlas metadata, cell sizing, and lifecycle',
-					entries: [
-						'cellDimensions',
-						'cellHeight',
-						'cellWidth',
-						'characterMap',
-						'characters',
-						'columns',
-						'creation',
-						'dispose',
-						'fontFramebuffer',
-						'fontSize',
-						'framebuffer',
-						'maxGlyphDimensions',
-						'nativeCellDimensions',
-						'rows',
-						'textureColumns',
-						'textureRows',
-					],
-				},
-				{
-					name: 'TextmodeImage',
-					description: 'Loaded image sources and textmode conversion settings',
-					entries: ['creation'],
-				},
-				{
-					name: 'TextmodeCamera',
-					description: 'Mutable camera transforms, cloning, and state inspection',
-					entries: [
-						'copy',
-						'eyeX',
-						'eyeY',
-						'eyeZ',
-						'lookAt',
-						'move',
-						'setPosition',
-						'setUp',
-						'targetX',
-						'targetY',
-						'targetZ',
-						'upX',
-						'upY',
-						'upZ',
-					],
-				},
-				{
-					name: 'TextmodeGrid',
-					description: 'Grid layout, cell dimensions, and responsiveness',
-					entries: [
-						'cellHeight',
-						'cellWidth',
-						'cols',
-						'creation',
-						'height',
-						'offsetX',
-						'offsetY',
-						'reset',
-						'responsive',
-						'rows',
-						'setCols',
-						'setRows',
-						'width',
-					],
-				},
-				{
-					name: 'TextmodeLayer',
-					description: 'Layer composition, cameras, framebuffers, and plugin state',
-					entries: [
-						'asciiFramebuffer',
-						'blendMode',
-						'camera',
-						'createCamera',
-						'deletePluginState',
-						'draw',
-						'drawFramebuffer',
-						'filter',
-						'font',
-						'fontSize',
-						'getPluginState',
-						'grid',
-						'hasPluginState',
-						'height',
-						'hide',
-						'loadFont',
-						'loadTileset',
-						'lookAt',
-						'offset',
-						'opacity',
-						'ortho',
-						'perspective',
-						'resetCamera',
-						'rotateZ',
-						'setCamera',
-						'setPluginState',
-						'show',
-						'texture',
-						'useTileColors',
-						'width',
-					],
-				},
-				{
-					name: 'TextmodeFramebuffer',
-					description: 'Offscreen framebuffer rendering, pixel reads, and lifecycle',
-					entries: [
-						'attachmentCount',
-						'begin',
-						'dispose',
-						'end',
-						'framebuffer',
-						'height',
-						'readPixels',
-						'resize',
-						'textures',
-						'width',
-					],
-				},
-				{
-					name: 'TextmodeShader',
-					description: 'Custom shader program access and disposal',
-					entries: ['dispose', 'program'],
-				},
-				{
-					name: 'TextmodeSource',
-					description: 'Source canvas conversion settings and dimensions',
-					entries: [
-						'background',
-						'brightnessRange',
-						'cellColor',
-						'cellColorMode',
-						'characters',
-						'charColor',
-						'charColorMode',
-						'charRotation',
-						'clearConversions',
-						'conversionMode',
-						'conversions',
-						'dispose',
-						'flipX',
-						'flipY',
-						'height',
-						'invert',
-						'originalHeight',
-						'originalWidth',
-						'texture',
-						'width',
-					],
-				},
-				{
-					name: 'TextmodeTexture',
-					description: 'Dynamic canvas and video-backed texture capture',
-					entries: ['source'],
-				},
-				{
-					name: 'TextmodeVideo',
-					description: 'Video source loading, playback control, and state',
-					entries: [
-						'creation',
-						'currentTime',
-						'dispose',
-						'duration',
-						'isPlaying',
-						'loop',
-						'pause',
-						'play',
-						'speed',
-						'stop',
-						'time',
-						'videoElement',
-						'volume',
-					],
-				},
-				{
-					name: 'conversion',
-					description: 'Conversion strategy registration and lifecycle',
-					entries: ['createShader', 'createUniforms', 'has', 'unregister'],
-				},
-				{
-					name: 'filters',
-					description: 'Custom filter registry management',
-					entries: ['has', 'unregister'],
-				},
-				{
-					name: 'plugins',
-					description: 'Plugin install lifecycle, hooks, and layer extensions',
-					entries: [
-						'install',
-						'registerLayerDisposedHook',
-						'registerLayerPostRenderHook',
-						'registerLayerPreRenderHook',
-						'registerPostDrawHook',
-						'registerPostSetupHook',
-						'registerPreDrawHook',
-						'registerPreSetupHook',
-						'removeLayerExtension',
-						'uninstall',
-					],
-				},
-				{
-					name: 'Textmodifier',
-					description: 'Main sketch drawing and animation API',
-					entries: [
-						'ambientLight',
-						'applyMatrix',
-						'arc',
-						'background',
-						'background2',
-						'background3',
-						'background4',
-						'bezierCurve',
-						'box',
-						'camera',
-						'canvas',
-						'cellColor',
-						'cellColor2',
-						'cellColor3',
-						'cellColor4',
-						'char',
-						'char2',
-						'charColor',
-						'charColor2',
-						'charColor3',
-						'charColor4',
-						'charRotation',
-						'clear',
-						'color',
-						'color2',
-						'color3',
-						'cone',
-						'conversions',
-						'createCamera',
-						'createFilterShader',
-						'createFramebuffer',
-						'createShader',
-						'createTexture',
-						'cursor',
-						'cylinder',
-						'deltaTime',
-						'destroy',
-						'doubleClicked',
-						'doubleTap',
-						'draw',
-						'ellipse',
-						'ellipsoid',
-						'errors',
-						'fill',
-						'filter',
-						'filters',
-						'flipX',
-						'flipY',
-						'font',
-						'fontSize',
-						'frameCount',
-						'frameCount2',
-						'frameRate',
-						'gamepad',
-						'gamepadAxisChanged',
-						'gamepadButtonPressed',
-						'gamepadButtonReleased',
-						'gamepadConnected',
-						'gamepadDisconnected',
-						'gamepadEvents',
-						'gamepads',
-						'gamepadStandardMapping',
-						'grid',
-						'height',
-						'image',
-						'inputGrid',
-						'invert',
-						'isDisposed',
-						'isKeyPressed',
-						'isLooping',
-						'isRenderingFrame',
-						'keyPressed',
-						'keyReleased',
-						'keyTyped',
-						'lastKeyPressed',
-						'lastKeyReleased',
-						'layers',
-						'lightFalloff',
-						'line',
-						'lineWeight',
-						'loadFont',
-						'loadImage',
-						'loading',
-						'loadTileset',
-						'loadVideo',
-						'longPress',
-						'lookAt',
-						'loop',
-						'millis',
-						'millis2',
-						'millis3',
-						'millis4',
-						'modifierState',
-						'mouse',
-						'mouseClicked',
-						'mouseDragged',
-						'mouseIsPressed',
-						'mouseMoved',
-						'mousePressed',
-						'mouseReleased',
-						'mouseScrolled',
-						'noLights',
-						'noLoop',
-						'ortho',
-						'overlay',
-						'perspective',
-						'pinch',
-						'pmouse',
-						'point',
-						'pointLight',
-						'pop',
-						'pressedKeys',
-						'push',
-						'random',
-						'randomSeed',
-						'randomStream',
-						'rect',
-						'redraw',
-						'requestPointerLock',
-						'resetCamera',
-						'resetMatrix',
-						'resetShader',
-						'resizeCanvas',
-						'rotate',
-						'rotateGesture',
-						'rotateX',
-						'rotateY',
-						'rotateZ',
-						'scale',
-						'secs',
-						'secs2',
-						'secs3',
-						'setCamera',
-						'setUniform',
-						'setUniforms',
-						'setup',
-						'shader',
-						'sphere',
-						'stroke',
-						'swipe',
-						'tap',
-						'targetFrameRate',
-						'torus',
-						'touchCancelled',
-						'touchEnded',
-						'touches',
-						'touchMoved',
-						'touchStarted',
-						'translate',
-						'translateX',
-						'translateX2',
-						'translateY',
-						'translateY2',
-						'translateZ',
-						'translateZ2',
-						'triangle',
-						'useTileColors',
-						'width',
-						'windowResized',
-					],
-				},
-			];
+			const MANIFEST_URL = './manifest.json';
+			const container = document.getElementById('examples');
+			const searchInput = document.getElementById('search');
 
-			function normalizeEntry(groupName, entry) {
-				if (typeof entry === 'string') {
-					return { name: entry, path: `${groupName}/${entry}` };
+			function escapeHtml(value) {
+				return String(value).replace(/[&<>"']/g, (char) => {
+					return {
+						'&': '&amp;',
+						'<': '&lt;',
+						'>': '&gt;',
+						'"': '&quot;',
+						"'": '&#39;',
+					}[char];
+				});
+			}
+
+			function getExamplePath(sourceFile) {
+				if (!sourceFile.startsWith('examples/') || !sourceFile.endsWith('/sketch.js')) {
+					throw new Error(`Invalid example source file: ${sourceFile}`);
 				}
 
-				const name = entry.name;
-				const path = entry.path.includes('/') ? entry.path : `${groupName}/${entry.path}`;
-				return { name, path };
+				return sourceFile.slice('examples/'.length, -'/sketch.js'.length);
+			}
+
+			function getExampleName(examplePath) {
+				const segments = examplePath.split('/');
+				return segments[segments.length - 1];
+			}
+
+			function normalizeManifest(manifest) {
+				if (!Array.isArray(manifest.groups)) {
+					throw new Error('Examples manifest is missing a groups array.');
+				}
+
+				return manifest.groups.map((group) => ({
+					name: group.name,
+					description: group.description,
+					entries: group.examples.map((example) => {
+						const path = getExamplePath(example.sourceFile);
+
+						return {
+							name: getExampleName(path),
+							path,
+							title: example.title,
+						};
+					}),
+				}));
 			}
 
 			function getExampleHref(examplePath) {
@@ -497,7 +138,6 @@
 			}
 
 			function render(groups) {
-				const container = document.getElementById('examples');
 				container.innerHTML = '';
 
 				groups.forEach((group) => {
@@ -508,15 +148,16 @@
 
 					section.innerHTML = `
             <div class="flex items-center gap-3 px-4 py-3 border-b border-zinc-800 bg-zinc-900/60">
-              <h2 class="text-sm font-medium text-zinc-100 tracking-tight">${group.name}</h2>
-              <span class="text-xs text-zinc-600 hidden sm:block">${group.description}</span>
+              <h2 class="text-sm font-medium text-zinc-100 tracking-tight">${escapeHtml(group.name)}</h2>
+              <span class="text-xs text-zinc-600 hidden sm:block">${escapeHtml(group.description)}</span>
               <span class="ml-auto text-xs text-zinc-600 tabular-nums" data-count>${group.entries.length}</span>
             </div>
             <div class="px-4 py-3 flex flex-wrap gap-1.5" data-entries>
               ${group.entries
 					.map((entry) => {
-						const normalizedEntry = normalizeEntry(group.name, entry);
-						return `<a href="${getExampleHref(normalizedEntry.path)}" class="entry-badge" data-entry="${normalizedEntry.name.toLowerCase()}" data-entry-name="${normalizedEntry.name}" aria-expanded="false">${normalizedEntry.name}</a>`;
+						const name = escapeHtml(entry.name);
+						const title = escapeHtml(entry.title);
+						return `<a href="${escapeHtml(getExampleHref(entry.path))}" class="entry-badge" data-entry="${escapeHtml(entry.name.toLowerCase())}" data-entry-name="${name}" data-entry-title="${escapeHtml(entry.title.toLowerCase())}" aria-expanded="false" title="${title}">${name}</a>`;
 					})
 					.join('')}
             </div>
@@ -532,13 +173,19 @@
                 </div>
               </div>
               <div class="example-preview-frame-wrap">
-                <iframe class="example-preview-frame" data-preview-frame loading="lazy" title="${group.name} example preview"></iframe>
+                <iframe class="example-preview-frame" data-preview-frame loading="lazy" title="${escapeHtml(group.name)} example preview"></iframe>
               </div>
             </div>
           `;
 
 					container.appendChild(section);
 				});
+
+				filterExamples();
+			}
+
+			function showGalleryState(message) {
+				container.innerHTML = `<p class="text-xs text-zinc-600">${escapeHtml(message)}</p>`;
 			}
 
 			function closePreview(section) {
@@ -584,9 +231,29 @@
 				preview.hidden = false;
 			}
 
-			render(GROUPS);
+			async function loadManifest() {
+				const response = await fetch(MANIFEST_URL);
 
-			document.getElementById('examples').addEventListener('click', (event) => {
+				if (!response.ok) {
+					throw new Error(`Unable to load ${MANIFEST_URL}: ${response.status} ${response.statusText}`);
+				}
+
+				return response.json();
+			}
+
+			async function bootstrapGallery() {
+				showGalleryState('loading examples...');
+
+				try {
+					const manifest = await loadManifest();
+					render(normalizeManifest(manifest));
+				} catch (error) {
+					console.error('Unable to load examples manifest.', error);
+					showGalleryState('Unable to load examples manifest.');
+				}
+			}
+
+			container.addEventListener('click', (event) => {
 				const closeButton = event.target.closest('[data-preview-close]');
 				if (closeButton) {
 					closePreview(closeButton.closest('[data-group]'));
@@ -613,9 +280,8 @@
 				openPreview(section, badge);
 			});
 
-			// Search / filter
-			document.getElementById('search').addEventListener('input', function () {
-				const q = this.value.trim().toLowerCase();
+			function filterExamples() {
+				const q = searchInput.value.trim().toLowerCase();
 
 				document.querySelectorAll('#examples > div').forEach((section) => {
 					const badges = section.querySelectorAll('.entry-badge');
@@ -624,7 +290,8 @@
 
 					badges.forEach((badge) => {
 						const entryName = badge.dataset.entry;
-						const match = !q || entryName.includes(q) || groupName.includes(q);
+						const entryTitle = badge.dataset.entryTitle;
+						const match = !q || entryName.includes(q) || entryTitle.includes(q) || groupName.includes(q);
 						badge.classList.toggle('hidden-entry', !match);
 						if (match) visible++;
 					});
@@ -643,7 +310,10 @@
 
 					section.style.display = visible === 0 ? 'none' : '';
 				});
-			});
+			}
+
+			searchInput.addEventListener('input', filterExamples);
+			bootstrapGallery();
 		</script>
 	</body>
 </html>

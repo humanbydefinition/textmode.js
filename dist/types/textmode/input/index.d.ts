@@ -17,7 +17,7 @@ export * as touch from './touch';
 /**
  * Combined event map unifying keyboard, mouse, touch, gamepad, and gesture events
  */
-export type { InputEventMap, InputEventName, InputEventOwner } from './core/InputEventRegistry';
+export type { InputEventMap, InputEventName, InputEventOwner } from './core/InputEventBus';
 /**
  * Flat readonly list of every event name accepted by {@link Textmodifier.on}, {@link Textmodifier.off}, and
  * {@link Textmodifier.once}.
@@ -27,4 +27,4 @@ export type { InputEventMap, InputEventName, InputEventOwner } from './core/Inpu
  * {@link input.mouse.MOUSE_EVENT_NAMES}, {@link input.touch.TOUCH_EVENT_NAMES},
  * {@link input.touch.GESTURE_EVENT_NAMES}, and {@link input.gamepad.GAMEPAD_EVENT_NAMES}.
  */
-export { INPUT_EVENT_NAMES } from './core/InputEventRegistry';
+export { INPUT_EVENT_NAMES } from './core/InputEventBus';

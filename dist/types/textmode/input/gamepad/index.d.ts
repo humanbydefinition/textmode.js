@@ -3,4 +3,4 @@ export type { GamepadAxisEventData, GamepadAxisEventHandler, GamepadButtonEventD
  * All gamepad event names accepted by {@link Textmodifier.on}, {@link Textmodifier.off}, and
  * {@link Textmodifier.once}.
  */
-export { GAMEPAD_EVENT_NAMES } from '../core/InputEventRegistry';
+export { GAMEPAD_EVENT_NAMES } from '../core/InputEventBus';

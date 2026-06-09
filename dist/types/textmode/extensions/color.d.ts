@@ -1,6 +1,41 @@
 import { TextmodeColor } from '../color';
+import type { TextmodeColorMode, TextmodeColorModeState } from '../color';
 declare module '../Textmodifier' {
     interface Textmodifier {
+        /**
+         * Current color interpretation mode.
+         * @returns Current color mode and channel maxes.
+         *
+         * @example
+         * {@includeCode ../../../examples/Textmodifier/colorMode/sketch.js}
+         */
+        colorMode(): TextmodeColorModeState;
+        /**
+         * Set how numeric color inputs are interpreted.
+         *
+         * Supported modes are `'rgb'`, `'hsb'`, and `'hsl'`. Passing one max uses
+         * that range for all channels. Passing per-channel maxes uses `maxA` for
+         * alpha, defaulting to the selected mode's alpha max.
+         *
+         * @param mode Color mode to use for numeric colors.
+         * @param max Shared channel max.
+         *
+         * @example
+         * {@includeCode ../../../examples/Textmodifier/colorMode/sketch.js}
+         */
+        colorMode(mode: TextmodeColorMode, max?: number): void;
+        /**
+         * Set how numeric color inputs are interpreted with per-channel ranges.
+         * @param mode Color mode to use for numeric colors.
+         * @param max1 Red or hue max.
+         * @param max2 Green or saturation max.
+         * @param max3 Blue, brightness, or lightness max.
+         * @param maxA Alpha max.
+         *
+         * @example
+         * {@includeCode ../../../examples/Textmodifier/colorMode/sketch.js}
+         */
+        colorMode(mode: TextmodeColorMode, max1: number, max2: number, max3: number, maxA?: number): void;
         /**
          * Create a reusable color object from a grayscale value.
          *
@@ -39,7 +74,7 @@ declare module '../Textmodifier' {
          */
         color(value: string | TextmodeColor): TextmodeColor;
         /**
-         * Current canvas background color.
+         * Current background color.
          * @returns Current background color.
          *
          * @example

@@ -99,7 +99,7 @@ export declare class Textmodifier {
     /**
      * Set the base layer post-draw callback.
      *
-     * This callback runs after the base layer's draw callback, ASCII conversion, and
+     * This callback runs after the base layer's draw callback, ASCII resolve pass, and
      * any filters queued on the base layer during draw. Filters queued on
      * `t.layers.base` inside this callback are applied to the base layer before
      * other layers are composited on top.
@@ -209,7 +209,7 @@ export declare class Textmodifier {
      * This is equivalent to calling {@link TextmodeLayer.useTileColors} on the base layer.
      *
      * When disabled (default), tilesets on the base layer are recolored through the current
-     * character (`primary`) and cell (`secondary`) colors.
+     * character (`charColor`) and cell (`cellColor`) colors.
      *
      * @param enabled Whether to preserve authored tileset colors.
      * @returns Current base-layer tileset-color mode when called without arguments.
@@ -294,6 +294,26 @@ export declare class Textmodifier {
      * {@includeCode ../../examples/Textmodifier/height/sketch.js}
      */
     get height(): number;
+    /**
+     * Get the current pixel density for HiDPI rendering.
+     *
+     * @returns Current pixel density.
+     *
+     * @example
+     * {@includeCode ../../examples/Textmodifier/pixelDensity/sketch.js}
+     */
+    pixelDensity(): number;
+    /**
+     * Set the pixel density for HiDPI rendering.
+     *
+     * This resizes the canvas backing store while keeping the CSS display size unchanged.
+     *
+     * @param density New pixel density (> 0).
+     *
+     * @example
+     * {@includeCode ../../examples/Textmodifier/pixelDensity/sketch.js}
+     */
+    pixelDensity(density: number): void;
     /**
      * Canvas containing the rendered output.
      *

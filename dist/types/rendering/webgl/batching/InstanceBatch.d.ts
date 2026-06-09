@@ -1,5 +1,5 @@
-import { GLShader } from '../core/Shader';
 import { InstanceBuffer } from './InstanceBuffer';
+import { InstanceAttributeBinder } from './InstanceAttributeBinder';
 /**
  * Coordinates CPU instance storage, packed writes, and GPU attribute binding.
  */
@@ -21,14 +21,22 @@ export declare class InstanceBatch {
      */
     _syncGPUBuffer(): void;
     /**
+     * Instance attribute binder used when creating complete geometry VAOs.
+     */
+    get _attributeBinder(): InstanceAttributeBinder;
+    /**
      * Clear all instances from the batch.
      */
     _clear(): void;
     /**
-     * Bind instance buffer and configure vertex attributes for instanced rendering.
-     * @param shader The shader program to bind attributes for
+     * Append pre-packed instances into this batch.
+     * Used by internal glyph runs to bypass per-glyph DrawCommand expansion.
      */
-    _bindAttributes(shader: GLShader): void;
+    _writePackedInstances(data: Float32Array, instanceCount: number): void;
+    /**
+     * Upload live instance data to the GPU buffer.
+     */
+    _uploadInstanceData(): void;
     /**
      * Execute instanced draw call for all instances in the batch.
      * @param primitiveType WebGL primitive type (e.g., gl.TRIANGLES)

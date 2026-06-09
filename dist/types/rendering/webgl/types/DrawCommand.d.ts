@@ -2,13 +2,18 @@ import { GeometryType } from './GeometryTypes';
 import type { GeometryParams, RectangleParams, LineParams, EllipseParams, ArcParams, TriangleParams, BezierCurveParams, Mesh3DParams, Mesh3DGeometryType } from './GeometryTypes';
 import type { IRenderState } from '../state/RenderState';
 import type { Material } from '../materials/Material';
-export type DrawParams = GeometryParams;
+export declare const GLYPH_RUN_COMMAND = "glyph_run";
+export interface GlyphRunParams {
+    data: Float32Array;
+    instanceCount: number;
+}
+export type DrawParams = GeometryParams | GlyphRunParams;
 export interface BaseDrawCommand {
     id: number;
     state: IRenderState;
     material: Material;
 }
-export type DrawCommand = (BaseDrawCommand & {
+export type GeometryDrawCommand = (BaseDrawCommand & {
     type: GeometryType.RECTANGLE;
     params: RectangleParams;
 }) | (BaseDrawCommand & {
@@ -30,3 +35,8 @@ export type DrawCommand = (BaseDrawCommand & {
     type: Mesh3DGeometryType;
     params: Mesh3DParams;
 });
+export type GlyphRunCommand = BaseDrawCommand & {
+    type: typeof GLYPH_RUN_COMMAND;
+    params: GlyphRunParams;
+};
+export type DrawCommand = GeometryDrawCommand | GlyphRunCommand;

@@ -2,6 +2,7 @@
  * @title Textmodifier.millis2
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -13,13 +14,9 @@ let value = 0;
 
 function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(x, y);
+	t.printAlign('left', 'top');
 	t.charColor(r, g, b);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
+	t.print(text, x, y);
 	t.pop();
 }
 

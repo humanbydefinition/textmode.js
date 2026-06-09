@@ -70,6 +70,47 @@ export declare function distanceBetweenPoints(x1: number, y1: number, x2: number
  */
 export declare function clamp(value: number, min: number, max: number): number;
 /**
+ * Easing curve names accepted by `Textmodifier.ease()`.
+ *
+ * The curves follow the familiar naming style:
+ * `in` starts slowly, `out` ends slowly, and `inOut` eases both ends.
+ *
+ * - `'linear'`: No easing. Progress changes at a constant speed.
+ * - `'inQuad'`, `'inCubic'`, `'inQuart'`, `'inQuint'`: Start slowly and accelerate.
+ * - `'outQuad'`, `'outCubic'`, `'outQuart'`, `'outQuint'`: Start quickly and decelerate.
+ * - `'inOutQuad'`, `'inOutCubic'`, `'inOutQuart'`, `'inOutQuint'`: Ease both the start and end.
+ * - `'inSine'`, `'outSine'`, `'inOutSine'`: Smooth sinusoidal easing.
+ * - `'inExpo'`, `'outExpo'`, `'inOutExpo'`: Exponential easing for dramatic acceleration or deceleration.
+ * - `'inCirc'`, `'outCirc'`, `'inOutCirc'`: Circular easing with a rounded feel.
+ * - `'inBack'`, `'outBack'`, `'inOutBack'`: Overshoots slightly before settling.
+ * - `'inElastic'`, `'outElastic'`, `'inOutElastic'`: Spring-like easing with elastic overshoot.
+ * - `'inBounce'`, `'outBounce'`, `'inOutBounce'`: Bounce easing for impact and rebound effects.
+ *
+ * @example
+ * ```ts
+ * const amount = t.norm(t.frameCount, 0, 120);
+ * const eased = t.ease('inOutCubic', amount);
+ * ```
+ */
+export declare const TEXTMODE_EASE_NAMES: readonly ["linear", "inQuad", "outQuad", "inOutQuad", "inCubic", "outCubic", "inOutCubic", "inQuart", "outQuart", "inOutQuart", "inQuint", "outQuint", "inOutQuint", "inSine", "outSine", "inOutSine", "inExpo", "outExpo", "inOutExpo", "inCirc", "outCirc", "inOutCirc", "inBack", "outBack", "inOutBack", "inElastic", "outElastic", "inOutElastic", "inBounce", "outBounce", "inOutBounce"];
+export type TextmodeEaseName = (typeof TEXTMODE_EASE_NAMES)[number];
+/**
+ * Apply an easing curve to a normalized amount.
+ *
+ * Inputs are clamped to the 0-1 range for animation-friendly behaviour. Outputs
+ * are not clamped because back, elastic, and bounce curves intentionally overshoot.
+ *
+ * @param name Easing curve name.
+ * @param amount Normalized amount to ease.
+ * @returns Eased amount.
+ *
+ * @example
+ * ```ts
+ * ease('inOutCubic', 0.5); // 0.5
+ * ```
+ */
+export declare function ease(name: TextmodeEaseName, amount: number): number;
+/**
  * Calculate dimensions to fit a source within a target while preserving aspect ratio (contain).
  *
  * @param srcWidth Source width

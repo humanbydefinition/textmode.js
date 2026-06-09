@@ -1,5 +1,5 @@
-import { InputEventEmitter } from '../core/InputEventEmitter';
-import type { GamepadEventMap, TextmodeGamepadSnapshot, TextmodeStandardAxisName, TextmodeStandardButtonName } from './types';
+import { InputEventBus } from '../core/InputEventBus';
+import type { TextmodeGamepadSnapshot, TextmodeStandardAxisName, TextmodeStandardButtonName } from './types';
 interface GamepadInputConfig {
     axisDeadzone: number;
     axisChangeEpsilon: number;
@@ -22,13 +22,14 @@ export declare class GamepadInput {
     private _areListenersSetup;
     private _nativeConnectedHints;
     private _nativeDisconnectedHints;
-    /** Multi-listener event emitter. */
-    readonly _emitter: InputEventEmitter<GamepadEventMap>;
+    /** Shared input event bus. */
+    readonly _emitter: InputEventBus;
     /**
      * Create a new GamepadInput.
+     * @param bus Shared input event bus.
      * @param config Optional internal threshold overrides used by future phases and tests.
      */
-    constructor(config?: Partial<GamepadInputConfig>);
+    constructor(bus: InputEventBus, config?: Partial<GamepadInputConfig>);
     /**
      * Install browser gamepad lifecycle listeners on `window`.
      */

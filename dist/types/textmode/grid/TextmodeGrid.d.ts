@@ -61,14 +61,14 @@ export declare class TextmodeGrid {
      */
     reset(): void;
     /**
-     * Width of each grid cell in screen pixels.
+     * Width of each cell in screen pixels.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/cellWidth/sketch.js}
      */
     get cellWidth(): number;
     /**
-     * Height of each grid cell in screen pixels.
+     * Height of each cell in screen pixels.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/cellHeight/sketch.js}

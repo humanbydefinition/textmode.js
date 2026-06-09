@@ -2,6 +2,7 @@
  * @title TextmodeLayer.useTileColors
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -72,10 +73,8 @@ tilesLayer.draw(() => {
 
 labelLayer.draw(() => {
 	t.clear();
-	const left = -Math.floor(t.grid.cols / 2);
-	const top = -Math.floor(t.grid.rows / 2);
-	let y = top + 3;
-	const x = left + 3;
+	let y = -Math.floor(t.grid.rows / 2) + 3;
+	const x = -Math.floor(t.grid.cols / 2) + 3;
 
 	drawText('TEXTMODELAYER.USETILECOLORS', x, y++, [100, 255, 140]);
 	drawText('------------------------------------', x, y++, [80, 100, 150]);

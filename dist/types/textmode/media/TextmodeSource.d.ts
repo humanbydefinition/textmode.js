@@ -1,6 +1,7 @@
 import type { GLRenderer } from '../../rendering/webgl/core/Renderer';
 import type { Material } from '../../rendering/webgl/materials/Material';
 import { TextmodeColor } from '../color/TextmodeColor';
+import type { TextmodeColorResolver } from '../color/TextmodeColor';
 import type { TextmodeGlyphAtlas } from '../fonts/types';
 import { Disposable } from '../../utils/Disposable';
 import type { TextmodeConversionMode, TextmodeConversionStep, TextmodeConversionManager } from '../conversion';
@@ -12,6 +13,7 @@ import type { RGB, RGBA } from '../../utils/color';
  * {@link Textmodifier.image}.
  */
 export declare abstract class TextmodeSource extends Disposable {
+    private _resolveColor;
     protected _gl: WebGL2RenderingContext;
     protected _renderer: GLRenderer;
     protected _texture: WebGLTexture | null;
@@ -58,7 +60,7 @@ export declare abstract class TextmodeSource extends Disposable {
     private _frameGlyphColors;
     private _frameGlyphPaletteTexture;
     private _frameGlyphPaletteDirty;
-    protected constructor(gl: WebGL2RenderingContext, renderer: GLRenderer, texture: WebGLTexture, conversionManager: TextmodeConversionManager, originalWidth: number, originalHeight: number, gridCols: number, gridRows: number);
+    protected constructor(gl: WebGL2RenderingContext, renderer: GLRenderer, texture: WebGLTexture, conversionManager: TextmodeConversionManager, originalWidth: number, originalHeight: number, gridCols: number, gridRows: number, _resolveColor?: TextmodeColorResolver);
     private _invalidateMaterials;
     private _setFrameOrBaseColor;
     /**

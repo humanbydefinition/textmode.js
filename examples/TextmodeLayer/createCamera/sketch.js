@@ -2,6 +2,7 @@
  * @title TextmodeLayer.createCamera
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -78,10 +79,8 @@ scene.draw(() => {
 
 labelLayer.draw(() => {
 	t.clear();
-	const left = -Math.floor(t.grid.cols / 2);
-	const top = -Math.floor(t.grid.rows / 2);
-	let y = top + 3;
-	const x = left + 3;
+	let y = -Math.floor(t.grid.rows / 2) + 3;
+	const x = -Math.floor(t.grid.cols / 2) + 3;
 
 	const eyeStr = `Cam Eye   : [${camX.toFixed(1)}, ${camY.toFixed(1)}, ${camZ.toFixed(1)}]`;
 	drawText('TEXTMODELAYER.CREATECAMERA', x, y++, [100, 255, 140]);

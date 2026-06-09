@@ -1,6 +1,6 @@
 import type { TextmodeConversionMode, TextmodeConversionStrategy } from './ConversionRegistry';
 /**
- * Registers image-to-textmode conversion strategies for a Textmodifier instance.
+ * Registers conversion strategies for a Textmodifier instance.
  *
  * Access via {@link Textmodifier.conversions}.
  *

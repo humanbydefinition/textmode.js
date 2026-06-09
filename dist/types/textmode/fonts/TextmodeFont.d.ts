@@ -1,12 +1,11 @@
 import type { GLFramebuffer } from '../../rendering/webgl/core/Framebuffer.ts';
 import { Disposable } from '../../utils/Disposable.ts';
 import type { TextmodeGlyph } from './types.ts';
-import type { TyprFont } from './typr/types.ts';
 /**
  * Vector font glyph source for textmode rendering.
  *
  * Fonts are loaded from TrueType/OpenType/WOFF data, converted into a normalized
- * glyph atlas, and used by {@link layering.TextmodeLayer} during ASCII conversion.
+ * glyph atlas, and used by {@link layering.TextmodeLayer} during the ASCII resolve pass.
  *
  * @example
  * {@includeCode ../../../examples/TextmodeFont/creation/sketch.js}
@@ -89,10 +88,13 @@ export declare class TextmodeFont extends Disposable {
      */
     get fontSize(): number;
     /**
-     * Parsed Typr.js font object.
+     * Implementation-specific parsed font data.
+     *
+     * This value is exposed for advanced inspection only. Its shape may change
+     * when the internal font parser changes.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeFont/font/sketch.js}
      */
-    get font(): TyprFont;
+    get font(): unknown;
 }

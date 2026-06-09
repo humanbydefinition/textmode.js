@@ -26,8 +26,8 @@ export interface IFramebuffer {
      *
      * Textmode framebuffers allocate 3 attachments by default:
      * - 0: Character data (RG), flags (B), and rotation (A)
-     * - 1: Character colors (RGBA)
-     * - 2: Cell background colors (RGBA)
+     * - 1: charColor (RGBA)
+     * - 2: cellColor (RGBA)
      */
     readonly textures: WebGLTexture[];
     /**
@@ -48,8 +48,8 @@ export interface IFramebuffer {
      *
      * @param attachmentIndex - The index of the color attachment to read (0-based)<br/>
      *                          0. Character data and transform info<br/>
-     *                          1. Character colors<br/>
-     *                          2. Cell background colors<br/>
+     *                          1. charColor<br/>
+     *                          2. cellColor<br/>
      * @returns A Uint8Array containing the pixel data in RGBA format
      */
     readPixels(attachmentIndex: number): Uint8Array;
@@ -58,7 +58,7 @@ export interface IFramebuffer {
      *
      * - Flushes any pending draw calls to maintain proper render order
      * - Saves the current framebuffer and viewport state
-     * - Binds this framebuffer as the render target
+     * - Binds this framebuffer as the active framebuffer
      * - Clears all color attachments to transparent black
      * - Sets the viewport to match the framebuffer dimensions
      *

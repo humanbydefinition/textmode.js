@@ -2,6 +2,7 @@
  * @title TextmodeLayer.filter
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -19,15 +20,9 @@ const filters = [
 
 function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(x, y);
+	t.printAlign('left', 'top');
 	t.charColor(rgb[0], rgb[1], rgb[2]);
-
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
-
+	t.print(text, x, y);
 	t.pop();
 }
 

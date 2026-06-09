@@ -2,6 +2,7 @@
  * @title TextmodeFramebuffer.width
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -55,11 +56,11 @@ labelLayer.draw(() => {
 
 	drawText('WIDTH', x, y++, 100, 255, 140);
 	drawText('--------------------------------', x, y++, 80, 100, 150);
-	drawText('FBO width in grid cells (cols).', x, y++, 100, 220, 255);
+	drawText('Framebuffer width in cells (cols).', x, y++, 100, 220, 255);
 	drawText('--------------------------------', x, y++, 80, 100, 150);
 
 	const val = fb ? fb.width : 0;
-	drawText(`FBO Width: ${val} cells`, x, y++, 120, 255, 180);
+	drawText(`Framebuffer Width: ${val} cells`, x, y++, 120, 255, 180);
 	drawText(`Canvas  : ${t.width} px`, x, y++, 160, 160, 160);
 });
 

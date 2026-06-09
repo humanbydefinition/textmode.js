@@ -1,5 +1,5 @@
 import type { Textmodifier } from '../../Textmodifier';
-import type { InputEventMap } from './InputEventRegistry';
+import type { InputEventMap } from './InputEventBus';
 /**
  * Replace the single-callback registration for one input event.
  *

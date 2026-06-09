@@ -2,6 +2,7 @@
  * @title LayerManager.filters
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -24,9 +25,8 @@ function drawText(text, x, y, rgb = [255, 255, 255]) {
 }
 
 function drawOrbit(count, speed, radius, rgb, glyph) {
-	const time = t.frameCount * 0.02;
 	for (let i = 0; i < count; i++) {
-		const angle = time * speed + (i / count) * Math.PI * 2;
+		const angle = t.frameCount * 0.02 * speed + (i / count) * Math.PI * 2;
 		const x = Math.round(Math.cos(angle) * radius * 1.7);
 		const y = Math.round(Math.sin(angle) * radius);
 

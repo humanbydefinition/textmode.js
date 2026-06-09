@@ -1,4 +1,4 @@
-import { TextmodeRandom, type TextmodeRandomSeed } from '../random';
+import { TextmodeRandom } from '../random';
 declare module '../Textmodifier' {
     interface Textmodifier {
         /**
@@ -46,6 +46,21 @@ declare module '../Textmodifier' {
          */
         random<T>(choices: readonly T[]): T | undefined;
         /**
+         * Return a normally distributed random number.
+         *
+         * Values cluster around `mean` with a standard deviation of `sd`. When the
+         * sketch is created with `seed`, or after calling {@link randomSeed}, this
+         * method returns a reproducible sequence.
+         *
+         * @param mean Center of the distribution. Defaults to 0.
+         * @param sd Standard deviation. Defaults to 1.
+         * @returns Gaussian random number.
+         *
+         * @example
+         * {@includeCode ../../../examples/Textmodifier/randomGaussian/sketch.js}
+         */
+        randomGaussian(mean?: number, sd?: number): number;
+        /**
          * Reset the main sketch random generator to a seed.
          *
          * This also clears named streams created with {@link randomStream}, so future
@@ -56,7 +71,7 @@ declare module '../Textmodifier' {
          * @example
          * {@includeCode ../../../examples/Textmodifier/randomSeed/sketch.js}
          */
-        randomSeed(seed: TextmodeRandomSeed): void;
+        randomSeed(seed: string | number): void;
         /**
          * Get an independent deterministic random stream for a name.
          *

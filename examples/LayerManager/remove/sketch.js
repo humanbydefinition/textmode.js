@@ -2,6 +2,7 @@
  * @title LayerManager.remove
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -17,7 +18,7 @@ function spawnEcho() {
 	const color = [255, 120 + (id % 2) * 135, 80 + (id % 3) * 85];
 	layer.draw(() => {
 		t.clear();
-		drawCenteredText(String(id), 10, color);
+		drawText(String(id), -Math.floor(String(id).length / 2), 10, color);
 	});
 
 	echoes.push({ id, layer, born: t.frameCount });
@@ -34,10 +35,6 @@ function drawText(text, x, y, rgb = [255, 255, 255]) {
 		t.translate(1, 0);
 	}
 	t.pop();
-}
-
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	drawText(text, -Math.floor(text.length / 2), y, rgb);
 }
 
 t.setup(() => {

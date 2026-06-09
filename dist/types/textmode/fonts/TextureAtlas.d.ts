@@ -29,10 +29,10 @@ export declare class TextureAtlas {
      * @param scale Scale factor
      */
     private _renderGlyphToCanvas;
-    /** Returns the WebGL framebuffer containing the texture atlas. */
+    /** Returns the WebGL framebuffer containing the glyph atlas. */
     get framebuffer(): GLFramebuffer | null;
-    /** Returns the number of columns in the texture atlas. */
+    /** Returns the number of columns in the glyph atlas. */
     get columns(): number;
-    /** Returns the number of rows in the texture atlas. */
+    /** Returns the number of rows in the glyph atlas. */
     get rows(): number;
 }

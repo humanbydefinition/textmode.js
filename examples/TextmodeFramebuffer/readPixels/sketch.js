@@ -2,6 +2,7 @@
  * @title TextmodeFramebuffer.readPixels
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -40,7 +41,7 @@ t.draw(() => {
 	t.pop();
 	fb.end();
 
-	// Read primary color attachment and render a char-mapped pixel grid
+	// Read charColor attachment and render a char-mapped pixel grid
 	const pixels = fb.readPixels(1);
 	t.push();
 	t.translate(5, -1);

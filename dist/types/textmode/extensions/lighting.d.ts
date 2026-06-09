@@ -1,10 +1,10 @@
 import { TextmodeColor } from '../color';
-interface PointLightPosition {
-    x: number;
-    y: number;
-    z: number;
-}
-type LightColorInput = string | TextmodeColor | [number, number, number] | [number, number, number, number];
+/**
+ * Color input accepted by lighting APIs.
+ *
+ * @inline
+ */
+export type TextmodeLightColorInput = string | TextmodeColor | [number, number, number] | [number, number, number, number];
 declare module '../Textmodifier' {
     interface Textmodifier {
         /**
@@ -50,7 +50,7 @@ declare module '../Textmodifier' {
          *
          * @param color Color value (CSS string, TextmodeColor, or RGB(A) array)
          */
-        ambientLight(color: LightColorInput): void;
+        ambientLight(color: TextmodeLightColorInput): void;
         /**
          * Add a point light using RGB components and explicit XYZ position.
          *
@@ -75,8 +75,15 @@ declare module '../Textmodifier' {
          * @param v2 Green component (0-255)
          * @param v3 Blue component (0-255)
          * @param position World-space position
+         * @param position.x World-space X position
+         * @param position.y World-space Y position
+         * @param position.z World-space Z position
          */
-        pointLight(v1: number, v2: number, v3: number, position: PointLightPosition): void;
+        pointLight(v1: number, v2: number, v3: number, position: {
+            x: number;
+            y: number;
+            z: number;
+        }): void;
         /**
          * Add a point light using a color value and explicit XYZ position.
          *
@@ -87,14 +94,21 @@ declare module '../Textmodifier' {
          * @param y World-space Y position
          * @param z World-space Z position
          */
-        pointLight(color: LightColorInput, x: number, y: number, z: number): void;
+        pointLight(color: TextmodeLightColorInput, x: number, y: number, z: number): void;
         /**
          * Add a point light using a color value and an object position.
          *
          * @param color Color value (CSS string, TextmodeColor, or RGB(A) array)
          * @param position World-space position
+         * @param position.x World-space X position
+         * @param position.y World-space Y position
+         * @param position.z World-space Z position
          */
-        pointLight(color: LightColorInput, position: PointLightPosition): void;
+        pointLight(color: TextmodeLightColorInput, position: {
+            x: number;
+            y: number;
+            z: number;
+        }): void;
         /**
          * Configure distance attenuation used by point lights.
          *
@@ -120,4 +134,3 @@ declare module '../Textmodifier' {
         noLights(): void;
     }
 }
-export {};

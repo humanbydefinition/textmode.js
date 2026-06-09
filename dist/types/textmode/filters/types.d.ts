@@ -1,6 +1,4 @@
 import type { GLShader } from '../../rendering';
-import type { UniformValue } from '../../rendering/webgl/types/UniformTypes';
-import type { GLRenderer } from '../../rendering/webgl/core/Renderer';
 /**
  * Built-in filter names provided by textmode.js
  */
@@ -32,6 +30,13 @@ export interface BuiltInFilterParams {
     };
 }
 /**
+ * Uniform definitions used when registering custom filters with {@link TextmodeFilterManager.register}.
+ *
+ * Each key is the shader uniform name. Each value maps that uniform to a filter
+ * parameter name and fallback value.
+ */
+export type TextmodeFilterUniformDefinitions = Record<string, [paramName: string, defaultValue: unknown]>;
+/**
  * A queued filter operation to be applied during rendering
  */
 export interface QueuedFilter<TParams = unknown> {
@@ -42,8 +47,6 @@ export interface QueuedFilter<TParams = unknown> {
  * Context provided to filter strategies for shader creation
  */
 export interface FilterContext {
-    /** The WebGL renderer instance */
-    renderer: GLRenderer;
     /** The WebGL2 rendering context */
     gl: WebGL2RenderingContext;
     /** Width of the framebuffer being filtered */
@@ -62,6 +65,11 @@ export interface TextmodeFilterStrategy<TParams = unknown> {
      * Called once when the filter is first used (lazy initialization).
      * @param context The filter context containing renderer and dimensions
      * @returns The compiled shader program
+     *
+     * @example
+     * ```ts
+     * createShader: () => shader
+     * ```
      */
     createShader(context: FilterContext): GLShader;
     /**
@@ -70,6 +78,11 @@ export interface TextmodeFilterStrategy<TParams = unknown> {
      * @param params The parameters passed by the user (can be undefined)
      * @param context The filter context containing dimensions
      * @returns An object mapping uniform names to values
+     *
+     * @example
+     * ```ts
+     * createUniforms: (params) => ({ u_amount: params?.amount ?? 1 })
+     * ```
      */
-    createUniforms(params: TParams, context: FilterContext): Record<string, UniformValue>;
+    createUniforms(params: TParams, context: FilterContext): Record<string, unknown>;
 }

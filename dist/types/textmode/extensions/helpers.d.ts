@@ -1,6 +1,6 @@
 import { Textmodifier } from '../Textmodifier';
 import { TextmodeColor } from '../color';
-import type { InputEventName } from '../input/core/InputEventRegistry';
+import type { InputEventName } from '../input/core/InputEventBus';
 interface PrototypeGetterDefinition {
     name: string;
     get(this: Textmodifier): unknown;

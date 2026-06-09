@@ -193,7 +193,7 @@ export declare class TextmodeLayer {
     /**
      * Queue a post-processing filter for this layer.
      *
-     * Filters are applied after ASCII conversion in the order they are called.
+     * Filters are applied after the ASCII resolve pass in the order they are called.
      * Call this method within your layer's draw callback to apply effects.
      *
      * **Built-in filters:**
@@ -270,8 +270,8 @@ export declare class TextmodeLayer {
     /**
      * Configure authored tileset color preservation for this layer.
      *
-     * When disabled (default), tileset texels are remapped to the current character (`primary`)
-     * and cell (`secondary`) colors. Vector/font atlases always use character/cell recoloring
+     * When disabled (default), tileset texels are remapped to the current character (`charColor`)
+     * and cell (`cellColor`) colors. Vector/font atlases always use character/cell recoloring
      * regardless of this setting.
      *
      * @param enabled Whether to preserve authored tileset colors.

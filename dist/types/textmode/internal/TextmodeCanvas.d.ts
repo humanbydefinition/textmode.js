@@ -13,6 +13,7 @@ export declare class TextmodeCanvas {
     private _pendingBodyMountListener;
     private _pendingOverlayInsertListener;
     private _isDisposed;
+    private _pixelDensity;
     /**
      * Creates a new TextmodeCanvas instance.
      * @param opts Options for creating or using an existing canvas
@@ -25,10 +26,10 @@ export declare class TextmodeCanvas {
     private _insertOverlayCanvas;
     private _positionOverlayCanvas;
     /**
-     * Resize the canvas to the specified width and height.
-     * If width or height is not provided, it retains the current dimension.
-     * @param width The new width of the canvas in pixels.
-     * @param height The new height of the canvas in pixels.
+     * Resize the canvas to the specified logical width and height.
+     * The backing store is scaled by {@link pixelDensity}.
+     * @param width The new logical width of the canvas.
+     * @param height The new logical height of the canvas.
      */
     _resize(width?: number, height?: number): void;
     /**
@@ -48,4 +49,5 @@ export declare class TextmodeCanvas {
     get width(): number;
     get height(): number;
     get ownsContext(): boolean;
+    get pixelDensity(): number;
 }

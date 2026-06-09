@@ -36,10 +36,12 @@ export declare class GLRenderer implements IRenderer {
     _resetShader(): void;
     _setUniform(name: string, value: UniformValue): void;
     _setUniforms(uniforms: Record<string, UniformValue>): void;
-    _createFilterShader(fragmentSource: string): GLShader;
+    _createMaterialShader(fragmentSource: string): GLShader;
+    private _getActiveDrawMaterial;
     _image(source: GLFramebuffer | TextmodeSource, width?: number, height?: number, activeFont?: TextmodeGlyphAtlas): void;
     _quad(x: number, y: number, width: number, height: number): void;
     _rect(width: number, height: number): void;
+    _enqueueGlyphRun(data: Float32Array, instanceCount: number): void;
     _line(x1: number, y1: number, x2: number, y2: number): void;
     _ellipse(width: number, height: number): void;
     _triangle(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): void;

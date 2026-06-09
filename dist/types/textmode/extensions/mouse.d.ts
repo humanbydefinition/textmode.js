@@ -1,4 +1,4 @@
-import { type MouseEventHandler, type MousePosition } from '../input/mouse';
+import { type MouseEventHandler } from '../input/mouse';
 declare module '../Textmodifier' {
     interface Textmodifier {
         /**
@@ -67,7 +67,7 @@ declare module '../Textmodifier' {
         /**
          * Current mouse position in center-based grid coordinates.
          *
-         * Returns the mouse position as grid cell coordinates where `(0, 0)` is the center cell.
+         * Returns the mouse position in cell coordinates where `(0, 0)` is the center cell.
          * This matches the drawing coordinate system, so coordinates can be used directly with `translate()`.
          *
          * If the mouse is outside the grid or the instance is not ready,
@@ -76,7 +76,10 @@ declare module '../Textmodifier' {
          * @example
          * {@includeCode ../../../examples/Textmodifier/mouse/sketch.js}
          */
-        readonly mouse: MousePosition;
+        readonly mouse: {
+            x: number;
+            y: number;
+        };
         /**
          * Whether a mouse button is currently held down.
          *
@@ -100,7 +103,10 @@ declare module '../Textmodifier' {
          * @example
          * {@includeCode ../../../examples/Textmodifier/pmouse/sketch.js}
          */
-        readonly pmouse: MousePosition;
+        readonly pmouse: {
+            x: number;
+            y: number;
+        };
         /**
          * Horizontal mouse movement accumulated since the previous rendered frame.
          *

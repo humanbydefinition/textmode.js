@@ -1,4 +1,3 @@
-import type { IFramebuffer } from './interfaces/IFramebuffer';
 import { Disposable } from '../../../utils/Disposable';
 export type FramebufferOptions = {
     /** Texture filtering mode */
@@ -21,7 +20,7 @@ export type TextmodeFramebufferOptions = {
     /**
      * Number of color attachments *(1-8)*
      *
-     * Defaults to 3 for textmode framebuffers *(character/transform data, primary color, secondary color)*.
+     * Defaults to 3 for textmode framebuffers *(character/transform data, charColor, cellColor)*.
      * You probably do not want to go below 3 for textmode rendering, otherwise rendering will not function correctly.
      *
      * Going above 3 is only recommended for advanced use cases involving custom shaders that utilize additional attachments.
@@ -33,10 +32,10 @@ export type TextmodeFramebufferOptions = {
  *
  * `TextmodeFramebuffer` instances contain 3 attachments to support the rendering pipeline:
  * - Attachment 0: Character and transform data *(RGBA)*
- * - Attachment 1: Primary color data *(RGBA)*
- * - Attachment 2: Secondary color data *(RGBA)*
+ * - Attachment 1: charColor *(RGBA)*
+ * - Attachment 2: cellColor *(RGBA)*
  */
-export declare class GLFramebuffer extends Disposable implements IFramebuffer {
+export declare class GLFramebuffer extends Disposable {
     protected _width: number;
     protected _height: number;
     protected _options: FramebufferOptions;
@@ -90,7 +89,7 @@ export declare class GLFramebuffer extends Disposable implements IFramebuffer {
      */
     begin(): void;
     /**
-     * Finish rendering into this framebuffer and restore the previous render target.
+     * Finish rendering into this framebuffer and restore the previous framebuffer.
      *
      * This flushes pending instance batches before restoring the previous framebuffer
      * and viewport state from the renderer stack.

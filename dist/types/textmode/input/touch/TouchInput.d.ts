@@ -1,8 +1,8 @@
 import type { TextmodeCanvas } from '../../internal/TextmodeCanvas';
 import type { MouseInput } from '../mouse/MouseInput';
 import type { GridProvider } from '../../grid/TextmodeGrid';
-import { InputEventEmitter } from '../core/InputEventEmitter';
-import type { TouchEventMap, TouchPosition } from './types';
+import { InputEventBus } from '../core/InputEventBus';
+import type { TouchPosition } from './types';
 /**
  * Manages all touch interactions for a Textmodifier instance.
  *
@@ -21,16 +21,17 @@ export declare class TouchInput {
     private readonly _originalUserSelect;
     private readonly _listeners;
     private _areListenersSetup;
-    /** Multi-listener event emitter */
-    readonly _emitter: InputEventEmitter<TouchEventMap>;
+    /** Shared input event bus */
+    readonly _emitter: InputEventBus;
     private readonly _mouseSuppressionDuration;
     /**
      * Create a new TouchInput.
      * @param canvas The canvas to track touch events on.
      * @param getGrid A function that returns the grid to use for coordinate calculations.
+     * @param bus Shared input event bus.
      * @param mouseInput Optional mouse input helper for suppressing mouse events during touch.
      */
-    constructor(canvas: TextmodeCanvas, getGrid: GridProvider, mouseInput?: MouseInput);
+    constructor(canvas: TextmodeCanvas, getGrid: GridProvider, bus: InputEventBus, mouseInput?: MouseInput);
     /** Install touch listeners onto the canvas */
     _setupListeners(): void;
     /** Remove all touch listeners */

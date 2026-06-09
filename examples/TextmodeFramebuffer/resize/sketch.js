@@ -2,6 +2,7 @@
  * @title TextmodeFramebuffer.resize
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -31,7 +32,7 @@ t.setup(() => {
 t.draw(() => {
 	t.background(8, 10, 18);
 
-	// Oscillate FBO dimensions to demonstrate resize()
+	// Oscillate framebuffer dimensions to demonstrate resize()
 	const nextW = 10 + Math.round((Math.sin(t.frameCount * 0.03) * 0.5 + 0.5) * 16);
 	const nextH = 6 + Math.round((Math.cos(t.frameCount * 0.04) * 0.5 + 0.5) * 10);
 

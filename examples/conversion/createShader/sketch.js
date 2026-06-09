@@ -2,7 +2,7 @@
  * @title conversion.TextmodeConversionStrategy.createShader
  */
 const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({ pixelDensity: 1, width: window.innerWidth, height: window.innerHeight });
 
 const labelLayer = t.layers.add();
 let img = null;
@@ -57,13 +57,9 @@ t.draw(() => {
 
 function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(x, y);
+	t.printAlign('left', 'top');
 	t.charColor(r, g, b);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
+	t.print(text, x, y);
 	t.pop();
 }
 

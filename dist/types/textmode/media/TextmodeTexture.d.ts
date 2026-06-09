@@ -1,6 +1,7 @@
 import type { GLRenderer } from '../../rendering/webgl/core/Renderer';
 import { TextmodeSource } from './TextmodeSource';
 import type { TextmodeConversionManager } from '../conversion';
+import type { TextmodeColorResolver } from '../color/TextmodeColor';
 /**
  * Dynamic texture source for external canvas or video content.
  *
@@ -10,7 +11,7 @@ import type { TextmodeConversionManager } from '../conversion';
  */
 export declare class TextmodeTexture extends TextmodeSource {
     protected _source: HTMLCanvasElement | HTMLVideoElement;
-    protected constructor(gl: WebGL2RenderingContext, renderer: GLRenderer, texture: WebGLTexture, conversionManager: TextmodeConversionManager, originalWidth: number, originalHeight: number, gridCols: number, gridRows: number, source: HTMLCanvasElement | HTMLVideoElement);
+    protected constructor(gl: WebGL2RenderingContext, renderer: GLRenderer, texture: WebGLTexture, conversionManager: TextmodeConversionManager, originalWidth: number, originalHeight: number, gridCols: number, gridRows: number, source: HTMLCanvasElement | HTMLVideoElement, resolveColor?: TextmodeColorResolver);
     /**
      * Source element this texture captures.
      *

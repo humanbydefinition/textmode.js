@@ -1,10 +1,8 @@
 import type { GLShader } from '../../rendering';
-import type { UniformValue } from '../../rendering/webgl/types/UniformTypes';
-import type { GLRenderer } from '../../rendering/webgl/core/Renderer';
 import type { TextmodeGlyphAtlas } from '../fonts/types';
 import type { TextmodeSource } from '../media/TextmodeSource';
 import type { TextmodeColor } from '../color/TextmodeColor';
-import type { ColorTuple } from '../../utils/color';
+import type { TextmodeColorTuple } from '../../utils/color';
 /**
  * Built-in conversion mode names provided by textmode.js
  */
@@ -16,7 +14,7 @@ export type TextmodeConversionMode = BuiltInConversionMode | string;
 /**
  * Color input accepted by conversion stack steps.
  */
-export type TextmodeColorInput = number | string | TextmodeColor | ColorTuple;
+export type TextmodeColorInput = number | string | TextmodeColor | TextmodeColorTuple;
 /**
  * Custom options passed to conversion strategies for one conversion stack pass.
  */
@@ -73,10 +71,6 @@ export interface TextmodeConversionPassContext {
  */
 export interface TextmodeConversionContext {
     /**
-     * The WebGL renderer instance.
-     */
-    renderer: GLRenderer;
-    /**
      * The native WebGL2 rendering context.
      * Use this for creating textures, buffers, or other low-level WebGL resources.
      */
@@ -107,7 +101,7 @@ export interface TextmodeConversionContext {
  * Interface for defining a custom textmode conversion strategy.
  *
  * A conversion strategy defines how a source image is converted into textmode attributes
- * (character index, primary color, secondary color) via a custom shader.
+ * (glyph index, charColor, cellColor) via a custom shader.
  *
  * To register a custom strategy, implement this interface and pass it to {@link TextmodeConversionManager.register}.
  */
@@ -121,10 +115,10 @@ export interface TextmodeConversionStrategy {
      * Create the shader program for this conversion strategy.
      * Called once when the strategy is first used for a given source.
      *
-     * The shader must output to 3 render targets (MRT):
-     * - location 0: Character data (R=char index, G=unused, B=unused, A=unused)
-     * - location 1: Primary color (RGBA)
-     * - location 2: Secondary/Background color (RGBA)
+     * The shader must output to 3 MRT attachments:
+     * - location 0: Character data (R=glyph index, G=unused, B=unused, A=unused)
+     * - location 1: charColor (RGBA)
+     * - location 2: cellColor (RGBA)
      *
      * @param context The conversion context containing renderer and source information.
      * @returns The compiled GLShader instance.
@@ -145,5 +139,5 @@ export interface TextmodeConversionStrategy {
      * @example
      * {@includeCode ../../../examples/conversion/createUniforms/sketch.js}
      */
-    createUniforms(context: TextmodeConversionContext): Record<string, UniformValue>;
+    createUniforms(context: TextmodeConversionContext): Record<string, unknown>;
 }

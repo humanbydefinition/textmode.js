@@ -1,4 +1,4 @@
-import type { InputEventMap } from '../input/core/InputEventRegistry';
+import type { InputEventMap } from '../input/core/InputEventBus';
 declare module '../Textmodifier' {
     interface Textmodifier {
         /**

@@ -11,7 +11,7 @@ declare module '../Textmodifier' {
          */
         rect(width?: number, height?: number): void;
         /**
-         * Draw one grid cell with the current settings.
+         * Draw one cell with the current settings.
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/point/sketch.js}

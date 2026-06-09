@@ -2,6 +2,7 @@
  * @title TextmodeFramebuffer.height
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -29,7 +30,7 @@ t.setup(() => {
 t.draw(() => {
 	t.background(8, 10, 18);
 
-	// Draw vertical ruler ticks inside the FBO showing height in cells
+	// Draw vertical ruler ticks inside the framebuffer showing height in cells
 	fb.begin();
 	t.clear();
 	t.background(24, 12, 18);
@@ -58,11 +59,11 @@ labelLayer.draw(() => {
 
 	drawText('HEIGHT', x, y++, 100, 255, 140);
 	drawText('--------------------------------', x, y++, 80, 100, 150);
-	drawText('FBO height in grid cells (rows).', x, y++, 100, 220, 255);
+	drawText('Framebuffer height in cells (rows).', x, y++, 100, 220, 255);
 	drawText('--------------------------------', x, y++, 80, 100, 150);
 
 	const val = fb ? fb.height : 0;
-	drawText(`FBO Height: ${val} cells`, x, y++, 120, 255, 180);
+	drawText(`Framebuffer Height: ${val} cells`, x, y++, 120, 255, 180);
 	drawText(`Canvas   : ${t.height} px`, x, y++, 160, 160, 160);
 });
 

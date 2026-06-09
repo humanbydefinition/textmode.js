@@ -1,6 +1,5 @@
 import type { TextmodePlugin } from './plugins/contracts';
 import type { LoadingScreenOptions } from './layers/overlays/loading';
-import type { TextmodeRandomSeed } from './random';
 /**
  * Options when creating a {@link Textmodifier} instance via {@link textmode.create}.
  */
@@ -29,11 +28,21 @@ export type TextmodeOptions = {
      *
      * Set this when a sketch should produce the same random sequence each time it runs.
      */
-    seed?: TextmodeRandomSeed;
+    seed?: string | number;
     /** The width of the canvas when creating a new canvas. Defaults to 800. */
     width?: number;
     /** The height of the canvas when creating a new canvas. Defaults to 600. */
     height?: number;
+    /**
+     * Pixel density multiplier for HiDPI/Retina displays. Defaults to `1`.
+     *
+     * For internally-created canvases, the backing store size is set to
+     * `width * pixelDensity × height * pixelDensity` while the CSS display
+     * size stays at `width × height`.
+     *
+     * Has no effect when using an externally-supplied `gl` or `canvas`.
+     */
+    pixelDensity?: number;
     /**
      * URL or path to a custom font file *(.otf, .ttf, or .woff)*.
      */

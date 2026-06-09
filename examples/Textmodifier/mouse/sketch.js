@@ -2,6 +2,7 @@
  * @title Textmodifier.mouse
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -15,13 +16,9 @@ let inside = false;
 
 function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(x, y);
+	t.printAlign('left', 'top');
 	t.charColor(r, g, b);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
+	t.print(text, x, y);
 	t.pop();
 }
 
@@ -53,7 +50,7 @@ labelLayer.draw(() => {
 	drawText('TEXTMODIFIER.MOUSE', x, y++, 100, 255, 140);
 	drawText('------------------------------------', x, y++, 80, 100, 150);
 	drawText('CONCEPT: POINTER POSITION', x, y++, 100, 220, 255);
-	drawText('Reads current mouse grid cell.', x, y++, 140, 160, 190);
+	drawText('Reads current mouse cell position.', x, y++, 140, 160, 190);
 	drawText('Outside canvas returns infinity.', x, y++, 140, 160, 190);
 	drawText('------------------------------------', x, y++, 80, 100, 150);
 	drawText(inside ? 'INSIDE: TRUE' : 'INSIDE: FALSE', x, y++, 140, 255, 180);

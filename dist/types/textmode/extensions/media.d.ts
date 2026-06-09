@@ -19,7 +19,7 @@ declare module '../Textmodifier' {
          */
         createFramebuffer(options: TextmodeFramebufferOptions): GLFramebuffer;
         /**
-         * Draw a framebuffer, image, video, or texture source to the current render target.
+         * Draw a framebuffer, image, video, or texture source to the currently bound framebuffer.
          *
          * @param source Source to render.
          * @param width Width in grid cells. Defaults to an aspect-ratio-preserving fit.

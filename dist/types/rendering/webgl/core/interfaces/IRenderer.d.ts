@@ -72,14 +72,13 @@ export interface IRenderer {
      */
     _setUniforms(uniforms: Record<string, UniformValue>): void;
     /**
-     * Create a filter shader using the standard instanced MRT rectangle vertex shader.
-     * Filter shaders are commonly used for MRT post-processing-style passes and therefore
-     * only need a custom fragment shader for output logic.
+     * Create a material shader using the standard instanced geometry vertex shader.
+     * Material shaders are used by shader() for textmode geometry drawing.
      *
      * @param fragmentSource - GLSL source code for the fragment shader
-     * @returns A shader configured for filter operations
+     * @returns A shader configured for geometry drawing
      */
-    _createFilterShader(fragmentSource: string): GLShader;
+    _createMaterialShader(fragmentSource: string): GLShader;
     /**
      * Draw a quad covering the pixel rectangle (x, y, width, height) on the canvas.
      * The quad is converted to NDC (Normalized Device Coordinates) and rendered with the
@@ -101,6 +100,14 @@ export interface IRenderer {
      * @param height - Height of the rectangle
      */
     _rect(width: number, height: number): void;
+    /**
+     * Enqueue an internal glyph run as pre-packed rectangle instances.
+     * Used by text printing to preserve draw order without per-glyph public API calls.
+     *
+     * @param data Packed instance data matching the renderer instance layout
+     * @param instanceCount Number of packed glyph instances
+     */
+    _enqueueGlyphRun(data: Float32Array, instanceCount: number): void;
     /**
      * Draw a line from one point to another.
      * The line is rendered with the current stroke settings from the render state.
@@ -209,7 +216,7 @@ export interface IRenderer {
     _createFramebuffer(width: number, height: number, attachmentCount?: number, options?: FramebufferOptions): GLFramebuffer;
     /**
      * Fill the current framebuffer with a solid color.
-     * This sets the canvas background color in the render state and clears the framebuffer.
+     * This sets the background color in the render state and clears the framebuffer.
      * If only one value is provided, it's used for all RGB components.
      *
      * @param r - Red component (0-255)

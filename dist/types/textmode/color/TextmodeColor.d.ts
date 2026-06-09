@@ -1,3 +1,4 @@
+import type { TextmodeColorTuple } from '../../utils/color';
 /**
  * Color value used by textmode drawing APIs.
  *
@@ -84,3 +85,8 @@ export declare class TextmodeColor {
      */
     withAlpha(alpha: number): TextmodeColor;
 }
+/**
+ * Function shape used to resolve color API inputs into immutable color values.
+ * @ignore
+ */
+export type TextmodeColorResolver = (value: TextmodeColor | string | number | TextmodeColorTuple, g?: number, b?: number, a?: number) => TextmodeColor;

@@ -35,7 +35,7 @@ export interface KeyState {
     lastReleaseTime: number;
 }
 /**
- * Keyboard events emitted by {@link KeyboardInput}.
+ * Keyboard events emitted by the keyboard input manager.
  */
 export interface KeyboardEventMap {
     /** Fires when a key is pressed down (no repeat). */

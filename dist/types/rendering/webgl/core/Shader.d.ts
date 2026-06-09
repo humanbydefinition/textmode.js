@@ -1,6 +1,7 @@
 import { Disposable } from '../../../utils/Disposable';
 /**
- * WebGL shader program created by {@link Textmodifier.createFilterShader} or {@link Textmodifier.createShader}.
+ * WebGL shader program created by {@link Textmodifier.createMaterialShader},
+ * {@link Textmodifier.createFilterShader}, or {@link Textmodifier.createShader}.
  *
  * Use shaders and set uniforms via {@link Textmodifier.shader}, {@link Textmodifier.setUniform}, and {@link Textmodifier.setUniforms}.
  *

@@ -1,5 +1,4 @@
 import type { GLFramebuffer } from '../../../rendering';
-import type { GLRenderer } from '../../../rendering/webgl/core/Renderer';
 import type { TextmodeGrid } from '../../grid/TextmodeGrid';
 import type { TextmodeFont, TextmodeTileset } from '../../fonts';
 import type { TextmodeGlyphAtlas } from '../../fonts/types';
@@ -26,8 +25,6 @@ export interface TextmodeCanvasHandle {
  * Host-provided context passed to plugins when they are installed on a {@link Textmodifier} instance.
  */
 export interface TextmodePluginContext {
-    /** The WebGL renderer used by the Textmodifier instance. */
-    renderer: GLRenderer;
     /** The active glyph source used by the Textmodifier instance (from base layer). */
     font: TextmodeFont | TextmodeTileset;
     /** Backend-neutral glyph atlas used by the Textmodifier instance (from base layer). */
@@ -36,11 +33,11 @@ export interface TextmodePluginContext {
     grid: TextmodeGrid;
     /** A stable handle for the canvas used by the Textmodifier instance. */
     canvas: TextmodeCanvasHandle;
-    /** The framebuffer the user draws to with 3 render targets (from base layer). */
+    /** The framebuffer the user draws to with 3 attachments (from base layer). */
     drawFramebuffer: GLFramebuffer;
     /**
      * The framebuffer containing the ASCII representation (from base layer).<br/>
-     * This framebuffer only has a single render target.
+     * This framebuffer only has a single attachment.
      */
     asciiFramebuffer: GLFramebuffer;
     /** The layer manager for accessing and managing all layers. */
@@ -85,7 +82,7 @@ export interface TextmodePluginContext {
     registerLayerPreRenderHook(callback: LayerRenderHook): () => void;
     /**
      * Register a callback to be invoked after each layer's render cycle.
-     * This happens after the user draw callback but before ASCII conversion.
+     * This happens after the user draw callback but before the ASCII resolve pass.
      * @param callback The callback to invoke with the layer and render context.
      * @returns A function to unregister the hook.
      *

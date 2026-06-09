@@ -66,8 +66,6 @@ export interface TextmodeGlyphAtlas {
     readonly cellWidth: number;
     readonly cellHeight: number;
     readonly cellDimensions: GlyphDimensions;
-    _getCharacterColor(character: string): [number, number, number];
-    _getCharacterColors(characters: string): [number, number, number][];
 }
 /**
  * Configuration used to load a tileset image into a normalized glyph atlas.

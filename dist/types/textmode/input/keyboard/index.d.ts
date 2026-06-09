@@ -1,4 +1,4 @@
-export type { KeyboardEventData, KeyboardEventHandler } from './types';
+export type { KeyboardEventData, KeyboardEventHandler, KeyboardEventMap } from './types';
 /**
  * All keyboard event names accepted by {@link Textmodifier.on}, {@link Textmodifier.off}, and
  * {@link Textmodifier.once}.
@@ -10,4 +10,4 @@ export type { KeyboardEventData, KeyboardEventHandler } from './types';
  * });
  * ```
  */
-export { KEYBOARD_EVENT_NAMES } from '../core/InputEventRegistry';
+export { KEYBOARD_EVENT_NAMES } from '../core/InputEventBus';

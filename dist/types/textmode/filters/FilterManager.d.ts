@@ -1,6 +1,5 @@
-import type { GLShader, UniformValue } from '../../rendering';
-import type { FilterName } from './types';
-type FilterUniformDefinitions = Record<string, [paramName: string, defaultValue: UniformValue]>;
+import type { GLShader } from '../../rendering';
+import type { FilterName, TextmodeFilterUniformDefinitions } from './types';
 /**
  * Registers filter shaders and applies layer/global filter chains.
  *
@@ -46,7 +45,7 @@ export declare class TextmodeFilterManager {
      * });
      * ```
      */
-    register(id: FilterName, shader: GLShader | string, uniformDefs?: FilterUniformDefinitions): Promise<void>;
+    register(id: FilterName, shader: GLShader | string, uniformDefs?: TextmodeFilterUniformDefinitions): Promise<void>;
     private _registerSource;
     private _register;
     /**
@@ -70,9 +69,11 @@ export declare class TextmodeFilterManager {
      */
     has(id: FilterName): boolean;
     /**
-     * Apply a single filter pass with explicit source buffer.
+     * Apply a single filter pass with an explicit source texture.
      */
-    private _applyFilterWithBuffer;
+    private _applyFilterFromTexture;
+    private _textureAliasesFramebuffer;
+    private _selectIntermediateBuffer;
     /**
      * Get or create a cached shader for the given filter.
      */
@@ -86,4 +87,3 @@ export declare class TextmodeFilterManager {
      */
     private _registerBuiltInFilters;
 }
-export {};

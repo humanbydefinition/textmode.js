@@ -2,6 +2,7 @@
  * @title TextmodeFramebuffer.dispose
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -70,7 +71,7 @@ labelLayer.draw(() => {
 	drawText('DISPOSE', x, y++, 100, 255, 140);
 	drawText('--------------------------------', x, y++, 80, 100, 150);
 	drawText('Releases GPU resources early.', x, y++, 100, 220, 255);
-	drawText('FBO is rebuilt every 90 frames.', x, y++, 140, 160, 190);
+	drawText('Framebuffer is rebuilt every 90 frames.', x, y++, 140, 160, 190);
 	drawText('--------------------------------', x, y++, 80, 100, 150);
 	drawText(`Size: ${fbSize}x${fbSize} cells`, x, y++, 120, 255, 180);
 	const rem = 90 - (t.frameCount % 90);

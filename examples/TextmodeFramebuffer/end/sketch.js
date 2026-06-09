@@ -2,6 +2,7 @@
  * @title TextmodeFramebuffer.end
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -39,7 +40,7 @@ t.draw(() => {
 	// 2. end() restores the main canvas as the draw target
 	fb.end();
 
-	// 3. Draw the FBO result onto the main canvas
+	// 3. Draw the framebuffer result onto the main canvas
 	t.push();
 	t.translate(0, 3);
 	t.rotateZ(t.frameCount * 1.0);
@@ -58,7 +59,7 @@ labelLayer.draw(() => {
 	drawText('--------------------------------', x, y++, 80, 100, 150);
 	drawText('Restores main canvas target.', x, y++, 100, 220, 255);
 	drawText('--------------------------------', x, y++, 80, 100, 150);
-	drawText('1. fb.begin() -> draw to FBO', x, y++, 140, 160, 190);
+	drawText('1. fb.begin() -> draw to framebuffer', x, y++, 140, 160, 190);
 	drawText('2. fb.end()   -> restore main', x, y++, 140, 160, 190);
 	drawText('3. t.image(fb)-> blit to screen', x, y++, 140, 160, 190);
 });

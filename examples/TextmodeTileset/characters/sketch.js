@@ -7,6 +7,7 @@ const TILE_ROWS = 16;
 const TILE_COUNT = TILE_COLUMNS * TILE_ROWS;
 
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -32,13 +33,9 @@ t.setup(async () => {
 
 function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(x, y);
+	t.printAlign('left', 'top');
 	t.charColor(r, g, b);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
+	t.print(text, x, y);
 	t.pop();
 }
 
@@ -66,7 +63,7 @@ labelLayer.draw(() => {
 
 	drawText('TEXTMODETILESET.CHARACTERS', x, y++, 100, 255, 140);
 	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: TILESET ATLAS DATA', x, y++, 100, 220, 255);
+	drawText('CONCEPT: GLYPH ATLAS DATA', x, y++, 100, 220, 255);
 	drawText('T64 web tileset feeds glyphs.', x, y++, 140, 160, 190);
 	drawText('------------------------------------', x, y++, 80, 100, 150);
 	drawText(`COUNT: ${tileset.characters.length}`, x, y++, 140, 255, 180);

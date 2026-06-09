@@ -2,6 +2,7 @@
  * @title Textmodifier.fill
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -13,13 +14,9 @@ let red = 0;
 
 function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(x, y);
+	t.printAlign('left', 'top');
 	t.charColor(r, g, b);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
+	t.print(text, x, y);
 	t.pop();
 }
 
@@ -42,7 +39,7 @@ labelLayer.draw(() => {
 	drawText('------------------------------------', x, y++, 80, 100, 150);
 	drawText('CONCEPT: SHAPE INTERIOR', x, y++, 100, 220, 255);
 	drawText('Alias for cellColor.', x, y++, 140, 160, 190);
-	drawText('stroke controls the outline.', x, y++, 140, 160, 190);
+	drawText('charColor controls the outline.', x, y++, 140, 160, 190);
 	drawText('------------------------------------', x, y++, 80, 100, 150);
 	drawText(`FILL R: ${red}`, x, y++, 140, 255, 180);
 });

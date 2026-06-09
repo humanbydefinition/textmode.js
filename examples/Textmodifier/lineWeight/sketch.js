@@ -2,6 +2,7 @@
  * @title Textmodifier.lineWeight
  */
 const t = textmode.create({
+	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
@@ -13,13 +14,9 @@ let weight = 1;
 
 function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();
-	t.translate(x, y);
+	t.printAlign('left', 'top');
 	t.charColor(r, g, b);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
+	t.print(text, x, y);
 	t.pop();
 }
 
@@ -46,7 +43,7 @@ labelLayer.draw(() => {
 	drawText('TEXTMODIFIER.LINEWEIGHT', x, y++, 100, 255, 140);
 	drawText('------------------------------------', x, y++, 80, 100, 150);
 	drawText('CONCEPT: LINE THICKNESS', x, y++, 100, 220, 255);
-	drawText('Controls stroke cell thickness.', x, y++, 140, 160, 190);
+	drawText('Controls line cell thickness.', x, y++, 140, 160, 190);
 	drawText('Weight resets after the demo line.', x, y++, 140, 160, 190);
 	drawText('------------------------------------', x, y++, 80, 100, 150);
 	drawText(`WEIGHT: ${weight}`, x, y++, 140, 255, 180);

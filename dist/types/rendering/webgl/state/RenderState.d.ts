@@ -1,4 +1,5 @@
 import type { RGB, RGBA } from '../../../utils/color';
+import type { TextmodeColorMode } from '../../../textmode/color/ColorMode';
 import { TransformState } from './TransformState';
 import { CameraState } from './CameraState';
 import { LightingState } from './LightingState';
@@ -20,6 +21,8 @@ export interface IRenderState {
     _characterString: string;
     _charColor: RGBA;
     _cellColor: RGBA;
+    _colorMode: TextmodeColorMode;
+    _colorModeMaxes: [number, number, number, number];
     _flipX: boolean;
     _flipY: boolean;
     _invert: boolean;

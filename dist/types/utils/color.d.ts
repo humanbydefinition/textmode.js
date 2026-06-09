@@ -11,7 +11,7 @@ export type RGBA = [number, number, number, number];
 /**
  * A union type for either an RGB or RGBA color tuple.
  */
-export type ColorTuple = RGB | RGBA;
+export type TextmodeColorTuple = [number, number, number] | [number, number, number, number];
 /**
  * Parse a hexadecimal color string into an RGBA tuple.
  * Supports 3, 4, 6, and 8 digit hex codes (e.g. '#RGB', '#RGBA', '#RRGGBB', '#RRGGBBAA').
