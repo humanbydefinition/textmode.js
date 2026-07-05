@@ -14,6 +14,7 @@ export declare class DrawQueue implements Iterable<DrawCommand> {
     private _size;
     private _acquireSlot;
     private _ensureGlyphRunCapacity;
+    private _ensureCustomShapeCapacity;
     /**
      * Enqueue a rectangle draw command.
      * Zero-allocation in steady state (reuses pooled slots).
@@ -63,21 +64,6 @@ export declare class DrawQueue implements Iterable<DrawCommand> {
      */
     _enqueueArc(width: number, height: number, start: number, stop: number, renderState: RenderState, material: Material): number;
     /**
-     * Enqueue a triangle draw command.
-     * Zero-allocation in steady state (reuses pooled slots).
-     *
-     * @param x1 First point x
-     * @param y1 First point y
-     * @param x2 Second point x
-     * @param y2 Second point y
-     * @param x3 Third point x
-     * @param y3 Third point y
-     * @param renderState Current render state
-     * @param material Material to use for rendering
-     * @returns Command ID
-     */
-    _enqueueTriangle(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, renderState: RenderState, material: Material): number;
-    /**
      * Enqueue a bezier curve draw command.
      * Zero-allocation in steady state (reuses pooled slots).
      *
@@ -104,6 +90,11 @@ export declare class DrawQueue implements Iterable<DrawCommand> {
      * The queue owns a pooled copy so callers can reuse or discard their source buffer.
      */
     _enqueueGlyphRun(sourceData: Float32Array, instanceCount: number, renderState: RenderState, material: Material): number;
+    /**
+     * Enqueue a dynamic custom-shape triangle list.
+     * The queue owns a pooled copy so callers can reuse their source buffer.
+     */
+    _enqueueCustomShape(vertices: Float32Array, vertexCount: number, renderState: RenderState, material: Material): number;
     /** Clear all queued commands */
     _clear(): void;
     /** Iterate in the exact order of insertion */

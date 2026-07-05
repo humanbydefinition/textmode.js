@@ -2,7 +2,6 @@
  * @title Textmodifier.touches
  */
 const t = textmode.create({
-	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,

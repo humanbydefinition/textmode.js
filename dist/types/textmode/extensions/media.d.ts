@@ -16,6 +16,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/createFramebuffer/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/createFramebuffer | Textmodifier.createFramebuffer API reference}
          */
         createFramebuffer(options: TextmodeFramebufferOptions): GLFramebuffer;
         /**
@@ -27,6 +29,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/image/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/image | Textmodifier.image API reference}
          */
         image(source: GLFramebuffer | TextmodeImage | TextmodeVideo | TextmodeTexture, width?: number, height?: number): void;
         /**
@@ -37,6 +41,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/loadImage/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/loadImage | Textmodifier.loadImage API reference}
          */
         loadImage(src: string): Promise<TextmodeImage>;
         /**
@@ -45,6 +51,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/loadVideo/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/loadVideo | Textmodifier.loadVideo API reference}
          */
         loadVideo(src: string): Promise<TextmodeVideo>;
         /**
@@ -60,6 +68,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/createTexture/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/createTexture | Textmodifier.createTexture API reference}
          */
         createTexture(source: HTMLCanvasElement | HTMLVideoElement): TextmodeTexture;
     }

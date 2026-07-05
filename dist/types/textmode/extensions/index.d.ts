@@ -13,6 +13,8 @@ import './character';
 import './lighting';
 import './shader';
 import './media';
+import './texture';
+import './blendMode';
 import './events';
 import './random';
 import './noise';

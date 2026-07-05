@@ -15,6 +15,8 @@ import { TextmodeConversionManager } from './conversion';
  * animation, and the p5-style drawing API. When no canvas is supplied, it creates
  * one; when a canvas is supplied, it renders into or over that element depending
  * on the chosen options.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier | Textmodifier API reference}
  */
 export declare class Textmodifier {
     private _managedDisposables;
@@ -50,6 +52,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/resizeCanvas/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/resizeCanvas | Textmodifier.resizeCanvas API reference}
      */
     resizeCanvas(width: number, height: number): void;
     /**
@@ -59,6 +63,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/destroy/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/destroy | Textmodifier.destroy API reference}
      */
     destroy(): void;
     private _performDestroy;
@@ -74,6 +80,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/filter/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/filter | Textmodifier.filter API reference}
      */
     filter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
     filter<TParams = unknown>(name: FilterName, params?: TParams): void;
@@ -94,6 +102,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/draw/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/draw | Textmodifier.draw API reference}
      */
     draw(callback: () => void): void;
     /**
@@ -124,6 +134,8 @@ export declare class Textmodifier {
      * 	t.layers.base.filter('invert');
      * });
      * ```
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/postDraw | Textmodifier.postDraw API reference}
      */
     postDraw(callback: () => void): void;
     /**
@@ -152,6 +164,8 @@ export declare class Textmodifier {
      * 	t.filter('invert');
      * });
      * ```
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/finalDraw | Textmodifier.finalDraw API reference}
      */
     finalDraw(callback: () => void): void;
     /**
@@ -172,6 +186,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/loadFont/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/loadFont | Textmodifier.loadFont API reference}
      */
     loadFont(fontSource: string | TextmodeFont, setActive?: boolean): Promise<TextmodeFont>;
     /**
@@ -192,6 +208,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/loadTileset/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/loadTileset | Textmodifier.loadTileset API reference}
      */
     loadTileset(tilesetSource: TextmodeTilesetOptions | TextmodeTileset, setActive?: boolean): Promise<TextmodeTileset>;
     /**
@@ -201,6 +219,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/fontSize/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/fontSize | Textmodifier.fontSize API reference}
      */
     fontSize(size?: number): number | void;
     /**
@@ -216,6 +236,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/useTileColors/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/useTileColors | Textmodifier.useTileColors API reference}
      */
     useTileColors(enabled?: boolean): boolean | void;
     /**
@@ -231,6 +253,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/inputGrid/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/inputGrid | Textmodifier.inputGrid API reference}
      */
     inputGrid(target?: 'topmost' | TextmodeGrid): 'topmost' | TextmodeGrid | void;
     /**
@@ -252,6 +276,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/setup/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/setup | Textmodifier.setup API reference}
      */
     setup(callback: () => void | Promise<void>): Promise<void>;
     /**
@@ -260,6 +286,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/windowResized/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/windowResized | Textmodifier.windowResized API reference}
      */
     windowResized(callback: () => void): void;
     /**
@@ -271,6 +299,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/grid/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/grid | Textmodifier.grid API reference}
      */
     get grid(): TextmodeGrid | undefined;
     /**
@@ -278,6 +308,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/font/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/font | Textmodifier.font API reference}
      */
     get font(): TextmodeFont | TextmodeTileset;
     /**
@@ -285,6 +317,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/width/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/width | Textmodifier.width API reference}
      */
     get width(): number;
     /**
@@ -292,6 +326,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/height/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/height | Textmodifier.height API reference}
      */
     get height(): number;
     /**
@@ -301,6 +337,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/pixelDensity/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/pixelDensity | Textmodifier.pixelDensity API reference}
      */
     pixelDensity(): number;
     /**
@@ -312,6 +350,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/pixelDensity/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/pixelDensity | Textmodifier.pixelDensity API reference}
      */
     pixelDensity(density: number): void;
     /**
@@ -319,6 +359,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/canvas/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/canvas | Textmodifier.canvas API reference}
      */
     get canvas(): HTMLCanvasElement;
     /**
@@ -326,6 +368,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/isDisposed/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/isDisposed | Textmodifier.isDisposed API reference}
      */
     get isDisposed(): boolean;
     /**
@@ -333,6 +377,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/overlay/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/overlay | Textmodifier.overlay API reference}
      */
     get overlay(): TextmodeImage | undefined;
     /**
@@ -340,6 +386,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/loading/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/loading | Textmodifier.loading API reference}
      */
     get loading(): LoadingLayerController;
     /**
@@ -347,6 +395,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/errors/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/errors | Textmodifier.errors API reference}
      */
     get errors(): ErrorLayerController;
     /**
@@ -357,6 +407,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/layers/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/layers | Textmodifier.layers API reference}
      */
     get layers(): TextmodeLayerManager;
     /**
@@ -387,6 +439,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/filters/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/filters | Textmodifier.filters API reference}
      */
     get filters(): TextmodeFilterManager;
     /**
@@ -397,6 +451,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/conversions/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/conversions | Textmodifier.conversions API reference}
      */
     get conversions(): TextmodeConversionManager;
     /**
@@ -404,6 +460,8 @@ export declare class Textmodifier {
      *
      * @example
      * {@includeCode ../../examples/Textmodifier/isRenderingFrame/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/isRenderingFrame | Textmodifier.isRenderingFrame API reference}
      */
     get isRenderingFrame(): boolean;
 }

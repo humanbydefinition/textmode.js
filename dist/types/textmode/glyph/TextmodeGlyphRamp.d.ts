@@ -8,15 +8,21 @@
  *
  * @example
  * {@includeCode ../../../examples/TextmodeGlyphRamp/creation/sketch.js}
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGlyphRamp | TextmodeGlyphRamp API reference}
  */
 export declare class TextmodeGlyphRamp {
     private readonly _graphemes;
     /**
      * The character sequence this ramp was created with.
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGlyphRamp#characters | TextmodeGlyphRamp.characters API reference}
      */
     readonly characters: string;
     /**
      * Number of grapheme clusters in the ramp.
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGlyphRamp#length | TextmodeGlyphRamp.length API reference}
      */
     readonly length: number;
     /**
@@ -41,6 +47,8 @@ export declare class TextmodeGlyphRamp {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGlyphRamp/at/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGlyphRamp#at | TextmodeGlyphRamp.at API reference}
      */
     at(normalizedValue: number): string;
     /**
@@ -56,6 +64,8 @@ export declare class TextmodeGlyphRamp {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGlyphRamp/at/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGlyphRamp#at | TextmodeGlyphRamp.at API reference}
      */
     at(value: number, min: number, max: number): string;
     /**
@@ -69,6 +79,8 @@ export declare class TextmodeGlyphRamp {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGlyphRamp/shift/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGlyphRamp#shift | TextmodeGlyphRamp.shift API reference}
      */
     shift(amount: number): TextmodeGlyphRamp;
 }

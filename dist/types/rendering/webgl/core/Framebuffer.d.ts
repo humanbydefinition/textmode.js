@@ -11,11 +11,21 @@ export type FramebufferOptions = {
 };
 /**
  * Options for creating a framebuffer via {@link Textmodifier.createFramebuffer}. If not specified, width and height default to the current textmode grid size.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/type-aliases/TextmodeFramebufferOptions | TextmodeFramebufferOptions API reference}
  */
 export type TextmodeFramebufferOptions = {
-    /** Width of the framebuffer in grid cells */
+    /**
+     * Width of the framebuffer in grid cells
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/type-aliases/TextmodeFramebufferOptions#width | TextmodeFramebufferOptions.width API reference}
+     */
     width?: number;
-    /** Height of the framebuffer in grid cells */
+    /**
+     * Height of the framebuffer in grid cells
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/type-aliases/TextmodeFramebufferOptions#height | TextmodeFramebufferOptions.height API reference}
+     */
     height?: number;
     /**
      * Number of color attachments *(1-8)*
@@ -24,6 +34,8 @@ export type TextmodeFramebufferOptions = {
      * You probably do not want to go below 3 for textmode rendering, otherwise rendering will not function correctly.
      *
      * Going above 3 is only recommended for advanced use cases involving custom shaders that utilize additional attachments.
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/type-aliases/TextmodeFramebufferOptions#attachments | TextmodeFramebufferOptions.attachments API reference}
      */
     attachments?: number;
 };
@@ -34,6 +46,8 @@ export type TextmodeFramebufferOptions = {
  * - Attachment 0: Character and transform data *(RGBA)*
  * - Attachment 1: charColor *(RGBA)*
  * - Attachment 2: cellColor *(RGBA)*
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeFramebuffer | TextmodeFramebuffer API reference}
  */
 export declare class GLFramebuffer extends Disposable {
     protected _width: number;
@@ -63,6 +77,8 @@ export declare class GLFramebuffer extends Disposable {
      *
      * @example
      * {@includeCode ../../../../examples/TextmodeFramebuffer/resize/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeFramebuffer/methods/resize | TextmodeFramebuffer.resize API reference}
      */
     resize(width: number, height: number): void;
     /**
@@ -76,6 +92,8 @@ export declare class GLFramebuffer extends Disposable {
      *
      * @example
      * {@includeCode ../../../../examples/TextmodeFramebuffer/readPixels/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeFramebuffer/methods/readPixels | TextmodeFramebuffer.readPixels API reference}
      */
     readPixels(attachmentIndex: number): Uint8Array;
     /**
@@ -86,6 +104,8 @@ export declare class GLFramebuffer extends Disposable {
      *
      * @example
      * {@includeCode ../../../../examples/TextmodeFramebuffer/begin/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeFramebuffer/methods/begin | TextmodeFramebuffer.begin API reference}
      */
     begin(): void;
     /**
@@ -96,6 +116,8 @@ export declare class GLFramebuffer extends Disposable {
      *
      * @example
      * {@includeCode ../../../../examples/TextmodeFramebuffer/end/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeFramebuffer/methods/end | TextmodeFramebuffer.end API reference}
      */
     end(): void;
     /**
@@ -105,6 +127,8 @@ export declare class GLFramebuffer extends Disposable {
      *
      * @example
      * {@includeCode ../../../../examples/TextmodeFramebuffer/dispose/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeFramebuffer/methods/dispose | TextmodeFramebuffer.dispose API reference}
      */
     dispose(): void;
     /**
@@ -112,6 +136,8 @@ export declare class GLFramebuffer extends Disposable {
      *
      * @example
      * {@includeCode ../../../../examples/TextmodeFramebuffer/width/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeFramebuffer/accessors/width | TextmodeFramebuffer.width API reference}
      */
     get width(): number;
     /**
@@ -119,6 +145,8 @@ export declare class GLFramebuffer extends Disposable {
      *
      * @example
      * {@includeCode ../../../../examples/TextmodeFramebuffer/height/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeFramebuffer/accessors/height | TextmodeFramebuffer.height API reference}
      */
     get height(): number;
     /**
@@ -126,6 +154,8 @@ export declare class GLFramebuffer extends Disposable {
      *
      * @example
      * {@includeCode ../../../../examples/TextmodeFramebuffer/framebuffer/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeFramebuffer/accessors/framebuffer | TextmodeFramebuffer.framebuffer API reference}
      */
     get framebuffer(): WebGLFramebuffer | null;
     /**
@@ -133,6 +163,8 @@ export declare class GLFramebuffer extends Disposable {
      *
      * @example
      * {@includeCode ../../../../examples/TextmodeFramebuffer/textures/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeFramebuffer/accessors/textures | TextmodeFramebuffer.textures API reference}
      */
     get textures(): WebGLTexture[];
     /**
@@ -140,6 +172,8 @@ export declare class GLFramebuffer extends Disposable {
      *
      * @example
      * {@includeCode ../../../../examples/TextmodeFramebuffer/attachmentCount/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeFramebuffer/accessors/attachmentCount | TextmodeFramebuffer.attachmentCount API reference}
      */
     get attachmentCount(): number;
 }

@@ -9,6 +9,8 @@ import type { TextmodeColorTuple } from '../../utils/color';
  *
  * @example
  * {@includeCode ../../../examples/TextmodeColor/creation/sketch.js}
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/color/classes/TextmodeColor | color.TextmodeColor API reference}
  */
 export declare class TextmodeColor {
     private _rgba?;
@@ -18,6 +20,8 @@ export declare class TextmodeColor {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeColor/r/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/color/classes/TextmodeColor/properties/r | color.TextmodeColor.r API reference}
      */
     readonly r: number;
     /**
@@ -25,6 +29,8 @@ export declare class TextmodeColor {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeColor/g/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/color/classes/TextmodeColor/properties/g | color.TextmodeColor.g API reference}
      */
     readonly g: number;
     /**
@@ -32,6 +38,8 @@ export declare class TextmodeColor {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeColor/b/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/color/classes/TextmodeColor/properties/b | color.TextmodeColor.b API reference}
      */
     readonly b: number;
     /**
@@ -39,6 +47,8 @@ export declare class TextmodeColor {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeColor/a/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/color/classes/TextmodeColor/properties/a | color.TextmodeColor.a API reference}
      */
     readonly a: number;
     private constructor();
@@ -49,6 +59,8 @@ export declare class TextmodeColor {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeColor/rgb/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/color/classes/TextmodeColor/accessors/rgb | color.TextmodeColor.rgb API reference}
      */
     get rgb(): [number, number, number];
     /**
@@ -58,6 +70,8 @@ export declare class TextmodeColor {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeColor/rgba/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/color/classes/TextmodeColor/accessors/rgba | color.TextmodeColor.rgba API reference}
      */
     get rgba(): [number, number, number, number];
     /**
@@ -69,6 +83,8 @@ export declare class TextmodeColor {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeColor/normalized/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/color/classes/TextmodeColor/accessors/normalized | color.TextmodeColor.normalized API reference}
      */
     get normalized(): [number, number, number, number];
     /**
@@ -82,6 +98,8 @@ export declare class TextmodeColor {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeColor/withAlpha/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/color/classes/TextmodeColor/methods/withAlpha | color.TextmodeColor.withAlpha API reference}
      */
     withAlpha(alpha: number): TextmodeColor;
 }

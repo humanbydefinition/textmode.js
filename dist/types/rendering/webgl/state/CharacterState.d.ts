@@ -37,6 +37,7 @@ export declare class CharacterState {
     _setInvert(invert: boolean): void;
     _setCharRotation(rotation: number): void;
     _setCanvasBackground(r: number, g: number, b: number, a: number): void;
+    _clearCanvasBackground(): void;
     _getColorModeState(): TextmodeColorModeState;
     _setColorMode(mode: TextmodeColorMode, maxes: readonly [number, number, number, number]): void;
 }

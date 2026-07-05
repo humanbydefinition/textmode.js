@@ -9,6 +9,8 @@ import type { TextmodeGlyph } from './types.ts';
  *
  * @example
  * {@includeCode ../../../examples/TextmodeFont/creation/sketch.js}
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeFont | fonts.TextmodeFont API reference}
  */
 export declare class TextmodeFont extends Disposable {
     private _renderer;
@@ -33,6 +35,8 @@ export declare class TextmodeFont extends Disposable {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeFont/dispose/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeFont/methods/dispose | fonts.TextmodeFont.dispose API reference}
      */
     dispose(): void;
     /**
@@ -40,6 +44,8 @@ export declare class TextmodeFont extends Disposable {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeFont/framebuffer/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeFont/accessors/framebuffer | fonts.TextmodeFont.framebuffer API reference}
      */
     get framebuffer(): GLFramebuffer;
     /**
@@ -47,6 +53,8 @@ export declare class TextmodeFont extends Disposable {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeFont/characterMap/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeFont/accessors/characterMap | fonts.TextmodeFont.characterMap API reference}
      */
     get characterMap(): Map<string, TextmodeGlyph>;
     /**
@@ -54,6 +62,8 @@ export declare class TextmodeFont extends Disposable {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeFont/characters/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeFont/accessors/characters | fonts.TextmodeFont.characters API reference}
      */
     get characters(): readonly TextmodeGlyph[];
     /**
@@ -61,6 +71,8 @@ export declare class TextmodeFont extends Disposable {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeFont/textureColumns/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeFont/accessors/textureColumns | fonts.TextmodeFont.textureColumns API reference}
      */
     get textureColumns(): number;
     /**
@@ -68,6 +80,8 @@ export declare class TextmodeFont extends Disposable {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeFont/textureRows/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeFont/accessors/textureRows | fonts.TextmodeFont.textureRows API reference}
      */
     get textureRows(): number;
     /**
@@ -75,6 +89,8 @@ export declare class TextmodeFont extends Disposable {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeFont/maxGlyphDimensions/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeFont/accessors/maxGlyphDimensions | fonts.TextmodeFont.maxGlyphDimensions API reference}
      */
     get maxGlyphDimensions(): {
         width: number;
@@ -85,6 +101,8 @@ export declare class TextmodeFont extends Disposable {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeFont/fontSize/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeFont/accessors/fontSize | fonts.TextmodeFont.fontSize API reference}
      */
     get fontSize(): number;
     /**
@@ -95,6 +113,8 @@ export declare class TextmodeFont extends Disposable {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeFont/font/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeFont/accessors/font | fonts.TextmodeFont.font API reference}
      */
     get font(): unknown;
 }

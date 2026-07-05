@@ -119,6 +119,13 @@ export interface IRenderer {
      */
     _line(x1: number, y1: number, x2: number, y2: number): void;
     /**
+     * Draw dynamic custom shape geometry as a triangle list.
+     *
+     * @param vertices Packed vertices in [x, y, z, 0] format (4 floats per vertex).
+     * @param vertexCount Number of vertices to draw. DYNAMIC_DRAW buffer upload.
+     */
+    _customShape(vertices: Float32Array, vertexCount: number): void;
+    /**
      * Draw an ellipse.
      * The ellipse is centered at (0, 0) in the current local coordinate system.
      * Positioning is controlled via the render state transform stack.

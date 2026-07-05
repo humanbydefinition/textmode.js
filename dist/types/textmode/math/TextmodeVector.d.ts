@@ -18,18 +18,26 @@ type TextmodeVectorLike = TextmodeVector | {
  *
  * @example
  * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector | TextmodeVector API reference}
  */
 export declare class TextmodeVector {
     /**
      * X component.
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector#x | TextmodeVector.x API reference}
      */
     x: number;
     /**
      * Y component.
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector#y | TextmodeVector.y API reference}
      */
     y: number;
     /**
      * Z component.
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector#z | TextmodeVector.z API reference}
      */
     z: number;
     /**
@@ -50,6 +58,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/set | TextmodeVector.set API reference}
      */
     set(value: TextmodeVectorLike | readonly number[]): this;
     /**
@@ -62,6 +72,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/set | TextmodeVector.set API reference}
      */
     set(x?: number, y?: number, z?: number): this;
     /**
@@ -71,6 +83,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/copy | TextmodeVector.copy API reference}
      */
     copy(): TextmodeVector;
     /**
@@ -83,6 +97,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/add | TextmodeVector.add API reference}
      */
     add(value: TextmodeVectorLike | readonly number[]): this;
     /**
@@ -95,6 +111,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/add | TextmodeVector.add API reference}
      */
     add(x?: number, y?: number, z?: number): this;
     /**
@@ -107,6 +125,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/sub | TextmodeVector.sub API reference}
      */
     sub(value: TextmodeVectorLike | readonly number[]): this;
     /**
@@ -119,6 +139,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/sub | TextmodeVector.sub API reference}
      */
     sub(x?: number, y?: number, z?: number): this;
     /**
@@ -129,6 +151,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/mult | TextmodeVector.mult API reference}
      */
     mult(value: number): this;
     /**
@@ -141,6 +165,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/mult | TextmodeVector.mult API reference}
      */
     mult(value: TextmodeVectorLike | readonly number[]): this;
     /**
@@ -153,6 +179,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/mult | TextmodeVector.mult API reference}
      */
     mult(x: number, y: number, z?: number): this;
     /**
@@ -163,6 +191,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/div | TextmodeVector.div API reference}
      */
     div(value: number): this;
     /**
@@ -175,6 +205,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/div | TextmodeVector.div API reference}
      */
     div(value: TextmodeVectorLike | readonly number[]): this;
     /**
@@ -187,6 +219,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/div | TextmodeVector.div API reference}
      */
     div(x: number, y: number, z?: number): this;
     /**
@@ -196,6 +230,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/mag | TextmodeVector.mag API reference}
      */
     mag(): number;
     /**
@@ -207,6 +243,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/magSq | TextmodeVector.magSq API reference}
      */
     magSq(): number;
     /**
@@ -218,6 +256,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/normalize | TextmodeVector.normalize API reference}
      */
     normalize(): this;
     /**
@@ -228,6 +268,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/limit | TextmodeVector.limit API reference}
      */
     limit(max: number): this;
     /**
@@ -240,6 +282,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/setMag | TextmodeVector.setMag API reference}
      */
     setMag(magnitude: number): this;
     /**
@@ -250,6 +294,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/dist | TextmodeVector.dist API reference}
      */
     dist(value: TextmodeVectorLike | readonly number[]): number;
     /**
@@ -262,6 +308,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/dist | TextmodeVector.dist API reference}
      */
     dist(x?: number, y?: number, z?: number): number;
     /**
@@ -272,6 +320,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/dot | TextmodeVector.dot API reference}
      */
     dot(value: TextmodeVectorLike | readonly number[]): number;
     /**
@@ -284,6 +334,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/dot | TextmodeVector.dot API reference}
      */
     dot(x?: number, y?: number, z?: number): number;
     /**
@@ -294,6 +346,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/cross | TextmodeVector.cross API reference}
      */
     cross(value: TextmodeVectorLike | readonly number[]): TextmodeVector;
     /**
@@ -306,6 +360,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/cross | TextmodeVector.cross API reference}
      */
     cross(x?: number, y?: number, z?: number): TextmodeVector;
     /**
@@ -318,6 +374,8 @@ export declare class TextmodeVector {
      *
      * @example
      * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeVector/methods/heading | TextmodeVector.heading API reference}
      */
     heading(): number;
 }

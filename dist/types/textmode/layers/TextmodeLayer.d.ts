@@ -2,7 +2,7 @@ import type { GLFramebuffer } from '../../rendering';
 import { TextmodeGrid } from '../grid/TextmodeGrid';
 import { TextmodeFont, TextmodeTileset } from '../fonts';
 import type { TextmodeTilesetOptions } from '../fonts';
-import { type TextmodeLayerBlendMode } from './types';
+import { LayerBlendMode } from './blendMode';
 import type { FilterName, BuiltInFilterName, BuiltInFilterParams } from '../filters/types';
 import { TextmodeCamera } from '../camera';
 /**
@@ -20,6 +20,8 @@ import { TextmodeCamera } from '../camera';
  *
  * The base layer, which is always present at the bottom of the layer stack,
  * can be accessed via {@link Textmodifier.layers} as `t.layers.base`.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer | layering.TextmodeLayer API reference}
  */
 export declare class TextmodeLayer {
     private _renderer;
@@ -48,6 +50,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/draw/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/draw | layering.TextmodeLayer.draw API reference}
      */
     draw(callback: () => void): void;
     /**
@@ -75,6 +79,8 @@ export declare class TextmodeLayer {
      * 	layer.filter('invert');
      * });
      * ```
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/postDraw | layering.TextmodeLayer.postDraw API reference}
      */
     postDraw(callback: () => void): void;
     /**
@@ -82,6 +88,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/show/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/show | layering.TextmodeLayer.show API reference}
      */
     show(): void;
     /**
@@ -89,6 +97,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/hide/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/hide | layering.TextmodeLayer.hide API reference}
      */
     hide(): void;
     /**
@@ -98,20 +108,25 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/opacity/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/opacity | layering.TextmodeLayer.opacity API reference}
      */
     opacity(opacity?: number): number | void;
     /**
      * Set or get this layer's blend mode.
      *
-     * Available modes are listed in {@link TEXTMODE_LAYER_BLEND_MODES}.
+     * Pass a {@link LayerBlendMode} constant (e.g. `t.BLEND_ADDITIVE`) or a
+     * legacy string (e.g. `'additive'` — deprecated).
      *
      * @param mode Blend mode to apply.
-     * @returns Current blend mode when called without arguments.
+     * @returns Current blend mode as a numeric {@link LayerBlendMode} when called without arguments.
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/blendMode/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/blendMode | layering.TextmodeLayer.blendMode API reference}
      */
-    blendMode(mode?: TextmodeLayerBlendMode): TextmodeLayerBlendMode | void;
+    blendMode(mode?: LayerBlendMode | string): LayerBlendMode | void;
     /**
      * Set or get this layer's compositing offset in pixels.
      * @param x Horizontal offset in pixels.
@@ -120,6 +135,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/offset/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/offset | layering.TextmodeLayer.offset API reference}
      */
     offset(x?: number, y?: number): {
         x: number;
@@ -137,6 +154,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/rotateZ/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/rotateZ | layering.TextmodeLayer.rotateZ API reference}
      */
     rotateZ(z?: number): number | void;
     /**
@@ -145,6 +164,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/createCamera/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/createCamera | layering.TextmodeLayer.createCamera API reference}
      */
     createCamera(): TextmodeCamera;
     /**
@@ -153,6 +174,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/setCamera/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/setCamera | layering.TextmodeLayer.setCamera API reference}
      */
     setCamera(camera: TextmodeCamera): void;
     /**
@@ -160,6 +183,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/resetCamera/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/resetCamera | layering.TextmodeLayer.resetCamera API reference}
      */
     resetCamera(): void;
     /**
@@ -167,6 +192,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/camera/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/camera | layering.TextmodeLayer.camera API reference}
      */
     camera(eyeX: number, eyeY: number, eyeZ: number, targetX?: number, targetY?: number, targetZ?: number, upX?: number, upY?: number, upZ?: number): void;
     /**
@@ -174,6 +201,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/lookAt/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/lookAt | layering.TextmodeLayer.lookAt API reference}
      */
     lookAt(targetX: number, targetY: number, targetZ: number, upX?: number, upY?: number, upZ?: number): void;
     /**
@@ -181,6 +210,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/perspective/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/perspective | layering.TextmodeLayer.perspective API reference}
      */
     perspective(fov?: number, near?: number, far?: number): void;
     /**
@@ -188,6 +219,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/ortho/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/ortho | layering.TextmodeLayer.ortho API reference}
      */
     ortho(near?: number, far?: number): void;
     /**
@@ -207,12 +240,16 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/filter/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/filter | layering.TextmodeLayer.filter API reference}
      */
     filter<T extends BuiltInFilterName>(name: T, params?: BuiltInFilterParams[T]): void;
     /**
      * Queue a registered custom filter for this layer.
      * @param name Custom filter name.
      * @param params Optional filter parameters.
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/filter | layering.TextmodeLayer.filter API reference}
      */
     filter<TParams = unknown>(name: FilterName, params?: TParams): void;
     /**
@@ -224,6 +261,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/setPluginState/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/setPluginState | layering.TextmodeLayer.setPluginState API reference}
      */
     setPluginState<T>(pluginName: string, state: T): void;
     /**
@@ -234,6 +273,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/getPluginState/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/getPluginState | layering.TextmodeLayer.getPluginState API reference}
      */
     getPluginState<T>(pluginName: string): T | undefined;
     /**
@@ -244,6 +285,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/hasPluginState/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/hasPluginState | layering.TextmodeLayer.hasPluginState API reference}
      */
     hasPluginState(pluginName: string): boolean;
     /**
@@ -253,6 +296,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/deletePluginState/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/deletePluginState | layering.TextmodeLayer.deletePluginState API reference}
      */
     deletePluginState(pluginName: string): boolean;
     /**
@@ -265,6 +310,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/fontSize/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/fontSize | layering.TextmodeLayer.fontSize API reference}
      */
     fontSize(size?: number): number | void;
     /**
@@ -279,6 +326,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/useTileColors/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/useTileColors | layering.TextmodeLayer.useTileColors API reference}
      */
     useTileColors(enabled?: boolean): boolean | void;
     /**
@@ -289,6 +338,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/loadFont/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/loadFont | layering.TextmodeLayer.loadFont API reference}
      */
     loadFont(fontSource: string | TextmodeFont): Promise<TextmodeFont>;
     /**
@@ -299,6 +350,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/loadTileset/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/methods/loadTileset | layering.TextmodeLayer.loadTileset API reference}
      */
     loadTileset(tilesetSource: TextmodeTilesetOptions | TextmodeTileset): Promise<TextmodeTileset>;
     /**
@@ -308,6 +361,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/texture/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/accessors/texture | layering.TextmodeLayer.texture API reference}
      */
     get texture(): WebGLTexture | undefined;
     /**
@@ -315,6 +370,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/grid/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/accessors/grid | layering.TextmodeLayer.grid API reference}
      */
     get grid(): TextmodeGrid | undefined;
     /**
@@ -322,6 +379,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/font/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/accessors/font | layering.TextmodeLayer.font API reference}
      */
     get font(): TextmodeFont | TextmodeTileset;
     /**
@@ -331,6 +390,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/width/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/accessors/width | layering.TextmodeLayer.width API reference}
      */
     get width(): number;
     /**
@@ -340,6 +401,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/height/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/accessors/height | layering.TextmodeLayer.height API reference}
      */
     get height(): number;
     /**
@@ -349,6 +412,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/drawFramebuffer/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/accessors/drawFramebuffer | layering.TextmodeLayer.drawFramebuffer API reference}
      */
     get drawFramebuffer(): GLFramebuffer | undefined;
     /**
@@ -356,6 +421,8 @@ export declare class TextmodeLayer {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeLayer/asciiFramebuffer/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayer/accessors/asciiFramebuffer | layering.TextmodeLayer.asciiFramebuffer API reference}
      */
     get asciiFramebuffer(): GLFramebuffer | undefined;
     private _syncGridToFont;

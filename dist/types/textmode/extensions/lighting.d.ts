@@ -19,6 +19,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/ambientLight/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/ambientLight | Textmodifier.ambientLight API reference}
          */
         ambientLight(gray: number): void;
         /**
@@ -26,6 +28,8 @@ declare module '../Textmodifier' {
          *
          * @param gray Grayscale value (0-255)
          * @param alpha Alpha value (0-255)
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/ambientLight | Textmodifier.ambientLight API reference}
          */
         ambientLight(gray: number, alpha: number): void;
         /**
@@ -34,6 +38,8 @@ declare module '../Textmodifier' {
          * @param v1 Red component (0-255)
          * @param v2 Green component (0-255)
          * @param v3 Blue component (0-255)
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/ambientLight | Textmodifier.ambientLight API reference}
          */
         ambientLight(v1: number, v2: number, v3: number): void;
         /**
@@ -43,12 +49,16 @@ declare module '../Textmodifier' {
          * @param v2 Green component (0-255)
          * @param v3 Blue component (0-255)
          * @param alpha Alpha value (0-255)
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/ambientLight | Textmodifier.ambientLight API reference}
          */
         ambientLight(v1: number, v2: number, v3: number, alpha: number): void;
         /**
          * Add an ambient light using a color value.
          *
          * @param color Color value (CSS string, TextmodeColor, or RGB(A) array)
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/ambientLight | Textmodifier.ambientLight API reference}
          */
         ambientLight(color: TextmodeLightColorInput): void;
         /**
@@ -66,6 +76,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/pointLight/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/pointLight | Textmodifier.pointLight API reference}
          */
         pointLight(v1: number, v2: number, v3: number, x: number, y: number, z: number): void;
         /**
@@ -78,6 +90,8 @@ declare module '../Textmodifier' {
          * @param position.x World-space X position
          * @param position.y World-space Y position
          * @param position.z World-space Z position
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/pointLight | Textmodifier.pointLight API reference}
          */
         pointLight(v1: number, v2: number, v3: number, position: {
             x: number;
@@ -93,6 +107,8 @@ declare module '../Textmodifier' {
          * @param x World-space X position
          * @param y World-space Y position
          * @param z World-space Z position
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/pointLight | Textmodifier.pointLight API reference}
          */
         pointLight(color: TextmodeLightColorInput, x: number, y: number, z: number): void;
         /**
@@ -103,6 +119,8 @@ declare module '../Textmodifier' {
          * @param position.x World-space X position
          * @param position.y World-space Y position
          * @param position.z World-space Z position
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/pointLight | Textmodifier.pointLight API reference}
          */
         pointLight(color: TextmodeLightColorInput, position: {
             x: number;
@@ -121,6 +139,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/lightFalloff/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/lightFalloff | Textmodifier.lightFalloff API reference}
          */
         lightFalloff(constant: number, linear: number, quadratic: number): void;
         /**
@@ -130,6 +150,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/noLights/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/noLights | Textmodifier.noLights API reference}
          */
         noLights(): void;
     }

@@ -13,6 +13,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/noise/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/noise | Textmodifier.noise API reference}
          */
         noise(x: number, y?: number, z?: number): number;
         /**
@@ -25,6 +27,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/noiseSeed/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/noiseSeed | Textmodifier.noiseSeed API reference}
          */
         noiseSeed(seed: string | number): void;
         /**
@@ -38,6 +42,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/noiseDetail/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/noiseDetail | Textmodifier.noiseDetail API reference}
          */
         noiseDetail(octaves: number, falloff?: number): void;
     }

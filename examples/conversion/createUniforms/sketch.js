@@ -2,7 +2,7 @@
  * @title conversion.TextmodeConversionStrategy.createUniforms
  */
 const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
-const t = textmode.create({ pixelDensity: 1, width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 const labelLayer = t.layers.add();
 let img = null;
@@ -43,7 +43,7 @@ t.setup(async () => {
 		id: 'time-wave',
 		createShader: () => animatedShader,
 		createUniforms: (ctx) => ({
-			u_image: ctx.source.texture,
+			...ctx.createBaseUniforms(),
 			u_time: t.frameCount * 0.04,
 		}),
 	});

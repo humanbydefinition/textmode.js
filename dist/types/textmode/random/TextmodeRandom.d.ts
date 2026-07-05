@@ -3,6 +3,8 @@
  *
  * `TextmodeRandom` uses the stable `textmode-v1` generator. It is designed for
  * reproducible creative-coding output, not for cryptography or security-sensitive values.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeRandom | TextmodeRandom API reference}
  */
 export declare class TextmodeRandom {
     private _state;
@@ -23,6 +25,8 @@ export declare class TextmodeRandom {
      * const rng = new TextmodeRandom('glyphs');
      * const value = rng.random();
      * ```
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeRandom#random | TextmodeRandom.random API reference}
      */
     random(): number;
     /**
@@ -36,6 +40,8 @@ export declare class TextmodeRandom {
      * const rng = new TextmodeRandom('columns');
      * const column = rng.random(80);
      * ```
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeRandom#random | TextmodeRandom.random API reference}
      */
     random(max: number): number;
     /**
@@ -50,6 +56,8 @@ export declare class TextmodeRandom {
      * const rng = new TextmodeRandom('offsets');
      * const offset = rng.random(-4, 4);
      * ```
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeRandom#random | TextmodeRandom.random API reference}
      */
     random(min: number, max: number): number;
     /**
@@ -63,6 +71,8 @@ export declare class TextmodeRandom {
      * const rng = new TextmodeRandom('characters');
      * const character = rng.random(['A', 'B', 'C']);
      * ```
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeRandom#random | TextmodeRandom.random API reference}
      */
     random<T>(choices: readonly T[]): T | undefined;
     /**
@@ -80,6 +90,8 @@ export declare class TextmodeRandom {
      * const rng = new TextmodeRandom('stars');
      * const offset = rng.randomGaussian(0, 2);
      * ```
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeRandom#randomgaussian | TextmodeRandom.randomGaussian API reference}
      */
     randomGaussian(mean?: number, sd?: number): number;
     /**
@@ -92,6 +104,8 @@ export declare class TextmodeRandom {
      * const rng = new TextmodeRandom('first');
      * rng.randomSeed('second');
      * ```
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeRandom#randomseed | TextmodeRandom.randomSeed API reference}
      */
     randomSeed(seed: string | number): void;
     private _next;

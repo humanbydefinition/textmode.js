@@ -8,39 +8,89 @@ import type { TextmodeSource } from '../../media/TextmodeSource';
 import type { LayerLifecycleHook, LayerRenderHook, SetupLifecycleHook, TextmodePluginHook } from './hooks';
 /**
  * Stable read-only canvas handle exposed to plugins.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodeCanvasHandle | plugins.TextmodeCanvasHandle API reference}
  */
 export interface TextmodeCanvasHandle {
-    /** The DOM canvas used for textmode rendering. */
+    /**
+     * The DOM canvas used for textmode rendering.
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodeCanvasHandle#canvas | plugins.TextmodeCanvasHandle.canvas API reference}
+     */
     readonly canvas: HTMLCanvasElement;
-    /** The overlay target, when textmode is running in overlay mode. */
+    /**
+     * The overlay target, when textmode is running in overlay mode.
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodeCanvasHandle#targetcanvas | plugins.TextmodeCanvasHandle.targetCanvas API reference}
+     */
     readonly targetCanvas: HTMLCanvasElement | HTMLVideoElement | null;
-    /** Current canvas width in device pixels. */
+    /**
+     * Current canvas width in device pixels.
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodeCanvasHandle#width | plugins.TextmodeCanvasHandle.width API reference}
+     */
     readonly width: number;
-    /** Current canvas height in device pixels. */
+    /**
+     * Current canvas height in device pixels.
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodeCanvasHandle#height | plugins.TextmodeCanvasHandle.height API reference}
+     */
     readonly height: number;
-    /** Whether textmode owns the WebGL context lifecycle. */
+    /**
+     * Whether textmode owns the WebGL context lifecycle.
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodeCanvasHandle#ownscontext | plugins.TextmodeCanvasHandle.ownsContext API reference}
+     */
     readonly ownsContext: boolean;
 }
 /**
  * Host-provided context passed to plugins when they are installed on a {@link Textmodifier} instance.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext | plugins.TextmodePluginContext API reference}
  */
 export interface TextmodePluginContext {
-    /** The active glyph source used by the Textmodifier instance (from base layer). */
+    /**
+     * The active glyph source used by the Textmodifier instance (from base layer).
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext#font | plugins.TextmodePluginContext.font API reference}
+     */
     font: TextmodeFont | TextmodeTileset;
-    /** Backend-neutral glyph atlas used by the Textmodifier instance (from base layer). */
+    /**
+     * Backend-neutral glyph atlas used by the Textmodifier instance (from base layer).
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext#glyphatlas | plugins.TextmodePluginContext.glyphAtlas API reference}
+     */
     glyphAtlas: TextmodeGlyphAtlas;
-    /** The grid used by the Textmodifier instance (from base layer). */
+    /**
+     * The grid used by the Textmodifier instance (from base layer).
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext#grid | plugins.TextmodePluginContext.grid API reference}
+     */
     grid: TextmodeGrid;
-    /** A stable handle for the canvas used by the Textmodifier instance. */
+    /**
+     * A stable handle for the canvas used by the Textmodifier instance.
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext#canvas | plugins.TextmodePluginContext.canvas API reference}
+     */
     canvas: TextmodeCanvasHandle;
-    /** The framebuffer the user draws to with 3 attachments (from base layer). */
+    /**
+     * The framebuffer the user draws to with 3 attachments (from base layer).
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext#drawframebuffer | plugins.TextmodePluginContext.drawFramebuffer API reference}
+     */
     drawFramebuffer: GLFramebuffer;
     /**
      * The framebuffer containing the ASCII representation (from base layer).<br/>
      * This framebuffer only has a single attachment.
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext#asciiframebuffer | plugins.TextmodePluginContext.asciiFramebuffer API reference}
      */
     asciiFramebuffer: GLFramebuffer;
-    /** The layer manager for accessing and managing all layers. */
+    /**
+     * The layer manager for accessing and managing all layers.
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext#layermanager | plugins.TextmodePluginContext.layerManager API reference}
+     */
     layerManager: TextmodeLayerManager;
     /**
      * Register a callback to be invoked before each draw cycle.
@@ -49,6 +99,8 @@ export interface TextmodePluginContext {
      *
      * @example
      * {@includeCode ../../../../examples/plugins/registerPreDrawHook/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext/methods/registerPreDrawHook | plugins.TextmodePluginContext.registerPreDrawHook API reference}
      */
     registerPreDrawHook(callback: TextmodePluginHook): () => void;
     /**
@@ -58,6 +110,8 @@ export interface TextmodePluginContext {
      *
      * @example
      * {@includeCode ../../../../examples/plugins/registerPostDrawHook/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext/methods/registerPostDrawHook | plugins.TextmodePluginContext.registerPostDrawHook API reference}
      */
     registerPostDrawHook(callback: TextmodePluginHook): () => void;
     /**
@@ -67,6 +121,8 @@ export interface TextmodePluginContext {
      *
      * @example
      * {@includeCode ../../../../examples/plugins/registerLayerDisposedHook/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext/methods/registerLayerDisposedHook | plugins.TextmodePluginContext.registerLayerDisposedHook API reference}
      */
     registerLayerDisposedHook(callback: LayerLifecycleHook): () => void;
     /**
@@ -78,6 +134,8 @@ export interface TextmodePluginContext {
      *
      * @example
      * {@includeCode ../../../../examples/plugins/registerLayerPreRenderHook/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext/methods/registerLayerPreRenderHook | plugins.TextmodePluginContext.registerLayerPreRenderHook API reference}
      */
     registerLayerPreRenderHook(callback: LayerRenderHook): () => void;
     /**
@@ -88,6 +146,8 @@ export interface TextmodePluginContext {
      *
      * @example
      * {@includeCode ../../../../examples/plugins/registerLayerPostRenderHook/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext/methods/registerLayerPostRenderHook | plugins.TextmodePluginContext.registerLayerPostRenderHook API reference}
      */
     registerLayerPostRenderHook(callback: LayerRenderHook): () => void;
     /**
@@ -100,6 +160,8 @@ export interface TextmodePluginContext {
      *
      * @example
      * {@includeCode ../../../../examples/plugins/registerPreSetupHook/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext/methods/registerPreSetupHook | plugins.TextmodePluginContext.registerPreSetupHook API reference}
      */
     registerPreSetupHook(callback: SetupLifecycleHook): () => void;
     /**
@@ -112,6 +174,8 @@ export interface TextmodePluginContext {
      *
      * @example
      * {@includeCode ../../../../examples/plugins/registerPostSetupHook/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext/methods/registerPostSetupHook | plugins.TextmodePluginContext.registerPostSetupHook API reference}
      */
     registerPostSetupHook(callback: SetupLifecycleHook): () => void;
     /**
@@ -128,6 +192,8 @@ export interface TextmodePluginContext {
      *   this.setPluginState('synth', { source, compiled: compile(source) });
      * });
      * ```
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext/methods/extendLayer | plugins.TextmodePluginContext.extendLayer API reference}
      */
     extendLayer<TArgs extends unknown[], TReturn>(methodName: string, implementation: (this: TextmodeLayer, ...args: TArgs) => TReturn): void;
     /**
@@ -136,6 +202,8 @@ export interface TextmodePluginContext {
      *
      * @example
      * {@includeCode ../../../../examples/plugins/removeLayerExtension/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext/methods/removeLayerExtension | plugins.TextmodePluginContext.removeLayerExtension API reference}
      */
     removeLayerExtension(methodName: string): void;
     /**
@@ -152,6 +220,8 @@ export interface TextmodePluginContext {
      *   return this.conversionMode('edge');
      * });
      * ```
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext/methods/extendSource | plugins.TextmodePluginContext.extendSource API reference}
      */
     extendSource<TArgs extends unknown[], TReturn>(methodName: string, implementation: (this: TextmodeSource, ...args: TArgs) => TReturn): void;
     /**
@@ -162,6 +232,8 @@ export interface TextmodePluginContext {
      * ```ts
      * api.removeSourceExtension('edgeDetection');
      * ```
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins/interfaces/TextmodePluginContext/methods/removeSourceExtension | plugins.TextmodePluginContext.removeSourceExtension API reference}
      */
     removeSourceExtension(methodName: string): void;
 }

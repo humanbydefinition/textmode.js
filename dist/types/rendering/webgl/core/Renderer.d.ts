@@ -7,11 +7,14 @@ import type { TextmodeSource } from '../../../textmode/media/TextmodeSource';
 import type { TextmodeGlyphAtlas } from '../../../textmode/fonts/types';
 import type { IRenderer } from './interfaces/IRenderer';
 import { MaterialManager } from '../materials/MaterialManager';
+import { GlyphPaletteService } from '../materials/GlyphPaletteService';
 export declare class GLRenderer implements IRenderer {
     private _gl;
     private _currentShader;
     private readonly _renderPipeline;
     private readonly _materialManager;
+    private readonly _glyphPaletteService;
+    private readonly _texturedMaterialCache;
     private _renderState;
     private _drawQueue;
     private readonly _immediateQuad;
@@ -28,9 +31,11 @@ export declare class GLRenderer implements IRenderer {
     private _depthMaskEnabled;
     private _isRenderingFrame;
     private readonly _tempClearBuffer;
+    private readonly _triangleVertices;
     private _frameOverrideSources;
     constructor(gl: WebGL2RenderingContext);
     _shader(shader: GLShader): void;
+    _trackFrameOverrideSource(source: TextmodeSource): void;
     _createShader(vertexSource: string, fragmentSource: string): GLShader;
     _setUserShader(shader: GLShader | null): void;
     _resetShader(): void;
@@ -43,6 +48,7 @@ export declare class GLRenderer implements IRenderer {
     _rect(width: number, height: number): void;
     _enqueueGlyphRun(data: Float32Array, instanceCount: number): void;
     _line(x1: number, y1: number, x2: number, y2: number): void;
+    _customShape(vertices: Float32Array, vertexCount: number): void;
     _ellipse(width: number, height: number): void;
     _triangle(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): void;
     _bezierCurve(x1: number, y1: number, cp1x: number, cp1y: number, cp2x: number, cp2y: number, x2: number, y2: number): void;
@@ -70,4 +76,5 @@ export declare class GLRenderer implements IRenderer {
     get context(): WebGL2RenderingContext;
     get state(): RenderState;
     get materialManager(): MaterialManager;
+    get glyphPaletteService(): GlyphPaletteService;
 }

@@ -19,7 +19,8 @@ export { TextmodeFilterManager } from './textmode/filters';
 export { TextmodeError, TextmodeErrorLevel, ErrorLayerController } from './textmode/error';
 export { LoadingLayerController } from './textmode/layers/overlays/loading';
 export { INPUT_EVENT_NAMES } from './textmode/input';
-export { TEXTMODE_LAYER_BLEND_MODES } from './textmode/layers';
+export { TEXTMODE_LAYER_BLEND_MODES, LayerBlendMode } from './textmode/layers';
+export { ShapeAssemblyMode } from './textmode/extensions/shapes2d';
 export { TEXTMODE_EASE_NAMES } from './utils/math';
 export type { TextmodeOptions } from './textmode/types';
 export type { TextmodeEaseName } from './utils/math';
@@ -28,7 +29,7 @@ export type { TextmodeLayerBlendMode, TextmodeLayerOptions } from './textmode/la
 export type { TextmodeGlyph, TextmodeGlyphAtlas, TextmodeTilesetOptions, GlyphData } from './textmode/fonts';
 export type { GridPosition } from './textmode/grid';
 export type { TextmodeLightColorInput } from './textmode/extensions/lighting';
-export type { BuiltInConversionMode, TextmodeConversionMode, TextmodeConversionContext, TextmodeConversionPassContext, TextmodeConversionStep, TextmodeConversionStepOptions, TextmodeColorInput, TextmodeConversionStrategy, } from './textmode/conversion';
+export type { BuiltInConversionMode, TextmodeConversionMode, TextmodeConversionContext, TextmodeConversionSource, TextmodeConversionPassContext, TextmodeConversionStep, TextmodeConversionStepOptions, TextmodeColorInput, TextmodeConversionStrategy, } from './textmode/conversion';
 export type { BuiltInFilterName, BuiltInFilterParams, FilterContext, FilterName, TextmodeFilterStrategy, TextmodeFilterUniformDefinitions, } from './textmode/filters';
 export type { ErrorScreenRendererContext, TextmodeErrorFormatOptions } from './textmode/error';
 export type { LoadingScreenOptions, LoadingScreenRendererContext, LoadingScreenState, } from './textmode/layers/overlays/loading';
@@ -42,10 +43,14 @@ export type { TextmodeCanvasHandle, TextmodePlugin, TextmodePluginContext, Textm
  *
  * `textmode.js` includes the built-in `'brightness'` strategy. Custom strategies
  * can be registered via {@link TextmodeConversionManager.register}.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/conversion | conversion API reference}
  */
 export * as conversion from './textmode/conversion';
 /**
  * Color objects, color modes, and types.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/color | color API reference}
  */
 export * as color from './textmode/color';
 /**
@@ -81,6 +86,8 @@ export * as color from './textmode/color';
  *   }
  * };
  * ```
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/plugins | plugins API reference}
  */
 export * as plugins from './textmode/plugins';
 /**
@@ -92,23 +99,51 @@ export * as plugins from './textmode/plugins';
  * `textmode.js` includes a small built-in filter set. Additional filters can be
  * implemented and registered via {@link TextmodeFilterManager}, available through
  * {@link Textmodifier.filters}.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/filters | filters API reference}
  */
 export * as filters from './textmode/filters';
 /**
  * Error handling modules and types.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/errors | errors API reference}
  */
 export * as errors from './textmode/error';
 export { GLShader as TextmodeShader } from './rendering/webgl/core/Shader';
 export { Textmode as textmode } from './textmode/Textmode';
-/** Loading screen modules and types. */
+/**
+ * Loading screen modules and types.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/loading | loading API reference}
+ */
 export * as loading from './textmode/layers/overlays/loading';
-/** Media asset modules and types. */
+/**
+ * Media asset modules and types.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/media | media API reference}
+ */
 export * as media from './textmode/media';
-/** Font and tileset modules and types. */
+/**
+ * Font and tileset modules and types.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts | fonts API reference}
+ */
 export * as fonts from './textmode/fonts';
-/** Input event modules and types. */
+/**
+ * Input event modules and types.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/input | input API reference}
+ */
 export * as input from './textmode/input';
-/** Layering modules and types. */
+/**
+ * Layering modules and types.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering | layering API reference}
+ */
 export * as layering from './textmode/layers';
-/** Deterministic pseudo-random number modules and types. */
+/**
+ * Deterministic pseudo-random number modules and types.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeRandom | TextmodeRandom API reference}
+ */
 export * as random from './textmode/random';

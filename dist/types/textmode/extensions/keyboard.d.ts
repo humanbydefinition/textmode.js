@@ -8,6 +8,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/keyPressed/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/keyPressed | Textmodifier.keyPressed API reference}
          */
         keyPressed(callback: KeyboardEventHandler): void;
         /**
@@ -20,6 +22,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/keyTyped/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/keyTyped | Textmodifier.keyTyped API reference}
          */
         keyTyped(callback: KeyboardEventHandler): void;
         /**
@@ -29,6 +33,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/keyReleased/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/keyReleased | Textmodifier.keyReleased API reference}
          */
         keyReleased(callback: KeyboardEventHandler): void;
         /**
@@ -39,6 +45,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/isKeyPressed/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/isKeyPressed | Textmodifier.isKeyPressed API reference}
          */
         isKeyPressed(key: string): boolean;
         /**
@@ -46,6 +54,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/lastKeyPressed/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/properties/lastKeyPressed | Textmodifier.lastKeyPressed API reference}
          */
         readonly lastKeyPressed: string | null;
         /**
@@ -53,6 +63,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/lastKeyReleased/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/properties/lastKeyReleased | Textmodifier.lastKeyReleased API reference}
          */
         readonly lastKeyReleased: string | null;
         /**
@@ -60,6 +72,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/pressedKeys/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/properties/pressedKeys | Textmodifier.pressedKeys API reference}
          */
         readonly pressedKeys: string[];
         /**
@@ -67,6 +81,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/modifierState/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/properties/modifierState | Textmodifier.modifierState API reference}
          */
         readonly modifierState: {
             /** Whether the Ctrl key is currently pressed */

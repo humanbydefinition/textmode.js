@@ -4,316 +4,72 @@
 		<meta charset="utf-8" />
 		<title>textmode.js - examples</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<script src="https://cdn.tailwindcss.com"></script>
-		<script>
-			tailwind.config = {
-				theme: {
-					extend: {
-						fontFamily: {
-							mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
-						},
-					},
-				},
-			};
-		</script>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"
 			rel="stylesheet"
 		/>
-		<link rel="stylesheet" href="./style.css" />
+		<link rel="stylesheet" href="./styles/index.css" />
 	</head>
 
-	<body class="bg-[#09090b] text-zinc-100 min-h-screen">
-		<div class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
-			<!-- Header -->
-			<header class="mb-10 pb-8 border-b border-zinc-800">
-				<div class="flex items-start justify-between flex-wrap gap-4">
-					<div>
-						<h1 class="text-xl font-semibold tracking-tight text-zinc-50">textmode.js</h1>
-						<p class="text-zinc-500 text-xs mt-1">// it's the only way to escape</p>
+	<body>
+		<div class="examples-page">
+			<header class="examples-header">
+				<div class="examples-header-primary">
+					<div class="examples-brand">
+						<h1>textmode.js</h1>
+						<p>// it's the only way to escape</p>
 					</div>
-					<nav class="flex items-center gap-4 text-xs text-zinc-500">
-						<a
-							href="https://github.com/humanbydefinition"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="hover:text-zinc-300 transition-colors"
-							>@humanbydefinition</a
-						>
-						<span class="text-zinc-700">·</span>
-						<a
-							href="https://github.com/humanbydefinition/textmode.js"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="hover:text-zinc-300 transition-colors"
-							>github</a
-						>
-						<span class="text-zinc-700">·</span>
-						<a
-							href="https://code.textmode.art"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="hover:text-zinc-300 transition-colors"
-							>docs</a
-						>
-					</nav>
-				</div>
-
-				<!-- Search -->
-				<div class="mt-6 relative">
-					<input
-						id="search"
-						type="text"
-						placeholder="filter examples..."
-						autocomplete="off"
-						spellcheck="false"
-						class="w-full max-w-sm bg-zinc-900 border border-zinc-800 rounded-md px-3 py-1.5 text-xs text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-zinc-600 focus:ring-1 focus:ring-zinc-700 transition-colors"
-					/>
+					<div class="examples-header-controls">
+						<nav class="examples-header-links" aria-label="Project links">
+							<a
+								class="examples-header-link"
+								href="https://github.com/humanbydefinition/textmode.js"
+								target="_blank"
+								rel="noopener noreferrer"
+								>github</a
+							>
+							<a
+								class="examples-header-link"
+								href="https://code.textmode.art"
+								target="_blank"
+								rel="noopener noreferrer"
+								>docs</a
+							>
+						</nav>
+						<label class="examples-search" for="search">
+							<span class="examples-search-icon" aria-hidden="true">/</span>
+							<input
+								id="search"
+								type="text"
+								placeholder="filter examples..."
+								autocomplete="off"
+								spellcheck="false"
+							/>
+						</label>
+					</div>
 				</div>
 			</header>
 
-			<!-- Groups -->
-			<main id="examples" class="space-y-3"></main>
+			<main id="examples" class="examples-browser" data-manifest="./manifest.json"></main>
 
-			<!-- Footer -->
-			<footer class="mt-12 pt-8 border-t border-zinc-800 text-xs text-zinc-600">
-				<p>textmode.js - MIT license</p>
+			<footer class="examples-footer">
+				<p class="examples-footer-label">
+					<a href="https://github.com/humanbydefinition/textmode.js" target="_blank" rel="noopener noreferrer"
+						>textmode.js</a
+					>
+					-
+					<a
+						href="https://github.com/humanbydefinition/textmode.js/blob/main/LICENSE"
+						target="_blank"
+						rel="noopener noreferrer"
+						>MIT license</a
+					>
+				</p>
 			</footer>
 		</div>
 
-		<script>
-			const MANIFEST_URL = './manifest.json';
-			const container = document.getElementById('examples');
-			const searchInput = document.getElementById('search');
-
-			function escapeHtml(value) {
-				return String(value).replace(/[&<>"']/g, (char) => {
-					return {
-						'&': '&amp;',
-						'<': '&lt;',
-						'>': '&gt;',
-						'"': '&quot;',
-						"'": '&#39;',
-					}[char];
-				});
-			}
-
-			function getExamplePath(sourceFile) {
-				if (!sourceFile.startsWith('examples/') || !sourceFile.endsWith('/sketch.js')) {
-					throw new Error(`Invalid example source file: ${sourceFile}`);
-				}
-
-				return sourceFile.slice('examples/'.length, -'/sketch.js'.length);
-			}
-
-			function getExampleName(examplePath) {
-				const segments = examplePath.split('/');
-				return segments[segments.length - 1];
-			}
-
-			function normalizeManifest(manifest) {
-				if (!Array.isArray(manifest.groups)) {
-					throw new Error('Examples manifest is missing a groups array.');
-				}
-
-				return manifest.groups.map((group) => ({
-					name: group.name,
-					description: group.description,
-					entries: group.examples.map((example) => {
-						const path = getExamplePath(example.sourceFile);
-
-						return {
-							name: getExampleName(path),
-							path,
-							title: example.title,
-						};
-					}),
-				}));
-			}
-
-			function getExampleHref(examplePath) {
-				return `./sketch.html?path=${encodeURIComponent(examplePath)}`;
-			}
-
-			function render(groups) {
-				container.innerHTML = '';
-
-				groups.forEach((group) => {
-					const section = document.createElement('div');
-					section.className = 'rounded-lg border border-zinc-800 bg-zinc-900/40 overflow-hidden';
-					section.dataset.group = group.name.toLowerCase();
-					section.dataset.groupName = group.name;
-
-					section.innerHTML = `
-            <div class="flex items-center gap-3 px-4 py-3 border-b border-zinc-800 bg-zinc-900/60">
-              <h2 class="text-sm font-medium text-zinc-100 tracking-tight">${escapeHtml(group.name)}</h2>
-              <span class="text-xs text-zinc-600 hidden sm:block">${escapeHtml(group.description)}</span>
-              <span class="ml-auto text-xs text-zinc-600 tabular-nums" data-count>${group.entries.length}</span>
-            </div>
-            <div class="px-4 py-3 flex flex-wrap gap-1.5" data-entries>
-              ${group.entries
-					.map((entry) => {
-						const name = escapeHtml(entry.name);
-						const title = escapeHtml(entry.title);
-						return `<a href="${escapeHtml(getExampleHref(entry.path))}" class="entry-badge" data-entry="${escapeHtml(entry.name.toLowerCase())}" data-entry-name="${name}" data-entry-title="${escapeHtml(entry.title.toLowerCase())}" aria-expanded="false" title="${title}">${name}</a>`;
-					})
-					.join('')}
-            </div>
-            <div class="example-preview" data-preview hidden>
-              <div class="example-preview-toolbar">
-                <div class="example-preview-meta">
-                  <div class="example-preview-title" data-preview-title></div>
-                  <div class="example-preview-hint">click badge to toggle, cmd/ctrl-click to open standalone</div>
-                </div>
-                <div class="example-preview-actions">
-                  <a class="example-preview-link" data-preview-link target="_blank" rel="noopener noreferrer">open page</a>
-                  <button type="button" class="example-preview-close" data-preview-close>close</button>
-                </div>
-              </div>
-              <div class="example-preview-frame-wrap">
-                <iframe class="example-preview-frame" data-preview-frame loading="lazy" title="${escapeHtml(group.name)} example preview"></iframe>
-              </div>
-            </div>
-          `;
-
-					container.appendChild(section);
-				});
-
-				filterExamples();
-			}
-
-			function showGalleryState(message) {
-				container.innerHTML = `<p class="text-xs text-zinc-600">${escapeHtml(message)}</p>`;
-			}
-
-			function closePreview(section) {
-				const preview = section.querySelector('[data-preview]');
-				const frame = section.querySelector('[data-preview-frame]');
-				const activeBadge = section.querySelector('.entry-badge.is-active');
-
-				if (activeBadge) {
-					activeBadge.classList.remove('is-active');
-					activeBadge.setAttribute('aria-expanded', 'false');
-				}
-
-				preview.hidden = true;
-				frame.src = 'about:blank';
-			}
-
-			function openPreview(section, badge) {
-				const preview = section.querySelector('[data-preview]');
-				const frame = section.querySelector('[data-preview-frame]');
-				const title = section.querySelector('[data-preview-title]');
-				const link = section.querySelector('[data-preview-link]');
-				const currentActive = section.querySelector('.entry-badge.is-active');
-				const href = badge.getAttribute('href');
-				const groupName = section.dataset.groupName;
-				const entryName = badge.dataset.entryName;
-
-				document.querySelectorAll('#examples > div').forEach((otherSection) => {
-					if (otherSection !== section) {
-						closePreview(otherSection);
-					}
-				});
-
-				if (currentActive && currentActive !== badge) {
-					currentActive.classList.remove('is-active');
-					currentActive.setAttribute('aria-expanded', 'false');
-				}
-
-				badge.classList.add('is-active');
-				badge.setAttribute('aria-expanded', 'true');
-				title.textContent = `${groupName}.${entryName}`;
-				link.href = href;
-				frame.src = href;
-				preview.hidden = false;
-			}
-
-			async function loadManifest() {
-				const response = await fetch(MANIFEST_URL);
-
-				if (!response.ok) {
-					throw new Error(`Unable to load ${MANIFEST_URL}: ${response.status} ${response.statusText}`);
-				}
-
-				return response.json();
-			}
-
-			async function bootstrapGallery() {
-				showGalleryState('loading examples...');
-
-				try {
-					const manifest = await loadManifest();
-					render(normalizeManifest(manifest));
-				} catch (error) {
-					console.error('Unable to load examples manifest.', error);
-					showGalleryState('Unable to load examples manifest.');
-				}
-			}
-
-			container.addEventListener('click', (event) => {
-				const closeButton = event.target.closest('[data-preview-close]');
-				if (closeButton) {
-					closePreview(closeButton.closest('[data-group]'));
-					return;
-				}
-
-				const badge = event.target.closest('.entry-badge');
-				if (!badge) {
-					return;
-				}
-
-				if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
-					return;
-				}
-
-				event.preventDefault();
-				const section = badge.closest('[data-group]');
-
-				if (badge.classList.contains('is-active')) {
-					closePreview(section);
-					return;
-				}
-
-				openPreview(section, badge);
-			});
-
-			function filterExamples() {
-				const q = searchInput.value.trim().toLowerCase();
-
-				document.querySelectorAll('#examples > div').forEach((section) => {
-					const badges = section.querySelectorAll('.entry-badge');
-					const groupName = section.dataset.group;
-					let visible = 0;
-
-					badges.forEach((badge) => {
-						const entryName = badge.dataset.entry;
-						const entryTitle = badge.dataset.entryTitle;
-						const match = !q || entryName.includes(q) || entryTitle.includes(q) || groupName.includes(q);
-						badge.classList.toggle('hidden-entry', !match);
-						if (match) visible++;
-					});
-
-					const countEl = section.querySelector('[data-count]');
-					if (countEl) countEl.textContent = visible;
-
-					const activeBadge = section.querySelector('.entry-badge.is-active');
-					if (activeBadge && activeBadge.classList.contains('hidden-entry')) {
-						closePreview(section);
-					}
-
-					if (visible === 0) {
-						closePreview(section);
-					}
-
-					section.style.display = visible === 0 ? 'none' : '';
-				});
-			}
-
-			searchInput.addEventListener('input', filterExamples);
-			bootstrapGallery();
-		</script>
+		<script type="module" src="./scripts/gallery/main.js"></script>
 	</body>
 </html>

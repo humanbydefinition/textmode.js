@@ -9,6 +9,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/createGlyphRamp/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/createGlyphRamp | Textmodifier.createGlyphRamp API reference}
          */
         createGlyphRamp(characters: string): TextmodeGlyphRamp;
     }

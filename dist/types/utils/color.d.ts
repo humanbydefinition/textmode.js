@@ -10,6 +10,8 @@ export type RGB = [number, number, number];
 export type RGBA = [number, number, number, number];
 /**
  * A union type for either an RGB or RGBA color tuple.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/color/type-aliases/TextmodeColorTuple | color.TextmodeColorTuple API reference}
  */
 export type TextmodeColorTuple = [number, number, number] | [number, number, number, number];
 /**

@@ -6,6 +6,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/char/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/char | Textmodifier.char API reference}
          */
         char(): string;
         /**
@@ -16,6 +18,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/char2/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/char | Textmodifier.char API reference}
          */
         char(value: string | number): void;
         /**
@@ -25,6 +29,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/flipX/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/flipX | Textmodifier.flipX API reference}
          */
         flipX(toggle?: boolean): boolean | void;
         /**
@@ -34,6 +40,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/flipY/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/flipY | Textmodifier.flipY API reference}
          */
         flipY(toggle?: boolean): boolean | void;
         /**
@@ -43,6 +51,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/charRotation/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/charRotation | Textmodifier.charRotation API reference}
          */
         charRotation(degrees?: number): number | void;
         /**
@@ -52,6 +62,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/invert/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/invert | Textmodifier.invert API reference}
          */
         invert(toggle?: boolean): boolean | void;
     }

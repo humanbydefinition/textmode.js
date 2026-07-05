@@ -12,6 +12,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/touchStarted/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/touchStarted | Textmodifier.touchStarted API reference}
          */
         touchStarted(callback: TouchEventHandler): void;
         /**
@@ -24,6 +26,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/touchMoved/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/touchMoved | Textmodifier.touchMoved API reference}
          */
         touchMoved(callback: TouchEventHandler): void;
         /**
@@ -36,6 +40,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/touchEnded/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/touchEnded | Textmodifier.touchEnded API reference}
          */
         touchEnded(callback: TouchEventHandler): void;
         /**
@@ -48,6 +54,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/touchCancelled/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/touchCancelled | Textmodifier.touchCancelled API reference}
          */
         touchCancelled(callback: TouchEventHandler): void;
         /**
@@ -60,6 +68,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/tap/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/tap | Textmodifier.tap API reference}
          */
         tap(callback: TouchTapHandler): void;
         /**
@@ -72,6 +82,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/doubleTap/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/doubleTap | Textmodifier.doubleTap API reference}
          */
         doubleTap(callback: TouchTapHandler): void;
         /**
@@ -84,6 +96,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/longPress/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/longPress | Textmodifier.longPress API reference}
          */
         longPress(callback: TouchLongPressHandler): void;
         /**
@@ -96,6 +110,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/swipe/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/swipe | Textmodifier.swipe API reference}
          */
         swipe(callback: TouchSwipeHandler): void;
         /**
@@ -108,6 +124,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/pinch/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/pinch | Textmodifier.pinch API reference}
          */
         pinch(callback: TouchPinchHandler): void;
         /**
@@ -120,6 +138,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/rotateGesture/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/rotateGesture | Textmodifier.rotateGesture API reference}
          */
         rotateGesture(callback: TouchRotateHandler): void;
         /**
@@ -130,6 +150,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/touches/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/properties/touches | Textmodifier.touches API reference}
          */
         readonly touches: TouchPosition[];
     }

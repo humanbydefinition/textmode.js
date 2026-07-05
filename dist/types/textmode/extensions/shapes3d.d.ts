@@ -9,6 +9,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/box/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/box | Textmodifier.box API reference}
          */
         box(width?: number, height?: number, depth?: number): void;
         /**
@@ -18,6 +20,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/sphere/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/sphere | Textmodifier.sphere API reference}
          */
         sphere(radius?: number): void;
         /**
@@ -28,6 +32,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/torus/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/torus | Textmodifier.torus API reference}
          */
         torus(radius?: number, tubeRadius?: number): void;
         /**
@@ -38,6 +44,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/cone/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/cone | Textmodifier.cone API reference}
          */
         cone(radius?: number, height?: number): void;
         /**
@@ -48,6 +56,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/cylinder/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/cylinder | Textmodifier.cylinder API reference}
          */
         cylinder(radius?: number, height?: number): void;
         /**
@@ -59,6 +69,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/ellipsoid/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/ellipsoid | Textmodifier.ellipsoid API reference}
          */
         ellipsoid(radiusX?: number, radiusY?: number, radiusZ?: number): void;
     }

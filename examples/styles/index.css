@@ -1,0 +1,8 @@
+@layer tokens, base, layout, gallery, preview, responsive;
+
+@import './tokens.css' layer(tokens);
+@import './base.css' layer(base);
+@import './layout.css' layer(layout);
+@import './gallery.css' layer(gallery);
+@import './preview.css' layer(preview);
+@import './responsive.css' layer(responsive);

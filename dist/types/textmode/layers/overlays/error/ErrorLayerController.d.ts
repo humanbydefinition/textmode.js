@@ -4,6 +4,8 @@ import { InternalLayerController } from '../InternalLayerController';
 import type { ErrorScreenRendererContext } from '../../../error/types';
 /**
  * Controls the dedicated internal error layer lifecycle and rendering behavior.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/errors/classes/ErrorLayerController | errors.ErrorLayerController API reference}
  */
 export declare class ErrorLayerController extends InternalLayerController<ErrorScreenRendererContext> {
     private _state;

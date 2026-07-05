@@ -16,7 +16,7 @@ export declare function generateArcVertices(segments: number): Float32Array;
 export declare function generateBezierVertices(segments?: number): Float32Array;
 /**
  * Generate indexed unit box mesh.
- * Vertex layout: [x, y, z, 0] where z is packed into a_texCoord.x in the vertex shader.
+ * Vertex layout: [x, y, z, u, v].
  */
 export declare function generateBoxMesh(): {
     vertices: Float32Array;
@@ -24,7 +24,7 @@ export declare function generateBoxMesh(): {
 };
 /**
  * Generate indexed unit UV sphere mesh.
- * Vertex layout: [x, y, z, 0].
+ * Vertex layout: [x, y, z, u, v].
  */
 export declare function generateSphereMesh(latSegments?: number, lonSegments?: number): {
     vertices: Float32Array;
@@ -32,7 +32,7 @@ export declare function generateSphereMesh(latSegments?: number, lonSegments?: n
 };
 /**
  * Generate indexed unit torus mesh.
- * Vertex layout: [cos(u), sin(u), cos(v), sin(v)].
+ * Vertex layout: [cos(u), sin(u), cos(v), sin(v), u, v].
  * Packed angular basis allows per-instance radius/tubeRadius deformation in the vertex shader.
  */
 export declare function generateTorusMesh(radialSegments?: number, tubularSegments?: number): {
@@ -41,7 +41,7 @@ export declare function generateTorusMesh(radialSegments?: number, tubularSegmen
 };
 /**
  * Generate indexed unit cone mesh.
- * Vertex layout: [x, y, z, 0].
+ * Vertex layout: [x, y, z, u, v].
  */
 export declare function generateConeMesh(segments?: number): {
     vertices: Float32Array;
@@ -49,7 +49,7 @@ export declare function generateConeMesh(segments?: number): {
 };
 /**
  * Generate indexed unit cylinder mesh.
- * Vertex layout: [x, y, z, 0].
+ * Vertex layout: [x, y, z, u, v].
  */
 export declare function generateCylinderMesh(segments?: number): {
     vertices: Float32Array;

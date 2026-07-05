@@ -10,6 +10,8 @@ import { TextmodeFilterManager } from '../filters';
  * above it and can render with independent grids, fonts, filters, offsets, opacity, and blend modes.
  *
  * Access this manager via `textmodifier.layers`.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayerManager | layering.TextmodeLayerManager API reference}
  */
 export declare class TextmodeLayerManager {
     private readonly _textmodifier;
@@ -43,6 +45,8 @@ export declare class TextmodeLayerManager {
      *
      * @example
      * {@includeCode ../../../examples/LayerManager/add/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayerManager/methods/add | layering.TextmodeLayerManager.add API reference}
      */
     add(options?: TextmodeLayerOptions): TextmodeLayer;
     /**
@@ -51,6 +55,8 @@ export declare class TextmodeLayerManager {
      *
      * @example
      * {@includeCode ../../../examples/LayerManager/remove/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayerManager/methods/remove | layering.TextmodeLayerManager.remove API reference}
      */
     remove(layer: TextmodeLayer): void;
     /**
@@ -60,6 +66,8 @@ export declare class TextmodeLayerManager {
      *
      * @example
      * {@includeCode ../../../examples/LayerManager/move/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayerManager/methods/move | layering.TextmodeLayerManager.move API reference}
      */
     move(layer: TextmodeLayer, newIndex: number): void;
     /**
@@ -69,6 +77,8 @@ export declare class TextmodeLayerManager {
      *
      * @example
      * {@includeCode ../../../examples/LayerManager/swap/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayerManager/methods/swap | layering.TextmodeLayerManager.swap API reference}
      */
     swap(layerA: TextmodeLayer, layerB: TextmodeLayer): void;
     /**
@@ -78,10 +88,10 @@ export declare class TextmodeLayerManager {
      *
      * @example
      * {@includeCode ../../../examples/LayerManager/clear/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayerManager/methods/clear | layering.TextmodeLayerManager.clear API reference}
      */
     clear(): void;
-    private _blendBackgroundColor;
-    _renderAndPresentWithOverlay(overlayLayer: TextmodeLayer, blendBackgroundWithOverlay?: boolean): void;
     private _renderAndPresentPostComposite;
     private _presentTexture;
     private _withInternalRenderScope;
@@ -96,6 +106,8 @@ export declare class TextmodeLayerManager {
      *
      * @example
      * {@includeCode ../../../examples/LayerManager/all/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayerManager/accessors/all | layering.TextmodeLayerManager.all API reference}
      */
     get all(): readonly TextmodeLayer[];
     /**
@@ -109,6 +121,8 @@ export declare class TextmodeLayerManager {
      *
      * @example
      * {@includeCode ../../../examples/LayerManager/base/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayerManager/accessors/base | layering.TextmodeLayerManager.base API reference}
      */
     get base(): TextmodeLayer;
     /**
@@ -119,6 +133,8 @@ export declare class TextmodeLayerManager {
      *
      * @example
      * {@includeCode ../../../examples/LayerManager/filters/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayerManager/accessors/filters | layering.TextmodeLayerManager.filters API reference}
      */
     get filters(): TextmodeFilterManager;
     /**
@@ -129,6 +145,8 @@ export declare class TextmodeLayerManager {
      *
      * @example
      * {@includeCode ../../../examples/LayerManager/resultFramebuffer/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/layering/classes/TextmodeLayerManager/accessors/resultFramebuffer | layering.TextmodeLayerManager.resultFramebuffer API reference}
      */
     get resultFramebuffer(): GLFramebuffer;
     /**

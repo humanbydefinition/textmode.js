@@ -10,6 +10,8 @@
  * // Set to `WARNING` level to log errors without stopping execution
  * textmode.setErrorLevel(TextmodeErrorLevel.WARNING);
  * ```
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/errors/enumerations/TextmodeErrorLevel | errors.TextmodeErrorLevel API reference}
  */
 export declare enum TextmodeErrorLevel {
     /**

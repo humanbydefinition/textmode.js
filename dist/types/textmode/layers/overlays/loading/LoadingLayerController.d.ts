@@ -3,6 +3,8 @@ import type { LoadingScreenRendererContext } from './types';
 import { TextmodeLayer } from '../../TextmodeLayer';
 /**
  * Controls the internal loading layer lifecycle and rendering behavior.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/loading/classes/LoadingLayerController | loading.LoadingLayerController API reference}
  */
 export declare class LoadingLayerController extends InternalLayerController<LoadingScreenRendererContext> {
     private readonly _options;

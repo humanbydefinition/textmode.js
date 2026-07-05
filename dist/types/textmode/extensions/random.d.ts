@@ -12,6 +12,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/random/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/random | Textmodifier.random API reference}
          */
         random(): number;
         /**
@@ -22,6 +24,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/random/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/random | Textmodifier.random API reference}
          */
         random(max: number): number;
         /**
@@ -33,6 +37,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/random/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/random | Textmodifier.random API reference}
          */
         random(min: number, max: number): number;
         /**
@@ -43,6 +49,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/random/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/random | Textmodifier.random API reference}
          */
         random<T>(choices: readonly T[]): T | undefined;
         /**
@@ -58,6 +66,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/randomGaussian/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/randomGaussian | Textmodifier.randomGaussian API reference}
          */
         randomGaussian(mean?: number, sd?: number): number;
         /**
@@ -70,6 +80,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/randomSeed/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/randomSeed | Textmodifier.randomSeed API reference}
          */
         randomSeed(seed: string | number): void;
         /**
@@ -83,6 +95,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/randomStream/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/randomStream | Textmodifier.randomStream API reference}
          */
         randomStream(name: string): TextmodeRandom;
     }

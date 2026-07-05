@@ -7,6 +7,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/rotate/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/rotate | Textmodifier.rotate API reference}
          */
         rotate(): void;
         rotate(angle: number): void;
@@ -26,6 +28,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/rotateX/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/rotateX | Textmodifier.rotateX API reference}
          */
         rotateX(degrees?: number): number | void;
         /**
@@ -38,6 +42,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/rotateY/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/rotateY | Textmodifier.rotateY API reference}
          */
         rotateY(degrees?: number): number | void;
         /**
@@ -50,6 +56,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/rotateZ/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/rotateZ | Textmodifier.rotateZ API reference}
          */
         rotateZ(degrees?: number): number | void;
         /**
@@ -63,6 +71,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/translate/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/translate | Textmodifier.translate API reference}
          */
         translate(x?: number, y?: number, z?: number): void;
         /**
@@ -71,6 +81,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/translateX/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/translateX | Textmodifier.translateX API reference}
          */
         translateX(): number;
         /**
@@ -79,6 +91,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/translateX2/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/translateX | Textmodifier.translateX API reference}
          */
         translateX(pixels: number): void;
         /**
@@ -87,6 +101,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/translateY/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/translateY | Textmodifier.translateY API reference}
          */
         translateY(): number;
         /**
@@ -95,6 +111,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/translateY2/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/translateY | Textmodifier.translateY API reference}
          */
         translateY(pixels: number): void;
         /**
@@ -103,6 +121,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/translateZ/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/translateZ | Textmodifier.translateZ API reference}
          */
         translateZ(): number;
         /**
@@ -111,6 +131,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/translateZ2/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/translateZ | Textmodifier.translateZ API reference}
          */
         translateZ(pixels: number): void;
         /**
@@ -122,6 +144,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/scale/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/scale | Textmodifier.scale API reference}
          */
         scale(x: number, y?: number, z?: number): void;
         /**
@@ -131,6 +155,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/resetMatrix/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/resetMatrix | Textmodifier.resetMatrix API reference}
          */
         resetMatrix(): void;
         /**
@@ -140,6 +166,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/applyMatrix/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/applyMatrix | Textmodifier.applyMatrix API reference}
          */
         applyMatrix(matrix: ArrayLike<number>): void;
         applyMatrix(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number): void;
@@ -149,6 +177,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/push/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/push | Textmodifier.push API reference}
          */
         push(): void;
         /**
@@ -157,6 +187,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/pop/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/pop | Textmodifier.pop API reference}
          */
         pop(): void;
     }

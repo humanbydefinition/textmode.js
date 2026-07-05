@@ -1,7 +1,7 @@
 /**
  * @title TextmodeColor.withAlpha
  */
-const t = textmode.create({ pixelDensity: 1, width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 const layers = Array.from({ length: 5 }, () => t.layers.add());
 const labelLayer = t.layers.add();

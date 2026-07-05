@@ -6,6 +6,8 @@ import { Disposable } from '../../../utils/Disposable';
  * Use shaders and set uniforms via {@link Textmodifier.shader}, {@link Textmodifier.setUniform}, and {@link Textmodifier.setUniforms}.
  *
  * After using a custom shader, you can revert to the default textmode shader with {@link Textmodifier.resetShader}.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeShader | TextmodeShader API reference}
  */
 export declare class GLShader extends Disposable {
     private _gl;
@@ -29,6 +31,8 @@ export declare class GLShader extends Disposable {
      *
      * @example
      * {@includeCode ../../../../examples/TextmodeShader/program/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeShader#program | TextmodeShader.program API reference}
      */
     get program(): WebGLProgram;
     /**
@@ -36,6 +40,8 @@ export declare class GLShader extends Disposable {
      *
      * @example
      * {@includeCode ../../../../examples/TextmodeShader/dispose/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeShader#dispose | TextmodeShader.dispose API reference}
      */
     dispose(): void;
 }

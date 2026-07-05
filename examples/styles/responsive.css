@@ -1,0 +1,164 @@
+@media (max-width: 980px) {
+	html,
+	body {
+		height: auto;
+		min-height: 100%;
+		overflow: auto;
+	}
+
+	.examples-page {
+		display: block;
+		width: min(100% - 1rem, 48rem);
+		height: auto;
+		min-height: 100dvh;
+		padding: 1rem 0;
+	}
+
+	.examples-header {
+		padding-bottom: 0.75rem;
+	}
+
+	.examples-header-primary {
+		align-items: stretch;
+		flex-direction: column;
+	}
+
+	.examples-header-controls {
+		align-items: stretch;
+		flex: 1 1 auto;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		width: 100%;
+	}
+
+	.examples-search {
+		order: 1;
+		flex: 1 1 auto;
+		width: 100%;
+	}
+
+	.examples-header-links {
+		order: 2;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+	}
+
+	.examples-browser {
+		display: flex;
+		flex-direction: column;
+		overflow: visible;
+		padding-top: 1rem;
+	}
+
+	.preview-panel {
+		order: -1;
+		width: 100%;
+		height: auto;
+	}
+
+	.examples-list-panel {
+		width: 100%;
+		height: auto;
+		max-height: none;
+		overflow: visible;
+	}
+
+	.preview-frame-shell,
+	.preview-frame {
+		min-height: min(46svh, 28rem);
+		height: min(46svh, 28rem);
+	}
+}
+
+@media (max-width: 640px) {
+	.examples-page {
+		width: min(100% - 0.75rem, 48rem);
+		padding: 0.75rem 0;
+	}
+
+	.examples-header {
+		gap: 0.625rem;
+	}
+
+	.examples-header-primary {
+		gap: 0.625rem;
+	}
+
+	.examples-brand {
+		max-width: 8rem;
+	}
+
+	.examples-brand h1 {
+		font-size: 1rem;
+		white-space: nowrap;
+	}
+
+	.examples-brand p {
+		font-size: 0.68rem;
+		max-width: 8rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.examples-search input {
+		height: 2.75rem;
+		padding-right: 0.6rem;
+		font-size: 0.72rem;
+	}
+
+	.examples-browser {
+		gap: 0.75rem;
+		padding-top: 0.75rem;
+	}
+
+	.preview-toolbar {
+		align-items: flex-start;
+		gap: 0.75rem;
+		min-height: 0;
+		padding: 0.75rem;
+	}
+
+	.preview-actions {
+		align-self: flex-start;
+		justify-content: flex-end;
+	}
+
+	.preview-kicker {
+		font-size: 0.64rem;
+	}
+
+	.preview-title {
+		font-size: 0.82rem;
+		white-space: normal;
+	}
+
+	.preview-frame-shell,
+	.preview-frame {
+		min-height: min(40svh, 24rem);
+		height: min(40svh, 24rem);
+	}
+
+	.group-summary {
+		min-height: 3rem;
+	}
+
+	.group-description {
+		display: none;
+	}
+
+	.entry-list {
+		grid-template-columns: 1fr;
+	}
+
+	.entry-link {
+		min-height: 2.75rem;
+		padding: 0.55rem 0.65rem;
+	}
+}
+
+@media (max-width: 420px) {
+	.examples-header-primary {
+		gap: 0.5rem;
+	}
+}

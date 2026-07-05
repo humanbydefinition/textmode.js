@@ -4,6 +4,7 @@ import { TransformState } from './TransformState';
 import { CameraState } from './CameraState';
 import { LightingState } from './LightingState';
 import { CharacterState } from './CharacterState';
+import { TextureState, type NormalizedGeometryTextureState } from './TextureState';
 export { TM_MAX_POINT_LIGHTS } from './LightingState';
 export interface IRenderState {
     _lineWeight: number;
@@ -50,6 +51,8 @@ export interface IRenderState {
     _lightFalloff: Float32Array;
     _useLighting: boolean;
     _lightingVersion: number;
+    _textureVersion: number;
+    _textureState: NormalizedGeometryTextureState;
 }
 /**
  * Coordinates the mutable render-state domains and pooled push/pop snapshots.
@@ -59,6 +62,7 @@ export declare class RenderState {
     readonly _camera: CameraState;
     readonly _lighting: LightingState;
     readonly _character: CharacterState;
+    readonly _texture: TextureState;
     private _stateStack;
     private _statePool;
     /**

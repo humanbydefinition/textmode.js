@@ -1,6 +1,6 @@
 {
 	"name": "textmode.js",
-	"version": "0.16.0",
+	"version": "0.17.0",
 	"description": "textmode.js is a lightweight creative coding library for creating real-time ASCII art on the web.",
 	"type": "module",
 	"engines": {
@@ -25,10 +25,11 @@
 		"build:bundle": "vite build",
 		"build:types": "tsc -p tsconfig.build.json",
 		"build": "npm run build:bundle && npm run build:types",
-		"check": "npm run check:format && npm run lint && npm run lint:md && npm run check:types && npm run check:dist-types && npm run check:api-docs && npm run check:docs && npm run check:examples && npm run test && npm run build",
-		"check:api-docs": "node ./scripts/check-public-api-docs.mjs",
+		"check": "npm run check:format && npm run check:deps && npm run lint && npm run lint:md && npm run check:types && npm run check:dist-types && npm run check:api-docs && npm run check:docs && npm run check:examples && npm run test && npm run build",
+		"docs:links:add": "textmode-add-api-links",
+		"check:api-docs": "textmode-check-api-docs",
 		"check:docs": "typedoc --emit none --treatWarningsAsErrors --treatValidationWarningsAsErrors",
-		"check:examples": "node ./scripts/check-examples.mjs",
+		"check:examples": "textmode-check-examples",
 		"dev:docs": "typedoc --watch",
 		"build:docs": "typedoc",
 		"preview": "vite preview",
@@ -48,12 +49,13 @@
 		"check:dist-types": "npm run build:types && tsc --noEmit -p tsconfig.dist.json",
 		"lint:md": "markdownlint-cli2",
 		"lint:md:fix": "markdownlint-cli2 --fix",
-		"lint": "eslint src --config eslint.config.js",
+		"lint": "eslint src",
 		"lint:jsdoc": "npm run lint",
 		"contributors:add": "all-contributors add",
 		"contributors:generate": "all-contributors generate",
-		"prepare": "husky",
-		"prepack": "npm run build && tsc --noEmit -p tsconfig.dist.json"
+		"prepare": "husky && install-husky",
+		"prepack": "npm run build && tsc --noEmit -p tsconfig.dist.json",
+		"check:deps": "check-deps"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^20.5.0",
@@ -84,7 +86,15 @@
 		"typescript": "^5.9.2",
 		"typescript-eslint": "^8.59.0",
 		"vite": "^6.3.4",
-		"vitest": "^3.1.2"
+		"vitest": "^3.1.2",
+		"@textmode/commitlint-config": "^0.1.0",
+		"@textmode/eslint-config": "^0.1.0",
+		"@textmode/markdownlint-config": "^0.1.0",
+		"@textmode/prettier-config": "^0.1.0",
+		"@textmode/release-config": "^0.1.0",
+		"@textmode/tooling-scripts": "^0.2.0",
+		"@textmode/tsconfig": "^0.1.0",
+		"@textmode/vitest-config": "^0.1.1"
 	},
 	"keywords": [
 		"ascii",
@@ -104,11 +114,18 @@
 	"lint-staged": {
 		"*": "prettier --ignore-unknown --write"
 	},
+	"prettier": "@textmode/prettier-config",
+	"commitlint": {
+		"extends": [
+			"@textmode/commitlint-config"
+		]
+	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/humanbydefinition/textmode.js-dev.git"
 	},
 	"bugs": {
 		"url": "https://github.com/humanbydefinition/textmode.js/issues"
-	}
+	},
+	"peerDependencies": {}
 }

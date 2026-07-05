@@ -1,5 +1,5 @@
 import type { GLRenderer, GLFramebuffer } from '../../rendering';
-import { type TextmodeLayerBlendMode } from './types';
+import { LayerBlendMode } from './blendMode';
 /**
  * Parameters for the composite operation.
  */
@@ -28,7 +28,7 @@ export interface CompositeLayerState {
     /** Rotation in degrees around the texture center. */
     _rotation: number;
     /** Blend mode used when compositing over the current result. */
-    _blendMode: TextmodeLayerBlendMode;
+    _blendMode: LayerBlendMode;
 }
 /**
  * Represents the placement and sizing of a single layer within the composite operation.
@@ -47,6 +47,8 @@ export interface CompositeLayerPlacement {
     offsetX: number;
     /** The vertical offset from the canvas origin in pixels. */
     offsetY: number;
+    /** Optional canvas-sized layer background used outside the grid texture. */
+    canvasBackgroundColor?: [number, number, number, number];
 }
 /**
  * Shader compositor for layer framebuffers.

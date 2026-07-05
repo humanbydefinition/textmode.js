@@ -6,6 +6,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/frameRate/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/frameRate | Textmodifier.frameRate API reference}
          */
         frameRate(fps?: number): number | void;
         /**
@@ -18,6 +20,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/targetFrameRate/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/targetFrameRate | Textmodifier.targetFrameRate API reference}
          */
         targetFrameRate(fps?: number): number | void;
         /**
@@ -27,6 +31,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/noLoop/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/noLoop | Textmodifier.noLoop API reference}
          */
         noLoop(): void;
         /**
@@ -34,6 +40,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/loop/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/loop | Textmodifier.loop API reference}
          */
         loop(): void;
         /**
@@ -46,6 +54,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/redraw/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/redraw | Textmodifier.redraw API reference}
          */
         redraw(n?: number): void;
         /**
@@ -54,6 +64,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/isLooping/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/isLooping | Textmodifier.isLooping API reference}
          */
         isLooping(): boolean;
         /**
@@ -67,6 +79,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/deltaTime/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/deltaTime | Textmodifier.deltaTime API reference}
          */
         deltaTime(): number;
         /**
@@ -81,6 +95,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/frameCount/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/frameCount | Textmodifier.frameCount API reference}
          */
         get frameCount(): number;
         /**
@@ -93,6 +109,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/frameCount2/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/frameCount | Textmodifier.frameCount API reference}
          */
         set frameCount(value: number);
         /**
@@ -117,6 +135,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/millis3/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/millis | Textmodifier.millis API reference}
          */
         get millis(): number;
         /**
@@ -129,6 +149,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/millis4/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/millis | Textmodifier.millis API reference}
          */
         set millis(value: number);
         /**
@@ -149,6 +171,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/secs2/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/secs | Textmodifier.secs API reference}
          */
         get secs(): number;
         /**
@@ -161,6 +185,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/secs3/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/accessors/secs | Textmodifier.secs API reference}
          */
         set secs(value: number);
     }

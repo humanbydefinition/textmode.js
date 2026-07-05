@@ -129,116 +129,151 @@
 		{
 			"name": "TextmodeFont",
 			"description": "Font loading, atlas inspection, and glyph metadata",
-			"examples": [
+			"subgroups": [
 				{
-					"title": "TextmodeFont.characterMap",
-					"sourceFile": "examples/TextmodeFont/characterMap/sketch.js"
+					"name": "Atlas",
+					"examples": [
+						{
+							"title": "TextmodeFont.characterMap",
+							"sourceFile": "examples/TextmodeFont/characterMap/sketch.js"
+						},
+						{
+							"title": "TextmodeFont.characters",
+							"sourceFile": "examples/TextmodeFont/characters/sketch.js"
+						},
+						{
+							"title": "TextmodeFont.framebuffer",
+							"sourceFile": "examples/TextmodeFont/framebuffer/sketch.js"
+						},
+						{
+							"title": "TextmodeFont.maxGlyphDimensions",
+							"sourceFile": "examples/TextmodeFont/maxGlyphDimensions/sketch.js"
+						},
+						{
+							"title": "TextmodeFont.textureColumns",
+							"sourceFile": "examples/TextmodeFont/textureColumns/sketch.js"
+						},
+						{
+							"title": "TextmodeFont.textureRows",
+							"sourceFile": "examples/TextmodeFont/textureRows/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeFont.characters",
-					"sourceFile": "examples/TextmodeFont/characters/sketch.js"
+					"name": "Properties",
+					"examples": [
+						{
+							"title": "TextmodeFont.font",
+							"sourceFile": "examples/TextmodeFont/font/sketch.js"
+						},
+						{
+							"title": "TextmodeFont.fontSize",
+							"sourceFile": "examples/TextmodeFont/fontSize/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeFont.creation",
-					"sourceFile": "examples/TextmodeFont/creation/sketch.js"
-				},
-				{
-					"title": "TextmodeFont.dispose",
-					"sourceFile": "examples/TextmodeFont/dispose/sketch.js"
-				},
-				{
-					"title": "TextmodeFont.font",
-					"sourceFile": "examples/TextmodeFont/font/sketch.js"
-				},
-				{
-					"title": "TextmodeFont.fontSize",
-					"sourceFile": "examples/TextmodeFont/fontSize/sketch.js"
-				},
-				{
-					"title": "TextmodeFont.framebuffer",
-					"sourceFile": "examples/TextmodeFont/framebuffer/sketch.js"
-				},
-				{
-					"title": "TextmodeFont.maxGlyphDimensions",
-					"sourceFile": "examples/TextmodeFont/maxGlyphDimensions/sketch.js"
-				},
-				{
-					"title": "TextmodeFont.textureColumns",
-					"sourceFile": "examples/TextmodeFont/textureColumns/sketch.js"
-				},
-				{
-					"title": "TextmodeFont.textureRows",
-					"sourceFile": "examples/TextmodeFont/textureRows/sketch.js"
+					"name": "Lifecycle",
+					"examples": [
+						{
+							"title": "TextmodeFont.creation",
+							"sourceFile": "examples/TextmodeFont/creation/sketch.js"
+						},
+						{
+							"title": "TextmodeFont.dispose",
+							"sourceFile": "examples/TextmodeFont/dispose/sketch.js"
+						}
+					]
 				}
 			]
 		},
 		{
 			"name": "TextmodeTileset",
 			"description": "Tileset atlas metadata, cell sizing, and lifecycle",
-			"examples": [
+			"subgroups": [
 				{
-					"title": "TextmodeTileset.cellDimensions",
-					"sourceFile": "examples/TextmodeTileset/cellDimensions/sketch.js"
+					"name": "Dimensions",
+					"examples": [
+						{
+							"title": "TextmodeTileset.cellDimensions",
+							"sourceFile": "examples/TextmodeTileset/cellDimensions/sketch.js"
+						},
+						{
+							"title": "TextmodeTileset.cellHeight",
+							"sourceFile": "examples/TextmodeTileset/cellHeight/sketch.js"
+						},
+						{
+							"title": "TextmodeTileset.cellWidth",
+							"sourceFile": "examples/TextmodeTileset/cellWidth/sketch.js"
+						},
+						{
+							"title": "TextmodeTileset.columns",
+							"sourceFile": "examples/TextmodeTileset/columns/sketch.js"
+						},
+						{
+							"title": "TextmodeTileset.rows",
+							"sourceFile": "examples/TextmodeTileset/rows/sketch.js"
+						},
+						{
+							"title": "TextmodeTileset.nativeCellDimensions",
+							"sourceFile": "examples/TextmodeTileset/nativeCellDimensions/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeTileset.cellHeight",
-					"sourceFile": "examples/TextmodeTileset/cellHeight/sketch.js"
+					"name": "Atlas",
+					"examples": [
+						{
+							"title": "TextmodeTileset.characterMap",
+							"sourceFile": "examples/TextmodeTileset/characterMap/sketch.js"
+						},
+						{
+							"title": "TextmodeTileset.characters",
+							"sourceFile": "examples/TextmodeTileset/characters/sketch.js"
+						},
+						{
+							"title": "TextmodeTileset.fontFramebuffer",
+							"sourceFile": "examples/TextmodeTileset/fontFramebuffer/sketch.js"
+						},
+						{
+							"title": "TextmodeTileset.framebuffer",
+							"sourceFile": "examples/TextmodeTileset/framebuffer/sketch.js"
+						},
+						{
+							"title": "TextmodeTileset.maxGlyphDimensions",
+							"sourceFile": "examples/TextmodeTileset/maxGlyphDimensions/sketch.js"
+						},
+						{
+							"title": "TextmodeTileset.textureColumns",
+							"sourceFile": "examples/TextmodeTileset/textureColumns/sketch.js"
+						},
+						{
+							"title": "TextmodeTileset.textureRows",
+							"sourceFile": "examples/TextmodeTileset/textureRows/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeTileset.cellWidth",
-					"sourceFile": "examples/TextmodeTileset/cellWidth/sketch.js"
+					"name": "Properties",
+					"examples": [
+						{
+							"title": "TextmodeTileset.fontSize",
+							"sourceFile": "examples/TextmodeTileset/fontSize/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeTileset.characterMap",
-					"sourceFile": "examples/TextmodeTileset/characterMap/sketch.js"
-				},
-				{
-					"title": "TextmodeTileset.characters",
-					"sourceFile": "examples/TextmodeTileset/characters/sketch.js"
-				},
-				{
-					"title": "TextmodeTileset.columns",
-					"sourceFile": "examples/TextmodeTileset/columns/sketch.js"
-				},
-				{
-					"title": "TextmodeTileset.creation",
-					"sourceFile": "examples/TextmodeTileset/creation/sketch.js"
-				},
-				{
-					"title": "TextmodeTileset.dispose",
-					"sourceFile": "examples/TextmodeTileset/dispose/sketch.js"
-				},
-				{
-					"title": "TextmodeTileset.fontFramebuffer",
-					"sourceFile": "examples/TextmodeTileset/fontFramebuffer/sketch.js"
-				},
-				{
-					"title": "TextmodeTileset.fontSize",
-					"sourceFile": "examples/TextmodeTileset/fontSize/sketch.js"
-				},
-				{
-					"title": "TextmodeTileset.framebuffer",
-					"sourceFile": "examples/TextmodeTileset/framebuffer/sketch.js"
-				},
-				{
-					"title": "TextmodeTileset.maxGlyphDimensions",
-					"sourceFile": "examples/TextmodeTileset/maxGlyphDimensions/sketch.js"
-				},
-				{
-					"title": "TextmodeTileset.nativeCellDimensions",
-					"sourceFile": "examples/TextmodeTileset/nativeCellDimensions/sketch.js"
-				},
-				{
-					"title": "TextmodeTileset.rows",
-					"sourceFile": "examples/TextmodeTileset/rows/sketch.js"
-				},
-				{
-					"title": "TextmodeTileset.textureColumns",
-					"sourceFile": "examples/TextmodeTileset/textureColumns/sketch.js"
-				},
-				{
-					"title": "TextmodeTileset.textureRows",
-					"sourceFile": "examples/TextmodeTileset/textureRows/sketch.js"
+					"name": "Lifecycle",
+					"examples": [
+						{
+							"title": "TextmodeTileset.creation",
+							"sourceFile": "examples/TextmodeTileset/creation/sketch.js"
+						},
+						{
+							"title": "TextmodeTileset.dispose",
+							"sourceFile": "examples/TextmodeTileset/dispose/sketch.js"
+						}
+					]
 				}
 			]
 		},
@@ -255,292 +290,382 @@
 		{
 			"name": "TextmodeCamera",
 			"description": "Mutable camera transforms, cloning, and state inspection",
-			"examples": [
+			"subgroups": [
 				{
-					"title": "TextmodeCamera.copy",
-					"sourceFile": "examples/TextmodeCamera/copy/sketch.js"
+					"name": "Eye",
+					"examples": [
+						{
+							"title": "TextmodeCamera.eyeX",
+							"sourceFile": "examples/TextmodeCamera/eyeX/sketch.js"
+						},
+						{
+							"title": "TextmodeCamera.eyeY",
+							"sourceFile": "examples/TextmodeCamera/eyeY/sketch.js"
+						},
+						{
+							"title": "TextmodeCamera.eyeZ",
+							"sourceFile": "examples/TextmodeCamera/eyeZ/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeCamera.eyeX",
-					"sourceFile": "examples/TextmodeCamera/eyeX/sketch.js"
+					"name": "Target",
+					"examples": [
+						{
+							"title": "TextmodeCamera.targetX",
+							"sourceFile": "examples/TextmodeCamera/targetX/sketch.js"
+						},
+						{
+							"title": "TextmodeCamera.targetY",
+							"sourceFile": "examples/TextmodeCamera/targetY/sketch.js"
+						},
+						{
+							"title": "TextmodeCamera.targetZ",
+							"sourceFile": "examples/TextmodeCamera/targetZ/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeCamera.eyeY",
-					"sourceFile": "examples/TextmodeCamera/eyeY/sketch.js"
+					"name": "Up",
+					"examples": [
+						{
+							"title": "TextmodeCamera.upX",
+							"sourceFile": "examples/TextmodeCamera/upX/sketch.js"
+						},
+						{
+							"title": "TextmodeCamera.upY",
+							"sourceFile": "examples/TextmodeCamera/upY/sketch.js"
+						},
+						{
+							"title": "TextmodeCamera.upZ",
+							"sourceFile": "examples/TextmodeCamera/upZ/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeCamera.eyeZ",
-					"sourceFile": "examples/TextmodeCamera/eyeZ/sketch.js"
-				},
-				{
-					"title": "TextmodeCamera.lookAt",
-					"sourceFile": "examples/TextmodeCamera/lookAt/sketch.js"
-				},
-				{
-					"title": "TextmodeCamera.move",
-					"sourceFile": "examples/TextmodeCamera/move/sketch.js"
-				},
-				{
-					"title": "TextmodeCamera.setPosition",
-					"sourceFile": "examples/TextmodeCamera/setPosition/sketch.js"
-				},
-				{
-					"title": "TextmodeCamera.setUp",
-					"sourceFile": "examples/TextmodeCamera/setUp/sketch.js"
-				},
-				{
-					"title": "TextmodeCamera.targetX",
-					"sourceFile": "examples/TextmodeCamera/targetX/sketch.js"
-				},
-				{
-					"title": "TextmodeCamera.targetY",
-					"sourceFile": "examples/TextmodeCamera/targetY/sketch.js"
-				},
-				{
-					"title": "TextmodeCamera.targetZ",
-					"sourceFile": "examples/TextmodeCamera/targetZ/sketch.js"
-				},
-				{
-					"title": "TextmodeCamera.upX",
-					"sourceFile": "examples/TextmodeCamera/upX/sketch.js"
-				},
-				{
-					"title": "TextmodeCamera.upY",
-					"sourceFile": "examples/TextmodeCamera/upY/sketch.js"
-				},
-				{
-					"title": "TextmodeCamera.upZ",
-					"sourceFile": "examples/TextmodeCamera/upZ/sketch.js"
+					"name": "Methods",
+					"examples": [
+						{
+							"title": "TextmodeCamera.copy",
+							"sourceFile": "examples/TextmodeCamera/copy/sketch.js"
+						},
+						{
+							"title": "TextmodeCamera.lookAt",
+							"sourceFile": "examples/TextmodeCamera/lookAt/sketch.js"
+						},
+						{
+							"title": "TextmodeCamera.move",
+							"sourceFile": "examples/TextmodeCamera/move/sketch.js"
+						},
+						{
+							"title": "TextmodeCamera.setPosition",
+							"sourceFile": "examples/TextmodeCamera/setPosition/sketch.js"
+						},
+						{
+							"title": "TextmodeCamera.setUp",
+							"sourceFile": "examples/TextmodeCamera/setUp/sketch.js"
+						}
+					]
 				}
 			]
 		},
 		{
 			"name": "TextmodeGrid",
 			"description": "Grid layout, cell dimensions, and responsiveness",
-			"examples": [
+			"subgroups": [
 				{
-					"title": "TextmodeGrid.cellHeight",
-					"sourceFile": "examples/TextmodeGrid/cellHeight/sketch.js"
+					"name": "Dimensions",
+					"examples": [
+						{
+							"title": "TextmodeGrid.cellHeight",
+							"sourceFile": "examples/TextmodeGrid/cellHeight/sketch.js"
+						},
+						{
+							"title": "TextmodeGrid.cellWidth",
+							"sourceFile": "examples/TextmodeGrid/cellWidth/sketch.js"
+						},
+						{
+							"title": "TextmodeGrid.cols",
+							"sourceFile": "examples/TextmodeGrid/cols/sketch.js"
+						},
+						{
+							"title": "TextmodeGrid.rows",
+							"sourceFile": "examples/TextmodeGrid/rows/sketch.js"
+						},
+						{
+							"title": "TextmodeGrid.height",
+							"sourceFile": "examples/TextmodeGrid/height/sketch.js"
+						},
+						{
+							"title": "TextmodeGrid.width",
+							"sourceFile": "examples/TextmodeGrid/width/sketch.js"
+						},
+						{
+							"title": "TextmodeGrid.offsetX",
+							"sourceFile": "examples/TextmodeGrid/offsetX/sketch.js"
+						},
+						{
+							"title": "TextmodeGrid.offsetY",
+							"sourceFile": "examples/TextmodeGrid/offsetY/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeGrid.cellWidth",
-					"sourceFile": "examples/TextmodeGrid/cellWidth/sketch.js"
+					"name": "Methods",
+					"examples": [
+						{
+							"title": "TextmodeGrid.reset",
+							"sourceFile": "examples/TextmodeGrid/reset/sketch.js"
+						},
+						{
+							"title": "TextmodeGrid.responsive",
+							"sourceFile": "examples/TextmodeGrid/responsive/sketch.js"
+						},
+						{
+							"title": "TextmodeGrid.setCols",
+							"sourceFile": "examples/TextmodeGrid/setCols/sketch.js"
+						},
+						{
+							"title": "TextmodeGrid.setRows",
+							"sourceFile": "examples/TextmodeGrid/setRows/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeGrid.cols",
-					"sourceFile": "examples/TextmodeGrid/cols/sketch.js"
-				},
-				{
-					"title": "TextmodeGrid.creation",
-					"sourceFile": "examples/TextmodeGrid/creation/sketch.js"
-				},
-				{
-					"title": "TextmodeGrid.height",
-					"sourceFile": "examples/TextmodeGrid/height/sketch.js"
-				},
-				{
-					"title": "TextmodeGrid.offsetX",
-					"sourceFile": "examples/TextmodeGrid/offsetX/sketch.js"
-				},
-				{
-					"title": "TextmodeGrid.offsetY",
-					"sourceFile": "examples/TextmodeGrid/offsetY/sketch.js"
-				},
-				{
-					"title": "TextmodeGrid.reset",
-					"sourceFile": "examples/TextmodeGrid/reset/sketch.js"
-				},
-				{
-					"title": "TextmodeGrid.responsive",
-					"sourceFile": "examples/TextmodeGrid/responsive/sketch.js"
-				},
-				{
-					"title": "TextmodeGrid.rows",
-					"sourceFile": "examples/TextmodeGrid/rows/sketch.js"
-				},
-				{
-					"title": "TextmodeGrid.setCols",
-					"sourceFile": "examples/TextmodeGrid/setCols/sketch.js"
-				},
-				{
-					"title": "TextmodeGrid.setRows",
-					"sourceFile": "examples/TextmodeGrid/setRows/sketch.js"
-				},
-				{
-					"title": "TextmodeGrid.width",
-					"sourceFile": "examples/TextmodeGrid/width/sketch.js"
+					"name": "Lifecycle",
+					"examples": [
+						{
+							"title": "TextmodeGrid.creation",
+							"sourceFile": "examples/TextmodeGrid/creation/sketch.js"
+						}
+					]
 				}
 			]
 		},
 		{
 			"name": "TextmodeLayer",
 			"description": "Layer composition, cameras, framebuffers, and plugin state",
-			"examples": [
+			"subgroups": [
 				{
-					"title": "TextmodeLayer.asciiFramebuffer",
-					"sourceFile": "examples/TextmodeLayer/asciiFramebuffer/sketch.js"
+					"name": "Lifecycle",
+					"examples": [
+						{
+							"title": "TextmodeLayer.draw",
+							"sourceFile": "examples/TextmodeLayer/draw/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.hide",
+							"sourceFile": "examples/TextmodeLayer/hide/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.show",
+							"sourceFile": "examples/TextmodeLayer/show/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeLayer.blendMode",
-					"sourceFile": "examples/TextmodeLayer/blendMode/sketch.js"
+					"name": "Compositing",
+					"examples": [
+						{
+							"title": "TextmodeLayer.blendMode",
+							"sourceFile": "examples/TextmodeLayer/blendMode/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.offset",
+							"sourceFile": "examples/TextmodeLayer/offset/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.opacity",
+							"sourceFile": "examples/TextmodeLayer/opacity/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.rotateZ",
+							"sourceFile": "examples/TextmodeLayer/rotateZ/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.useTileColors",
+							"sourceFile": "examples/TextmodeLayer/useTileColors/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeLayer.camera",
-					"sourceFile": "examples/TextmodeLayer/camera/sketch.js"
+					"name": "Camera",
+					"examples": [
+						{
+							"title": "TextmodeLayer.camera",
+							"sourceFile": "examples/TextmodeLayer/camera/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.createCamera",
+							"sourceFile": "examples/TextmodeLayer/createCamera/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.lookAt",
+							"sourceFile": "examples/TextmodeLayer/lookAt/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.ortho",
+							"sourceFile": "examples/TextmodeLayer/ortho/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.perspective",
+							"sourceFile": "examples/TextmodeLayer/perspective/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.resetCamera",
+							"sourceFile": "examples/TextmodeLayer/resetCamera/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.setCamera",
+							"sourceFile": "examples/TextmodeLayer/setCamera/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeLayer.createCamera",
-					"sourceFile": "examples/TextmodeLayer/createCamera/sketch.js"
+					"name": "Fonts",
+					"examples": [
+						{
+							"title": "TextmodeLayer.font",
+							"sourceFile": "examples/TextmodeLayer/font/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.fontSize",
+							"sourceFile": "examples/TextmodeLayer/fontSize/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.loadFont",
+							"sourceFile": "examples/TextmodeLayer/loadFont/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.loadTileset",
+							"sourceFile": "examples/TextmodeLayer/loadTileset/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeLayer.deletePluginState",
-					"sourceFile": "examples/TextmodeLayer/deletePluginState/sketch.js"
+					"name": "Framebuffers",
+					"examples": [
+						{
+							"title": "TextmodeLayer.asciiFramebuffer",
+							"sourceFile": "examples/TextmodeLayer/asciiFramebuffer/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.drawFramebuffer",
+							"sourceFile": "examples/TextmodeLayer/drawFramebuffer/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.texture",
+							"sourceFile": "examples/TextmodeLayer/texture/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeLayer.draw",
-					"sourceFile": "examples/TextmodeLayer/draw/sketch.js"
+					"name": "Grid",
+					"examples": [
+						{
+							"title": "TextmodeLayer.grid",
+							"sourceFile": "examples/TextmodeLayer/grid/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.width",
+							"sourceFile": "examples/TextmodeLayer/width/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.height",
+							"sourceFile": "examples/TextmodeLayer/height/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeLayer.drawFramebuffer",
-					"sourceFile": "examples/TextmodeLayer/drawFramebuffer/sketch.js"
+					"name": "Plugin State",
+					"examples": [
+						{
+							"title": "TextmodeLayer.deletePluginState",
+							"sourceFile": "examples/TextmodeLayer/deletePluginState/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.getPluginState",
+							"sourceFile": "examples/TextmodeLayer/getPluginState/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.hasPluginState",
+							"sourceFile": "examples/TextmodeLayer/hasPluginState/sketch.js"
+						},
+						{
+							"title": "TextmodeLayer.setPluginState",
+							"sourceFile": "examples/TextmodeLayer/setPluginState/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeLayer.filter",
-					"sourceFile": "examples/TextmodeLayer/filter/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.font",
-					"sourceFile": "examples/TextmodeLayer/font/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.fontSize",
-					"sourceFile": "examples/TextmodeLayer/fontSize/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.getPluginState",
-					"sourceFile": "examples/TextmodeLayer/getPluginState/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.grid",
-					"sourceFile": "examples/TextmodeLayer/grid/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.hasPluginState",
-					"sourceFile": "examples/TextmodeLayer/hasPluginState/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.height",
-					"sourceFile": "examples/TextmodeLayer/height/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.hide",
-					"sourceFile": "examples/TextmodeLayer/hide/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.loadFont",
-					"sourceFile": "examples/TextmodeLayer/loadFont/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.loadTileset",
-					"sourceFile": "examples/TextmodeLayer/loadTileset/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.lookAt",
-					"sourceFile": "examples/TextmodeLayer/lookAt/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.offset",
-					"sourceFile": "examples/TextmodeLayer/offset/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.opacity",
-					"sourceFile": "examples/TextmodeLayer/opacity/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.ortho",
-					"sourceFile": "examples/TextmodeLayer/ortho/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.perspective",
-					"sourceFile": "examples/TextmodeLayer/perspective/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.resetCamera",
-					"sourceFile": "examples/TextmodeLayer/resetCamera/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.rotateZ",
-					"sourceFile": "examples/TextmodeLayer/rotateZ/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.setCamera",
-					"sourceFile": "examples/TextmodeLayer/setCamera/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.setPluginState",
-					"sourceFile": "examples/TextmodeLayer/setPluginState/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.show",
-					"sourceFile": "examples/TextmodeLayer/show/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.texture",
-					"sourceFile": "examples/TextmodeLayer/texture/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.useTileColors",
-					"sourceFile": "examples/TextmodeLayer/useTileColors/sketch.js"
-				},
-				{
-					"title": "TextmodeLayer.width",
-					"sourceFile": "examples/TextmodeLayer/width/sketch.js"
+					"name": "Filters",
+					"examples": [
+						{
+							"title": "TextmodeLayer.filter",
+							"sourceFile": "examples/TextmodeLayer/filter/sketch.js"
+						}
+					]
 				}
 			]
 		},
 		{
 			"name": "TextmodeFramebuffer",
 			"description": "Offscreen framebuffer rendering, pixel reads, and lifecycle",
-			"examples": [
+			"subgroups": [
 				{
-					"title": "TextmodeFramebuffer.attachmentCount",
-					"sourceFile": "examples/TextmodeFramebuffer/attachmentCount/sketch.js"
+					"name": "Dimensions",
+					"examples": [
+						{
+							"title": "TextmodeFramebuffer.attachmentCount",
+							"sourceFile": "examples/TextmodeFramebuffer/attachmentCount/sketch.js"
+						},
+						{
+							"title": "TextmodeFramebuffer.height",
+							"sourceFile": "examples/TextmodeFramebuffer/height/sketch.js"
+						},
+						{
+							"title": "TextmodeFramebuffer.width",
+							"sourceFile": "examples/TextmodeFramebuffer/width/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeFramebuffer.begin",
-					"sourceFile": "examples/TextmodeFramebuffer/begin/sketch.js"
+					"name": "Lifecycle",
+					"examples": [
+						{
+							"title": "TextmodeFramebuffer.begin",
+							"sourceFile": "examples/TextmodeFramebuffer/begin/sketch.js"
+						},
+						{
+							"title": "TextmodeFramebuffer.dispose",
+							"sourceFile": "examples/TextmodeFramebuffer/dispose/sketch.js"
+						},
+						{
+							"title": "TextmodeFramebuffer.end",
+							"sourceFile": "examples/TextmodeFramebuffer/end/sketch.js"
+						},
+						{
+							"title": "TextmodeFramebuffer.resize",
+							"sourceFile": "examples/TextmodeFramebuffer/resize/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeFramebuffer.dispose",
-					"sourceFile": "examples/TextmodeFramebuffer/dispose/sketch.js"
-				},
-				{
-					"title": "TextmodeFramebuffer.end",
-					"sourceFile": "examples/TextmodeFramebuffer/end/sketch.js"
-				},
-				{
-					"title": "TextmodeFramebuffer.framebuffer",
-					"sourceFile": "examples/TextmodeFramebuffer/framebuffer/sketch.js"
-				},
-				{
-					"title": "TextmodeFramebuffer.height",
-					"sourceFile": "examples/TextmodeFramebuffer/height/sketch.js"
-				},
-				{
-					"title": "TextmodeFramebuffer.readPixels",
-					"sourceFile": "examples/TextmodeFramebuffer/readPixels/sketch.js"
-				},
-				{
-					"title": "TextmodeFramebuffer.resize",
-					"sourceFile": "examples/TextmodeFramebuffer/resize/sketch.js"
-				},
-				{
-					"title": "TextmodeFramebuffer.textures",
-					"sourceFile": "examples/TextmodeFramebuffer/textures/sketch.js"
-				},
-				{
-					"title": "TextmodeFramebuffer.width",
-					"sourceFile": "examples/TextmodeFramebuffer/width/sketch.js"
+					"name": "Texture",
+					"examples": [
+						{
+							"title": "TextmodeFramebuffer.framebuffer",
+							"sourceFile": "examples/TextmodeFramebuffer/framebuffer/sketch.js"
+						},
+						{
+							"title": "TextmodeFramebuffer.readPixels",
+							"sourceFile": "examples/TextmodeFramebuffer/readPixels/sketch.js"
+						},
+						{
+							"title": "TextmodeFramebuffer.textures",
+							"sourceFile": "examples/TextmodeFramebuffer/textures/sketch.js"
+						}
+					]
 				}
 			]
 		},
@@ -561,86 +686,116 @@
 		{
 			"name": "TextmodeSource",
 			"description": "Source canvas conversion settings and dimensions",
-			"examples": [
+			"subgroups": [
 				{
-					"title": "TextmodeSource.background",
-					"sourceFile": "examples/TextmodeSource/background/sketch.js"
+					"name": "Color",
+					"examples": [
+						{
+							"title": "TextmodeSource.background",
+							"sourceFile": "examples/TextmodeSource/background/sketch.js"
+						},
+						{
+							"title": "TextmodeSource.cellColor",
+							"sourceFile": "examples/TextmodeSource/cellColor/sketch.js"
+						},
+						{
+							"title": "TextmodeSource.cellColorMode",
+							"sourceFile": "examples/TextmodeSource/cellColorMode/sketch.js"
+						},
+						{
+							"title": "TextmodeSource.charColor",
+							"sourceFile": "examples/TextmodeSource/charColor/sketch.js"
+						},
+						{
+							"title": "TextmodeSource.charColorMode",
+							"sourceFile": "examples/TextmodeSource/charColorMode/sketch.js"
+						},
+						{
+							"title": "TextmodeSource.charRotation",
+							"sourceFile": "examples/TextmodeSource/charRotation/sketch.js"
+						},
+						{
+							"title": "TextmodeSource.invert",
+							"sourceFile": "examples/TextmodeSource/invert/sketch.js"
+						},
+						{
+							"title": "TextmodeSource.flipX",
+							"sourceFile": "examples/TextmodeSource/flipX/sketch.js"
+						},
+						{
+							"title": "TextmodeSource.flipY",
+							"sourceFile": "examples/TextmodeSource/flipY/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeSource.brightnessRange",
-					"sourceFile": "examples/TextmodeSource/brightnessRange/sketch.js"
+					"name": "Conversion",
+					"examples": [
+						{
+							"title": "TextmodeSource.brightnessRange",
+							"sourceFile": "examples/TextmodeSource/brightnessRange/sketch.js"
+						},
+						{
+							"title": "TextmodeSource.clearConversions",
+							"sourceFile": "examples/TextmodeSource/clearConversions/sketch.js"
+						},
+						{
+							"title": "TextmodeSource.conversionMode",
+							"sourceFile": "examples/TextmodeSource/conversionMode/sketch.js"
+						},
+						{
+							"title": "TextmodeSource.conversions",
+							"sourceFile": "examples/TextmodeSource/conversions/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeSource.cellColor",
-					"sourceFile": "examples/TextmodeSource/cellColor/sketch.js"
+					"name": "Dimensions",
+					"examples": [
+						{
+							"title": "TextmodeSource.height",
+							"sourceFile": "examples/TextmodeSource/height/sketch.js"
+						},
+						{
+							"title": "TextmodeSource.originalHeight",
+							"sourceFile": "examples/TextmodeSource/originalHeight/sketch.js"
+						},
+						{
+							"title": "TextmodeSource.originalWidth",
+							"sourceFile": "examples/TextmodeSource/originalWidth/sketch.js"
+						},
+						{
+							"title": "TextmodeSource.width",
+							"sourceFile": "examples/TextmodeSource/width/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeSource.cellColorMode",
-					"sourceFile": "examples/TextmodeSource/cellColorMode/sketch.js"
+					"name": "Texture",
+					"examples": [
+						{
+							"title": "TextmodeSource.texture",
+							"sourceFile": "examples/TextmodeSource/texture/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeSource.characters",
-					"sourceFile": "examples/TextmodeSource/characters/sketch.js"
+					"name": "Characters",
+					"examples": [
+						{
+							"title": "TextmodeSource.characters",
+							"sourceFile": "examples/TextmodeSource/characters/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeSource.charColor",
-					"sourceFile": "examples/TextmodeSource/charColor/sketch.js"
-				},
-				{
-					"title": "TextmodeSource.charColorMode",
-					"sourceFile": "examples/TextmodeSource/charColorMode/sketch.js"
-				},
-				{
-					"title": "TextmodeSource.charRotation",
-					"sourceFile": "examples/TextmodeSource/charRotation/sketch.js"
-				},
-				{
-					"title": "TextmodeSource.clearConversions",
-					"sourceFile": "examples/TextmodeSource/clearConversions/sketch.js"
-				},
-				{
-					"title": "TextmodeSource.conversionMode",
-					"sourceFile": "examples/TextmodeSource/conversionMode/sketch.js"
-				},
-				{
-					"title": "TextmodeSource.conversions",
-					"sourceFile": "examples/TextmodeSource/conversions/sketch.js"
-				},
-				{
-					"title": "TextmodeSource.dispose",
-					"sourceFile": "examples/TextmodeSource/dispose/sketch.js"
-				},
-				{
-					"title": "TextmodeSource.flipX",
-					"sourceFile": "examples/TextmodeSource/flipX/sketch.js"
-				},
-				{
-					"title": "TextmodeSource.flipY",
-					"sourceFile": "examples/TextmodeSource/flipY/sketch.js"
-				},
-				{
-					"title": "TextmodeSource.height",
-					"sourceFile": "examples/TextmodeSource/height/sketch.js"
-				},
-				{
-					"title": "TextmodeSource.invert",
-					"sourceFile": "examples/TextmodeSource/invert/sketch.js"
-				},
-				{
-					"title": "TextmodeSource.originalHeight",
-					"sourceFile": "examples/TextmodeSource/originalHeight/sketch.js"
-				},
-				{
-					"title": "TextmodeSource.originalWidth",
-					"sourceFile": "examples/TextmodeSource/originalWidth/sketch.js"
-				},
-				{
-					"title": "TextmodeSource.texture",
-					"sourceFile": "examples/TextmodeSource/texture/sketch.js"
-				},
-				{
-					"title": "TextmodeSource.width",
-					"sourceFile": "examples/TextmodeSource/width/sketch.js"
+					"name": "Lifecycle",
+					"examples": [
+						{
+							"title": "TextmodeSource.dispose",
+							"sourceFile": "examples/TextmodeSource/dispose/sketch.js"
+						}
+					]
 				}
 			]
 		},
@@ -657,58 +812,78 @@
 		{
 			"name": "TextmodeVideo",
 			"description": "Video source loading, playback control, and state",
-			"examples": [
+			"subgroups": [
 				{
-					"title": "TextmodeVideo.creation",
-					"sourceFile": "examples/TextmodeVideo/creation/sketch.js"
+					"name": "Playback",
+					"examples": [
+						{
+							"title": "TextmodeVideo.loop",
+							"sourceFile": "examples/TextmodeVideo/loop/sketch.js"
+						},
+						{
+							"title": "TextmodeVideo.pause",
+							"sourceFile": "examples/TextmodeVideo/pause/sketch.js"
+						},
+						{
+							"title": "TextmodeVideo.play",
+							"sourceFile": "examples/TextmodeVideo/play/sketch.js"
+						},
+						{
+							"title": "TextmodeVideo.speed",
+							"sourceFile": "examples/TextmodeVideo/speed/sketch.js"
+						},
+						{
+							"title": "TextmodeVideo.stop",
+							"sourceFile": "examples/TextmodeVideo/stop/sketch.js"
+						},
+						{
+							"title": "TextmodeVideo.volume",
+							"sourceFile": "examples/TextmodeVideo/volume/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeVideo.currentTime",
-					"sourceFile": "examples/TextmodeVideo/currentTime/sketch.js"
+					"name": "State",
+					"examples": [
+						{
+							"title": "TextmodeVideo.currentTime",
+							"sourceFile": "examples/TextmodeVideo/currentTime/sketch.js"
+						},
+						{
+							"title": "TextmodeVideo.duration",
+							"sourceFile": "examples/TextmodeVideo/duration/sketch.js"
+						},
+						{
+							"title": "TextmodeVideo.isPlaying",
+							"sourceFile": "examples/TextmodeVideo/isPlaying/sketch.js"
+						},
+						{
+							"title": "TextmodeVideo.time",
+							"sourceFile": "examples/TextmodeVideo/time/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeVideo.dispose",
-					"sourceFile": "examples/TextmodeVideo/dispose/sketch.js"
+					"name": "Element",
+					"examples": [
+						{
+							"title": "TextmodeVideo.videoElement",
+							"sourceFile": "examples/TextmodeVideo/videoElement/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "TextmodeVideo.duration",
-					"sourceFile": "examples/TextmodeVideo/duration/sketch.js"
-				},
-				{
-					"title": "TextmodeVideo.isPlaying",
-					"sourceFile": "examples/TextmodeVideo/isPlaying/sketch.js"
-				},
-				{
-					"title": "TextmodeVideo.loop",
-					"sourceFile": "examples/TextmodeVideo/loop/sketch.js"
-				},
-				{
-					"title": "TextmodeVideo.pause",
-					"sourceFile": "examples/TextmodeVideo/pause/sketch.js"
-				},
-				{
-					"title": "TextmodeVideo.play",
-					"sourceFile": "examples/TextmodeVideo/play/sketch.js"
-				},
-				{
-					"title": "TextmodeVideo.speed",
-					"sourceFile": "examples/TextmodeVideo/speed/sketch.js"
-				},
-				{
-					"title": "TextmodeVideo.stop",
-					"sourceFile": "examples/TextmodeVideo/stop/sketch.js"
-				},
-				{
-					"title": "TextmodeVideo.time",
-					"sourceFile": "examples/TextmodeVideo/time/sketch.js"
-				},
-				{
-					"title": "TextmodeVideo.videoElement",
-					"sourceFile": "examples/TextmodeVideo/videoElement/sketch.js"
-				},
-				{
-					"title": "TextmodeVideo.volume",
-					"sourceFile": "examples/TextmodeVideo/volume/sketch.js"
+					"name": "Lifecycle",
+					"examples": [
+						{
+							"title": "TextmodeVideo.creation",
+							"sourceFile": "examples/TextmodeVideo/creation/sketch.js"
+						},
+						{
+							"title": "TextmodeVideo.dispose",
+							"sourceFile": "examples/TextmodeVideo/dispose/sketch.js"
+						}
+					]
 				}
 			]
 		},
@@ -751,860 +926,1103 @@
 		{
 			"name": "plugins",
 			"description": "Plugin install lifecycle, hooks, and layer extensions",
-			"examples": [
+			"subgroups": [
 				{
-					"title": "plugins.TextmodePlugin.install",
-					"sourceFile": "examples/plugins/install/sketch.js"
+					"name": "Install",
+					"examples": [
+						{
+							"title": "plugins.TextmodePlugin.install",
+							"sourceFile": "examples/plugins/install/sketch.js"
+						},
+						{
+							"title": "plugins.TextmodePlugin.uninstall",
+							"sourceFile": "examples/plugins/uninstall/sketch.js"
+						}
+					]
 				},
 				{
-					"title": "plugins.TextmodePluginContext.registerLayerDisposedHook",
-					"sourceFile": "examples/plugins/registerLayerDisposedHook/sketch.js"
-				},
-				{
-					"title": "plugins.TextmodePluginContext.registerLayerPostRenderHook",
-					"sourceFile": "examples/plugins/registerLayerPostRenderHook/sketch.js"
-				},
-				{
-					"title": "plugins.TextmodePluginContext.registerLayerPreRenderHook",
-					"sourceFile": "examples/plugins/registerLayerPreRenderHook/sketch.js"
-				},
-				{
-					"title": "plugins.TextmodePluginContext.registerPostDrawHook",
-					"sourceFile": "examples/plugins/registerPostDrawHook/sketch.js"
-				},
-				{
-					"title": "plugins.TextmodePluginContext.registerPostSetupHook",
-					"sourceFile": "examples/plugins/registerPostSetupHook/sketch.js"
-				},
-				{
-					"title": "plugins.TextmodePluginContext.registerPreDrawHook",
-					"sourceFile": "examples/plugins/registerPreDrawHook/sketch.js"
-				},
-				{
-					"title": "plugins.TextmodePluginContext.registerPreSetupHook",
-					"sourceFile": "examples/plugins/registerPreSetupHook/sketch.js"
-				},
-				{
-					"title": "plugins.TextmodePluginContext.removeLayerExtension",
-					"sourceFile": "examples/plugins/removeLayerExtension/sketch.js"
-				},
-				{
-					"title": "plugins.TextmodePlugin.uninstall",
-					"sourceFile": "examples/plugins/uninstall/sketch.js"
+					"name": "Hooks",
+					"examples": [
+						{
+							"title": "plugins.TextmodePluginContext.removeLayerExtension",
+							"sourceFile": "examples/plugins/removeLayerExtension/sketch.js"
+						},
+						{
+							"title": "plugins.TextmodePluginContext.registerLayerDisposedHook",
+							"sourceFile": "examples/plugins/registerLayerDisposedHook/sketch.js"
+						},
+						{
+							"title": "plugins.TextmodePluginContext.registerLayerPostRenderHook",
+							"sourceFile": "examples/plugins/registerLayerPostRenderHook/sketch.js"
+						},
+						{
+							"title": "plugins.TextmodePluginContext.registerLayerPreRenderHook",
+							"sourceFile": "examples/plugins/registerLayerPreRenderHook/sketch.js"
+						},
+						{
+							"title": "plugins.TextmodePluginContext.registerPostDrawHook",
+							"sourceFile": "examples/plugins/registerPostDrawHook/sketch.js"
+						},
+						{
+							"title": "plugins.TextmodePluginContext.registerPostSetupHook",
+							"sourceFile": "examples/plugins/registerPostSetupHook/sketch.js"
+						},
+						{
+							"title": "plugins.TextmodePluginContext.registerPreDrawHook",
+							"sourceFile": "examples/plugins/registerPreDrawHook/sketch.js"
+						},
+						{
+							"title": "plugins.TextmodePluginContext.registerPreSetupHook",
+							"sourceFile": "examples/plugins/registerPreSetupHook/sketch.js"
+						}
+					]
 				}
 			]
 		},
 		{
 			"name": "Textmodifier",
 			"description": "Main sketch drawing and animation API",
-			"examples": [
-				{
-					"title": "Textmodifier.abs",
-					"sourceFile": "examples/Textmodifier/abs/sketch.js"
-				},
-				{
-					"title": "Textmodifier.acos",
-					"sourceFile": "examples/Textmodifier/acos/sketch.js"
-				},
-				{
-					"title": "Textmodifier.ambientLight",
-					"sourceFile": "examples/Textmodifier/ambientLight/sketch.js"
-				},
-				{
-					"title": "Textmodifier.applyMatrix",
-					"sourceFile": "examples/Textmodifier/applyMatrix/sketch.js"
-				},
-				{
-					"title": "Textmodifier.arc",
-					"sourceFile": "examples/Textmodifier/arc/sketch.js"
-				},
-				{
-					"title": "Textmodifier.asin",
-					"sourceFile": "examples/Textmodifier/asin/sketch.js"
-				},
-				{
-					"title": "Textmodifier.atan",
-					"sourceFile": "examples/Textmodifier/atan/sketch.js"
-				},
-				{
-					"title": "Textmodifier.atan2",
-					"sourceFile": "examples/Textmodifier/atan2/sketch.js"
-				},
-				{
-					"title": "Textmodifier.background",
-					"sourceFile": "examples/Textmodifier/background/sketch.js"
-				},
-				{
-					"title": "Textmodifier.background2",
-					"sourceFile": "examples/Textmodifier/background2/sketch.js"
-				},
-				{
-					"title": "Textmodifier.background3",
-					"sourceFile": "examples/Textmodifier/background3/sketch.js"
-				},
-				{
-					"title": "Textmodifier.background4",
-					"sourceFile": "examples/Textmodifier/background4/sketch.js"
-				},
-				{
-					"title": "Textmodifier.bezierCurve",
-					"sourceFile": "examples/Textmodifier/bezierCurve/sketch.js"
-				},
-				{
-					"title": "Textmodifier.box",
-					"sourceFile": "examples/Textmodifier/box/sketch.js"
-				},
-				{
-					"title": "Textmodifier.camera",
-					"sourceFile": "examples/Textmodifier/camera/sketch.js"
-				},
-				{
-					"title": "Textmodifier.canvas",
-					"sourceFile": "examples/Textmodifier/canvas/sketch.js"
-				},
-				{
-					"title": "Textmodifier.cellColor",
-					"sourceFile": "examples/Textmodifier/cellColor/sketch.js"
-				},
-				{
-					"title": "Textmodifier.cellColor2",
-					"sourceFile": "examples/Textmodifier/cellColor2/sketch.js"
-				},
-				{
-					"title": "Textmodifier.cellColor3",
-					"sourceFile": "examples/Textmodifier/cellColor3/sketch.js"
-				},
-				{
-					"title": "Textmodifier.cellColor4",
-					"sourceFile": "examples/Textmodifier/cellColor4/sketch.js"
-				},
-				{
-					"title": "Textmodifier.char",
-					"sourceFile": "examples/Textmodifier/char/sketch.js"
-				},
-				{
-					"title": "Textmodifier.char2",
-					"sourceFile": "examples/Textmodifier/char2/sketch.js"
-				},
-				{
-					"title": "Textmodifier.charColor",
-					"sourceFile": "examples/Textmodifier/charColor/sketch.js"
-				},
-				{
-					"title": "Textmodifier.charColor2",
-					"sourceFile": "examples/Textmodifier/charColor2/sketch.js"
-				},
-				{
-					"title": "Textmodifier.charColor3",
-					"sourceFile": "examples/Textmodifier/charColor3/sketch.js"
-				},
-				{
-					"title": "Textmodifier.charColor4",
-					"sourceFile": "examples/Textmodifier/charColor4/sketch.js"
-				},
-				{
-					"title": "Textmodifier.charRotation",
-					"sourceFile": "examples/Textmodifier/charRotation/sketch.js"
-				},
-				{
-					"title": "Textmodifier.ceil",
-					"sourceFile": "examples/Textmodifier/ceil/sketch.js"
-				},
-				{
-					"title": "Textmodifier.clamp",
-					"sourceFile": "examples/Textmodifier/clamp/sketch.js"
-				},
-				{
-					"title": "Textmodifier.clear",
-					"sourceFile": "examples/Textmodifier/clear/sketch.js"
-				},
-				{
-					"title": "Textmodifier.color",
-					"sourceFile": "examples/Textmodifier/color/sketch.js"
-				},
-				{
-					"title": "Textmodifier.color2",
-					"sourceFile": "examples/Textmodifier/color2/sketch.js"
-				},
-				{
-					"title": "Textmodifier.color3",
-					"sourceFile": "examples/Textmodifier/color3/sketch.js"
-				},
-				{
-					"title": "Textmodifier.colorMode",
-					"sourceFile": "examples/Textmodifier/colorMode/sketch.js"
-				},
-				{
-					"title": "Textmodifier.cone",
-					"sourceFile": "examples/Textmodifier/cone/sketch.js"
-				},
-				{
-					"title": "Textmodifier.constrain",
-					"sourceFile": "examples/Textmodifier/constrain/sketch.js"
-				},
-				{
-					"title": "Textmodifier.cos",
-					"sourceFile": "examples/Textmodifier/cos/sketch.js"
-				},
-				{
-					"title": "Textmodifier.conversions",
-					"sourceFile": "examples/Textmodifier/conversions/sketch.js"
-				},
-				{
-					"title": "Textmodifier.createCamera",
-					"sourceFile": "examples/Textmodifier/createCamera/sketch.js"
-				},
-				{
-					"title": "Textmodifier.createGlyphRamp",
-					"sourceFile": "examples/Textmodifier/createGlyphRamp/sketch.js"
-				},
-				{
-					"title": "Textmodifier.createFilterShader",
-					"sourceFile": "examples/Textmodifier/createFilterShader/sketch.js"
-				},
-				{
-					"title": "Textmodifier.createFramebuffer",
-					"sourceFile": "examples/Textmodifier/createFramebuffer/sketch.js"
-				},
-				{
-					"title": "Textmodifier.createMaterialShader",
-					"sourceFile": "examples/Textmodifier/createMaterialShader/sketch.js"
-				},
-				{
-					"title": "Textmodifier.createShader",
-					"sourceFile": "examples/Textmodifier/createShader/sketch.js"
-				},
-				{
-					"title": "Textmodifier.createTexture",
-					"sourceFile": "examples/Textmodifier/createTexture/sketch.js"
-				},
-				{
-					"title": "Textmodifier.createVector",
-					"sourceFile": "examples/Textmodifier/createVector/sketch.js"
-				},
-				{
-					"title": "Textmodifier.cursor",
-					"sourceFile": "examples/Textmodifier/cursor/sketch.js"
-				},
-				{
-					"title": "Textmodifier.cylinder",
-					"sourceFile": "examples/Textmodifier/cylinder/sketch.js"
-				},
-				{
-					"title": "Textmodifier.degrees",
-					"sourceFile": "examples/Textmodifier/degrees/sketch.js"
-				},
-				{
-					"title": "Textmodifier.deltaTime",
-					"sourceFile": "examples/Textmodifier/deltaTime/sketch.js"
-				},
-				{
-					"title": "Textmodifier.destroy",
-					"sourceFile": "examples/Textmodifier/destroy/sketch.js"
-				},
-				{
-					"title": "Textmodifier.displayHeight",
-					"sourceFile": "examples/Textmodifier/displayHeight/sketch.js"
-				},
-				{
-					"title": "Textmodifier.displayWidth",
-					"sourceFile": "examples/Textmodifier/displayWidth/sketch.js"
-				},
-				{
-					"title": "Textmodifier.dist",
-					"sourceFile": "examples/Textmodifier/dist/sketch.js"
-				},
-				{
-					"title": "Textmodifier.doubleClicked",
-					"sourceFile": "examples/Textmodifier/doubleClicked/sketch.js"
-				},
-				{
-					"title": "Textmodifier.doubleTap",
-					"sourceFile": "examples/Textmodifier/doubleTap/sketch.js"
-				},
-				{
-					"title": "Textmodifier.draw",
-					"sourceFile": "examples/Textmodifier/draw/sketch.js"
-				},
-				{
-					"title": "Textmodifier.ease",
-					"sourceFile": "examples/Textmodifier/ease/sketch.js"
-				},
-				{
-					"title": "Textmodifier.ellipse",
-					"sourceFile": "examples/Textmodifier/ellipse/sketch.js"
-				},
-				{
-					"title": "Textmodifier.ellipsoid",
-					"sourceFile": "examples/Textmodifier/ellipsoid/sketch.js"
-				},
-				{
-					"title": "Textmodifier.errors",
-					"sourceFile": "examples/Textmodifier/errors/sketch.js"
-				},
-				{
-					"title": "Textmodifier.exp",
-					"sourceFile": "examples/Textmodifier/exp/sketch.js"
-				},
-				{
-					"title": "Textmodifier.fill",
-					"sourceFile": "examples/Textmodifier/fill/sketch.js"
-				},
-				{
-					"title": "Textmodifier.filter",
-					"sourceFile": "examples/Textmodifier/filter/sketch.js"
-				},
-				{
-					"title": "Textmodifier.filters",
-					"sourceFile": "examples/Textmodifier/filters/sketch.js"
-				},
-				{
-					"title": "Textmodifier.floor",
-					"sourceFile": "examples/Textmodifier/floor/sketch.js"
-				},
-				{
-					"title": "Textmodifier.flipX",
-					"sourceFile": "examples/Textmodifier/flipX/sketch.js"
-				},
-				{
-					"title": "Textmodifier.flipY",
-					"sourceFile": "examples/Textmodifier/flipY/sketch.js"
-				},
-				{
-					"title": "Textmodifier.font",
-					"sourceFile": "examples/Textmodifier/font/sketch.js"
-				},
-				{
-					"title": "Textmodifier.fontSize",
-					"sourceFile": "examples/Textmodifier/fontSize/sketch.js"
-				},
-				{
-					"title": "Textmodifier.frameCount",
-					"sourceFile": "examples/Textmodifier/frameCount/sketch.js"
-				},
-				{
-					"title": "Textmodifier.frameCount2",
-					"sourceFile": "examples/Textmodifier/frameCount2/sketch.js"
-				},
-				{
-					"title": "Textmodifier.frameRate",
-					"sourceFile": "examples/Textmodifier/frameRate/sketch.js"
-				},
-				{
-					"title": "Textmodifier.fract",
-					"sourceFile": "examples/Textmodifier/fract/sketch.js"
-				},
-				{
-					"title": "Textmodifier.gamepad",
-					"sourceFile": "examples/Textmodifier/gamepad/sketch.js"
-				},
-				{
-					"title": "Textmodifier.gamepadAxisChanged",
-					"sourceFile": "examples/Textmodifier/gamepadAxisChanged/sketch.js"
-				},
-				{
-					"title": "Textmodifier.gamepadButtonPressed",
-					"sourceFile": "examples/Textmodifier/gamepadButtonPressed/sketch.js"
-				},
-				{
-					"title": "Textmodifier.gamepadButtonReleased",
-					"sourceFile": "examples/Textmodifier/gamepadButtonReleased/sketch.js"
-				},
-				{
-					"title": "Textmodifier.gamepadConnected",
-					"sourceFile": "examples/Textmodifier/gamepadConnected/sketch.js"
-				},
-				{
-					"title": "Textmodifier.gamepadDisconnected",
-					"sourceFile": "examples/Textmodifier/gamepadDisconnected/sketch.js"
-				},
-				{
-					"title": "Textmodifier.gamepadEvents",
-					"sourceFile": "examples/Textmodifier/gamepadEvents/sketch.js"
-				},
-				{
-					"title": "Textmodifier.gamepads",
-					"sourceFile": "examples/Textmodifier/gamepads/sketch.js"
-				},
-				{
-					"title": "Textmodifier.gamepadStandardMapping",
-					"sourceFile": "examples/Textmodifier/gamepadStandardMapping/sketch.js"
-				},
-				{
-					"title": "Textmodifier.grid",
-					"sourceFile": "examples/Textmodifier/grid/sketch.js"
-				},
-				{
-					"title": "Textmodifier.height",
-					"sourceFile": "examples/Textmodifier/height/sketch.js"
-				},
-				{
-					"title": "Textmodifier.image",
-					"sourceFile": "examples/Textmodifier/image/sketch.js"
-				},
-				{
-					"title": "Textmodifier.inputGrid",
-					"sourceFile": "examples/Textmodifier/inputGrid/sketch.js"
-				},
-				{
-					"title": "Textmodifier.invert",
-					"sourceFile": "examples/Textmodifier/invert/sketch.js"
-				},
-				{
-					"title": "Textmodifier.isDisposed",
-					"sourceFile": "examples/Textmodifier/isDisposed/sketch.js"
-				},
-				{
-					"title": "Textmodifier.isKeyPressed",
-					"sourceFile": "examples/Textmodifier/isKeyPressed/sketch.js"
-				},
-				{
-					"title": "Textmodifier.isLooping",
-					"sourceFile": "examples/Textmodifier/isLooping/sketch.js"
-				},
-				{
-					"title": "Textmodifier.isRenderingFrame",
-					"sourceFile": "examples/Textmodifier/isRenderingFrame/sketch.js"
-				},
-				{
-					"title": "Textmodifier.keyPressed",
-					"sourceFile": "examples/Textmodifier/keyPressed/sketch.js"
-				},
-				{
-					"title": "Textmodifier.keyReleased",
-					"sourceFile": "examples/Textmodifier/keyReleased/sketch.js"
-				},
-				{
-					"title": "Textmodifier.keyTyped",
-					"sourceFile": "examples/Textmodifier/keyTyped/sketch.js"
-				},
-				{
-					"title": "Textmodifier.lastKeyPressed",
-					"sourceFile": "examples/Textmodifier/lastKeyPressed/sketch.js"
-				},
-				{
-					"title": "Textmodifier.lastKeyReleased",
-					"sourceFile": "examples/Textmodifier/lastKeyReleased/sketch.js"
-				},
-				{
-					"title": "Textmodifier.layers",
-					"sourceFile": "examples/Textmodifier/layers/sketch.js"
-				},
-				{
-					"title": "Textmodifier.lerp",
-					"sourceFile": "examples/Textmodifier/lerp/sketch.js"
-				},
-				{
-					"title": "Textmodifier.lightFalloff",
-					"sourceFile": "examples/Textmodifier/lightFalloff/sketch.js"
-				},
-				{
-					"title": "Textmodifier.line",
-					"sourceFile": "examples/Textmodifier/line/sketch.js"
-				},
-				{
-					"title": "Textmodifier.lineWeight",
-					"sourceFile": "examples/Textmodifier/lineWeight/sketch.js"
-				},
-				{
-					"title": "Textmodifier.loadFont",
-					"sourceFile": "examples/Textmodifier/loadFont/sketch.js"
-				},
-				{
-					"title": "Textmodifier.loadImage",
-					"sourceFile": "examples/Textmodifier/loadImage/sketch.js"
-				},
-				{
-					"title": "Textmodifier.loading",
-					"sourceFile": "examples/Textmodifier/loading/sketch.js"
-				},
-				{
-					"title": "Textmodifier.loadTileset",
-					"sourceFile": "examples/Textmodifier/loadTileset/sketch.js"
-				},
-				{
-					"title": "Textmodifier.loadVideo",
-					"sourceFile": "examples/Textmodifier/loadVideo/sketch.js"
-				},
-				{
-					"title": "Textmodifier.longPress",
-					"sourceFile": "examples/Textmodifier/longPress/sketch.js"
-				},
-				{
-					"title": "Textmodifier.log",
-					"sourceFile": "examples/Textmodifier/log/sketch.js"
-				},
-				{
-					"title": "Textmodifier.lookAt",
-					"sourceFile": "examples/Textmodifier/lookAt/sketch.js"
-				},
-				{
-					"title": "Textmodifier.loop",
-					"sourceFile": "examples/Textmodifier/loop/sketch.js"
-				},
-				{
-					"title": "Textmodifier.map",
-					"sourceFile": "examples/Textmodifier/map/sketch.js"
-				},
-				{
-					"title": "Textmodifier.max",
-					"sourceFile": "examples/Textmodifier/max/sketch.js"
-				},
-				{
-					"title": "Textmodifier.millis",
-					"sourceFile": "examples/Textmodifier/millis/sketch.js"
-				},
-				{
-					"title": "Textmodifier.millis2",
-					"sourceFile": "examples/Textmodifier/millis2/sketch.js"
-				},
-				{
-					"title": "Textmodifier.millis3",
-					"sourceFile": "examples/Textmodifier/millis3/sketch.js"
-				},
-				{
-					"title": "Textmodifier.millis4",
-					"sourceFile": "examples/Textmodifier/millis4/sketch.js"
-				},
-				{
-					"title": "Textmodifier.min",
-					"sourceFile": "examples/Textmodifier/min/sketch.js"
-				},
-				{
-					"title": "Textmodifier.modifierState",
-					"sourceFile": "examples/Textmodifier/modifierState/sketch.js"
-				},
-				{
-					"title": "Textmodifier.mouse",
-					"sourceFile": "examples/Textmodifier/mouse/sketch.js"
-				},
-				{
-					"title": "Textmodifier.mouseClicked",
-					"sourceFile": "examples/Textmodifier/mouseClicked/sketch.js"
-				},
-				{
-					"title": "Textmodifier.mouseDragged",
-					"sourceFile": "examples/Textmodifier/mouseDragged/sketch.js"
-				},
-				{
-					"title": "Textmodifier.mouseIsPressed",
-					"sourceFile": "examples/Textmodifier/mouseIsPressed/sketch.js"
-				},
-				{
-					"title": "Textmodifier.mouseMoved",
-					"sourceFile": "examples/Textmodifier/mouseMoved/sketch.js"
-				},
-				{
-					"title": "Textmodifier.mousePressed",
-					"sourceFile": "examples/Textmodifier/mousePressed/sketch.js"
-				},
-				{
-					"title": "Textmodifier.mouseReleased",
-					"sourceFile": "examples/Textmodifier/mouseReleased/sketch.js"
-				},
-				{
-					"title": "Textmodifier.mouseScrolled",
-					"sourceFile": "examples/Textmodifier/mouseScrolled/sketch.js"
-				},
-				{
-					"title": "Textmodifier.noLights",
-					"sourceFile": "examples/Textmodifier/noLights/sketch.js"
-				},
-				{
-					"title": "Textmodifier.noLoop",
-					"sourceFile": "examples/Textmodifier/noLoop/sketch.js"
-				},
-				{
-					"title": "Textmodifier.noise",
-					"sourceFile": "examples/Textmodifier/noise/sketch.js"
-				},
-				{
-					"title": "Textmodifier.noiseDetail",
-					"sourceFile": "examples/Textmodifier/noiseDetail/sketch.js"
-				},
-				{
-					"title": "Textmodifier.noiseSeed",
-					"sourceFile": "examples/Textmodifier/noiseSeed/sketch.js"
-				},
-				{
-					"title": "Textmodifier.norm",
-					"sourceFile": "examples/Textmodifier/norm/sketch.js"
-				},
-				{
-					"title": "Textmodifier.ortho",
-					"sourceFile": "examples/Textmodifier/ortho/sketch.js"
-				},
-				{
-					"title": "Textmodifier.overlay",
-					"sourceFile": "examples/Textmodifier/overlay/sketch.js"
-				},
-				{
-					"title": "Textmodifier.perspective",
-					"sourceFile": "examples/Textmodifier/perspective/sketch.js"
-				},
-				{
-					"title": "Textmodifier.pinch",
-					"sourceFile": "examples/Textmodifier/pinch/sketch.js"
-				},
-				{
-					"title": "Textmodifier.pixelDensity",
-					"sourceFile": "examples/Textmodifier/pixelDensity/sketch.js"
-				},
-				{
-					"title": "Textmodifier.pmouse",
-					"sourceFile": "examples/Textmodifier/pmouse/sketch.js"
-				},
-				{
-					"title": "Textmodifier.point",
-					"sourceFile": "examples/Textmodifier/point/sketch.js"
-				},
-				{
-					"title": "Textmodifier.pointLight",
-					"sourceFile": "examples/Textmodifier/pointLight/sketch.js"
-				},
-				{
-					"title": "Textmodifier.pop",
-					"sourceFile": "examples/Textmodifier/pop/sketch.js"
-				},
-				{
-					"title": "Textmodifier.pow",
-					"sourceFile": "examples/Textmodifier/pow/sketch.js"
-				},
-				{
-					"title": "Textmodifier.pressedKeys",
-					"sourceFile": "examples/Textmodifier/pressedKeys/sketch.js"
-				},
-				{
-					"title": "Textmodifier.print",
-					"sourceFile": "examples/Textmodifier/print/sketch.js"
-				},
-				{
-					"title": "Textmodifier.printAlign",
-					"sourceFile": "examples/Textmodifier/printAlign/sketch.js"
-				},
-				{
-					"title": "Textmodifier.push",
-					"sourceFile": "examples/Textmodifier/push/sketch.js"
-				},
-				{
-					"title": "Textmodifier.radians",
-					"sourceFile": "examples/Textmodifier/radians/sketch.js"
-				},
-				{
-					"title": "Textmodifier.random",
-					"sourceFile": "examples/Textmodifier/random/sketch.js"
-				},
-				{
-					"title": "Textmodifier.randomGaussian",
-					"sourceFile": "examples/Textmodifier/randomGaussian/sketch.js"
-				},
-				{
-					"title": "Textmodifier.randomSeed",
-					"sourceFile": "examples/Textmodifier/randomSeed/sketch.js"
-				},
-				{
-					"title": "Textmodifier.randomStream",
-					"sourceFile": "examples/Textmodifier/randomStream/sketch.js"
-				},
-				{
-					"title": "Textmodifier.rect",
-					"sourceFile": "examples/Textmodifier/rect/sketch.js"
-				},
-				{
-					"title": "Textmodifier.redraw",
-					"sourceFile": "examples/Textmodifier/redraw/sketch.js"
-				},
-				{
-					"title": "Textmodifier.requestPointerLock",
-					"sourceFile": "examples/Textmodifier/requestPointerLock/sketch.js"
-				},
-				{
-					"title": "Textmodifier.resetCamera",
-					"sourceFile": "examples/Textmodifier/resetCamera/sketch.js"
-				},
-				{
-					"title": "Textmodifier.resetMatrix",
-					"sourceFile": "examples/Textmodifier/resetMatrix/sketch.js"
-				},
-				{
-					"title": "Textmodifier.resetShader",
-					"sourceFile": "examples/Textmodifier/resetShader/sketch.js"
-				},
-				{
-					"title": "Textmodifier.resizeCanvas",
-					"sourceFile": "examples/Textmodifier/resizeCanvas/sketch.js"
-				},
-				{
-					"title": "Textmodifier.rotate",
-					"sourceFile": "examples/Textmodifier/rotate/sketch.js"
-				},
-				{
-					"title": "Textmodifier.rotateGesture",
-					"sourceFile": "examples/Textmodifier/rotateGesture/sketch.js"
-				},
-				{
-					"title": "Textmodifier.rotateX",
-					"sourceFile": "examples/Textmodifier/rotateX/sketch.js"
-				},
-				{
-					"title": "Textmodifier.rotateY",
-					"sourceFile": "examples/Textmodifier/rotateY/sketch.js"
-				},
-				{
-					"title": "Textmodifier.rotateZ",
-					"sourceFile": "examples/Textmodifier/rotateZ/sketch.js"
-				},
-				{
-					"title": "Textmodifier.round",
-					"sourceFile": "examples/Textmodifier/round/sketch.js"
-				},
-				{
-					"title": "Textmodifier.scale",
-					"sourceFile": "examples/Textmodifier/scale/sketch.js"
-				},
-				{
-					"title": "Textmodifier.secs",
-					"sourceFile": "examples/Textmodifier/secs/sketch.js"
-				},
-				{
-					"title": "Textmodifier.secs2",
-					"sourceFile": "examples/Textmodifier/secs2/sketch.js"
-				},
-				{
-					"title": "Textmodifier.secs3",
-					"sourceFile": "examples/Textmodifier/secs3/sketch.js"
-				},
-				{
-					"title": "Textmodifier.setCamera",
-					"sourceFile": "examples/Textmodifier/setCamera/sketch.js"
-				},
-				{
-					"title": "Textmodifier.setUniform",
-					"sourceFile": "examples/Textmodifier/setUniform/sketch.js"
-				},
-				{
-					"title": "Textmodifier.setUniforms",
-					"sourceFile": "examples/Textmodifier/setUniforms/sketch.js"
-				},
-				{
-					"title": "Textmodifier.setup",
-					"sourceFile": "examples/Textmodifier/setup/sketch.js"
-				},
-				{
-					"title": "Textmodifier.shader",
-					"sourceFile": "examples/Textmodifier/shader/sketch.js"
-				},
-				{
-					"title": "Textmodifier.sin",
-					"sourceFile": "examples/Textmodifier/sin/sketch.js"
-				},
-				{
-					"title": "Textmodifier.sq",
-					"sourceFile": "examples/Textmodifier/sq/sketch.js"
-				},
-				{
-					"title": "Textmodifier.sqrt",
-					"sourceFile": "examples/Textmodifier/sqrt/sketch.js"
-				},
-				{
-					"title": "Textmodifier.sphere",
-					"sourceFile": "examples/Textmodifier/sphere/sketch.js"
-				},
-				{
-					"title": "Textmodifier.stroke",
-					"sourceFile": "examples/Textmodifier/stroke/sketch.js"
-				},
-				{
-					"title": "Textmodifier.swipe",
-					"sourceFile": "examples/Textmodifier/swipe/sketch.js"
-				},
-				{
-					"title": "Textmodifier.tan",
-					"sourceFile": "examples/Textmodifier/tan/sketch.js"
-				},
-				{
-					"title": "Textmodifier.tap",
-					"sourceFile": "examples/Textmodifier/tap/sketch.js"
-				},
-				{
-					"title": "Textmodifier.targetFrameRate",
-					"sourceFile": "examples/Textmodifier/targetFrameRate/sketch.js"
-				},
-				{
-					"title": "Textmodifier.torus",
-					"sourceFile": "examples/Textmodifier/torus/sketch.js"
-				},
-				{
-					"title": "Textmodifier.touchCancelled",
-					"sourceFile": "examples/Textmodifier/touchCancelled/sketch.js"
-				},
-				{
-					"title": "Textmodifier.touchEnded",
-					"sourceFile": "examples/Textmodifier/touchEnded/sketch.js"
-				},
-				{
-					"title": "Textmodifier.touches",
-					"sourceFile": "examples/Textmodifier/touches/sketch.js"
-				},
-				{
-					"title": "Textmodifier.touchMoved",
-					"sourceFile": "examples/Textmodifier/touchMoved/sketch.js"
-				},
-				{
-					"title": "Textmodifier.touchStarted",
-					"sourceFile": "examples/Textmodifier/touchStarted/sketch.js"
-				},
-				{
-					"title": "Textmodifier.translate",
-					"sourceFile": "examples/Textmodifier/translate/sketch.js"
-				},
-				{
-					"title": "Textmodifier.translateX",
-					"sourceFile": "examples/Textmodifier/translateX/sketch.js"
-				},
-				{
-					"title": "Textmodifier.translateX2",
-					"sourceFile": "examples/Textmodifier/translateX2/sketch.js"
-				},
-				{
-					"title": "Textmodifier.translateY",
-					"sourceFile": "examples/Textmodifier/translateY/sketch.js"
-				},
-				{
-					"title": "Textmodifier.translateY2",
-					"sourceFile": "examples/Textmodifier/translateY2/sketch.js"
-				},
-				{
-					"title": "Textmodifier.translateZ",
-					"sourceFile": "examples/Textmodifier/translateZ/sketch.js"
-				},
-				{
-					"title": "Textmodifier.translateZ2",
-					"sourceFile": "examples/Textmodifier/translateZ2/sketch.js"
-				},
-				{
-					"title": "Textmodifier.triangle",
-					"sourceFile": "examples/Textmodifier/triangle/sketch.js"
-				},
-				{
-					"title": "Textmodifier.useTileColors",
-					"sourceFile": "examples/Textmodifier/useTileColors/sketch.js"
-				},
-				{
-					"title": "Textmodifier.width",
-					"sourceFile": "examples/Textmodifier/width/sketch.js"
-				},
-				{
-					"title": "Textmodifier.windowHeight",
-					"sourceFile": "examples/Textmodifier/windowHeight/sketch.js"
-				},
-				{
-					"title": "Textmodifier.windowResized",
-					"sourceFile": "examples/Textmodifier/windowResized/sketch.js"
-				},
-				{
-					"title": "Textmodifier.windowWidth",
-					"sourceFile": "examples/Textmodifier/windowWidth/sketch.js"
+			"subgroups": [
+				{
+					"name": "Shape",
+					"examples": [
+						{
+							"title": "Textmodifier.rect",
+							"sourceFile": "examples/Textmodifier/rect/sketch.js"
+						},
+						{
+							"title": "Textmodifier.ellipse",
+							"sourceFile": "examples/Textmodifier/ellipse/sketch.js"
+						},
+						{
+							"title": "Textmodifier.arc",
+							"sourceFile": "examples/Textmodifier/arc/sketch.js"
+						},
+						{
+							"title": "Textmodifier.point",
+							"sourceFile": "examples/Textmodifier/point/sketch.js"
+						},
+						{
+							"title": "Textmodifier.line",
+							"sourceFile": "examples/Textmodifier/line/sketch.js"
+						},
+						{
+							"title": "Textmodifier.triangle",
+							"sourceFile": "examples/Textmodifier/triangle/sketch.js"
+						},
+						{
+							"title": "Textmodifier.bezierCurve",
+							"sourceFile": "examples/Textmodifier/bezierCurve/sketch.js"
+						},
+						{
+							"title": "Textmodifier.lineWeight",
+							"sourceFile": "examples/Textmodifier/lineWeight/sketch.js"
+						},
+						{
+							"title": "Textmodifier.box",
+							"sourceFile": "examples/Textmodifier/box/sketch.js"
+						},
+						{
+							"title": "Textmodifier.sphere",
+							"sourceFile": "examples/Textmodifier/sphere/sketch.js"
+						},
+						{
+							"title": "Textmodifier.cone",
+							"sourceFile": "examples/Textmodifier/cone/sketch.js"
+						},
+						{
+							"title": "Textmodifier.cylinder",
+							"sourceFile": "examples/Textmodifier/cylinder/sketch.js"
+						},
+						{
+							"title": "Textmodifier.ellipsoid",
+							"sourceFile": "examples/Textmodifier/ellipsoid/sketch.js"
+						},
+						{
+							"title": "Textmodifier.torus",
+							"sourceFile": "examples/Textmodifier/torus/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Vertex",
+					"examples": [
+						{
+							"title": "Textmodifier.beginShape",
+							"sourceFile": "examples/Textmodifier/beginShape/sketch.js"
+						},
+						{
+							"title": "Textmodifier.beginShape2",
+							"sourceFile": "examples/Textmodifier/beginShape2/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Shape Assembly Modes",
+					"examples": [
+						{
+							"title": "Textmodifier.POINTS",
+							"sourceFile": "examples/Textmodifier/POINTS/sketch.js"
+						},
+						{
+							"title": "Textmodifier.LINES",
+							"sourceFile": "examples/Textmodifier/LINES/sketch.js"
+						},
+						{
+							"title": "Textmodifier.LINE_STRIP",
+							"sourceFile": "examples/Textmodifier/LINE_STRIP/sketch.js"
+						},
+						{
+							"title": "Textmodifier.LINE_LOOP",
+							"sourceFile": "examples/Textmodifier/LINE_LOOP/sketch.js"
+						},
+						{
+							"title": "Textmodifier.TRIANGLES",
+							"sourceFile": "examples/Textmodifier/TRIANGLES/sketch.js"
+						},
+						{
+							"title": "Textmodifier.TRIANGLE_STRIP",
+							"sourceFile": "examples/Textmodifier/TRIANGLE_STRIP/sketch.js"
+						},
+						{
+							"title": "Textmodifier.TRIANGLE_FAN",
+							"sourceFile": "examples/Textmodifier/TRIANGLE_FAN/sketch.js"
+						},
+						{
+							"title": "Textmodifier.QUADS",
+							"sourceFile": "examples/Textmodifier/QUADS/sketch.js"
+						},
+						{
+							"title": "Textmodifier.QUAD_STRIP",
+							"sourceFile": "examples/Textmodifier/QUAD_STRIP/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Blend Modes",
+					"examples": [
+						{
+							"title": "Textmodifier.BLEND_NORMAL",
+							"sourceFile": "examples/Textmodifier/BLEND_NORMAL/sketch.js"
+						},
+						{
+							"title": "Textmodifier.BLEND_ADDITIVE",
+							"sourceFile": "examples/Textmodifier/BLEND_ADDITIVE/sketch.js"
+						},
+						{
+							"title": "Textmodifier.BLEND_MULTIPLY",
+							"sourceFile": "examples/Textmodifier/BLEND_MULTIPLY/sketch.js"
+						},
+						{
+							"title": "Textmodifier.BLEND_SCREEN",
+							"sourceFile": "examples/Textmodifier/BLEND_SCREEN/sketch.js"
+						},
+						{
+							"title": "Textmodifier.BLEND_SUBTRACT",
+							"sourceFile": "examples/Textmodifier/BLEND_SUBTRACT/sketch.js"
+						},
+						{
+							"title": "Textmodifier.BLEND_DARKEN",
+							"sourceFile": "examples/Textmodifier/BLEND_DARKEN/sketch.js"
+						},
+						{
+							"title": "Textmodifier.BLEND_LIGHTEN",
+							"sourceFile": "examples/Textmodifier/BLEND_LIGHTEN/sketch.js"
+						},
+						{
+							"title": "Textmodifier.BLEND_OVERLAY",
+							"sourceFile": "examples/Textmodifier/BLEND_OVERLAY/sketch.js"
+						},
+						{
+							"title": "Textmodifier.BLEND_SOFT_LIGHT",
+							"sourceFile": "examples/Textmodifier/BLEND_SOFT_LIGHT/sketch.js"
+						},
+						{
+							"title": "Textmodifier.BLEND_HARD_LIGHT",
+							"sourceFile": "examples/Textmodifier/BLEND_HARD_LIGHT/sketch.js"
+						},
+						{
+							"title": "Textmodifier.BLEND_COLOR_DODGE",
+							"sourceFile": "examples/Textmodifier/BLEND_COLOR_DODGE/sketch.js"
+						},
+						{
+							"title": "Textmodifier.BLEND_COLOR_BURN",
+							"sourceFile": "examples/Textmodifier/BLEND_COLOR_BURN/sketch.js"
+						},
+						{
+							"title": "Textmodifier.BLEND_DIFFERENCE",
+							"sourceFile": "examples/Textmodifier/BLEND_DIFFERENCE/sketch.js"
+						},
+						{
+							"title": "Textmodifier.BLEND_EXCLUSION",
+							"sourceFile": "examples/Textmodifier/BLEND_EXCLUSION/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Color",
+					"examples": [
+						{
+							"title": "Textmodifier.background",
+							"sourceFile": "examples/Textmodifier/background/sketch.js"
+						},
+						{
+							"title": "Textmodifier.background2",
+							"sourceFile": "examples/Textmodifier/background2/sketch.js"
+						},
+						{
+							"title": "Textmodifier.background3",
+							"sourceFile": "examples/Textmodifier/background3/sketch.js"
+						},
+						{
+							"title": "Textmodifier.background4",
+							"sourceFile": "examples/Textmodifier/background4/sketch.js"
+						},
+						{
+							"title": "Textmodifier.cellColor",
+							"sourceFile": "examples/Textmodifier/cellColor/sketch.js"
+						},
+						{
+							"title": "Textmodifier.cellColor2",
+							"sourceFile": "examples/Textmodifier/cellColor2/sketch.js"
+						},
+						{
+							"title": "Textmodifier.cellColor3",
+							"sourceFile": "examples/Textmodifier/cellColor3/sketch.js"
+						},
+						{
+							"title": "Textmodifier.cellColor4",
+							"sourceFile": "examples/Textmodifier/cellColor4/sketch.js"
+						},
+						{
+							"title": "Textmodifier.charColor",
+							"sourceFile": "examples/Textmodifier/charColor/sketch.js"
+						},
+						{
+							"title": "Textmodifier.charColor2",
+							"sourceFile": "examples/Textmodifier/charColor2/sketch.js"
+						},
+						{
+							"title": "Textmodifier.charColor3",
+							"sourceFile": "examples/Textmodifier/charColor3/sketch.js"
+						},
+						{
+							"title": "Textmodifier.charColor4",
+							"sourceFile": "examples/Textmodifier/charColor4/sketch.js"
+						},
+						{
+							"title": "Textmodifier.charRotation",
+							"sourceFile": "examples/Textmodifier/charRotation/sketch.js"
+						},
+						{
+							"title": "Textmodifier.clear",
+							"sourceFile": "examples/Textmodifier/clear/sketch.js"
+						},
+						{
+							"title": "Textmodifier.color",
+							"sourceFile": "examples/Textmodifier/color/sketch.js"
+						},
+						{
+							"title": "Textmodifier.color2",
+							"sourceFile": "examples/Textmodifier/color2/sketch.js"
+						},
+						{
+							"title": "Textmodifier.color3",
+							"sourceFile": "examples/Textmodifier/color3/sketch.js"
+						},
+						{
+							"title": "Textmodifier.colorMode",
+							"sourceFile": "examples/Textmodifier/colorMode/sketch.js"
+						},
+						{
+							"title": "Textmodifier.fill",
+							"sourceFile": "examples/Textmodifier/fill/sketch.js"
+						},
+						{
+							"title": "Textmodifier.stroke",
+							"sourceFile": "examples/Textmodifier/stroke/sketch.js"
+						},
+						{
+							"title": "Textmodifier.invert",
+							"sourceFile": "examples/Textmodifier/invert/sketch.js"
+						},
+						{
+							"title": "Textmodifier.useTileColors",
+							"sourceFile": "examples/Textmodifier/useTileColors/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Transform",
+					"examples": [
+						{
+							"title": "Textmodifier.applyMatrix",
+							"sourceFile": "examples/Textmodifier/applyMatrix/sketch.js"
+						},
+						{
+							"title": "Textmodifier.pop",
+							"sourceFile": "examples/Textmodifier/pop/sketch.js"
+						},
+						{
+							"title": "Textmodifier.push",
+							"sourceFile": "examples/Textmodifier/push/sketch.js"
+						},
+						{
+							"title": "Textmodifier.resetMatrix",
+							"sourceFile": "examples/Textmodifier/resetMatrix/sketch.js"
+						},
+						{
+							"title": "Textmodifier.rotate",
+							"sourceFile": "examples/Textmodifier/rotate/sketch.js"
+						},
+						{
+							"title": "Textmodifier.rotateX",
+							"sourceFile": "examples/Textmodifier/rotateX/sketch.js"
+						},
+						{
+							"title": "Textmodifier.rotateY",
+							"sourceFile": "examples/Textmodifier/rotateY/sketch.js"
+						},
+						{
+							"title": "Textmodifier.rotateZ",
+							"sourceFile": "examples/Textmodifier/rotateZ/sketch.js"
+						},
+						{
+							"title": "Textmodifier.scale",
+							"sourceFile": "examples/Textmodifier/scale/sketch.js"
+						},
+						{
+							"title": "Textmodifier.translate",
+							"sourceFile": "examples/Textmodifier/translate/sketch.js"
+						},
+						{
+							"title": "Textmodifier.translateX",
+							"sourceFile": "examples/Textmodifier/translateX/sketch.js"
+						},
+						{
+							"title": "Textmodifier.translateX2",
+							"sourceFile": "examples/Textmodifier/translateX2/sketch.js"
+						},
+						{
+							"title": "Textmodifier.translateY",
+							"sourceFile": "examples/Textmodifier/translateY/sketch.js"
+						},
+						{
+							"title": "Textmodifier.translateY2",
+							"sourceFile": "examples/Textmodifier/translateY2/sketch.js"
+						},
+						{
+							"title": "Textmodifier.translateZ",
+							"sourceFile": "examples/Textmodifier/translateZ/sketch.js"
+						},
+						{
+							"title": "Textmodifier.translateZ2",
+							"sourceFile": "examples/Textmodifier/translateZ2/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Math",
+					"examples": [
+						{
+							"title": "Textmodifier.abs",
+							"sourceFile": "examples/Textmodifier/abs/sketch.js"
+						},
+						{
+							"title": "Textmodifier.acos",
+							"sourceFile": "examples/Textmodifier/acos/sketch.js"
+						},
+						{
+							"title": "Textmodifier.asin",
+							"sourceFile": "examples/Textmodifier/asin/sketch.js"
+						},
+						{
+							"title": "Textmodifier.atan",
+							"sourceFile": "examples/Textmodifier/atan/sketch.js"
+						},
+						{
+							"title": "Textmodifier.atan2",
+							"sourceFile": "examples/Textmodifier/atan2/sketch.js"
+						},
+						{
+							"title": "Textmodifier.ceil",
+							"sourceFile": "examples/Textmodifier/ceil/sketch.js"
+						},
+						{
+							"title": "Textmodifier.clamp",
+							"sourceFile": "examples/Textmodifier/clamp/sketch.js"
+						},
+						{
+							"title": "Textmodifier.constrain",
+							"sourceFile": "examples/Textmodifier/constrain/sketch.js"
+						},
+						{
+							"title": "Textmodifier.cos",
+							"sourceFile": "examples/Textmodifier/cos/sketch.js"
+						},
+						{
+							"title": "Textmodifier.degrees",
+							"sourceFile": "examples/Textmodifier/degrees/sketch.js"
+						},
+						{
+							"title": "Textmodifier.dist",
+							"sourceFile": "examples/Textmodifier/dist/sketch.js"
+						},
+						{
+							"title": "Textmodifier.exp",
+							"sourceFile": "examples/Textmodifier/exp/sketch.js"
+						},
+						{
+							"title": "Textmodifier.floor",
+							"sourceFile": "examples/Textmodifier/floor/sketch.js"
+						},
+						{
+							"title": "Textmodifier.fract",
+							"sourceFile": "examples/Textmodifier/fract/sketch.js"
+						},
+						{
+							"title": "Textmodifier.lerp",
+							"sourceFile": "examples/Textmodifier/lerp/sketch.js"
+						},
+						{
+							"title": "Textmodifier.log",
+							"sourceFile": "examples/Textmodifier/log/sketch.js"
+						},
+						{
+							"title": "Textmodifier.map",
+							"sourceFile": "examples/Textmodifier/map/sketch.js"
+						},
+						{
+							"title": "Textmodifier.max",
+							"sourceFile": "examples/Textmodifier/max/sketch.js"
+						},
+						{
+							"title": "Textmodifier.min",
+							"sourceFile": "examples/Textmodifier/min/sketch.js"
+						},
+						{
+							"title": "Textmodifier.norm",
+							"sourceFile": "examples/Textmodifier/norm/sketch.js"
+						},
+						{
+							"title": "Textmodifier.pow",
+							"sourceFile": "examples/Textmodifier/pow/sketch.js"
+						},
+						{
+							"title": "Textmodifier.radians",
+							"sourceFile": "examples/Textmodifier/radians/sketch.js"
+						},
+						{
+							"title": "Textmodifier.round",
+							"sourceFile": "examples/Textmodifier/round/sketch.js"
+						},
+						{
+							"title": "Textmodifier.sin",
+							"sourceFile": "examples/Textmodifier/sin/sketch.js"
+						},
+						{
+							"title": "Textmodifier.sq",
+							"sourceFile": "examples/Textmodifier/sq/sketch.js"
+						},
+						{
+							"title": "Textmodifier.sqrt",
+							"sourceFile": "examples/Textmodifier/sqrt/sketch.js"
+						},
+						{
+							"title": "Textmodifier.tan",
+							"sourceFile": "examples/Textmodifier/tan/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Random",
+					"examples": [
+						{
+							"title": "Textmodifier.random",
+							"sourceFile": "examples/Textmodifier/random/sketch.js"
+						},
+						{
+							"title": "Textmodifier.randomGaussian",
+							"sourceFile": "examples/Textmodifier/randomGaussian/sketch.js"
+						},
+						{
+							"title": "Textmodifier.randomSeed",
+							"sourceFile": "examples/Textmodifier/randomSeed/sketch.js"
+						},
+						{
+							"title": "Textmodifier.randomStream",
+							"sourceFile": "examples/Textmodifier/randomStream/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Noise",
+					"examples": [
+						{
+							"title": "Textmodifier.noise",
+							"sourceFile": "examples/Textmodifier/noise/sketch.js"
+						},
+						{
+							"title": "Textmodifier.noiseDetail",
+							"sourceFile": "examples/Textmodifier/noiseDetail/sketch.js"
+						},
+						{
+							"title": "Textmodifier.noiseSeed",
+							"sourceFile": "examples/Textmodifier/noiseSeed/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Camera",
+					"examples": [
+						{
+							"title": "Textmodifier.camera",
+							"sourceFile": "examples/Textmodifier/camera/sketch.js"
+						},
+						{
+							"title": "Textmodifier.createCamera",
+							"sourceFile": "examples/Textmodifier/createCamera/sketch.js"
+						},
+						{
+							"title": "Textmodifier.lookAt",
+							"sourceFile": "examples/Textmodifier/lookAt/sketch.js"
+						},
+						{
+							"title": "Textmodifier.ortho",
+							"sourceFile": "examples/Textmodifier/ortho/sketch.js"
+						},
+						{
+							"title": "Textmodifier.perspective",
+							"sourceFile": "examples/Textmodifier/perspective/sketch.js"
+						},
+						{
+							"title": "Textmodifier.resetCamera",
+							"sourceFile": "examples/Textmodifier/resetCamera/sketch.js"
+						},
+						{
+							"title": "Textmodifier.setCamera",
+							"sourceFile": "examples/Textmodifier/setCamera/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Lights",
+					"examples": [
+						{
+							"title": "Textmodifier.ambientLight",
+							"sourceFile": "examples/Textmodifier/ambientLight/sketch.js"
+						},
+						{
+							"title": "Textmodifier.lightFalloff",
+							"sourceFile": "examples/Textmodifier/lightFalloff/sketch.js"
+						},
+						{
+							"title": "Textmodifier.noLights",
+							"sourceFile": "examples/Textmodifier/noLights/sketch.js"
+						},
+						{
+							"title": "Textmodifier.pointLight",
+							"sourceFile": "examples/Textmodifier/pointLight/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Shaders",
+					"examples": [
+						{
+							"title": "Textmodifier.createFilterShader",
+							"sourceFile": "examples/Textmodifier/createFilterShader/sketch.js"
+						},
+						{
+							"title": "Textmodifier.createMaterialShader",
+							"sourceFile": "examples/Textmodifier/createMaterialShader/sketch.js"
+						},
+						{
+							"title": "Textmodifier.createShader",
+							"sourceFile": "examples/Textmodifier/createShader/sketch.js"
+						},
+						{
+							"title": "Textmodifier.resetShader",
+							"sourceFile": "examples/Textmodifier/resetShader/sketch.js"
+						},
+						{
+							"title": "Textmodifier.setUniform",
+							"sourceFile": "examples/Textmodifier/setUniform/sketch.js"
+						},
+						{
+							"title": "Textmodifier.setUniforms",
+							"sourceFile": "examples/Textmodifier/setUniforms/sketch.js"
+						},
+						{
+							"title": "Textmodifier.shader",
+							"sourceFile": "examples/Textmodifier/shader/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Framebuffers",
+					"examples": [
+						{
+							"title": "Textmodifier.createFramebuffer",
+							"sourceFile": "examples/Textmodifier/createFramebuffer/sketch.js"
+						},
+						{
+							"title": "Textmodifier.createTexture",
+							"sourceFile": "examples/Textmodifier/createTexture/sketch.js"
+						},
+						{
+							"title": "Textmodifier.noTexture",
+							"sourceFile": "examples/Textmodifier/noTexture/sketch.js"
+						},
+						{
+							"title": "Textmodifier.texture",
+							"sourceFile": "examples/Textmodifier/texture/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Text",
+					"examples": [
+						{
+							"title": "Textmodifier.char",
+							"sourceFile": "examples/Textmodifier/char/sketch.js"
+						},
+						{
+							"title": "Textmodifier.char2",
+							"sourceFile": "examples/Textmodifier/char2/sketch.js"
+						},
+						{
+							"title": "Textmodifier.print",
+							"sourceFile": "examples/Textmodifier/print/sketch.js"
+						},
+						{
+							"title": "Textmodifier.printAlign",
+							"sourceFile": "examples/Textmodifier/printAlign/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Typography",
+					"examples": [
+						{
+							"title": "Textmodifier.font",
+							"sourceFile": "examples/Textmodifier/font/sketch.js"
+						},
+						{
+							"title": "Textmodifier.fontSize",
+							"sourceFile": "examples/Textmodifier/fontSize/sketch.js"
+						},
+						{
+							"title": "Textmodifier.loadFont",
+							"sourceFile": "examples/Textmodifier/loadFont/sketch.js"
+						},
+						{
+							"title": "Textmodifier.loadTileset",
+							"sourceFile": "examples/Textmodifier/loadTileset/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Media",
+					"examples": [
+						{
+							"title": "Textmodifier.image",
+							"sourceFile": "examples/Textmodifier/image/sketch.js"
+						},
+						{
+							"title": "Textmodifier.loadImage",
+							"sourceFile": "examples/Textmodifier/loadImage/sketch.js"
+						},
+						{
+							"title": "Textmodifier.loadVideo",
+							"sourceFile": "examples/Textmodifier/loadVideo/sketch.js"
+						},
+						{
+							"title": "Textmodifier.loading",
+							"sourceFile": "examples/Textmodifier/loading/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Mouse",
+					"examples": [
+						{
+							"title": "Textmodifier.mouse",
+							"sourceFile": "examples/Textmodifier/mouse/sketch.js"
+						},
+						{
+							"title": "Textmodifier.mouseClicked",
+							"sourceFile": "examples/Textmodifier/mouseClicked/sketch.js"
+						},
+						{
+							"title": "Textmodifier.mouseDragged",
+							"sourceFile": "examples/Textmodifier/mouseDragged/sketch.js"
+						},
+						{
+							"title": "Textmodifier.mouseIsPressed",
+							"sourceFile": "examples/Textmodifier/mouseIsPressed/sketch.js"
+						},
+						{
+							"title": "Textmodifier.mouseMoved",
+							"sourceFile": "examples/Textmodifier/mouseMoved/sketch.js"
+						},
+						{
+							"title": "Textmodifier.mousePressed",
+							"sourceFile": "examples/Textmodifier/mousePressed/sketch.js"
+						},
+						{
+							"title": "Textmodifier.mouseReleased",
+							"sourceFile": "examples/Textmodifier/mouseReleased/sketch.js"
+						},
+						{
+							"title": "Textmodifier.mouseScrolled",
+							"sourceFile": "examples/Textmodifier/mouseScrolled/sketch.js"
+						},
+						{
+							"title": "Textmodifier.pmouse",
+							"sourceFile": "examples/Textmodifier/pmouse/sketch.js"
+						},
+						{
+							"title": "Textmodifier.requestPointerLock",
+							"sourceFile": "examples/Textmodifier/requestPointerLock/sketch.js"
+						},
+						{
+							"title": "Textmodifier.cursor",
+							"sourceFile": "examples/Textmodifier/cursor/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Keyboard",
+					"examples": [
+						{
+							"title": "Textmodifier.isKeyPressed",
+							"sourceFile": "examples/Textmodifier/isKeyPressed/sketch.js"
+						},
+						{
+							"title": "Textmodifier.keyPressed",
+							"sourceFile": "examples/Textmodifier/keyPressed/sketch.js"
+						},
+						{
+							"title": "Textmodifier.keyReleased",
+							"sourceFile": "examples/Textmodifier/keyReleased/sketch.js"
+						},
+						{
+							"title": "Textmodifier.keyTyped",
+							"sourceFile": "examples/Textmodifier/keyTyped/sketch.js"
+						},
+						{
+							"title": "Textmodifier.lastKeyPressed",
+							"sourceFile": "examples/Textmodifier/lastKeyPressed/sketch.js"
+						},
+						{
+							"title": "Textmodifier.lastKeyReleased",
+							"sourceFile": "examples/Textmodifier/lastKeyReleased/sketch.js"
+						},
+						{
+							"title": "Textmodifier.pressedKeys",
+							"sourceFile": "examples/Textmodifier/pressedKeys/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Touch",
+					"examples": [
+						{
+							"title": "Textmodifier.doubleTap",
+							"sourceFile": "examples/Textmodifier/doubleTap/sketch.js"
+						},
+						{
+							"title": "Textmodifier.longPress",
+							"sourceFile": "examples/Textmodifier/longPress/sketch.js"
+						},
+						{
+							"title": "Textmodifier.pinch",
+							"sourceFile": "examples/Textmodifier/pinch/sketch.js"
+						},
+						{
+							"title": "Textmodifier.rotateGesture",
+							"sourceFile": "examples/Textmodifier/rotateGesture/sketch.js"
+						},
+						{
+							"title": "Textmodifier.swipe",
+							"sourceFile": "examples/Textmodifier/swipe/sketch.js"
+						},
+						{
+							"title": "Textmodifier.tap",
+							"sourceFile": "examples/Textmodifier/tap/sketch.js"
+						},
+						{
+							"title": "Textmodifier.touchCancelled",
+							"sourceFile": "examples/Textmodifier/touchCancelled/sketch.js"
+						},
+						{
+							"title": "Textmodifier.touchEnded",
+							"sourceFile": "examples/Textmodifier/touchEnded/sketch.js"
+						},
+						{
+							"title": "Textmodifier.touches",
+							"sourceFile": "examples/Textmodifier/touches/sketch.js"
+						},
+						{
+							"title": "Textmodifier.touchMoved",
+							"sourceFile": "examples/Textmodifier/touchMoved/sketch.js"
+						},
+						{
+							"title": "Textmodifier.touchStarted",
+							"sourceFile": "examples/Textmodifier/touchStarted/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Gamepad",
+					"examples": [
+						{
+							"title": "Textmodifier.gamepad",
+							"sourceFile": "examples/Textmodifier/gamepad/sketch.js"
+						},
+						{
+							"title": "Textmodifier.gamepadAxisChanged",
+							"sourceFile": "examples/Textmodifier/gamepadAxisChanged/sketch.js"
+						},
+						{
+							"title": "Textmodifier.gamepadButtonPressed",
+							"sourceFile": "examples/Textmodifier/gamepadButtonPressed/sketch.js"
+						},
+						{
+							"title": "Textmodifier.gamepadButtonReleased",
+							"sourceFile": "examples/Textmodifier/gamepadButtonReleased/sketch.js"
+						},
+						{
+							"title": "Textmodifier.gamepadConnected",
+							"sourceFile": "examples/Textmodifier/gamepadConnected/sketch.js"
+						},
+						{
+							"title": "Textmodifier.gamepadDisconnected",
+							"sourceFile": "examples/Textmodifier/gamepadDisconnected/sketch.js"
+						},
+						{
+							"title": "Textmodifier.gamepadEvents",
+							"sourceFile": "examples/Textmodifier/gamepadEvents/sketch.js"
+						},
+						{
+							"title": "Textmodifier.gamepads",
+							"sourceFile": "examples/Textmodifier/gamepads/sketch.js"
+						},
+						{
+							"title": "Textmodifier.gamepadStandardMapping",
+							"sourceFile": "examples/Textmodifier/gamepadStandardMapping/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Events",
+					"examples": [
+						{
+							"title": "Textmodifier.doubleClicked",
+							"sourceFile": "examples/Textmodifier/doubleClicked/sketch.js"
+						},
+						{
+							"title": "Textmodifier.windowResized",
+							"sourceFile": "examples/Textmodifier/windowResized/sketch.js"
+						},
+						{
+							"title": "Textmodifier.resizeCanvas",
+							"sourceFile": "examples/Textmodifier/resizeCanvas/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Lifecycle",
+					"examples": [
+						{
+							"title": "Textmodifier.destroy",
+							"sourceFile": "examples/Textmodifier/destroy/sketch.js"
+						},
+						{
+							"title": "Textmodifier.draw",
+							"sourceFile": "examples/Textmodifier/draw/sketch.js"
+						},
+						{
+							"title": "Textmodifier.isDisposed",
+							"sourceFile": "examples/Textmodifier/isDisposed/sketch.js"
+						},
+						{
+							"title": "Textmodifier.isLooping",
+							"sourceFile": "examples/Textmodifier/isLooping/sketch.js"
+						},
+						{
+							"title": "Textmodifier.isRenderingFrame",
+							"sourceFile": "examples/Textmodifier/isRenderingFrame/sketch.js"
+						},
+						{
+							"title": "Textmodifier.loop",
+							"sourceFile": "examples/Textmodifier/loop/sketch.js"
+						},
+						{
+							"title": "Textmodifier.noLoop",
+							"sourceFile": "examples/Textmodifier/noLoop/sketch.js"
+						},
+						{
+							"title": "Textmodifier.redraw",
+							"sourceFile": "examples/Textmodifier/redraw/sketch.js"
+						},
+						{
+							"title": "Textmodifier.setup",
+							"sourceFile": "examples/Textmodifier/setup/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Time",
+					"examples": [
+						{
+							"title": "Textmodifier.deltaTime",
+							"sourceFile": "examples/Textmodifier/deltaTime/sketch.js"
+						},
+						{
+							"title": "Textmodifier.frameCount",
+							"sourceFile": "examples/Textmodifier/frameCount/sketch.js"
+						},
+						{
+							"title": "Textmodifier.frameCount2",
+							"sourceFile": "examples/Textmodifier/frameCount2/sketch.js"
+						},
+						{
+							"title": "Textmodifier.frameRate",
+							"sourceFile": "examples/Textmodifier/frameRate/sketch.js"
+						},
+						{
+							"title": "Textmodifier.targetFrameRate",
+							"sourceFile": "examples/Textmodifier/targetFrameRate/sketch.js"
+						},
+						{
+							"title": "Textmodifier.millis",
+							"sourceFile": "examples/Textmodifier/millis/sketch.js"
+						},
+						{
+							"title": "Textmodifier.millis2",
+							"sourceFile": "examples/Textmodifier/millis2/sketch.js"
+						},
+						{
+							"title": "Textmodifier.millis3",
+							"sourceFile": "examples/Textmodifier/millis3/sketch.js"
+						},
+						{
+							"title": "Textmodifier.millis4",
+							"sourceFile": "examples/Textmodifier/millis4/sketch.js"
+						},
+						{
+							"title": "Textmodifier.secs",
+							"sourceFile": "examples/Textmodifier/secs/sketch.js"
+						},
+						{
+							"title": "Textmodifier.secs2",
+							"sourceFile": "examples/Textmodifier/secs2/sketch.js"
+						},
+						{
+							"title": "Textmodifier.secs3",
+							"sourceFile": "examples/Textmodifier/secs3/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Environment",
+					"examples": [
+						{
+							"title": "Textmodifier.canvas",
+							"sourceFile": "examples/Textmodifier/canvas/sketch.js"
+						},
+						{
+							"title": "Textmodifier.displayWidth",
+							"sourceFile": "examples/Textmodifier/displayWidth/sketch.js"
+						},
+						{
+							"title": "Textmodifier.displayHeight",
+							"sourceFile": "examples/Textmodifier/displayHeight/sketch.js"
+						},
+						{
+							"title": "Textmodifier.errors",
+							"sourceFile": "examples/Textmodifier/errors/sketch.js"
+						},
+						{
+							"title": "Textmodifier.grid",
+							"sourceFile": "examples/Textmodifier/grid/sketch.js"
+						},
+						{
+							"title": "Textmodifier.height",
+							"sourceFile": "examples/Textmodifier/height/sketch.js"
+						},
+						{
+							"title": "Textmodifier.width",
+							"sourceFile": "examples/Textmodifier/width/sketch.js"
+						},
+						{
+							"title": "Textmodifier.windowWidth",
+							"sourceFile": "examples/Textmodifier/windowWidth/sketch.js"
+						},
+						{
+							"title": "Textmodifier.windowHeight",
+							"sourceFile": "examples/Textmodifier/windowHeight/sketch.js"
+						},
+						{
+							"title": "Textmodifier.pixelDensity",
+							"sourceFile": "examples/Textmodifier/pixelDensity/sketch.js"
+						},
+						{
+							"title": "Textmodifier.inputGrid",
+							"sourceFile": "examples/Textmodifier/inputGrid/sketch.js"
+						}
+					]
+				},
+				{
+					"name": "Misc",
+					"examples": [
+						{
+							"title": "Textmodifier.conversions",
+							"sourceFile": "examples/Textmodifier/conversions/sketch.js"
+						},
+						{
+							"title": "Textmodifier.ease",
+							"sourceFile": "examples/Textmodifier/ease/sketch.js"
+						},
+						{
+							"title": "Textmodifier.filter",
+							"sourceFile": "examples/Textmodifier/filter/sketch.js"
+						},
+						{
+							"title": "Textmodifier.filters",
+							"sourceFile": "examples/Textmodifier/filters/sketch.js"
+						},
+						{
+							"title": "Textmodifier.flipX",
+							"sourceFile": "examples/Textmodifier/flipX/sketch.js"
+						},
+						{
+							"title": "Textmodifier.flipY",
+							"sourceFile": "examples/Textmodifier/flipY/sketch.js"
+						},
+						{
+							"title": "Textmodifier.layers",
+							"sourceFile": "examples/Textmodifier/layers/sketch.js"
+						},
+						{
+							"title": "Textmodifier.modifierState",
+							"sourceFile": "examples/Textmodifier/modifierState/sketch.js"
+						},
+						{
+							"title": "Textmodifier.overlay",
+							"sourceFile": "examples/Textmodifier/overlay/sketch.js"
+						},
+						{
+							"title": "Textmodifier.createGlyphRamp",
+							"sourceFile": "examples/Textmodifier/createGlyphRamp/sketch.js"
+						},
+						{
+							"title": "Textmodifier.createVector",
+							"sourceFile": "examples/Textmodifier/createVector/sketch.js"
+						}
+					]
 				}
 			]
 		}

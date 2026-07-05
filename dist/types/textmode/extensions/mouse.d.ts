@@ -8,6 +8,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/mouseClicked/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/mouseClicked | Textmodifier.mouseClicked API reference}
          */
         mouseClicked(callback: MouseEventHandler): void;
         /**
@@ -17,6 +19,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/doubleClicked/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/doubleClicked | Textmodifier.doubleClicked API reference}
          */
         doubleClicked(callback: MouseEventHandler): void;
         /**
@@ -26,6 +30,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/mousePressed/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/mousePressed | Textmodifier.mousePressed API reference}
          */
         mousePressed(callback: MouseEventHandler): void;
         /**
@@ -35,6 +41,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/mouseReleased/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/mouseReleased | Textmodifier.mouseReleased API reference}
          */
         mouseReleased(callback: MouseEventHandler): void;
         /**
@@ -44,6 +52,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/mouseMoved/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/mouseMoved | Textmodifier.mouseMoved API reference}
          */
         mouseMoved(callback: MouseEventHandler): void;
         /**
@@ -53,6 +63,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/mouseDragged/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/mouseDragged | Textmodifier.mouseDragged API reference}
          */
         mouseDragged(callback: MouseEventHandler): void;
         /**
@@ -62,6 +74,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/mouseScrolled/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/mouseScrolled | Textmodifier.mouseScrolled API reference}
          */
         mouseScrolled(callback: MouseEventHandler): void;
         /**
@@ -75,6 +89,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/mouse/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/properties/mouse | Textmodifier.mouse API reference}
          */
         readonly mouse: {
             x: number;
@@ -89,6 +105,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/mouseIsPressed/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/properties/mouseIsPressed | Textmodifier.mouseIsPressed API reference}
          */
         readonly mouseIsPressed: boolean;
         /**
@@ -102,6 +120,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/pmouse/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/properties/pmouse | Textmodifier.pmouse API reference}
          */
         readonly pmouse: {
             x: number;
@@ -115,6 +135,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/requestPointerLock/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/properties/movedX | Textmodifier.movedX API reference}
          */
         readonly movedX: number;
         /**
@@ -125,6 +147,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/requestPointerLock/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/properties/movedY | Textmodifier.movedY API reference}
          */
         readonly movedY: number;
         /**
@@ -138,6 +162,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/cursor/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/cursor | Textmodifier.cursor API reference}
          */
         cursor(cursor?: string): void;
         /**
@@ -152,6 +178,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/requestPointerLock/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/requestPointerLock | Textmodifier.requestPointerLock API reference}
          */
         requestPointerLock(): boolean;
         /**
@@ -159,6 +187,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/requestPointerLock/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/exitPointerLock | Textmodifier.exitPointerLock API reference}
          */
         exitPointerLock(): void;
     }

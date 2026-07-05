@@ -7,6 +7,7 @@ export declare class MaterialBatchPipeline {
     private _gl;
     private _geometries;
     private _geometryAttributeCache;
+    private readonly _customShapeGeometry;
     private _currentShader;
     private _shaderViewportState;
     private _lastFlushedMaterial;
@@ -24,6 +25,7 @@ export declare class MaterialBatchPipeline {
      * @param commands - Draw commands in user-specified order
      */
     _execute(commands: Iterable<DrawCommand>): void;
+    private _drawCustomShape;
     /**
      * Flush and render the current batch of instances.
      *
@@ -33,6 +35,7 @@ export declare class MaterialBatchPipeline {
      * @param renderState - Render state snapshot for camera/projection uniforms
      */
     private _flushBatch;
+    private _prepareMaterial;
     private _buildViewProjectionMatrices;
     /**
      * Dispose of pipeline resources (including all geometries).

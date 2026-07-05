@@ -4,7 +4,6 @@
 const BESCII_URL = 'https://cdn.jsdelivr.net/gh/damianvila/font-bescii@main/fonts/v2.0/Bescii-Mono.ttf';
 
 const t = textmode.create({
-	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,

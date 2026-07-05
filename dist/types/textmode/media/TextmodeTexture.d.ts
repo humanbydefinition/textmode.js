@@ -8,6 +8,8 @@ import type { TextmodeColorResolver } from '../color/TextmodeColor';
  * Create one with {@link Textmodifier.createTexture} and draw it with
  * {@link Textmodifier.image}. The texture refreshes each frame so it can mirror
  * renderers such as three.js, p5.js, Babylon.js, or hydra-synth.
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/media/classes/TextmodeTexture | media.TextmodeTexture API reference}
  */
 export declare class TextmodeTexture extends TextmodeSource {
     protected _source: HTMLCanvasElement | HTMLVideoElement;
@@ -17,6 +19,8 @@ export declare class TextmodeTexture extends TextmodeSource {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTexture/source/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/media/classes/TextmodeTexture/accessors/source | media.TextmodeTexture.source API reference}
      */
     get source(): HTMLCanvasElement | HTMLVideoElement;
 }

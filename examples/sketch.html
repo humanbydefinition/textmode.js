@@ -4,68 +4,9 @@
 		<meta charset="utf-8" />
 		<title>textmode.js - sketch</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="./style.css" />
+		<link rel="stylesheet" href="./styles/sketch.css" />
 	</head>
 	<body>
-		<script type="module">
-			import * as textmodeModule from 'textmode.js';
-
-			const params = new URLSearchParams(window.location.search);
-			const rawPath = params.get('path');
-			const group = params.get('group');
-			const entry = params.get('entry');
-			const validSegment = /^[A-Za-z0-9_.-]+$/;
-
-			function resolveExamplePath() {
-				if (rawPath) {
-					return rawPath;
-				}
-
-				if (group && entry) {
-					return `${group}/${entry}`;
-				}
-
-				return null;
-			}
-
-			function isValidPath(examplePath) {
-				const segments = examplePath.split('/');
-				return (
-					segments.length > 0 &&
-					segments.every(
-						(segment) =>
-							segment.length > 0 && segment !== '.' && segment !== '..' && validSegment.test(segment)
-					)
-				);
-			}
-
-			function showError(message) {
-				document.body.innerHTML = `
-					<div style="padding: 1rem; color: #e4e4e7; background: #09090b; min-height: 100vh; box-sizing: border-box;">
-						<p style="margin: 0; font-size: 0.9rem;">${message}</p>
-					</div>
-				`;
-			}
-
-			const examplePath = resolveExamplePath();
-
-			if (!examplePath || !isValidPath(examplePath)) {
-				showError('Invalid example path.');
-			} else {
-				window.textmode = textmodeModule.textmode;
-				window.TextmodeErrorLevel = textmodeModule.errors.TextmodeErrorLevel;
-				window.__TEXTMODE_EXAMPLE_PATH__ = examplePath;
-
-				document.title = `textmode.js - ${examplePath}`;
-				const base = document.createElement('base');
-				base.href = `./${examplePath}/`;
-				document.head.appendChild(base);
-
-				const script = document.createElement('script');
-				script.src = './sketch.js';
-				script.onerror = () => showError(`Unable to load ${examplePath}.`);
-				document.body.appendChild(script);
-			}
-		</script>
+		<script type="module" src="./scripts/sketch/main.js"></script>
 	</body>
 </html>

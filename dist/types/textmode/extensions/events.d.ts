@@ -23,6 +23,8 @@ declare module '../Textmodifier' {
          * // Later, remove it
          * dispose();
          * ```
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/on | Textmodifier.on API reference}
          */
         on<K extends keyof InputEventMap>(event: K, handler: InputEventMap[K]): () => void;
         /**
@@ -42,6 +44,8 @@ declare module '../Textmodifier' {
          * // Later
          * t.off('mousePressed', onPress);
          * ```
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/off | Textmodifier.off API reference}
          */
         off<K extends keyof InputEventMap>(event: K, handler: InputEventMap[K]): void;
         /**
@@ -58,6 +62,8 @@ declare module '../Textmodifier' {
          *   console.log('First key press was:', data.key);
          * });
          * ```
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/once | Textmodifier.once API reference}
          */
         once<K extends keyof InputEventMap>(event: K, handler: InputEventMap[K]): () => void;
     }

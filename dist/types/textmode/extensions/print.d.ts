@@ -17,6 +17,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/print/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/print | Textmodifier.print API reference}
          */
         print(str: string, x: number, y: number, options?: {
             leading?: number;
@@ -32,6 +34,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/printAlign/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/printAlign | Textmodifier.printAlign API reference}
          */
         printAlign(horizontal: 'left' | 'center' | 'right', vertical?: 'top' | 'middle' | 'bottom'): void;
     }

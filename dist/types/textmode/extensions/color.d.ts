@@ -8,6 +8,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/colorMode/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/colorMode | Textmodifier.colorMode API reference}
          */
         colorMode(): TextmodeColorModeState;
         /**
@@ -22,6 +24,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/colorMode/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/colorMode | Textmodifier.colorMode API reference}
          */
         colorMode(mode: TextmodeColorMode, max?: number): void;
         /**
@@ -34,6 +38,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/colorMode/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/colorMode | Textmodifier.colorMode API reference}
          */
         colorMode(mode: TextmodeColorMode, max1: number, max2: number, max3: number, maxA?: number): void;
         /**
@@ -45,6 +51,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/color/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/color | Textmodifier.color API reference}
          */
         color(gray: number, alpha?: number): TextmodeColor;
         /**
@@ -58,6 +66,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/color2/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/color | Textmodifier.color API reference}
          */
         color(r: number, g: number, b: number, a?: number): TextmodeColor;
         /**
@@ -71,6 +81,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/color3/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/color | Textmodifier.color API reference}
          */
         color(value: string | TextmodeColor): TextmodeColor;
         /**
@@ -79,6 +91,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/background/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/background | Textmodifier.background API reference}
          */
         background(): TextmodeColor;
         /**
@@ -88,6 +102,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/background2/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/background | Textmodifier.background API reference}
          */
         background(gray: number, alpha?: number): void;
         /**
@@ -99,6 +115,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/background3/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/background | Textmodifier.background API reference}
          */
         background(r: number, g: number, b: number, a?: number): void;
         /**
@@ -107,6 +125,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/background4/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/background | Textmodifier.background API reference}
          */
         background(value: string | TextmodeColor): void;
         /**
@@ -116,6 +136,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/clear/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/clear | Textmodifier.clear API reference}
          */
         clear(): void;
         /**
@@ -124,6 +146,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/charColor/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/charColor | Textmodifier.charColor API reference}
          */
         charColor(): TextmodeColor;
         /**
@@ -133,6 +157,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/charColor2/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/charColor | Textmodifier.charColor API reference}
          */
         charColor(gray: number, alpha?: number): void;
         /**
@@ -144,6 +170,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/charColor3/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/charColor | Textmodifier.charColor API reference}
          */
         charColor(r: number, g: number, b: number, a?: number): void;
         /**
@@ -152,6 +180,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/charColor4/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/charColor | Textmodifier.charColor API reference}
          */
         charColor(value: string | TextmodeColor): void;
         /**
@@ -160,6 +190,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/stroke/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/stroke | Textmodifier.stroke API reference}
          */
         stroke(): TextmodeColor;
         /**
@@ -169,6 +201,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/stroke/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/stroke | Textmodifier.stroke API reference}
          */
         stroke(gray: number, alpha?: number): void;
         /**
@@ -180,6 +214,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/stroke/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/stroke | Textmodifier.stroke API reference}
          */
         stroke(r: number, g: number, b: number, a?: number): void;
         /**
@@ -188,6 +224,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/stroke/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/stroke | Textmodifier.stroke API reference}
          */
         stroke(value: string | TextmodeColor): void;
         /**
@@ -196,6 +234,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/cellColor/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/cellColor | Textmodifier.cellColor API reference}
          */
         cellColor(): TextmodeColor;
         /**
@@ -205,6 +245,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/cellColor2/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/cellColor | Textmodifier.cellColor API reference}
          */
         cellColor(gray: number, alpha?: number): void;
         /**
@@ -216,6 +258,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/cellColor3/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/cellColor | Textmodifier.cellColor API reference}
          */
         cellColor(r: number, g: number, b: number, a?: number): void;
         /**
@@ -224,6 +268,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/cellColor4/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/cellColor | Textmodifier.cellColor API reference}
          */
         cellColor(value: string | TextmodeColor): void;
         /**
@@ -232,6 +278,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/fill/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/fill | Textmodifier.fill API reference}
          */
         fill(): TextmodeColor;
         /**
@@ -241,6 +289,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/fill/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/fill | Textmodifier.fill API reference}
          */
         fill(gray: number, alpha?: number): void;
         /**
@@ -252,6 +302,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/fill/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/fill | Textmodifier.fill API reference}
          */
         fill(r: number, g: number, b: number, a?: number): void;
         /**
@@ -260,6 +312,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/fill/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/fill | Textmodifier.fill API reference}
          */
         fill(value: string | TextmodeColor): void;
     }

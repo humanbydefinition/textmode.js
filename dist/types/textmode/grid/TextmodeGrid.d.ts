@@ -21,6 +21,8 @@ export type GridProvider = () => TextmodeGrid | undefined;
  *
  * @example
  * {@includeCode ../../../examples/TextmodeGrid/creation/sketch.js}
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGrid | TextmodeGrid API reference}
  */
 export declare class TextmodeGrid {
     /** The number of columns in the grid. */
@@ -58,6 +60,8 @@ export declare class TextmodeGrid {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/reset/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGrid/methods/reset | TextmodeGrid.reset API reference}
      */
     reset(): void;
     /**
@@ -65,6 +69,8 @@ export declare class TextmodeGrid {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/cellWidth/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGrid/accessors/cellWidth | TextmodeGrid.cellWidth API reference}
      */
     get cellWidth(): number;
     /**
@@ -72,6 +78,8 @@ export declare class TextmodeGrid {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/cellHeight/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGrid/accessors/cellHeight | TextmodeGrid.cellHeight API reference}
      */
     get cellHeight(): number;
     /**
@@ -79,6 +87,8 @@ export declare class TextmodeGrid {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/cols/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGrid/accessors/cols | TextmodeGrid.cols API reference}
      */
     get cols(): number;
     /**
@@ -86,6 +96,8 @@ export declare class TextmodeGrid {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/setCols/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGrid/accessors/cols | TextmodeGrid.cols API reference}
      */
     set cols(newCols: number);
     /**
@@ -93,6 +105,8 @@ export declare class TextmodeGrid {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/rows/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGrid/accessors/rows | TextmodeGrid.rows API reference}
      */
     get rows(): number;
     /**
@@ -100,6 +114,8 @@ export declare class TextmodeGrid {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/setRows/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGrid/accessors/rows | TextmodeGrid.rows API reference}
      */
     set rows(newRows: number);
     /**
@@ -109,6 +125,8 @@ export declare class TextmodeGrid {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/width/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGrid/accessors/width | TextmodeGrid.width API reference}
      */
     get width(): number;
     /**
@@ -118,6 +136,8 @@ export declare class TextmodeGrid {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/height/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGrid/accessors/height | TextmodeGrid.height API reference}
      */
     get height(): number;
     /**
@@ -125,6 +145,8 @@ export declare class TextmodeGrid {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/offsetX/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGrid/accessors/offsetX | TextmodeGrid.offsetX API reference}
      */
     get offsetX(): number;
     /**
@@ -132,6 +154,8 @@ export declare class TextmodeGrid {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/offsetY/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGrid/accessors/offsetY | TextmodeGrid.offsetY API reference}
      */
     get offsetY(): number;
     /**
@@ -141,6 +165,8 @@ export declare class TextmodeGrid {
      *
      * @example
      * {@includeCode ../../../examples/TextmodeGrid/responsive/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/TextmodeGrid/methods/responsive | TextmodeGrid.responsive API reference}
      */
     responsive(): void;
 }

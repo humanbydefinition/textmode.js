@@ -24,3 +24,41 @@ export declare const GEOMETRY_2D_DESCRIPTOR: {
         };
     };
 };
+/**
+ * Standard 3D mesh attribute descriptor.
+ *
+ * Layout: [position.xyz, texCoord.uv]
+ * Stride: 20 bytes (5 floats)
+ */
+export declare const GEOMETRY_3D_UV_DESCRIPTOR: {
+    readonly _stride: 20;
+    readonly _attributes: {
+        readonly _position: {
+            readonly size: 3;
+            readonly offset: 0;
+        };
+        readonly _texCoord: {
+            readonly size: 2;
+            readonly offset: 12;
+        };
+    };
+};
+/**
+ * Torus mesh attribute descriptor.
+ *
+ * Layout: [cosU, sinU, cosV, sinV, texCoord.uv]
+ * Stride: 24 bytes (6 floats)
+ */
+export declare const GEOMETRY_TORUS_DESCRIPTOR: {
+    readonly _stride: 24;
+    readonly _attributes: {
+        readonly _position: {
+            readonly size: 4;
+            readonly offset: 0;
+        };
+        readonly _texCoord: {
+            readonly size: 2;
+            readonly offset: 16;
+        };
+    };
+};

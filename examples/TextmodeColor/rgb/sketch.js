@@ -1,7 +1,7 @@
 /**
  * @title TextmodeColor.rgb
  */
-const t = textmode.create({ pixelDensity: 1, width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 const labelLayer = t.layers.add();
 const color = t.color(50, 100, 200);

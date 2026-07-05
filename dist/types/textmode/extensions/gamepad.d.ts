@@ -12,6 +12,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/gamepadConnected/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/gamepadConnected | Textmodifier.gamepadConnected API reference}
          */
         gamepadConnected(callback: GamepadConnectionEventHandler): void;
         /**
@@ -23,6 +25,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/gamepadDisconnected/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/gamepadDisconnected | Textmodifier.gamepadDisconnected API reference}
          */
         gamepadDisconnected(callback: GamepadConnectionEventHandler): void;
         /**
@@ -34,6 +38,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/gamepadButtonPressed/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/gamepadButtonPressed | Textmodifier.gamepadButtonPressed API reference}
          */
         gamepadButtonPressed(callback: GamepadButtonEventHandler): void;
         /**
@@ -45,6 +51,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/gamepadButtonReleased/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/gamepadButtonReleased | Textmodifier.gamepadButtonReleased API reference}
          */
         gamepadButtonReleased(callback: GamepadButtonEventHandler): void;
         /**
@@ -58,6 +66,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/gamepadAxisChanged/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/gamepadAxisChanged | Textmodifier.gamepadAxisChanged API reference}
          */
         gamepadAxisChanged(callback: GamepadAxisEventHandler): void;
         /**
@@ -69,6 +79,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/gamepads/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/properties/gamepads | Textmodifier.gamepads API reference}
          */
         readonly gamepads: readonly TextmodeGamepadSnapshot[];
         /**
@@ -80,6 +92,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/gamepad/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/gamepad | Textmodifier.gamepad API reference}
          */
         gamepad(index: number): TextmodeGamepadSnapshot | undefined;
     }

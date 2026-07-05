@@ -16,6 +16,8 @@ import type { TextmodeConversionMode, TextmodeConversionStrategy } from './Conve
  * // Use the conversion mode on an image
  * img.conversionMode('custom');
  * ```
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/conversion/classes/TextmodeConversionManager | conversion.TextmodeConversionManager API reference}
  */
 export declare class TextmodeConversionManager {
     private readonly _strategies;
@@ -33,6 +35,8 @@ export declare class TextmodeConversionManager {
      *     createUniforms: (ctx) => ({ u_image: ctx.source.texture })
      * });
      * ```
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/conversion/classes/TextmodeConversionManager#register | conversion.TextmodeConversionManager.register API reference}
      */
     register(strategy: TextmodeConversionStrategy): void;
     /**
@@ -43,6 +47,8 @@ export declare class TextmodeConversionManager {
      *
      * @example
      * {@includeCode ../../../examples/conversion/unregister/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/conversion/classes/TextmodeConversionManager#unregister | conversion.TextmodeConversionManager.unregister API reference}
      */
     unregister(id: TextmodeConversionMode): boolean;
     /**
@@ -53,6 +59,8 @@ export declare class TextmodeConversionManager {
      *
      * @example
      * {@includeCode ../../../examples/conversion/has/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/conversion/classes/TextmodeConversionManager#has | conversion.TextmodeConversionManager.has API reference}
      */
     has(id: TextmodeConversionMode): boolean;
     /**

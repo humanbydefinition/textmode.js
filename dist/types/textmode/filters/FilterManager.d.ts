@@ -16,6 +16,8 @@ import type { FilterName, TextmodeFilterUniformDefinitions } from './types';
  * // Or on a layer
  * t.layers.base.filter('brightness', { amount: 0.8 });
  * ```
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/filters/classes/TextmodeFilterManager | filters.TextmodeFilterManager API reference}
  */
 export declare class TextmodeFilterManager {
     private readonly _renderer;
@@ -44,6 +46,8 @@ export declare class TextmodeFilterManager {
      *     u_intensity: ['intensity', 0.5]
      * });
      * ```
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/filters/classes/TextmodeFilterManager#register | filters.TextmodeFilterManager.register API reference}
      */
     register(id: FilterName, shader: GLShader | string, uniformDefs?: TextmodeFilterUniformDefinitions): Promise<void>;
     private _registerSource;
@@ -56,6 +60,8 @@ export declare class TextmodeFilterManager {
      *
      * @example
      * {@includeCode ../../../examples/filters/unregister/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/filters/classes/TextmodeFilterManager#unregister | filters.TextmodeFilterManager.unregister API reference}
      */
     unregister(id: FilterName): boolean;
     /**
@@ -66,6 +72,8 @@ export declare class TextmodeFilterManager {
      *
      * @example
      * {@includeCode ../../../examples/filters/has/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/filters/classes/TextmodeFilterManager#has | filters.TextmodeFilterManager.has API reference}
      */
     has(id: FilterName): boolean;
     /**

@@ -12,6 +12,8 @@ import type { TextmodeGlyph, TextmodeGlyphAtlas } from './types.ts';
  *
  * @example
  * {@includeCode ../../../examples/TextmodeTileset/creation/sketch.js}
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset | fonts.TextmodeTileset API reference}
  */
 export declare class TextmodeTileset extends Disposable implements TextmodeGlyphAtlas {
     private static readonly _atlasCache;
@@ -33,6 +35,8 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTileset/dispose/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset/methods/dispose | fonts.TextmodeTileset.dispose API reference}
      */
     dispose(): void;
     private _retainSharedAtlas;
@@ -66,6 +70,8 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTileset/characters/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset/accessors/characters | fonts.TextmodeTileset.characters API reference}
      */
     get characters(): readonly TextmodeGlyph[];
     /**
@@ -73,6 +79,8 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTileset/characterMap/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset/accessors/characterMap | fonts.TextmodeTileset.characterMap API reference}
      */
     get characterMap(): Map<string, TextmodeGlyph>;
     /**
@@ -80,6 +88,8 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTileset/framebuffer/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset/accessors/framebuffer | fonts.TextmodeTileset.framebuffer API reference}
      */
     get framebuffer(): GLFramebuffer;
     /**
@@ -87,6 +97,8 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTileset/fontFramebuffer/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset/accessors/fontFramebuffer | fonts.TextmodeTileset.fontFramebuffer API reference}
      */
     get fontFramebuffer(): GLFramebuffer;
     /**
@@ -94,6 +106,8 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTileset/columns/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset/accessors/columns | fonts.TextmodeTileset.columns API reference}
      */
     get columns(): number;
     /**
@@ -101,6 +115,8 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTileset/rows/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset/accessors/rows | fonts.TextmodeTileset.rows API reference}
      */
     get rows(): number;
     /**
@@ -108,6 +124,8 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTileset/textureColumns/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset/accessors/textureColumns | fonts.TextmodeTileset.textureColumns API reference}
      */
     get textureColumns(): number;
     /**
@@ -115,6 +133,8 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTileset/textureRows/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset/accessors/textureRows | fonts.TextmodeTileset.textureRows API reference}
      */
     get textureRows(): number;
     /**
@@ -122,6 +142,8 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTileset/nativeCellDimensions/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset/accessors/nativeCellDimensions | fonts.TextmodeTileset.nativeCellDimensions API reference}
      */
     get nativeCellDimensions(): {
         width: number;
@@ -132,6 +154,8 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTileset/maxGlyphDimensions/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset/accessors/maxGlyphDimensions | fonts.TextmodeTileset.maxGlyphDimensions API reference}
      */
     get maxGlyphDimensions(): {
         width: number;
@@ -142,6 +166,8 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTileset/cellDimensions/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset/accessors/cellDimensions | fonts.TextmodeTileset.cellDimensions API reference}
      */
     get cellDimensions(): {
         width: number;
@@ -152,6 +178,8 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTileset/cellWidth/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset/accessors/cellWidth | fonts.TextmodeTileset.cellWidth API reference}
      */
     get cellWidth(): number;
     /**
@@ -159,6 +187,8 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTileset/cellHeight/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset/accessors/cellHeight | fonts.TextmodeTileset.cellHeight API reference}
      */
     get cellHeight(): number;
     /**
@@ -166,6 +196,8 @@ export declare class TextmodeTileset extends Disposable implements TextmodeGlyph
      *
      * @example
      * {@includeCode ../../../examples/TextmodeTileset/fontSize/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/namespaces/fonts/classes/TextmodeTileset/accessors/fontSize | fonts.TextmodeTileset.fontSize API reference}
      */
     get fontSize(): number;
 }

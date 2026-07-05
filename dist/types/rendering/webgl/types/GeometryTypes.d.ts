@@ -8,7 +8,6 @@ export declare enum GeometryType {
     LINE = "line",
     ELLIPSE = "ellipse",
     ARC = "arc",
-    TRIANGLE = "triangle",
     BEZIER_CURVE = "bezier_curve",
     BOX = "box",
     SPHERE = "sphere",
@@ -20,11 +19,11 @@ export declare enum GeometryType {
 /**
  * Mapping from GeometryType to numeric shader constant.
  * Must match the constants defined in instanced.vert:
- * - GEOMETRY_TYPE_FLAT = 2 (rectangle, line, ellipse, triangle)
+ * - GEOMETRY_TYPE_FLAT = 2 (rectangle, line, ellipse)
  * - GEOMETRY_TYPE_ARC = 3
  * - GEOMETRY_TYPE_BEZIER = 4
- * - 3D mesh types use the shader-specific IDs below; cylinder and ellipsoid
- *   reuse the generic box/sphere mesh paths.
+ * - 3D mesh types use the shader-specific IDs below; ellipsoid reuses the
+ *   generic sphere mesh path.
  */
 export declare const GEOMETRY_TYPE_ID: Record<GeometryType, number>;
 /**
@@ -97,17 +96,6 @@ export interface ArcParams {
     stop: number;
 }
 /**
- * Parameters for triangle geometry
- */
-export interface TriangleParams {
-    x1: number;
-    y1: number;
-    x2: number;
-    y2: number;
-    x3: number;
-    y3: number;
-}
-/**
  * Parameters for bezier curve geometry
  */
 export interface BezierCurveParams {
@@ -137,7 +125,7 @@ export type Mesh3DGeometryType = GeometryType.BOX | GeometryType.SPHERE | Geomet
 /**
  * Union type for all geometry parameters
  */
-export type GeometryParams = RectangleParams | LineParams | EllipseParams | ArcParams | TriangleParams | BezierCurveParams | Mesh3DParams;
+export type GeometryParams = RectangleParams | LineParams | EllipseParams | ArcParams | BezierCurveParams | Mesh3DParams;
 /**
  * Interface for instanced geometry implementations
  */

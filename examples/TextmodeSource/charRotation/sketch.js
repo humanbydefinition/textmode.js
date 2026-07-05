@@ -3,7 +3,6 @@
  */
 const IMAGE_URL = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80';
 const t = textmode.create({
-	pixelDensity: 1,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 8,

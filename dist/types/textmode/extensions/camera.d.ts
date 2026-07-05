@@ -12,6 +12,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/perspective/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/perspective | Textmodifier.perspective API reference}
          */
         perspective(fov?: number, near?: number, far?: number): void;
         /**
@@ -22,6 +24,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/createCamera/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/createCamera | Textmodifier.createCamera API reference}
          */
         createCamera(): TextmodeCamera;
         /**
@@ -31,6 +35,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/setCamera/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/setCamera | Textmodifier.setCamera API reference}
          */
         setCamera(camera: TextmodeCamera): void;
         /**
@@ -40,6 +46,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/resetCamera/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/resetCamera | Textmodifier.resetCamera API reference}
          */
         resetCamera(): void;
         /**
@@ -57,6 +65,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/camera/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/camera | Textmodifier.camera API reference}
          */
         camera(eyeX: number, eyeY: number, eyeZ: number, targetX?: number, targetY?: number, targetZ?: number, upX?: number, upY?: number, upZ?: number): void;
         /**
@@ -71,6 +81,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/lookAt/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/lookAt | Textmodifier.lookAt API reference}
          */
         lookAt(targetX: number, targetY: number, targetZ: number, upX?: number, upY?: number, upZ?: number): void;
         /**
@@ -86,6 +98,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/ortho/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/ortho | Textmodifier.ortho API reference}
          */
         ortho(near?: number, far?: number): void;
     }

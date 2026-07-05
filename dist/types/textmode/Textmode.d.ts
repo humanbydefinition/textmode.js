@@ -8,6 +8,8 @@ import type { TextmodeOptions } from './types';
  *
  * @example
  * {@includeCode ../../examples/Textmode/creation/sketch.js}
+ *
+ * @see {@link https://code.textmode.art/api/textmode.js/classes/textmode | textmode API reference}
  */
 export declare class Textmode {
     private constructor();
@@ -18,6 +20,8 @@ export declare class Textmode {
      *
      * @example
      * {@includeCode ../../examples/Textmode/create/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/textmode/methods/create | textmode.create API reference}
      */
     static create(opts?: TextmodeOptions): Textmodifier;
     /**
@@ -26,6 +30,8 @@ export declare class Textmode {
      *
      * @example
      * {@includeCode ../../examples/Textmode/setErrorLevel/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/textmode/methods/setErrorLevel | textmode.setErrorLevel API reference}
      */
     static setErrorLevel(level: TextmodeErrorLevel): void;
     /**
@@ -34,6 +40,8 @@ export declare class Textmode {
      *
      * @example
      * {@includeCode ../../examples/Textmode/version/sketch.js}
+     *
+     * @see {@link https://code.textmode.art/api/textmode.js/classes/textmode/accessors/version | textmode.version API reference}
      */
     static get version(): string;
 }

@@ -1,7 +1,7 @@
 /**
  * @title filters.TextmodeFilterManager.has
  */
-const t = textmode.create({ pixelDensity: 1, width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
 
 const labelLayer = t.layers.add();
 let hasCustom = false;

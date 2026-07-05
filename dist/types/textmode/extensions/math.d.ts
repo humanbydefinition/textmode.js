@@ -12,6 +12,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/sin/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/sin | Textmodifier.sin API reference}
          */
         sin(angle: number): number;
         /**
@@ -24,6 +26,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/cos/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/cos | Textmodifier.cos API reference}
          */
         cos(angle: number): number;
         /**
@@ -36,6 +40,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/tan/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/tan | Textmodifier.tan API reference}
          */
         tan(angle: number): number;
         /**
@@ -46,6 +52,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/asin/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/asin | Textmodifier.asin API reference}
          */
         asin(value: number): number;
         /**
@@ -56,6 +64,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/acos/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/acos | Textmodifier.acos API reference}
          */
         acos(value: number): number;
         /**
@@ -66,6 +76,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/atan/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/atan | Textmodifier.atan API reference}
          */
         atan(value: number): number;
         /**
@@ -77,6 +89,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/atan2/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/atan2 | Textmodifier.atan2 API reference}
          */
         atan2(y: number, x: number): number;
         /**
@@ -87,6 +101,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/floor/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/floor | Textmodifier.floor API reference}
          */
         floor(value: number): number;
         /**
@@ -97,6 +113,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/ceil/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/ceil | Textmodifier.ceil API reference}
          */
         ceil(value: number): number;
         /**
@@ -108,6 +126,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/round/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/round | Textmodifier.round API reference}
          */
         round(value: number, decimals?: number): number;
         /**
@@ -118,6 +138,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/abs/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/abs | Textmodifier.abs API reference}
          */
         abs(value: number): number;
         /**
@@ -128,6 +150,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/min/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/min | Textmodifier.min API reference}
          */
         min(...values: number[]): number;
         /**
@@ -138,6 +162,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/min/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/min | Textmodifier.min API reference}
          */
         min(values: readonly number[]): number;
         /**
@@ -148,6 +174,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/max/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/max | Textmodifier.max API reference}
          */
         max(...values: number[]): number;
         /**
@@ -158,6 +186,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/max/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/max | Textmodifier.max API reference}
          */
         max(values: readonly number[]): number;
         /**
@@ -168,6 +198,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/sq/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/sq | Textmodifier.sq API reference}
          */
         sq(value: number): number;
         /**
@@ -178,6 +210,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/sqrt/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/sqrt | Textmodifier.sqrt API reference}
          */
         sqrt(value: number): number;
         /**
@@ -189,6 +223,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/pow/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/pow | Textmodifier.pow API reference}
          */
         pow(base: number, exponent: number): number;
         /**
@@ -201,6 +237,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/fract/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/fract | Textmodifier.fract API reference}
          */
         fract(value: number): number;
         /**
@@ -211,6 +249,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/exp/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/exp | Textmodifier.exp API reference}
          */
         exp(value: number): number;
         /**
@@ -221,6 +261,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/log/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/log | Textmodifier.log API reference}
          */
         log(value: number): number;
         /**
@@ -233,6 +275,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/lerp/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/lerp | Textmodifier.lerp API reference}
          */
         lerp(start: number, stop: number, amount: number): number;
         /**
@@ -247,6 +291,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/ease/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/ease | Textmodifier.ease API reference}
          */
         ease(name: TextmodeEaseName, amount: number): number;
         /**
@@ -261,6 +307,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/map/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/map | Textmodifier.map API reference}
          */
         map(value: number, start1: number, stop1: number, start2: number, stop2: number): number;
         /**
@@ -275,6 +323,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/norm/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/norm | Textmodifier.norm API reference}
          */
         norm(value: number, start: number, stop: number): number;
         /**
@@ -287,6 +337,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/constrain/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/constrain | Textmodifier.constrain API reference}
          */
         constrain(value: number, low: number, high: number): number;
         /**
@@ -301,6 +353,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/clamp/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/clamp | Textmodifier.clamp API reference}
          */
         clamp(value: number, low: number, high: number): number;
         /**
@@ -314,6 +368,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/dist/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/dist | Textmodifier.dist API reference}
          */
         dist(x1: number, y1: number, x2: number, y2: number): number;
         /**
@@ -324,6 +380,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/degrees/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/degrees | Textmodifier.degrees API reference}
          */
         degrees(radians: number): number;
         /**
@@ -334,6 +392,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/radians/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/radians | Textmodifier.radians API reference}
          */
         radians(degrees: number): number;
         /**
@@ -349,6 +409,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/createVector/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/createVector | Textmodifier.createVector API reference}
          */
         createVector(x?: number, y?: number, z?: number): TextmodeVector;
     }

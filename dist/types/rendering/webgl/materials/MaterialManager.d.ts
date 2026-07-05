@@ -7,6 +7,8 @@ import type { UniformValue } from '../types/UniformTypes';
 export declare class MaterialManager {
     private _nextMaterialId;
     private readonly _shader;
+    private readonly _textureShader;
+    private readonly _framebufferTextureShader;
     readonly _copyShader: GLShader;
     readonly _solidColorMaterial: Material;
     constructor(gl: WebGL2RenderingContext);
@@ -19,6 +21,8 @@ export declare class MaterialManager {
      * @returns A new material instance
      */
     _createTransientMaterial(shader: GLShader, uniforms?: Record<string, UniformValue>): Material;
+    _createTexturedMaterial(uniforms: Record<string, UniformValue>): Material;
+    _createFramebufferTexturedMaterial(uniforms: Record<string, UniformValue>): Material;
     /**
      * Dispose of all shaders and materials managed by this manager.
      */

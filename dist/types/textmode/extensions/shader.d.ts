@@ -11,6 +11,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/shader/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/shader | Textmodifier.shader API reference}
          */
         shader(shader: GLShader | null): void;
         /**
@@ -21,6 +23,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/resetShader/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/resetShader | Textmodifier.resetShader API reference}
          */
         resetShader(): void;
         /**
@@ -30,6 +34,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/setUniform/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/setUniform | Textmodifier.setUniform API reference}
          */
         setUniform(name: string, value: unknown): void;
         /**
@@ -38,6 +44,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/setUniforms/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/setUniforms | Textmodifier.setUniforms API reference}
          */
         setUniforms(uniforms: Record<string, unknown>): void;
         /**
@@ -53,6 +61,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/createMaterialShader/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/createMaterialShader | Textmodifier.createMaterialShader API reference}
          */
         createMaterialShader(fragmentSource: string): Promise<GLShader>;
         /**
@@ -69,6 +79,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/createFilterShader/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/createFilterShader | Textmodifier.createFilterShader API reference}
          */
         createFilterShader(fragmentSource: string): Promise<GLShader>;
         /**
@@ -79,6 +91,8 @@ declare module '../Textmodifier' {
          *
          * @example
          * {@includeCode ../../../examples/Textmodifier/createShader/sketch.js}
+         *
+         * @see {@link https://code.textmode.art/api/textmode.js/classes/Textmodifier/methods/createShader | Textmodifier.createShader API reference}
          */
         createShader(vertexSource: string, fragmentSource: string): Promise<GLShader>;
     }
