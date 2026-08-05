@@ -1,51 +1,57 @@
 /**
  * @title TextmodeColor.rgb
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
-
-const labelLayer = t.layers.add();
-const color = t.color(50, 100, 200);
-const labels = ['R', 'G', 'B'];
-const channelColors = [
-	[255, 110, 110],
-	[120, 255, 140],
-	[120, 180, 255],
-];
-
-t.draw(() => {
-	const [r, g, b] = color.rgb;
-	const values = [r, g, b];
-
-	t.background(10, 14, 24);
-
-	for (let i = 0; i < values.length; i++) {
-		const angle = t.frameCount * 0.03 + (Math.PI * 2 * i) / values.length;
-		const radius = 6 + (values[i] / 255) * 8;
-		const x = Math.round(Math.cos(angle) * radius * 1.4);
-		const y = Math.round(Math.sin(angle) * radius);
-
-		t.push();
-		t.translate(x, y);
-		t.charColor(channelColors[i][0], channelColors[i][1], channelColors[i][2]);
-		t.char(labels[i]);
-		t.point();
-		t.pop();
-	}
-
-	t.push();
-	t.charColor(color);
-	t.char('o');
-	t.rect(8, 4);
-	t.pop();
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
 });
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
+const RAMP = ' .:-=+*#%@';
+const labelLayer = t.layers.add();
+
+t.draw(() => {
+	t.background(6, 6, 16);
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.04;
+
+	const rx = Math.sin(tm * 1.2) * (hw * 0.6);
+	const ry = Math.cos(tm * 0.8) * (hh * 0.6);
+
+	const gx = Math.cos(tm * 0.9 + 1.5) * (hw * 0.6);
+	const gy = Math.sin(tm * 1.3 + 1.5) * (hh * 0.6);
+
+	const bx = Math.sin(tm * 0.7 + 3.0) * (hw * 0.6);
+	const by = Math.cos(tm * 1.1 + 3.0) * (hh * 0.6);
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const dr = Math.hypot(x - rx, y - ry);
+			const dg = Math.hypot(x - gx, y - gy);
+			const db = Math.hypot(x - bx, y - by);
+
+			const rVal = Math.floor(Math.max(0, 255 - dr * 14));
+			const gVal = Math.floor(Math.max(0, 255 - dg * 14));
+			const bVal = Math.floor(Math.max(0, 255 - db * 14));
+
+			const col = t.color(rVal, gVal, bVal);
+			const [r, g, b] = col.rgb;
+
+			const maxVal = Math.max(r, g, b);
+			if (maxVal > 30) {
+				const idx = Math.min(RAMP.length - 1, Math.floor((maxVal / 255) * RAMP.length));
+				t.push();
+				t.translate(x, y);
+				t.charColor(r, g, b);
+				t.cellColor(Math.floor(r * 0.18), Math.floor(g * 0.18), Math.floor(b * 0.18));
+				t.char(RAMP[idx]);
+				t.point();
+				t.pop();
+			}
+		}
+	}
+});
 
 labelLayer.draw(() => {
 	t.clear();
@@ -54,14 +60,25 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	const [r, g, b] = color.rgb;
+	const sampleCol = t.color(240, 120, 60);
+	const [r, g, b] = sampleCol.rgb;
 
-	drawText('TEXTMODECOLOR.RGB', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: RGB COLOR COMPONENTS', x, y++, 100, 220, 255);
-	drawText('Accesses red, green, blue channels.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`RGB ARRAY : [${r}, ${g}, ${b}]`, x, y++, color.rgb[0], color.rgb[1], color.rgb[2]);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODECOLOR.RGB', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: KINETIC RGB LASER WEAVER', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Extracts [r, g, b] tuple array.', x, y++);
+	t.print('Weaves Lissajous light nodes.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`SAMPLE RGB: [${r}, ${g}, ${b}]`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

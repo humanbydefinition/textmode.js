@@ -2,10 +2,6 @@
  * @title TextmodeTileset.cellDimensions
  */
 const T64_URL = 'https://littlebitspace.com/resources/fonts/T64.png';
-const TILE_COLUMNS = 16;
-const TILE_ROWS = 16;
-const TILE_COUNT = TILE_COLUMNS * TILE_ROWS;
-
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
@@ -13,60 +9,77 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-
+const RAMP = ' .:-+*#@';
 let tileset = null;
 
-function tilesetOptions() {
-	return {
-		source: T64_URL,
-		columns: TILE_COLUMNS,
-		rows: TILE_ROWS,
-		count: TILE_COUNT,
-		fontSize: 16,
-	};
-}
-
 t.setup(async () => {
-	tileset = await t.loadTileset(tilesetOptions());
+	tileset = await t.loadTileset({ source: T64_URL, columns: 16, rows: 16, count: 256, fontSize: 16 });
 });
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
-
 t.draw(() => {
-	t.background(5, 7, 18);
+	t.background(8, 18, 38);
 	if (!tileset) return;
-	const startX = -Math.floor(TILE_COLUMNS / 2);
-	const startY = -Math.floor(TILE_ROWS / 2);
-	for (let i = 0; i < TILE_COUNT; i++) {
-		t.push();
-		t.translate(startX + (i % TILE_COLUMNS), startY + Math.floor(i / TILE_COLUMNS));
-		t.char(i);
-		t.charColor(120 + i * 6, 220, 255 - i * 7);
-		t.point();
-		t.pop();
+
+	const dims = tileset.cellDimensions;
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.05;
+
+	const ratio = dims.width / (dims.height || 1);
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const dist = Math.abs(x * ratio) + Math.abs(y);
+			const ring = (Math.sin(dist * 0.4 - tm) + 1) * 0.5;
+
+			const isCross = x === 0 || y === 0;
+
+			if (ring > 0.45 || isCross) {
+				const val = isCross ? 1 : (ring - 0.45) / 0.55;
+				const idx = Math.floor(val * (RAMP.length - 1));
+
+				t.push();
+				t.translate(x, y);
+				t.charColor(
+					isCross ? 0 : Math.floor(100 + val * 40),
+					isCross ? 230 : Math.floor(200 + val * 55),
+					isCross ? 255 : Math.floor(60 + val * 20)
+				);
+				t.cellColor(4, Math.floor(14 + val * 20), Math.floor(30 + val * 20));
+				t.char(RAMP[idx]);
+				t.point();
+				t.pop();
+			}
+		}
 	}
 });
 
 labelLayer.draw(() => {
 	t.clear();
+	if (!tileset) return;
 	const left = -Math.floor(t.grid.cols / 2);
 	const top = -Math.floor(t.grid.rows / 2);
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODETILESET.CELLDIMENSIONS', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: GLYPH ATLAS DATA', x, y++, 100, 220, 255);
-	drawText('T64 web tileset feeds glyphs.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
 	const d = tileset.cellDimensions;
-	drawText(`CELL: ${d.width}x${d.height}`, x, y++, 140, 255, 180);
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODETILESET.CELLDIMENSIONS', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: OPTICAL CALIBRATION RETICLE', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Measures tile width & height in px.', x, y++);
+	t.print('Scales reticle aspect ratio.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 80);
+	t.print(`TILE DIMS: ${d.width}x${d.height} PX`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

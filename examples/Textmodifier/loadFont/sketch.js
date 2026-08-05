@@ -9,7 +9,7 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const accentLayer = t.layers.add({ fontSize: 16, blendMode: 'additive' });
+const accentLayer = t.layers.add({ fontSize: 16, blendMode: t.BLEND_ADDITIVE });
 const labelLayer = t.layers.add();
 
 let baseFont = null;

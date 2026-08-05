@@ -9,28 +9,39 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
-
 t.draw(() => {
-	t.background(6, 10, 22);
+	t.background(6, 10, 20);
 	const cols = t.grid.cols;
 	const rows = t.grid.rows;
-	const left = -Math.floor(cols / 2);
+	const left = -Math.floor((cols - 1) / 2);
+	const right = left + cols - 1;
 	const top = -Math.floor(rows / 2);
-	t.charColor(60, 80, 120);
-	t.char('#');
-	t.rect(cols, rows);
-	t.push();
-	t.translate(0, 1);
-	t.charColor(100, 255, 180);
-	drawText(`OFFSET X: ${t.grid.offsetX}px`, left + 4, 0, 100, 255, 180);
-	t.pop();
+	const bottom = top + rows - 1;
+	const tm = t.frameCount * 0.04;
+
+	for (let y = top; y <= bottom; y++) {
+		for (let x = left; x <= right; x++) {
+			const isBorder = x === left || x === right || y === top || y === bottom;
+			const isCenter = x === 0 || y === 0;
+
+			let charKey = '.';
+			if (isBorder) charKey = '#';
+			else if (isCenter) charKey = '+';
+			else charKey = Math.sin(x * 0.2 + y * 0.2 + tm) > 0 ? '=' : '-';
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(
+				isBorder ? 255 : isCenter ? 120 : 80,
+				isBorder ? 200 : isCenter ? 240 : 160,
+				isBorder ? 100 : isCenter ? 180 : 240
+			);
+			t.cellColor(isBorder ? 30 : 10, isBorder ? 20 : 14, isBorder ? 10 : 28);
+			t.char(charKey);
+			t.point();
+			t.pop();
+		}
+	}
 });
 
 labelLayer.draw(() => {
@@ -40,12 +51,22 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODEGRID.OFFSETX', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: HORIZONTAL OFFSET', x, y++, 100, 220, 255);
-	drawText('Grid centers inside canvas.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`PIXELS: ${t.grid.offsetX}`, x, y++, 140, 255, 180);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODEGRID.OFFSETX', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: CANVAS CENTERING ALIGNMENT', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Horizontal offset in pixels from canvas', x, y++);
+	t.print('edge to grid to center grid content.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`OFFSET X: ${t.grid.offsetX} PX`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

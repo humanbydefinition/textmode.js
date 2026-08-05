@@ -8,50 +8,50 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-let isLocked = false;
+let isManual = false;
 
-t.draw(() => {
-	t.background(10, 20, 15);
-
-	const { cols, rows } = t.grid;
-	const time = t.frameCount * 0.05;
-
-	t.charColor(30, 60, 40);
-	for (let y = 0; y < rows; y++) {
-		for (let x = 0; x < cols; x++) {
-			t.push();
-			t.translate(x - (cols - 1) / 2, y - (rows - 1) / 2);
-			const charCode = 33 + Math.abs(Math.floor(Math.sin(time + (x + y) * 0.1) * 10));
-			t.char(String.fromCharCode(charCode));
-			t.point();
-			t.pop();
-		}
-	}
-
-	t.char(' ');
-	t.charColor(isLocked ? [255, 100, 100] : [100, 255, 150]);
-	t.rect(cols - 2, rows - 2);
-});
+t.setup(() => {});
 
 t.mousePressed(() => {
-	isLocked = !isLocked;
-
-	if (isLocked) {
-		t.grid.cols = 26;
-		t.grid.rows = 12;
+	isManual = !isManual;
+	if (isManual) {
+		t.grid.cols = 32;
+		t.grid.rows = 16;
 	} else {
 		t.grid.responsive();
 		t.grid.reset();
 	}
 });
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
+t.draw(() => {
+	t.background(8, 12, 26);
+	const cols = t.grid.cols;
+	const rows = t.grid.rows;
+	const hw = Math.floor(cols / 2);
+	const hh = Math.floor(rows / 2);
+	const tm = t.frameCount * 0.04;
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const wave = Math.sin(x * 0.2 + tm) * Math.cos(y * 0.2 - tm);
+			const norm = (wave + 1) * 0.5;
+
+			const charKey = isManual ? (norm > 0.5 ? '#' : '=') : norm > 0.6 ? '*' : norm > 0.3 ? '+' : '.';
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(
+				isManual ? 255 : Math.floor(80 + norm * 160),
+				isManual ? Math.floor(140 + norm * 100) : Math.floor(200 + norm * 55),
+				isManual ? 100 : Math.floor(140 - norm * 60)
+			);
+			t.cellColor(isManual ? 24 : 8, isManual ? 12 : 16, isManual ? 8 : 28);
+			t.char(charKey);
+			t.point();
+			t.pop();
+		}
+	}
+});
 
 labelLayer.draw(() => {
 	t.clear();
@@ -60,14 +60,26 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	const modeText = isLocked ? 'LOCKED (26x12)' : 'RESPONSIVE';
+	const modeText = isManual ? 'MANUAL LOCKED (32x16)' : 'AUTO RESPONSIVE';
 
-	drawText('TEXTMODEGRID.RESPONSIVE', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: AUTO-RESPONSIVE GRID', x, y++, 100, 220, 255);
-	drawText(`GRID STATE: ${modeText}`, x, y++, isLocked ? 255 : 150, isLocked ? 150 : 255, isLocked ? 150 : 200);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('Click anywhere to toggle grid lock.', x, y++, 140, 190, 255);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODEGRID.RESPONSIVE', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: RESPONSIVE AUTO-SIZING TOGGLE', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Restores responsive sizing so resizes', x, y++);
+	t.print('recalculate columns and rows.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`GRID SIZING: ${modeText}`, x, y++);
+	t.charColor(255, 200, 100);
+	t.print('CLICK CANVAS TO TOGGLE RESPONSIVE', x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

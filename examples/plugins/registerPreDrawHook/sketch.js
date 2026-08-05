@@ -1,13 +1,15 @@
 /**
  * @title plugins.TextmodePluginContext.registerPreDrawHook
  */
-let preDrawCounter = 0;
+let preDrawFrames = 0;
+let fluidTime = 0;
 
-const hookPlugin = {
-	name: 'pre-draw-hook-plugin',
+const plasmaPlugin = {
+	name: 'plasma-pre',
 	install(textmodifier, context) {
 		context.registerPreDrawHook(() => {
-			preDrawCounter += 1;
+			preDrawFrames++;
+			fluidTime += 0.06;
 		});
 	},
 };
@@ -16,22 +18,39 @@ const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
-	plugins: [hookPlugin],
+	plugins: [plasmaPlugin],
 });
 
 const labelLayer = t.layers.add();
 
 t.draw(() => {
-	t.background(6, 8, 20);
-});
+	t.background(10, 4, 20);
+	const cols = t.grid.cols;
+	const rows = t.grid.rows;
+	const left = -Math.floor((cols - 1) / 2);
+	const right = left + cols - 1;
+	const top = -Math.floor(rows / 2);
+	const bottom = top + rows - 1;
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
+	for (let y = top; y <= bottom; y++) {
+		for (let x = left; x <= right; x++) {
+			const v1 = Math.sin(x * 0.15 + fluidTime);
+			const v2 = Math.sin(y * 0.15 + fluidTime * 1.3);
+			const v3 = Math.sin((x + y) * 0.15 + fluidTime * 0.8);
+			const norm = (v1 + v2 + v3 + 3) / 6;
+
+			const charKey = norm > 0.75 ? '@' : norm > 0.5 ? '#' : norm > 0.3 ? '+' : '.';
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(Math.floor(180 + norm * 75), Math.floor(60 + norm * 140), Math.floor(220 - norm * 100));
+			t.cellColor(Math.floor(16 + norm * 14), Math.floor(6 + norm * 10), Math.floor(24 + norm * 18));
+			t.char(charKey);
+			t.point();
+			t.pop();
+		}
+	}
+});
 
 labelLayer.draw(() => {
 	t.clear();
@@ -40,12 +59,23 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('PLUGINS.REGISTERPREDRAWHOOK', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: PRE-DRAW LIFECYCLE HOOK', x, y++, 100, 220, 255);
-	drawText('Runs each frame before user draw().', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`INVOCATIONS : ${preDrawCounter}`, x, y++, 140, 190, 255);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('PLUGINS.REGISTERPREDRAWHOOK', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: GRAVITATIONAL PLASMA VORTEX', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Executes right before main t.draw()', x, y++);
+	t.print('runs each animation frame.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`PRE-DRAW FRAMES: ${preDrawFrames}`, x, y++);
+	t.print(`FLUID TIME: ${fluidTime.toFixed(2)} S`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

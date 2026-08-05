@@ -1,0 +1,79 @@
+name: CI
+
+on:
+    pull_request:
+        branches: [dev, beta, main]
+    push:
+        branches: [dev, beta, main]
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+
+jobs:
+    check:
+        name: Check
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v7
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v7
+              with:
+                  node-version-file: .nvmrc
+                  cache: 'npm'
+
+            - name: Report toolchain
+              run: node --version && npm --version
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run project checks
+              run: npm run check
+
+    release:
+        name: Release
+        needs: check
+        runs-on: ubuntu-latest
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/beta' || github.ref == 'refs/heads/main')
+        environment:
+            name: npm-publish
+
+        permissions:
+            contents: write
+            issues: write
+            pull-requests: write
+            id-token: write
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v7
+              with:
+                  fetch-depth: 0
+                  token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v7
+              with:
+                  node-version-file: .nvmrc
+                  cache: 'npm'
+
+            - name: Report toolchain
+              run: node --version && npm --version
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Release
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GIT_CONFIG_COUNT: '1'
+                  GIT_CONFIG_KEY_0: core.hooksPath
+                  GIT_CONFIG_VALUE_0: /dev/null
+              run: npm run release

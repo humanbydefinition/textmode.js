@@ -1,48 +1,45 @@
 /**
  * @title TextmodeColor.normalized
  */
-const t = textmode.create({ width: window.innerWidth, height: window.innerHeight });
+const t = textmode.create({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	fontSize: 16,
+});
 
+const RAMP = ' .:-=+*#%@';
 const labelLayer = t.layers.add();
-const color = t.color(255, 128, 0, 255);
-const labels = ['R', 'G', 'B', 'A'];
-const colors = [
-	[255, 100, 100],
-	[120, 255, 140],
-	[120, 180, 255],
-	[240, 240, 240],
-];
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
-
-function drawMeter(label, value, y, rgb, phase, x) {
-	const blocks = Math.round(value * 10);
-	drawText(`${label} ${value.toFixed(2)}`, x, y, rgb[0], rgb[1], rgb[2]);
-
-	for (let i = 0; i < 10; i++) {
-		const active = i < blocks;
-		const glow = active ? 40 + Math.round(60 * (0.5 + 0.5 * Math.sin(t.frameCount * 0.12 + phase + i))) : 0;
-		const meterColor = active
-			? [Math.min(255, rgb[0] + glow), Math.min(255, rgb[1] + glow), Math.min(255, rgb[2] + glow)]
-			: [55, 65, 80];
-
-		t.push();
-		t.translate(x + 13 + i, y);
-		t.charColor(meterColor[0], meterColor[1], meterColor[2]);
-		t.char(active ? '|' : '.');
-		t.point();
-		t.pop();
-	}
-}
 
 t.draw(() => {
-	t.background(12, 16, 24);
+	t.background(6, 8, 16);
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const time = t.frameCount * 0.025;
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const r = Math.floor((Math.sin(x * 0.12 + time) * 0.5 + 0.5) * 255);
+			const g = Math.floor((Math.cos(y * 0.14 - time * 0.8) * 0.5 + 0.5) * 255);
+			const b = Math.floor((Math.sin(x * 0.08 + y * 0.08 + time * 1.4) * 0.5 + 0.5) * 255);
+
+			const col = t.color(r, g, b);
+			const [nr, ng, nb] = col.normalized;
+
+			const lum = nr * 0.3 + ng * 0.59 + nb * 0.11;
+			if (lum > 0.25) {
+				const normLum = (lum - 0.25) / 0.75;
+				const idx = Math.min(RAMP.length - 1, Math.floor(normLum * RAMP.length));
+
+				t.push();
+				t.translate(x, y);
+				t.charColor(nr * 255, ng * 255, nb * 255);
+				t.cellColor(nr * 35, ng * 35, nb * 35);
+				t.char(RAMP[idx]);
+				t.point();
+				t.pop();
+			}
+		}
+	}
 });
 
 labelLayer.draw(() => {
@@ -52,18 +49,25 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	const normalized = color.normalized;
-	const rgba = color.rgba.join(', ');
+	const sampleCol = t.color(255, 128, 64);
+	const [nr, ng, nb] = sampleCol.normalized;
 
-	drawText('TEXTMODECOLOR.NORMALIZED', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: NORMALIZED FLOAT VALUES', x, y++, 100, 220, 255);
-	drawText(`RGBA : [${rgba}]`, x, y++, color.rgb[0], color.rgb[1], color.rgb[2]);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-
-	for (let i = 0; i < labels.length; i++) {
-		drawMeter(labels[i], normalized[i], y++, colors[i], i * 0.8, x);
-	}
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODECOLOR.NORMALIZED', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: NORMALIZED RGBA CHANNELS', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Returns [0..1] float array for RGBA.', x, y++);
+	t.print('Drives luminance & cell tinting.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`SAMPLE NORM: [${nr.toFixed(2)}, ${ng.toFixed(2)}, ${nb.toFixed(2)}]`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

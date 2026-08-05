@@ -2,10 +2,6 @@
  * @title TextmodeTileset.textureColumns
  */
 const T64_URL = 'https://littlebitspace.com/resources/fonts/T64.png';
-const TILE_COLUMNS = 16;
-const TILE_ROWS = 16;
-const TILE_COUNT = TILE_COLUMNS * TILE_ROWS;
-
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
@@ -13,43 +9,48 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-
 let tileset = null;
 
-function tilesetOptions() {
-	return {
-		source: T64_URL,
-		columns: TILE_COLUMNS,
-		rows: TILE_ROWS,
-		count: TILE_COUNT,
-		fontSize: 16,
-	};
-}
-
 t.setup(async () => {
-	tileset = await t.loadTileset(tilesetOptions());
+	tileset = await t.loadTileset({ source: T64_URL, columns: 16, rows: 16, count: 256, fontSize: 16 });
 });
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
-
 t.draw(() => {
-	t.background(5, 7, 18);
+	t.background(4, 18, 24);
 	if (!tileset) return;
-	const startX = -Math.floor(TILE_COLUMNS / 2);
-	const startY = -Math.floor(TILE_ROWS / 2);
-	for (let i = 0; i < TILE_COUNT; i++) {
-		t.push();
-		t.translate(startX + (i % TILE_COLUMNS), startY + Math.floor(i / TILE_COLUMNS));
-		t.char(i);
-		t.charColor(120 + i * 6, 220, 255 - i * 7);
-		t.point();
-		t.pop();
+
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.05;
+	const chars = tileset.characters;
+	const texCols = tileset.textureColumns;
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const colIdx = Math.abs(x) % (texCols || 1);
+			const ripple = Math.sin(y * 0.2 + colIdx * 0.4 - tm * 2.5);
+			const norm = (ripple + 1) * 0.5;
+
+			const isCrest = Math.abs(ripple) > 0.85;
+			const charIdx = Math.floor(Math.abs(colIdx * 16 + y + tm * 8) % (chars.length || 1));
+			const charKey = isCrest ? '*' : chars[charIdx] ? chars[charIdx].character : ':';
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(
+				isCrest ? 255 : Math.floor(40 + norm * 180),
+				isCrest ? 255 : Math.floor(200 - norm * 80),
+				isCrest ? 180 : Math.floor(60 + (colIdx / texCols) * 120)
+			);
+			t.cellColor(
+				isCrest ? 20 : Math.floor(4 + norm * 10),
+				isCrest ? 45 : Math.floor(16 + norm * 20),
+				isCrest ? 40 : Math.floor(20 + norm * 20)
+			);
+			t.char(charKey);
+			t.point();
+			t.pop();
+		}
 	}
 });
 
@@ -60,12 +61,25 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODETILESET.TEXTURECOLUMNS', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: GLYPH ATLAS DATA', x, y++, 100, 220, 255);
-	drawText('T64 web tileset feeds glyphs.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`TEX COLS: ${tileset.textureColumns}`, x, y++, 140, 255, 180);
+	if (!tileset) return;
+	const texCols = tileset.textureColumns;
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODETILESET.TEXTURECOLUMNS', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: ATLAS COLUMN STRIDE WAVE', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Horizontal texture column count.', x, y++);
+	t.print('Defines GPU atlas texture stride.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(0, 255, 180);
+	t.print(`TEXTURE COLUMNS: ${texCols}`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

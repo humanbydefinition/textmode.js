@@ -10,36 +10,41 @@ const t = textmode.create({
 const labelLayer = t.layers.add();
 
 t.draw(() => {
-	t.background(6, 10, 22);
-
+	t.background(18, 8, 6);
+	const cols = t.grid.cols;
 	const rows = t.grid.rows;
-	const halfHeight = Math.floor(rows / 2);
+	const hw = Math.floor(cols / 2);
+	const hh = Math.floor(rows / 2);
+	const tm = t.frameCount * 0.04;
 
-	t.push();
-	t.translate(14, 0);
-	t.char('|');
-	t.charColor(100, 180, 255, 120);
-	t.rect(1, rows);
-	t.pop();
+	for (let r = 0; r < rows; r++) {
+		const y = r - hh;
+		const wave = Math.sin(r * 0.25 + tm) * 0.5 + Math.cos(r * 0.1 - tm * 1.3) * 0.3 + 0.5;
+		const bandLen = Math.floor(2 + wave * (cols - 4));
+		const ramp = ['.', ':', '+', '*', '#', '%', '@'];
 
-	t.push();
-	t.charColor(255, 255, 255);
-	t.translate(14, -halfHeight);
-	t.char('▲');
-	t.point();
-	t.translate(0, rows - 1);
-	t.char('▼');
-	t.point();
-	t.pop();
+		for (let c = 0; c < bandLen; c++) {
+			const x = c - hw;
+			const ci = Math.min(ramp.length - 1, Math.floor((c / Math.max(1, bandLen - 1)) * ramp.length));
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(Math.floor(255 - ci * 15), Math.floor(120 + wave * 100), Math.floor(60 + ci * 20));
+			t.cellColor(Math.floor(32 + ci * 4), Math.floor(14 + ci * 2), Math.floor(8 + ci));
+			t.char(ramp[ci]);
+			t.point();
+			t.pop();
+		}
+
+		t.push();
+		t.translate(bandLen - hw, y);
+		t.charColor(255, 200, 100);
+		t.cellColor(40, 20, 8);
+		t.char('*');
+		t.point();
+		t.pop();
+	}
 });
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
 
 labelLayer.draw(() => {
 	t.clear();
@@ -48,12 +53,22 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODEGRID.ROWS', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: ROW COUNT READOUT', x, y++, 100, 220, 255);
-	drawText('Number of character rows in grid.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`GRID ROWS: ${t.grid.rows} cells`, x, y++, 100, 180, 255);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODEGRID.ROWS', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: HORIZONTAL STRATIGRAPHY STRATA', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Number of rows in grid layout.', x, y++);
+	t.print('Renders exact 1:1 row terrain bands.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`TOTAL ROWS: ${t.grid.rows}`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

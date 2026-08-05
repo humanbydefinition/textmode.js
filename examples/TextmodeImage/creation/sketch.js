@@ -8,48 +8,46 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-
 let image = null;
 
-function createImageUrl() {
+function createReactionCanvas() {
 	const canvas = document.createElement('canvas');
-	canvas.width = 96;
-	canvas.height = 64;
+	canvas.width = 64;
+	canvas.height = 48;
 	const ctx = canvas.getContext('2d');
-	const gradient = ctx.createLinearGradient(0, 0, 96, 64);
-	gradient.addColorStop(0, '#0ea5e9');
-	gradient.addColorStop(1, '#f59e0b');
-	ctx.fillStyle = gradient;
-	ctx.fillRect(0, 0, 96, 64);
-	ctx.fillStyle = '#020617';
-	ctx.fillRect(12, 18, 72, 28);
-	ctx.fillStyle = '#f8fafc';
-	ctx.fillRect(22, 26, 52, 12);
+
+	const imgData = ctx.createImageData(64, 48);
+	const data = imgData.data;
+
+	for (let y = 0; y < 48; y++) {
+		for (let x = 0; x < 64; x++) {
+			const idx = (y * 64 + x) * 4;
+			const v = Math.sin(x * 0.15) * Math.cos(y * 0.15) + Math.sin(x * 0.3 + y * 0.2);
+			const norm = (v + 2) / 4;
+
+			data[idx] = Math.floor(15 + norm * 240);
+			data[idx + 1] = Math.floor(23 + norm * 160);
+			data[idx + 2] = Math.floor(42 + norm * 210);
+			data[idx + 3] = 255;
+		}
+	}
+	ctx.putImageData(imgData, 0, 0);
 	return canvas.toDataURL();
 }
 
 t.setup(async () => {
-	image = await t.loadImage(createImageUrl());
+	image = await t.loadImage(createReactionCanvas());
 	image.characters(' .:-=+*#%@');
-	image.charColorMode('fixed');
-	image.charColor(255, 235, 180);
 	image.cellColorMode('sampled');
 });
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
-
 t.draw(() => {
-	t.background(6, 10, 18);
+	t.background(15, 23, 42);
 	if (!image) return;
+
 	t.push();
-	t.rotateZ(Math.sin(t.frameCount * 0.02) * 4);
-	t.image(image, Math.floor(t.grid.cols * 0.55), Math.floor(t.grid.rows * 0.55));
+	t.rotateZ(Math.sin(t.frameCount * 0.03) * 64);
+	t.image(image, Math.floor(t.grid.cols * 0.6), Math.floor(t.grid.rows * 0.6));
 	t.pop();
 });
 
@@ -60,12 +58,22 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODEIMAGE.CREATION', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: LOADED IMAGE SOURCE', x, y++, 100, 220, 255);
-	drawText('Image converts to cells.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`SIZE: ${image ? image.width : 0}`, x, y++, 140, 255, 180);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODEIMAGE.CREATION', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: REACTION CANV CONVERTER', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Loads HTML canvas data into image.', x, y++);
+	t.print('Converts source pixels into cells.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(245, 158, 11);
+	t.print(`IMAGE SIZE: ${image ? image.width : 0}x${image ? image.height : 0} PX`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

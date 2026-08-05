@@ -8,50 +8,48 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-let upValue = 0;
-
-function drawText(text, x, y, r = 200, g = 220, b = 255) {
-	t.push();
-	t.translate(x, y);
-	t.charColor(r, g, b);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
-	t.pop();
-}
-
-function drawScene() {
-	t.push();
-	t.char('.');
-	t.charColor(60, 80, 120);
-	for (let x = -20; x <= 20; x += 4) t.line(x, 0, -20, x, 0, 20);
-	for (let z = -20; z <= 20; z += 4) t.line(-20, 0, z, 20, 0, z);
-	t.pop();
-	t.push();
-	t.translate(0, 5, 0);
-	t.char('#');
-	t.charColor(200, 220, 255);
-	t.box(4, 10, 4);
-	t.pop();
-}
+let upZVal = 0;
 
 t.setup(() => {
 	t.perspective(58, 0.1, 4096);
 });
 
+function drawHelixVortex(tm) {
+	t.push();
+	t.ambientLight(30, 15, 30);
+	t.pointLight(255, 50, 150, 0, 0, 16);
+
+	for (let i = -12; i <= 12; i++) {
+		const angle = i * 0.4 + tm * 2;
+		const x = Math.cos(angle) * 14;
+		const y = Math.sin(angle) * 14;
+		const z = i * 2;
+
+		t.push();
+		t.translate(x, y, z);
+		t.charColor(255, Math.floor(50 + (i + 12) * 8), Math.floor(150 - (i + 12) * 4));
+		t.cellColor(30, 8, 25);
+		t.char('O');
+		t.box(3, 3, 3);
+		t.pop();
+	}
+	t.pop();
+}
+
 t.draw(() => {
-	t.background(6, 10, 22);
+	t.background(24, 6, 20);
+	const tm = t.frameCount * 0.04;
+	const tiltZ = Math.sin(tm) * 0.8;
 
-	const time = t.frameCount * 0.03;
-	// Top-down view; oscillating upZ spins the horizon
-	const cam = t.createCamera().setPosition(0, 40, 10).lookAt(0, 0, 0);
-	cam.setUp(1, 0, Math.sin(time) * 1.5);
+	const cam = t
+		.createCamera()
+		.setPosition(0, 0, 42)
+		.lookAt(0, 0, 0)
+		.setUp(0, Math.cos(tm) * 0.8, tiltZ);
 
-	upValue = cam.upZ;
+	upZVal = cam.upZ;
 	t.setCamera(cam);
-	drawScene();
+	drawHelixVortex(tm);
 	t.resetCamera();
 });
 
@@ -62,13 +60,22 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('UPZ', x, y++, 100, 255, 140);
-	drawText('--------------------------------', x, y++, 80, 100, 150);
-	drawText('Z component of the up vector.', x, y++, 100, 220, 255);
-	drawText('From top-down, upZ spins the', x, y++, 140, 160, 190);
-	drawText('horizon like a compass needle.', x, y++, 140, 160, 190);
-	drawText('--------------------------------', x, y++, 80, 100, 150);
-	drawText(`upZ = ${upValue.toFixed(3)}`, x, y++, 120, 255, 180);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODECAMERA.UPZ', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: HELICAL VORTEX Z-AXIS ROTOR', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Reads camera up-vector Z component.', x, y++);
+	t.print('Tilts camera Z-up orientation.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(255, 50, 150);
+	t.print(`UP Z: ${upZVal.toFixed(2)}`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

@@ -8,7 +8,6 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-
 let steps = 0;
 let lastRequest = 1;
 
@@ -26,29 +25,33 @@ t.keyPressed(() => {
 	t.redraw(5);
 });
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
-
 t.draw(() => {
 	steps++;
-	t.background(6, 8, 14);
+	t.background(8, 10, 20);
 
-	const width = Math.max(12, Math.floor(t.grid.cols * 0.6));
-	for (let i = 0; i < width; i++) {
-		const phase = steps * 0.32 + i * 0.45;
-		const x = i - Math.floor(width / 2);
-		const y = Math.round(Math.sin(phase) * 5);
-		t.push();
-		t.translate(x, y + 2);
-		t.char(i % 3 === 0 ? '+' : '*');
-		t.charColor(90 + (i % 12) * 12, 200, 255);
-		t.point();
-		t.pop();
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = steps * 0.15;
+
+	const traceRamp = '*o+:.';
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const liss1 = Math.sin(x * 0.15 + tm) * Math.cos(y * 0.2 - tm);
+			const liss2 = Math.sin(Math.hypot(x, y) * 0.12 - tm * 0.5);
+			const norm = (liss1 + liss2 + 2) / 4;
+
+			t.push();
+			t.translate(x, y);
+
+			const idx = Math.floor(norm * (traceRamp.length - 1));
+			t.charColor(255, Math.floor(170 * norm), Math.floor(40 + norm * 180));
+			t.cellColor(16, 24, 45);
+			t.char(traceRamp[idx]);
+
+			t.point();
+			t.pop();
+		}
 	}
 });
 
@@ -59,16 +62,25 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODIFIER.REDRAW', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: MANUAL RENDER STEPS', x, y++, 100, 220, 255);
-	drawText('setup pauses with noLoop().', x, y++, 140, 160, 190);
-	drawText('redraw(n) renders n frames.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`FRAMES: ${steps}`, x, y++, 140, 255, 180);
-	drawText(`LAST REQUEST: ${lastRequest}`, x, y++, 255, 225, 140);
-	drawText('CLICK: REDRAW 1', x, y++, 255, 225, 140);
-	drawText('ANY KEY: REDRAW 5', x, y++, 255, 225, 140);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODIFIER.REDRAW', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: LISSAJOUS CHRONOPHOTOGRAPHY', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('setup() pauses with noLoop().', x, y++);
+	t.print('redraw(n) executes n discrete frames.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 180);
+	t.print(`TOTAL FRAMES EXECUTED: ${steps}`, x, y++);
+	t.charColor(255, 220, 140);
+	t.print(`LAST REQUEST: ${lastRequest} FRAME(S)`, x, y++);
+	t.print('CLICK: REDRAW 1 | ANY KEY: REDRAW 5', x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

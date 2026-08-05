@@ -9,27 +9,42 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-let value = 0;
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
-
 t.draw(() => {
-	t.background(6, 10, 22);
-	value = Math.sin(t.millis * 0.002);
-	const angle = (value % 6.28) * 1;
-	t.push();
-	t.translate(8, 2);
-	t.rotateZ((angle * 180) / Math.PI);
-	t.char('#');
-	t.charColor(140, 220, 255);
-	t.rect(12, 1);
-	t.pop();
+	t.background(18, 10, 28);
+	const ms = t.millis;
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+
+	const ribbon1Y = Math.sin(ms * 0.002) * (hh * 0.6);
+	const ribbon2Y = Math.cos(ms * 0.0015) * (hh * 0.6);
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const waveX = Math.sin(x * 0.15 + ms * 0.003) * 4;
+			const isRibbon1 = Math.abs(y - (ribbon1Y + waveX)) < 1.5;
+			const isRibbon2 = Math.abs(y - (ribbon2Y - waveX)) < 1.5;
+
+			t.push();
+			t.translate(x, y);
+
+			if (isRibbon1) {
+				t.charColor(255, 210, 70);
+				t.cellColor(45, 30, 10);
+				t.char('~');
+			} else if (isRibbon2) {
+				t.charColor(160, 80, 240);
+				t.cellColor(35, 12, 45);
+				t.char('=');
+			} else {
+				t.charColor(45, 25, 60);
+				t.cellColor(18, 10, 28);
+				t.char('.');
+			}
+
+			t.point();
+			t.pop();
+		}
+	}
 });
 
 labelLayer.draw(() => {
@@ -38,13 +53,23 @@ labelLayer.draw(() => {
 	const top = -Math.floor(t.grid.rows / 2);
 	let y = top + 3;
 	const x = left + 3;
-	drawText('TEXTMODIFIER.MILLIS4', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: SMOOTH OSCILLATOR', x, y++, 100, 220, 255);
-	drawText('Numeric time drives motion.', x, y++, 140, 160, 190);
-	drawText('Rows stay fixed-width short.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`VALUE: ${value.toFixed(2)}`, x, y++, 140, 255, 180);
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODIFIER.MILLIS4', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: CONTINUOUS SINUSOIDAL MILLIS', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Math.sin(millis * f) drives ribbons.', x, y++);
+	t.print('Fluid harmonic deformation updates live.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(255, 210, 70);
+	t.print(`SINE PHASES: ${(t.millis * 0.002).toFixed(2)} RAD`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

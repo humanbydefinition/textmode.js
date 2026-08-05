@@ -8,31 +8,58 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-
 let seed = 0;
+let heightMap = [];
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
+function initTerrain(s) {
+	seed = s;
+	heightMap = [];
+	const hw = 30;
+	const hh = 15;
+	for (let y = -hh; y <= hh; y++) {
+		const row = [];
+		for (let x = -hw; x <= hw; x++) {
+			const h = (Math.sin(x * 0.15 + seed) + Math.cos(y * 0.15 + seed * 0.5)) * 0.5 + 0.5;
+			row.push(h);
+		}
+		heightMap.push(row);
+	}
 }
 
 t.setup(() => {
-	seed = Math.floor(Math.random() * 999);
+	initTerrain(Math.floor(Math.random() * 999));
+});
+
+t.mouseClicked(() => {
+	initTerrain(Math.floor(Math.random() * 999));
 });
 
 t.draw(() => {
-	t.background(6, 10, 22);
-	const time = t.frameCount * 0.03;
-	for (let i = 0; i < 8; i++) {
-		t.push();
-		t.translate(Math.cos(time + i) * 12, Math.sin(time + i) * 6);
-		t.char(String((seed + i) % 10));
-		t.charColor(120 + i * 12, 220, 255 - i * 10);
-		t.point();
-		t.pop();
+	t.background(12, 14, 18);
+	const tm = t.frameCount * 0.04;
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+
+	const charRamp = '#%=+-:.';
+
+	for (let y = -hh; y <= hh; y++) {
+		const rIdx = Math.min(heightMap.length - 1, Math.max(0, y + 15));
+		for (let x = -hw; x <= hw; x++) {
+			const cIdx = Math.min(heightMap[rIdx].length - 1, Math.max(0, x + 30));
+			const h = heightMap[rIdx][cIdx];
+
+			const sunLight = Math.sin(x * 0.1 + y * 0.1 + tm) * h;
+			const norm = (sunLight + 1) * 0.5;
+			const idx = Math.min(charRamp.length - 1, Math.floor(norm * charRamp.length));
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(Math.floor(30 + norm * 210), Math.floor(160 + norm * 80), Math.floor(100 - norm * 60));
+			t.cellColor(8, 20, 14);
+			t.char(charRamp[idx]);
+			t.point();
+			t.pop();
+		}
 	}
 });
 
@@ -42,13 +69,25 @@ labelLayer.draw(() => {
 	const top = -Math.floor(t.grid.rows / 2);
 	let y = top + 3;
 	const x = left + 3;
-	drawText('TEXTMODIFIER.SETUP', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: ONE-TIME INIT', x, y++, 100, 220, 255);
-	drawText('setup() runs before drawing.', x, y++, 140, 160, 190);
-	drawText('Seed is created once.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`SEED: ${seed}`, x, y++, 140, 255, 180);
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODIFIER.SETUP', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: PRE-COMPUTED TERRAIN RAYMARCH', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('setup() pre-computes heightmap once.', x, y++);
+	t.print('draw() animates real-time solar rays.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 180);
+	t.print(`TERRAIN SEED: ${seed}`, x, y++);
+	t.charColor(240, 180, 80);
+	t.print('CLICK TO RE-INITIALIZE SETUP', x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

@@ -8,38 +8,34 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-const chars = ['.', '+', '*', 'o'];
+const RAMP = '.+*#%@';
 
 t.draw(() => {
-	t.background(6, 14, 22);
+	t.background(6, 20, 14);
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.05;
 
-	for (let ray = 0; ray < 12; ray++) {
-		const angle = t.frameCount * 0.03 + (Math.PI * 2 * ray) / 12;
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const dist = Math.hypot(x * 0.8, y);
+			const ring = (Math.sin(dist * 0.4 - tm) + 1) * 0.5;
+			const hexPattern = Math.abs(Math.sin(x * 0.3) * Math.cos(y * 0.3));
 
-		for (let step = 3; step <= 10; step++) {
-			const pulse = 0.5 + 0.5 * Math.sin(t.frameCount * 0.08 - step + ray * 0.4);
-			const radius = step * (1.6 + pulse * 0.6);
-			const x = Math.round(Math.cos(angle) * radius * 1.7);
-			const y = Math.round(Math.sin(angle) * radius);
-			const char = chars[(ray + step) % chars.length];
-
-			t.push();
-			t.translate(x, y);
-			t.charColor(70 + step * 18, 160 + Math.round(pulse * 70), 255);
-			t.char(char);
-			t.point();
-			t.pop();
+			const val = ring * 0.7 + hexPattern * 0.3;
+			if (val > 0.4) {
+				const idx = Math.floor(((val - 0.4) / 0.6) * (RAMP.length - 1));
+				t.push();
+				t.translate(x, y);
+				t.charColor(Math.floor(40 + val * 180), Math.floor(180 + val * 75), Math.floor(120 + val * 100));
+				t.cellColor(4, Math.floor(16 + val * 30), 10);
+				t.char(RAMP[idx]);
+				t.point();
+				t.pop();
+			}
 		}
 	}
 });
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
 
 labelLayer.draw(() => {
 	t.clear();
@@ -48,12 +44,22 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODE.CREATE', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: STATIC CONTEXT BUILDER', x, y++, 100, 220, 255);
-	drawText('Instantiates a sketch instance.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('Returns fully configured t context.', x, y++, 140, 190, 255);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODE.CREATE', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: GENESIS MATRIX WAVEFRONT', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Instantiates a Textmodifier instance.', x, y++);
+	t.print('Initializes grid resolution & context.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`GRID SIZE: ${t.grid.cols}x${t.grid.rows} CELLS`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

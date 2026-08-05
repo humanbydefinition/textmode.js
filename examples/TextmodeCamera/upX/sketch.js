@@ -8,50 +8,40 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-let upValue = 0;
-
-function drawText(text, x, y, r = 200, g = 220, b = 255) {
-	t.push();
-	t.translate(x, y);
-	t.charColor(r, g, b);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
-	t.pop();
-}
-
-function drawScene() {
-	t.push();
-	t.char('.');
-	t.charColor(60, 80, 120);
-	for (let x = -20; x <= 20; x += 4) t.line(x, 0, -20, x, 0, 20);
-	for (let z = -20; z <= 20; z += 4) t.line(-20, 0, z, 20, 0, z);
-	t.pop();
-	t.push();
-	t.translate(0, 5, 0);
-	t.char('#');
-	t.charColor(200, 220, 255);
-	t.box(4, 10, 4);
-	t.pop();
-}
+let upXVal = 0;
 
 t.setup(() => {
 	t.perspective(58, 0.1, 4096);
 });
 
+function drawHorizon() {
+	t.push();
+	t.char('.');
+	t.charColor(60, 100, 180);
+	for (let x = -24; x <= 24; x += 6) {
+		for (let z = -24; z <= 24; z += 6) {
+			t.push();
+			t.translate(x, 0, z);
+			t.charColor(x === 0 ? 255 : 80, 220, z === 0 ? 255 : 140);
+			t.cellColor(10, 14, 28);
+			t.char('+');
+			t.box(4, 0.5, 4);
+			t.pop();
+		}
+	}
+	t.pop();
+}
+
 t.draw(() => {
-	t.background(6, 10, 22);
+	t.background(10, 10, 24);
+	const tm = t.frameCount * 0.04;
+	const rollX = Math.sin(tm);
 
-	const time = t.frameCount * 0.03;
-	const cam = t.createCamera().setPosition(0, 10, 40).lookAt(0, 0, 0);
-	// Tilting upX rolls the horizon left/right
-	cam.setUp(Math.sin(time) * 1.5, 1, 0);
+	const cam = t.createCamera().setPosition(0, 12, 32).lookAt(0, 0, 0).setUp(rollX, 1, 0);
 
-	upValue = cam.upX;
+	upXVal = cam.upX;
 	t.setCamera(cam);
-	drawScene();
+	drawHorizon();
 	t.resetCamera();
 });
 
@@ -62,13 +52,22 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('UPX', x, y++, 100, 255, 140);
-	drawText('--------------------------------', x, y++, 80, 100, 150);
-	drawText('X component of the up vector.', x, y++, 100, 220, 255);
-	drawText('Oscillating upX tilts/rolls the', x, y++, 140, 160, 190);
-	drawText('horizon left and right.', x, y++, 140, 160, 190);
-	drawText('--------------------------------', x, y++, 80, 100, 150);
-	drawText(`upX = ${upValue.toFixed(3)}`, x, y++, 120, 255, 180);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODECAMERA.UPX', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: ROLLING FLIGHT HORIZON', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Reads up-vector X component.', x, y++);
+	t.print('Modulating upX rolls camera view.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`UP X: ${upXVal.toFixed(2)}`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

@@ -2,10 +2,6 @@
  * @title TextmodeTileset.dispose
  */
 const T64_URL = 'https://littlebitspace.com/resources/fonts/T64.png';
-const TILE_COLUMNS = 16;
-const TILE_ROWS = 16;
-const TILE_COUNT = TILE_COLUMNS * TILE_ROWS;
-
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
@@ -13,67 +9,85 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-
-let tileset = null;
-
-function tilesetOptions() {
-	return {
-		source: T64_URL,
-		columns: TILE_COLUMNS,
-		rows: TILE_ROWS,
-		count: TILE_COUNT,
-		fontSize: 16,
-	};
-}
-
-let disposed = false;
+let disposableTileset = null;
+let fontReady = false;
+let isDisposed = false;
 
 t.setup(async () => {
-	await t.loadTileset(tilesetOptions());
-	tileset = await t.loadTileset(tilesetOptions(), false);
+	disposableTileset = await t.loadTileset({ source: T64_URL, columns: 16, rows: 16, count: 256, fontSize: 16 });
+	fontReady = true;
 });
 
-t.mouseClicked(() => {
-	if (tileset && !disposed) {
-		tileset.dispose();
-		disposed = true;
+t.mousePressed(() => {
+	if (disposableTileset && !isDisposed) {
+		disposableTileset.dispose();
+		isDisposed = true;
 	}
 });
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
-
 t.draw(() => {
-	t.background(5, 7, 18);
-	if (!tileset) return;
-	const startX = -Math.floor(TILE_COLUMNS / 2);
-	const startY = -Math.floor(TILE_ROWS / 2);
-	for (let i = 0; i < TILE_COUNT; i++) {
-		t.push();
-		t.translate(startX + (i % TILE_COLUMNS), startY + Math.floor(i / TILE_COLUMNS));
-		t.char(i);
-		t.charColor(120 + i * 6, 220, 255 - i * 7);
-		t.point();
-		t.pop();
+	t.background(16, 6, 10);
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.05;
+	const activeChars = fontReady && !isDisposed && disposableTileset ? disposableTileset.characters : [];
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const dist = Math.hypot(x, y);
+			const wave = Math.sin(dist * 0.35 - tm * 2);
+			const norm = (wave + 1) * 0.5;
+
+			const charIdx = Math.floor(Math.abs(dist * 0.6 + tm * 6) % (activeChars.length || 1));
+			const glyphObj = activeChars[charIdx];
+			const charKey = isDisposed ? '.' : glyphObj ? glyphObj.character : '#';
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(
+				isDisposed ? 90 : Math.floor(240 - norm * 140),
+				isDisposed ? 40 : Math.floor(100 + norm * 140),
+				isDisposed ? 50 : Math.floor(180 + norm * 75)
+			);
+			t.cellColor(
+				isDisposed ? 18 : Math.floor(20 + norm * 15),
+				isDisposed ? 6 : Math.floor(6 + norm * 10),
+				isDisposed ? 8 : Math.floor(12 + norm * 20)
+			);
+			t.char(charKey);
+			t.point();
+			t.pop();
+		}
 	}
 });
 
 labelLayer.draw(() => {
 	t.clear();
 	const left = -Math.floor(t.grid.cols / 2);
-	let y = -Math.floor(t.grid.rows / 2) + 3;
+	const top = -Math.floor(t.grid.rows / 2);
+	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODETILESET.DISPOSE', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: GLYPH ATLAS DATA', x, y++, 100, 220, 255);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`STATUS: ${disposed ? 'OFF' : 'ON'}`, x, y++, 140, 255, 180);
+	const stateText = isDisposed ? 'DISPOSED (GPU MEMORY FREED)' : 'ACTIVE (GLYPH ATLAS READY)';
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODETILESET.DISPOSE', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: GPU ATLAS DISSOLVE MATRIX', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('tileset.dispose() releases WebGL GPU', x, y++);
+	t.print('textures and atlas framebuffer.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`STATUS: ${stateText}`, x, y++);
+	t.charColor(255, 200, 100);
+	t.print('CLICK CANVAS TO DISPOSE TILESET', x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

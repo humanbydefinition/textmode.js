@@ -7,7 +7,7 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const displayLayer = t.layers.add({ visible: false, blendMode: 'additive' });
+const displayLayer = t.layers.add({ visible: false, blendMode: t.BLEND_ADDITIVE });
 const labelLayer = t.layers.add();
 let isVisible = false;
 

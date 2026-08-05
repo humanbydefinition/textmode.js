@@ -4,47 +4,52 @@
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
-	fontSize: 8,
+	fontSize: 16,
 });
 
 let triggerError = false;
 const labelLayer = t.layers.add();
 
-window.addEventListener(
-	'click',
-	() => {
-		triggerError = true;
-	},
-	{ once: true }
-);
+t.mouseClicked(() => {
+	triggerError = true;
+});
 
 t.draw(() => {
 	t.background(10, 12, 24);
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
 
-	// Render a spinning neon cyan gear to demonstrate active draw loop
-	const time = t.frameCount * 0.05;
-	for (let i = 0; i < 8; i++) {
-		const angle = time + (i / 8) * Math.PI * 2;
-		t.push();
-		t.translate(Math.cos(angle) * 8, Math.sin(angle) * 4);
-		t.charColor(0, 180, 255);
-		t.char('*');
-		t.point();
-		t.pop();
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const dist = Math.hypot(x, y);
+			const corePulse = Math.sin(dist * 0.4 - t.frameCount * 0.08) * 0.5 + 0.5;
+
+			t.push();
+			t.translate(x, y);
+
+			if (dist < 4) {
+				t.charColor(0, 220, 255);
+				t.cellColor(10, 35, 55);
+				t.char('#');
+			} else if (dist < 12) {
+				t.charColor(Math.floor(20 + corePulse * 180), Math.floor(100 + corePulse * 120), 220);
+				t.cellColor(10, 15, 30);
+				t.char(corePulse > 0.5 ? '*' : '+');
+			} else {
+				t.charColor(25, 35, 60);
+				t.cellColor(10, 12, 24);
+				t.char('.');
+			}
+
+			t.point();
+			t.pop();
+		}
 	}
 
 	if (triggerError) {
-		throw new Error('This example intentionally triggers the error layer.');
+		throw new Error('Intentionally triggered error layer overlay.');
 	}
 });
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
 
 labelLayer.draw(() => {
 	t.clear();
@@ -53,15 +58,24 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODIFIER.ERRORS', x, y++, 255, 100, 100);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: AUTOMATED RUNTIME ERROR CAPTURE', x, y++, 100, 220, 255);
-	drawText('Shows fallback error overlay.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	const state = Boolean(t.errors) ? 'TRUE' : 'FALSE';
-	drawText(`ERRORS: ${state}`, x, y++, 140, 190, 255);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CLICK TO TRIGGER ERROR', x, y++, 255, 200, 100);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(255, 100, 100);
+	t.print('TEXTMODIFIER.ERRORS', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: AUTOMATED RUNTIME ERROR CAPTURE', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Click canvas to throw an error.', x, y++);
+	t.print('Textmode renders full error overlay.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(255, 200, 100);
+	t.print(`ERRORS INITIALIZED: ${Boolean(t.errors)}`, x, y++);
+	t.charColor(255, 120, 120);
+	t.print('CLICK TO TRIGGER FAULT OVERLAY', x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

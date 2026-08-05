@@ -7,34 +7,28 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
+const baseRamp = t.createGlyphRamp(' .:-=+*#%@');
 const labelLayer = t.layers.add();
-const baseRamp = t.createGlyphRamp('0123456789ABCDEF');
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
 
 t.draw(() => {
-	t.background(7, 7, 20);
+	t.background(6, 12, 18);
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.04;
 
-	const ramp = baseRamp.shift(t.frameCount * 0.12);
-	const cols = Math.min(t.grid.cols - 8, 44);
-	const rows = Math.min(t.grid.rows - 12, 18);
-	const left = -Math.floor(cols / 2);
-	const top = -Math.floor(rows / 2) + 4;
-
-	for (let y = 0; y < rows; y++) {
-		for (let x = 0; x < cols; x++) {
-			const value = t.noise(x * 0.1, y * 0.16, t.secs * 0.4);
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const angle = Math.atan2(y, x);
+			const dist = Math.hypot(x, y);
+			const shiftAmt = Math.floor((angle / (Math.PI * 2)) * baseRamp.length + tm * 3);
+			const shiftedRamp = baseRamp.shift(shiftAmt);
+			const val = (Math.sin(dist * 0.3 - tm * 2) + 1) * 0.5;
 
 			t.push();
-			t.translate(left + x, top + y);
-			t.charColor(90 + value * 120, 140 + value * 90, 255);
-			t.char(ramp.at(value));
+			t.translate(x, y);
+			t.charColor(Math.floor(60 + val * 180), Math.floor(200 - val * 80), Math.floor(240 - val * 60));
+			t.cellColor(Math.floor(10 + val * 20), Math.floor(25 + val * 25), Math.floor(40 + val * 20));
+			t.char(shiftedRamp.at(val));
 			t.point();
 			t.pop();
 		}
@@ -47,14 +41,25 @@ labelLayer.draw(() => {
 	const top = -Math.floor(t.grid.rows / 2);
 	let y = top + 3;
 	const x = left + 3;
-	const shifted = baseRamp.shift(t.frameCount * 0.12);
 
-	drawText('TEXTMODEGLYPHRAMP.SHIFT', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: ROTATED COPY', x, y++, 100, 220, 255);
-	drawText('shift() returns a new ramp.', x, y++, 140, 160, 190);
-	drawText('The original ramp is unchanged.', x, y++, 140, 160, 190);
-	drawText(`now: ${shifted.characters}`, x, y++, 220, 230, 255);
+	const shifted = baseRamp.shift(Math.floor(t.frameCount * 0.1));
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODEGLYPHRAMP.SHIFT', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: SHIFTED GLYPH RAMP COPY', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('shift(n) returns a rotated copy.', x, y++);
+	t.print('Original ramp remains unchanged.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`SHIFTED: "${shifted.characters}"`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

@@ -7,7 +7,7 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const pulseLayer = t.layers.add({ blendMode: 'additive' });
+const pulseLayer = t.layers.add({ blendMode: t.BLEND_ADDITIVE });
 const labelLayer = t.layers.add();
 let currentOpacity = 1;
 

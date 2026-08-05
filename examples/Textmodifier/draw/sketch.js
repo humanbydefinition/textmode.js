@@ -8,26 +8,32 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-
-let pulse = 0;
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
+const RAMP = ' .:-=+*#%@';
 
 t.draw(() => {
-	t.background(6, 10, 22);
-	pulse = 0.5 + 0.5 * Math.sin(t.frameCount * 0.05);
-	t.push();
-	t.translate(8, 2);
-	t.char('#');
-	t.charColor(120, 120 + pulse * 120, 255);
-	t.rect(6 + pulse * 8, 3 + pulse * 4);
-	t.pop();
+	t.background(10, 14, 30);
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.04;
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const scale1 = Math.sin(x * 0.08 + tm) + Math.cos(y * 0.08 + tm * 0.7);
+			const scale2 = Math.sin(x * 0.18 - tm * 1.2) * Math.cos(y * 0.18 + tm * 0.9);
+			const scale3 = Math.sin(Math.hypot(x, y) * 0.1 - tm * 1.5);
+			const norm = (scale1 + scale2 + scale3 + 3) / 6;
+
+			const idx = Math.min(RAMP.length - 1, Math.floor(norm * RAMP.length));
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(Math.floor(40 + norm * 215), Math.floor(180 - norm * 90), Math.floor(160 + norm * 95));
+			t.cellColor(Math.floor(10 + norm * 30), Math.floor(14 + norm * 20), Math.floor(30 + norm * 40));
+			t.char(RAMP[idx]);
+			t.point();
+			t.pop();
+		}
+	}
 });
 
 labelLayer.draw(() => {
@@ -36,13 +42,23 @@ labelLayer.draw(() => {
 	const top = -Math.floor(t.grid.rows / 2);
 	let y = top + 3;
 	const x = left + 3;
-	drawText('TEXTMODIFIER.DRAW', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: FRAME CALLBACK', x, y++, 100, 220, 255);
-	drawText('draw() runs every frame.', x, y++, 140, 160, 190);
-	drawText('Pulse proves continuous updates.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`PULSE: ${pulse.toFixed(2)}`, x, y++, 140, 255, 180);
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODIFIER.DRAW', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: TURING MORPHOGENESIS SYNTHESIS', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('draw() executes every frame at 60fps.', x, y++);
+	t.print('Morphogenesis fields update live.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`FRAME: ${t.frameCount}`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

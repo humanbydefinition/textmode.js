@@ -2,10 +2,6 @@
  * @title TextmodeTileset.rows
  */
 const T64_URL = 'https://littlebitspace.com/resources/fonts/T64.png';
-const TILE_COLUMNS = 16;
-const TILE_ROWS = 16;
-const TILE_COUNT = TILE_COLUMNS * TILE_ROWS;
-
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
@@ -13,43 +9,49 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-
 let tileset = null;
 
-function tilesetOptions() {
-	return {
-		source: T64_URL,
-		columns: TILE_COLUMNS,
-		rows: TILE_ROWS,
-		count: TILE_COUNT,
-		fontSize: 16,
-	};
-}
-
 t.setup(async () => {
-	tileset = await t.loadTileset(tilesetOptions());
+	tileset = await t.loadTileset({ source: T64_URL, columns: 16, rows: 16, count: 256, fontSize: 16 });
 });
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
-
 t.draw(() => {
-	t.background(5, 7, 18);
+	t.background(24, 10, 16);
 	if (!tileset) return;
-	const startX = -Math.floor(TILE_COLUMNS / 2);
-	const startY = -Math.floor(TILE_ROWS / 2);
-	for (let i = 0; i < TILE_COUNT; i++) {
-		t.push();
-		t.translate(startX + (i % TILE_COLUMNS), startY + Math.floor(i / TILE_COLUMNS));
-		t.char(i);
-		t.charColor(120 + i * 6, 220, 255 - i * 7);
-		t.point();
-		t.pop();
+
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.05;
+	const chars = tileset.characters;
+	const numRows = tileset.rows;
+
+	for (let y = -hh; y <= hh; y++) {
+		const rowIndex = Math.abs(y) % numRows;
+
+		for (let x = -hw; x <= hw; x++) {
+			const wave = Math.sin(rowIndex * 0.4 + x * 0.12 - tm * 2);
+			const norm = (wave + 1) * 0.5;
+
+			const isCrest = Math.abs(wave) > 0.82;
+			const charIdx = Math.floor(Math.abs(rowIndex * 16 + x + tm * 8) % (chars.length || 1));
+			const charKey = isCrest ? '*' : chars[charIdx] ? chars[charIdx].character : '.';
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(
+				isCrest ? 255 : Math.floor(180 + norm * 60),
+				isCrest ? 210 : Math.floor(90 + norm * 90),
+				isCrest ? 90 : Math.floor(40 + norm * 60)
+			);
+			t.cellColor(
+				isCrest ? 45 : Math.floor(12 + norm * 15),
+				isCrest ? 20 : Math.floor(4 + norm * 10),
+				isCrest ? 10 : Math.floor(8 + norm * 10)
+			);
+			t.char(charKey);
+			t.point();
+			t.pop();
+		}
 	}
 });
 
@@ -60,12 +62,25 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODETILESET.ROWS', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: GLYPH ATLAS DATA', x, y++, 100, 220, 255);
-	drawText('T64 web tileset feeds glyphs.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`ROWS: ${tileset.rows}`, x, y++, 140, 255, 180);
+	if (!tileset) return;
+	const numRows = tileset.rows;
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODETILESET.ROWS', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: SEISMIC GEOLOGICAL STRATA', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Maps tileset atlas row count.', x, y++);
+	t.print('Structures horizontal grid strata.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(255, 210, 90);
+	t.print(`ATLAS ROWS: ${numRows}`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

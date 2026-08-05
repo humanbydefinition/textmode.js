@@ -2,10 +2,6 @@
  * @title TextmodeTileset.cellWidth
  */
 const T64_URL = 'https://littlebitspace.com/resources/fonts/T64.png';
-const TILE_COLUMNS = 16;
-const TILE_ROWS = 16;
-const TILE_COUNT = TILE_COLUMNS * TILE_ROWS;
-
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
@@ -13,43 +9,47 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-
 let tileset = null;
 
-function tilesetOptions() {
-	return {
-		source: T64_URL,
-		columns: TILE_COLUMNS,
-		rows: TILE_ROWS,
-		count: TILE_COUNT,
-		fontSize: 16,
-	};
-}
-
 t.setup(async () => {
-	tileset = await t.loadTileset(tilesetOptions());
+	tileset = await t.loadTileset({ source: T64_URL, columns: 16, rows: 16, count: 256, fontSize: 16 });
 });
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
-
 t.draw(() => {
-	t.background(5, 7, 18);
+	t.background(4, 16, 12);
 	if (!tileset) return;
-	const startX = -Math.floor(TILE_COLUMNS / 2);
-	const startY = -Math.floor(TILE_ROWS / 2);
-	for (let i = 0; i < TILE_COUNT; i++) {
-		t.push();
-		t.translate(startX + (i % TILE_COLUMNS), startY + Math.floor(i / TILE_COLUMNS));
-		t.char(i);
-		t.charColor(120 + i * 6, 220, 255 - i * 7);
-		t.point();
-		t.pop();
+
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.06;
+	const chars = tileset.characters;
+	const cW = tileset.cellWidth;
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const wave = Math.sin(x * (cW * 0.01) - tm * 3 + Math.sin(y * 0.25) * 3);
+			const norm = (wave + 1) * 0.5;
+
+			const isBeam = Math.abs(wave) > 0.85;
+			const charIdx = Math.floor(Math.abs(x * 2 + Math.cos(y * 0.2 + tm * 3) * 6) % (chars.length || 1));
+			const charKey = isBeam ? '=' : chars[charIdx] ? chars[charIdx].character : '-';
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(
+				isBeam ? 255 : Math.floor(40 + norm * 180),
+				isBeam ? 240 : Math.floor(220 - norm * 80),
+				isBeam ? 120 : Math.floor(140 + norm * 100)
+			);
+			t.cellColor(
+				isBeam ? 24 : Math.floor(6 + norm * 10),
+				isBeam ? 35 : Math.floor(20 + norm * 20),
+				isBeam ? 20 : Math.floor(14 + norm * 15)
+			);
+			t.char(charKey);
+			t.point();
+			t.pop();
+		}
 	}
 });
 
@@ -60,12 +60,25 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODETILESET.CELLWIDTH', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: GLYPH ATLAS DATA', x, y++, 100, 220, 255);
-	drawText('T64 web tileset feeds glyphs.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`WIDTH: ${tileset.cellWidth}`, x, y++, 140, 255, 180);
+	if (!tileset) return;
+	const width = tileset.cellWidth;
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODETILESET.CELLWIDTH', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: HORIZON WIDTH PULSE SCANNER', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Effective render cell width in px.', x, y++);
+	t.print('Controls horizontal column stride.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`CELL WIDTH: ${width} PX`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

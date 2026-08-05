@@ -1,11 +1,23 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
-  - name: Documentation
-    url: https://code.textmode.art/
-    about: Start with the API reference, guides, and examples before opening a usage question.
-  - name: Web Editor
-    url: https://editor.textmode.art/
-    about: Reproduce rendering and API issues in a minimal sketch you can share.
-  - name: Discord
-    url: https://discord.gg/sjrw8QXNks
-    about: Ask usage questions, sanity-check ideas, or discuss behavior before filing an issue.
+    - name: Contribution guide
+      url: https://code.textmode.art/docs/contributing/code
+      about: Read the shared workflow before proposing or implementing a change.
+    - name: Documentation
+      url: https://code.textmode.art/docs/introduction
+      about: Read the core guides before opening a usage question.
+    - name: API reference
+      url: https://code.textmode.art/api/textmode.js/
+      about: Check the generated API reference for methods, options, and types.
+    - name: Examples gallery
+      url: https://examples.textmode.art/textmode.js/
+      about: Browse runnable textmode.js examples and compare expected behavior.
+    - name: Web editor
+      url: https://editor.textmode.art/
+      about: Create and share a minimal reproduction using the official textmode.js libraries.
+    - name: GitHub Discussions
+      url: https://github.com/humanbydefinition/textmode.js/discussions
+      about: Ask questions, propose ideas, share sketches, or start design discussions.
+    - name: Discord
+      url: https://discord.gg/sjrw8QXNks
+      about: Ask usage questions or sanity-check ideas before filing an issue.

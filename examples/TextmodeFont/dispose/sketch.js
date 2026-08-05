@@ -10,51 +10,56 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-
-let activeFont = null;
-let fontReady = false;
 let disposableFont = null;
-let disposed = false;
+let fontReady = false;
+let isDisposed = false;
 
 t.setup(async () => {
-	activeFont = await t.loadFont(BESCII_URL);
 	disposableFont = await t.loadFont(BESCII_URL, false);
 	fontReady = true;
 });
 
-t.mouseClicked(() => {
-	if (disposableFont && !disposed) {
+t.mousePressed(() => {
+	if (disposableFont && !isDisposed) {
 		disposableFont.dispose();
-		disposed = true;
+		isDisposed = true;
 	}
 });
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
-
 t.draw(() => {
-	t.background(6, 10, 22);
-	if (!fontReady) return;
-	const glyphs = activeFont.characters;
-	const cols = activeFont.textureColumns;
-	const rows = activeFont.textureRows;
-	const startX = -Math.floor(cols / 2);
-	const labelBottom = -Math.floor(t.grid.rows / 2) + 11;
-	const bottomLimit = Math.floor(t.grid.rows / 2) - rows - 2;
-	const startY = Math.max(labelBottom, Math.min(-Math.floor(rows / 2), bottomLimit));
-	for (let i = 0; i < glyphs.length; i++) {
-		const glyph = glyphs[i];
-		t.push();
-		t.translate(startX + (i % cols), startY + Math.floor(i / cols));
-		t.char(glyph.character);
-		t.charColor(120 + (i % cols) * 8, 220, 255 - (i % rows) * 12);
-		t.point();
-		t.pop();
+	t.background(16, 6, 10);
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.03;
+	const active = fontReady && !isDisposed && disposableFont ? disposableFont : t.font;
+	const glyphs = active.characters;
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const dist = Math.hypot(x, y);
+			const field = isDisposed ? Math.sin(x * 0.4 + y * 0.4 + tm) * 0.2 : Math.sin(dist * 0.3 - tm * 2);
+			const norm = (field + 1) * 0.5;
+
+			const gIdx = Math.floor(Math.abs(dist * 0.6 + Math.atan2(y, x) * 4 - tm * 8) % (glyphs.length || 1));
+			const glyphObj = glyphs[gIdx] || glyphs[0];
+			const char = isDisposed ? '.' : glyphObj ? glyphObj.character : ' ';
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(
+				isDisposed ? 90 : Math.floor(220 - norm * 140),
+				isDisposed ? 40 : Math.floor(100 + norm * 140),
+				isDisposed ? 50 : Math.floor(180 + norm * 75)
+			);
+			t.cellColor(
+				isDisposed ? 18 : Math.floor(20 + norm * 15),
+				isDisposed ? 6 : Math.floor(6 + norm * 10),
+				isDisposed ? 8 : Math.floor(12 + norm * 20)
+			);
+			t.char(char);
+			t.point();
+			t.pop();
+		}
 	}
 });
 
@@ -65,18 +70,26 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODEFONT.DISPOSE', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: GLYPH ATLAS DATA', x, y++, 100, 220, 255);
-	drawText('Bescii web font feeds glyphs.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	if (!fontReady) {
-		drawText('LOADING BESCII...', x, y++, 255, 225, 140);
-		return;
-	}
-	const state = disposed ? 'OFF' : 'ON';
-	drawText(`STATUS: ${state}`, x, y++, 140, 255, 180);
-	drawText('CLICK TO DISPOSE', x, y++, 255, 225, 140);
+	const stateText = isDisposed ? 'DISPOSED (RELEASED)' : 'ACTIVE (GLYPH ATLAS READY)';
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODEFONT.DISPOSE', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: FONT RESOURCE CLEANUP', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('font.dispose() frees WebGL textures', x, y++);
+	t.print('and atlas framebuffer memory.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`STATUS: ${stateText}`, x, y++);
+	t.charColor(255, 200, 100);
+	t.print('CLICK CANVAS TO DISPOSE FONT', x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

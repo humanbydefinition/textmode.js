@@ -1,14 +1,14 @@
 /**
  * @title plugins.TextmodePlugin.install
  */
-let installed = false;
-let installTime = '';
+let isInstalled = false;
+let coreEnergy = 0;
 
-const myPlugin = {
-	name: 'install-plugin',
-	install(textmodifier, context) {
-		installed = true;
-		installTime = new Date().toLocaleTimeString();
+const quantumPlugin = {
+	name: 'quantum-core',
+	install(textmodifier) {
+		isInstalled = true;
+		coreEnergy = 1.0;
 	},
 };
 
@@ -16,22 +16,48 @@ const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
 	fontSize: 16,
-	plugins: [myPlugin],
+	plugins: [quantumPlugin],
 });
 
 const labelLayer = t.layers.add();
 
 t.draw(() => {
-	t.background(6, 8, 20);
-});
+	t.background(6, 8, 22);
+	const cols = t.grid.cols;
+	const rows = t.grid.rows;
+	const left = -Math.floor((cols - 1) / 2);
+	const right = left + cols - 1;
+	const top = -Math.floor(rows / 2);
+	const bottom = top + rows - 1;
+	const tm = t.frameCount * 0.05;
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
+	for (let y = top; y <= bottom; y++) {
+		for (let x = left; x <= right; x++) {
+			const dist = Math.hypot(x, y);
+			const angle = Math.atan2(y, x);
+			const spiral = Math.sin(dist * 0.3 - angle * 3 + tm * 2);
+			const norm = (spiral + 1) * 0.5;
+
+			const charKey = dist < 3 ? '@' : dist < 8 ? '#' : norm > 0.6 ? '*' : norm > 0.3 ? '+' : '.';
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(
+				isInstalled ? Math.floor(100 + norm * 155) : 80,
+				isInstalled ? Math.floor(180 + norm * 75) : 80,
+				isInstalled ? Math.floor(255 - dist * 8) : 80
+			);
+			t.cellColor(
+				isInstalled ? Math.floor(8 + norm * 16) : 4,
+				isInstalled ? Math.floor(14 + norm * 20) : 4,
+				isInstalled ? Math.floor(32 + norm * 24) : 8
+			);
+			t.char(charKey);
+			t.point();
+			t.pop();
+		}
+	}
+});
 
 labelLayer.draw(() => {
 	t.clear();
@@ -40,13 +66,23 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('PLUGINS.INSTALL', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: PLUGIN INITIALIZATION HOOK', x, y++, 100, 220, 255);
-	drawText('Runs on textmode instance creation.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`INSTALLED : ${installed}`, x, y++, 140, 190, 255);
-	drawText(`TRIGGERED : ${installTime}`, x, y++, 140, 190, 255);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('PLUGINS.TEXTMODEPLUGIN.INSTALL', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: NEURAL MATRIX CORE IGNITION', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('install(t, context) initializes state', x, y++);
+	t.print('during textmode instance creation.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`PLUGIN INSTALLED: ${isInstalled}`, x, y++);
+	t.print(`CORE ENERGY: ${(coreEnergy * 100).toFixed(0)}%`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

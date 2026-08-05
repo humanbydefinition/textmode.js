@@ -8,42 +8,49 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-let gridStatus = 'CUSTOM (26x12)';
+let resetPulse = 0;
 
-t.setup(() => {
-	t.grid.cols = 26;
-	t.grid.rows = 12;
+t.setup(() => {});
+
+t.mousePressed(() => {
+	t.grid.reset();
+	resetPulse = 1.0;
 });
 
 t.draw(() => {
-	t.background(6, 10, 22);
+	t.background(6, 12, 24);
+	const cols = t.grid.cols;
+	const rows = t.grid.rows;
+	const left = -Math.floor((cols - 1) / 2);
+	const right = left + cols - 1;
+	const top = -Math.floor(rows / 2);
+	const bottom = top + rows - 1;
+	const tm = t.frameCount * 0.05;
 
-	t.push();
-	t.char('+');
-	t.charColor(100, 255, 150);
-	t.rect(t.grid.cols, t.grid.rows);
-	t.pop();
-});
+	if (resetPulse > 0) resetPulse -= 0.03;
 
-t.mouseClicked(() => {
-	if (t.grid.cols === 26 && t.grid.rows === 12) {
-		t.grid.responsive();
-		t.grid.reset();
-		gridStatus = 'RESET TO VIEWPORT';
-	} else {
-		t.grid.cols = 26;
-		t.grid.rows = 12;
-		gridStatus = 'CUSTOM (26x12)';
+	for (let y = top; y <= bottom; y++) {
+		for (let x = left; x <= right; x++) {
+			const dist = Math.hypot(x, y);
+			const wave = Math.sin(dist * 0.4 - tm * 3 + resetPulse * 6);
+			const norm = (wave + 1) * 0.5;
+
+			const charKey = resetPulse > 0.5 ? '#' : norm > 0.6 ? '+' : norm > 0.3 ? ':' : '.';
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(
+				resetPulse > 0 ? 255 : Math.floor(60 + norm * 180),
+				resetPulse > 0 ? Math.floor(180 + resetPulse * 75) : Math.floor(140 + norm * 110),
+				resetPulse > 0 ? Math.floor(100 + resetPulse * 155) : Math.floor(220 - norm * 80)
+			);
+			t.cellColor(Math.floor(8 + norm * 12), Math.floor(12 + norm * 14), Math.floor(24 + norm * 16));
+			t.char(charKey);
+			t.point();
+			t.pop();
+		}
 	}
 });
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
 
 labelLayer.draw(() => {
 	t.clear();
@@ -52,16 +59,24 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODEGRID.RESET', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: RESET GRID TO FIT VIEWPORT', x, y++, 100, 220, 255);
-	drawText('Resets grid size to viewport.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`GRID STATUS: ${gridStatus}`, x, y++, 140, 190, 255);
-	const dims = t.grid.cols + 'x' + t.grid.rows;
-	drawText(`DIMS: ${dims}`, x, y++, 140, 190, 255);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('Click to toggle custom grid size.', x, y++, 120, 205, 255);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODEGRID.RESET', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: INTERACTIVE GRID RECALCULATION', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Recalculates columns and rows from', x, y++);
+	t.print('current canvas & cell dimensions.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`GRID: ${t.grid.cols} X ${t.grid.rows}`, x, y++);
+	t.charColor(255, 200, 100);
+	t.print('CLICK CANVAS TO TRIGGER RESET()', x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

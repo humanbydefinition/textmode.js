@@ -7,7 +7,7 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const densityLayer = t.layers.add({ fontSize: 8, blendMode: 'screen' });
+const densityLayer = t.layers.add({ fontSize: 8, blendMode: t.BLEND_SCREEN });
 const labelLayer = t.layers.add();
 
 function drawText(text, x, y, rgb = [255, 255, 255]) {
@@ -35,7 +35,7 @@ densityLayer.draw(() => {
 	t.push();
 	t.translate(20, 0);
 	t.charColor(255, 225, 140, 150);
-	t.char('.');
+	t.char('+');
 	t.rect(28, 20);
 	t.pop();
 });

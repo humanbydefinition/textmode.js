@@ -7,7 +7,7 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const scannerLayer = t.layers.add({ blendMode: 'additive' });
+const scannerLayer = t.layers.add({ blendMode: t.BLEND_ADDITIVE });
 const labelLayer = t.layers.add();
 let currentAngle = 0;
 

@@ -7,37 +7,33 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const labelLayer = t.layers.add();
 const ramp = t.createGlyphRamp(' .:-=+*#%@');
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
+const labelLayer = t.layers.add();
 
 t.draw(() => {
-	t.background(6, 8, 18);
+	t.background(14, 8, 14);
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.02;
 
-	const width = Math.min(t.grid.cols - 10, 52);
-	const left = -Math.floor(width / 2);
-	const baseline = 6;
-	const min = -Math.PI;
-	const max = Math.PI;
+	const n = 3 + Math.sin(tm * 0.5);
+	const m = 5 + Math.cos(tm * 0.5);
 
-	for (let x = 0; x < width; x++) {
-		const phase = t.map(x, 0, Math.max(1, width - 1), min, max);
-		const wave = Math.sin(phase + t.secs * 1.6);
-		const y = Math.round(t.map(wave, -1, 1, baseline + 8, baseline - 8));
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const nx = (x / (hw || 1)) * Math.PI;
+			const ny = (y / (hh || 1)) * Math.PI;
+			const w = Math.cos(n * nx) * Math.cos(m * ny) - Math.cos(m * nx) * Math.cos(n * ny);
 
-		t.push();
-		t.translate(left + x, y);
-		t.charColor(120 + wave * 60, 190, 240);
-		t.char(ramp.at(wave, -1, 1));
-		t.point();
-		t.pop();
+			const norm = (w + 2) / 4;
+			t.push();
+			t.translate(x, y);
+			t.charColor(Math.floor(255 - norm * 160), Math.floor(100 + norm * 150), Math.floor(200 - norm * 120));
+			t.cellColor(Math.floor(25 - norm * 15), Math.floor(8 + norm * 12), Math.floor(20 + norm * 10));
+			t.char(ramp.at(w, -2, 2));
+			t.point();
+			t.pop();
+		}
 	}
 });
 
@@ -48,12 +44,24 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODEGLYPHRAMP.AT', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: MAP VALUE TO GLYPH', x, y++, 100, 220, 255);
-	drawText('at(v) accepts normalized values.', x, y++, 140, 160, 190);
-	drawText('at(v, min, max) remaps ranges.', x, y++, 140, 160, 190);
-	drawText(`g: ${ramp.at(Math.sin(t.secs), -1, 1)}`, x, y++, 220, 230, 255);
+	const sampleW = Math.sin(t.frameCount * 0.05) * 2;
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODEGLYPHRAMP.AT', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: CHLADNI CYMATIC RESONANCE', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('at(v, min, max) remaps standing wave', x, y++);
+	t.print('nodal lines directly to the ramp.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`W: ${sampleW.toFixed(2)} -> GLYPH: "${ramp.at(sampleW, -2, 2)}"`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

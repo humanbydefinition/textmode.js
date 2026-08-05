@@ -7,17 +7,9 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const signalLayer = t.layers.add({ blendMode: 'additive' });
+const signalLayer = t.layers.add({ blendMode: t.BLEND_ADDITIVE });
 const labelLayer = t.layers.add();
 let isVisible = true;
-
-function drawText(text, x, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-	t.print(text, x, y);
-	t.pop();
-}
 
 t.draw(() => {
 	t.background(6, 10, 22);
@@ -31,23 +23,45 @@ t.draw(() => {
 		isVisible = !isVisible;
 	}
 
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+
 	t.push();
-	t.charColor(40, 50, 80);
-	t.char('.');
-	t.rect(t.grid.cols, t.grid.rows);
+	t.charColor(30, 45, 75);
+	t.char('+');
+	for (let y = -hh; y <= hh; y += 6) {
+		for (let x = -hw; x <= hw; x += 10) {
+			t.push();
+			t.translate(x, y);
+			t.point();
+			t.pop();
+		}
+	}
 	t.pop();
 });
 
 signalLayer.draw(() => {
 	t.clear();
-	const time = t.frameCount * 0.05;
+	const tm = t.frameCount * 0.04;
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
 
-	t.push();
-	t.charColor(140, 180, 255);
-	t.char('#');
-	const size = 6 + Math.sin(time) * 2;
-	t.rect(Math.round(size * 1.5), Math.round(size));
-	t.pop();
+	const trail = ['*', 'o', '.', ':'];
+	for (let i = 0; i < 16; i++) {
+		const angle = tm - i * 0.08;
+		const r = Math.min(hw, hh) * 0.5;
+		const px = Math.floor(Math.cos(angle) * r);
+		const py = Math.floor(Math.sin(angle) * (r * 0.6));
+		const idx = Math.min(trail.length - 1, Math.floor((i / 16) * trail.length));
+
+		t.push();
+		t.translate(px, py);
+		t.charColor(Math.floor(255 - i * 12), Math.floor(200 - i * 10), Math.floor(60 + i * 10));
+		t.cellColor(30, 20, 5);
+		t.char(trail[idx]);
+		t.point();
+		t.pop();
+	}
 });
 
 labelLayer.draw(() => {
@@ -56,15 +70,28 @@ labelLayer.draw(() => {
 	const top = -Math.floor(t.grid.rows / 2);
 	let y = top + 3;
 	const x = left + 3;
-	const statusColor = isVisible ? [140, 255, 180] : [255, 100, 100];
 
-	drawText('TEXTMODELAYER.HIDE', x, y++, [100, 255, 140]);
-	drawText('------------------------------------', x, y++, [80, 100, 150]);
-	drawText('CONCEPT: HIDE COMPOSITING', x, y++, [100, 220, 255]);
-	drawText('Layer draw keeps running.', x, y++, [140, 160, 190]);
-	drawText('Hidden output is not composited.', x, y++, [140, 160, 190]);
-	drawText('------------------------------------', x, y++, [80, 100, 150]);
-	drawText(isVisible ? 'LAYER: VISIBLE' : 'LAYER: HIDDEN', x, y++, statusColor);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODELAYER.HIDE', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: CONTINUOUS RADAR STATE MASKING', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('hide() pauses layer composition.', x, y++);
+	t.print('Background particle state advances.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	if (isVisible) {
+		t.charColor(140, 255, 180);
+		t.print('STATUS: VISIBLE (SIGNAL ON)', x, y++);
+	} else {
+		t.charColor(255, 120, 120);
+		t.print('STATUS: HIDDEN (STATE CONTINUES)', x, y++);
+	}
+	t.pop();
 });
 
 t.windowResized(() => {

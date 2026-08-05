@@ -7,69 +7,72 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const echoes = [];
+const SPAWNS = [
+	[-16, -5],
+	[12, -8],
+	[3, 5],
+	[-7, 9],
+	[17, 3],
+];
+const rings = [];
 const labelLayer = t.layers.add();
-let idCounter = 0;
-
-function spawnEcho() {
-	const id = ++idCounter;
-	const layer = t.layers.add();
-	const color = [255, 120 + (id % 2) * 135, 80 + (id % 3) * 85];
-	layer.draw(() => {
-		t.clear();
-		drawText(String(id), -Math.floor(String(id).length / 2), 10, color);
-	});
-
-	echoes.push({ id, layer, born: t.frameCount });
-	t.layers.move(labelLayer, Number.MAX_SAFE_INTEGER);
-}
+let spawns = 0;
 
 function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(rgb[0], rgb[1], rgb[2]);
+	t.print(text, x, y);
+	t.pop();
+}
+function put(x, y, glyph, rgb) {
+	t.push();
 	t.translate(x, y);
 	t.charColor(rgb[0], rgb[1], rgb[2]);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
+	t.char(glyph);
+	t.point();
 	t.pop();
 }
 
-t.setup(() => {
-	spawnEcho();
-});
+function spawnRing() {
+	const [cx, cy] = SPAWNS[spawns++ % SPAWNS.length];
+	const layer = t.layers.add({ blendMode: t.BLEND_ADDITIVE });
+	const born = t.frameCount;
+
+	layer.draw(() => {
+		t.clear();
+		const age = t.frameCount - born;
+		const r = 1 + age * 0.16;
+
+		for (let a = 0; a < Math.PI * 2; a += 0.09) {
+			const ca = Math.cos(a),
+				sa = Math.sin(a);
+			put(cx + Math.round(ca * r * 2.1), cy + Math.round(sa * r), '.', [120, 220, 255]);
+			if (age > 20) put(cx + Math.round(ca * r * 1.15), cy + Math.round(sa * r * 0.55), '.', [70, 140, 190]);
+		}
+	});
+
+	rings.push({ layer, born });
+	t.layers.move(labelLayer, Number.MAX_SAFE_INTEGER);
+}
 
 t.draw(() => {
-	t.background(6, 10, 22);
+	t.background(3, 7, 18);
+	const C = Math.floor(t.grid.cols / 2),
+		R = Math.floor(t.grid.rows / 2);
 
-	const time = t.frameCount * 0.02;
-	for (let i = 0; i < 4; i++) {
-		const angle = time * 0.5 + (i / 4) * Math.PI * 2;
-		const x = Math.round(Math.cos(angle) * 5 * 1.7);
-		const y = Math.round(Math.sin(angle) * 5);
+	for (let x = -C; x < C; x += 3)
+		for (let y = -R; y < R; y += 2) put(x, y, '.', [10, 18 + (y / R) * 14, 34 + (y / R) * 22]);
 
-		t.push();
-		t.translate(x, y);
-		t.charColor(70 + i * 20, 160, 255);
-		t.char('o');
-		t.point();
-		t.pop();
-	}
+	if (t.frameCount % 34 === 0) spawnRing();
 
-	if (t.frameCount % 30 === 0 && echoes.length < 5) {
-		spawnEcho();
-	}
+	for (let i = rings.length - 1; i >= 0; i--) {
+		const age = t.frameCount - rings[i].born;
+		rings[i].layer.opacity(Math.max(0, 1 - age / 90));
 
-	for (let i = echoes.length - 1; i >= 0; i--) {
-		const echo = echoes[i];
-		const age = t.frameCount - echo.born;
-
-		echo.layer.opacity(Math.max(0, 1 - age * 0.015));
-
-		if (age >= 66) {
-			t.layers.remove(echo.layer);
-			echoes.splice(i, 1);
+		if (age > 90) {
+			t.layers.remove(rings[i].layer);
+			rings.splice(i, 1);
 		}
 	}
 });
@@ -83,11 +86,10 @@ labelLayer.draw(() => {
 
 	drawText('LAYERMANAGER.REMOVE', x, y++, [100, 255, 140]);
 	drawText('------------------------------------', x, y++, [80, 100, 150]);
-	drawText('CONCEPT: REMOVE LAYERS', x, y++, [100, 220, 255]);
-	drawText('Echo layers fade, then dispose.', x, y++, [140, 160, 190]);
-	drawText('New echoes move HUD back on top.', x, y++, [140, 160, 190]);
+	drawText('CONCEPT: DISPOSE LAYERS', x, y++, [100, 220, 255]);
+	drawText('Dead ripples are removed.', x, y++, [140, 160, 190]);
 	drawText('------------------------------------', x, y++, [80, 100, 150]);
-	drawText(`ACTIVE ECHOES: ${echoes.length}`, x, y++, [140, 255, 180]);
+	drawText(`ACTIVE RINGS: ${rings.length}`, x, y++, [140, 255, 180]);
 });
 
 t.windowResized(() => {

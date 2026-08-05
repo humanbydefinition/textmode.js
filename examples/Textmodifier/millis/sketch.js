@@ -9,27 +9,30 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-let value = 0;
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
-
 t.draw(() => {
-	t.background(6, 10, 22);
-	value = t.millis / 1000;
-	const angle = (value % 6.28) * 1;
-	t.push();
-	t.translate(8, 2);
-	t.rotateZ((angle * 180) / Math.PI);
-	t.char('#');
-	t.charColor(140, 220, 255);
-	t.rect(12, 1);
-	t.pop();
+	t.background(10, 16, 32);
+	const ms = t.millis;
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const waveRamp = '~=*#@';
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const dist1 = Math.hypot(x - Math.sin(ms * 0.001) * 10, y);
+			const dist2 = Math.hypot(x + Math.sin(ms * 0.001) * 10, y);
+			const wave = (Math.sin(dist1 * 0.3 - ms * 0.005) + Math.cos(dist2 * 0.3 - ms * 0.005)) * 0.5 + 0.5;
+
+			const idx = Math.min(waveRamp.length - 1, Math.floor(wave * waveRamp.length));
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(Math.floor(40 + wave * 215), Math.floor(200 - wave * 70), Math.floor(220 + wave * 35));
+			t.cellColor(10, 18, 38);
+			t.char(waveRamp[idx]);
+			t.point();
+			t.pop();
+		}
+	}
 });
 
 labelLayer.draw(() => {
@@ -38,13 +41,23 @@ labelLayer.draw(() => {
 	const top = -Math.floor(t.grid.rows / 2);
 	let y = top + 3;
 	const x = left + 3;
-	drawText('TEXTMODIFIER.MILLIS', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: ELAPSED TIME', x, y++, 100, 220, 255);
-	drawText('Numeric time drives motion.', x, y++, 140, 160, 190);
-	drawText('Rows stay fixed-width short.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`VALUE: ${value.toFixed(2)}`, x, y++, 140, 255, 180);
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODIFIER.MILLIS', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: HIGH-PRECISION MILLISECOND SYNTH', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('millis returns high-res elapsed ms.', x, y++);
+	t.print('Standing wave phase computed live.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`ELAPSED: ${t.millis.toFixed(1)} MS`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

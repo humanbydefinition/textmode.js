@@ -19,20 +19,42 @@ t.mousePressed(() => {
 });
 
 t.draw(() => {
-	t.background(6, 10, 22);
-	t.char(t.isLooping() ? '>' : '|');
-	t.charColor(t.isLooping() ? 100 : 255, 255, 140);
-	t.rotateZ(t.frameCount * 5);
-	t.rect(10, 10);
-});
+	const looping = t.isLooping();
+	t.background(looping ? 12 : 24, 16, looping ? 24 : 16);
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.05;
+
+	const flowChars = ['/', '\\', '|', '-', '+', '#'];
+	const stasisChars = ['+', 'x', ':', '.'];
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const dist1 = Math.hypot(x - Math.cos(tm) * 10, y - Math.sin(tm) * 6);
+			const dist2 = Math.hypot(x + Math.cos(tm) * 10, y + Math.sin(tm) * 6);
+			const moire = (Math.sin(dist1 * 0.4) + Math.sin(dist2 * 0.4)) * 0.5 + 0.5;
+
+			t.push();
+			t.translate(x, y);
+
+			if (looping) {
+				const idx = Math.floor(moire * (flowChars.length - 1));
+				t.charColor(60, Math.floor(180 + moire * 75), Math.floor(140 + moire * 115));
+				t.cellColor(16, 28, 40);
+				t.char(flowChars[idx]);
+			} else {
+				const idx = Math.floor(moire * (stasisChars.length - 1));
+				t.charColor(240, 180, 60);
+				t.cellColor(40, 30, 12);
+				t.char(stasisChars[idx]);
+			}
+
+			t.point();
+			t.pop();
+		}
+	}
+});
 
 labelLayer.draw(() => {
 	t.clear();
@@ -41,14 +63,31 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODIFIER.ISLOOPING', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: LOOP STATE', x, y++, 100, 220, 255);
-	drawText('Compact API demonstration.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	const state = t.isLooping() ? 'TRUE' : 'FALSE';
-	drawText(`LOOPING: ${state}`, x, y++, 140, 255, 180);
-	drawText('CLICK TO TOGGLE', x, y++, 255, 225, 140);
+	const looping = t.isLooping();
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODIFIER.ISLOOPING', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: OPTICAL MOIRE WEAVE STATE', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('isLooping() queries active frame loop.', x, y++);
+	t.print('Click toggles noLoop() and loop().', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	if (looping) {
+		t.charColor(140, 255, 180);
+		t.print('ISLOOPING(): TRUE (KINETIC MOIRE)', x, y++);
+	} else {
+		t.charColor(240, 180, 60);
+		t.print('ISLOOPING(): FALSE (BLUEPRINT FREEZE)', x, y++);
+	}
+	t.charColor(255, 220, 140);
+	t.print('CLICK TO TOGGLE STATE', x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

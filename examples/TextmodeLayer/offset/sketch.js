@@ -7,7 +7,7 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const offsetLayer = t.layers.add({ blendMode: 'additive' });
+const offsetLayer = t.layers.add({ blendMode: t.BLEND_ADDITIVE });
 const labelLayer = t.layers.add();
 let currentOffset = { x: 0, y: 0 };
 

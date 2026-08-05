@@ -1,1 +1,0 @@
-export { LoadingLayerController } from './loading';

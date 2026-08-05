@@ -1,11 +1,11 @@
-# textmode.js (✿◠‿◠)
+# textmode.js
 
 <div align="center">
 
-<img alt="textmodejs_banner" src="https://github.com/user-attachments/assets/f03c2d74-7dc3-45cf-a0a5-043f9438231e" />
+<img alt="textmode.js — create textmode in your browser" src=".github/assets/readme-og.png" />
 
-| [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/) [![WebGL](https://img.shields.io/badge/WebGL2-990000?logo=webgl&logoColor=white)](https://www.khronos.org/webgl/) [![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/) | [![docs](https://img.shields.io/badge/docs-vitepress-646cff?logo=vitepress&logoColor=white)](https://code.textmode.art/) [![Discord](https://img.shields.io/discord/1357070706181017691?color=5865F2&label=Discord&logo=discord&logoColor=white)](https://discord.gg/sjrw8QXNks) | [![ko-fi](https://shields.io/badge/ko--fi-donate-ff5f5f?logo=ko-fi)](https://ko-fi.com/V7V8JG2FY) [![GitHub-sponsors](https://img.shields.io/badge/sponsor-30363D?logo=GitHub-Sponsors&logoColor=#EA4AAA)](https://github.com/sponsors/humanbydefinition) |
-|:-------------|:-------------|:-------------|
+| [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/) [![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/) [![WebGL2](https://img.shields.io/badge/WebGL2-990000?logo=webgl&logoColor=white)](https://www.khronos.org/webgl/) | [![API](https://img.shields.io/badge/API-typedoc-3178c6?logo=typescript&logoColor=white)](https://code.textmode.art/api/textmode.js/) [![docs](https://img.shields.io/badge/docs-vitepress-646cff?logo=vitepress&logoColor=white)](https://code.textmode.art/) [![Discord](https://img.shields.io/discord/1357070706181017691?color=5865F2&label=Discord&logo=discord&logoColor=white)](https://discord.gg/sjrw8QXNks) | [![ko-fi](https://shields.io/badge/ko--fi-donate-ff5f5f?logo=ko-fi)](https://ko-fi.com/V7V8JG2FY) [![GitHub-sponsors](https://img.shields.io/badge/sponsor-30363D?logo=GitHub-Sponsors&logoColor=#EA4AAA)](https://github.com/sponsors/humanbydefinition) |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 </div>
 
@@ -15,204 +15,97 @@ The library is designed to be easy to use and accessible to developers of all sk
 
 ## Features
 
-- Real‑time* ASCII/textmode rendering with a simple drawing API
-- Font system with runtime font loading and dynamic sizing *(supports TTF/OTF/WOFF)*
-- Dynamic layering system with blend modes and opacity for multi‑layered textmode scenes
-- Filter system with built-in filters and support for custom filter shaders
-- Load images and videos as sources and render them in customizable textmode styles
-- Author custom filter shaders in [`GLSL ES 3.00`](https://registry.khronos.org/OpenGL/specs/es/3.0/GLSL_ES_Specification_3.00.pdf) for advanced effects
-- Flexible exporting: TXT, SVG, raster images *(PNG/JPG/WebP)*, animated GIFs, and video *(WebM)* via [`textmode.export.js`](https://github.com/humanbydefinition/textmode.export.js)
-- Animation loop control: `frameRate`, `loop`/`noLoop`, `redraw`, `frameCount`, etc.
-- Framework-agnostic: Use `textmode.js` with any canvas-based framework or library
-- Zero dependencies, written in TypeScript, with comprehensive type definitions
+- **Real-time creative drawing** - Grid-based WebGL2 rendering for characters, colors, text, glyph ramps, and 2D/3D primitives
+- **Fonts and tilesets** - Runtime TTF/OTF/WOFF loading, bitmap tilesets, dynamic sizing, and reusable glyph atlases
+- **Layers and compositing** - Independent grids, fonts, transforms, visibility, opacity, and blend modes per layer
+- **Media conversion** - Images, videos, and live textures converted into configurable glyph and color data
+- **Programmable GLSL rendering** - Push beyond the drawing API with custom [`GLSL ES 3.00`](https://registry.khronos.org/OpenGL/specs/es/3.0/GLSL_ES_Specification_3.00.pdf) material and filter shaders, user-defined uniforms, textures, and offscreen framebuffers for fully programmable GPU effects
+- **Multi-stage filter pipelines** - Stack built-in or registered shader passes on individual layers, the composited scene, or the final presentation stage
+- **Animation and generative tools** - Loop and timing controls, deterministic randomness, noise, vectors, math, and easing
+- **Interaction and responsive rendering** - Mouse, keyboard, touch, gamepad, resize, and HiDPI support
+- **Plugins and framework integration** - Typed lifecycle hooks and layer/source extension points
 
 > [!NOTE]
 > *Performance depends on the complexity of your scene and device capabilities. Consider authoring filter shaders for complex effects at low cost.
 
 ## Try it online first
 
-Before installing anything locally, you can try `textmode.js` directly in your browser using our dedicated web editor:
+Open [editor.textmode.art](https://editor.textmode.art/), a browser-based live-coding environment for the
+complete official `textmode.js` ecosystem. Sketches run as you edit, with no local toolchain required.
 
-🌐 **[editor.textmode.art](https://editor.textmode.art)**
+The editor includes `textmode.js` and all four official add-ons: `textmode.export.js`, `textmode.filters.js`,
+`textmode.figlet.js`, and `textmode.synth.js`.
 
-The web editor is specifically designed for `textmode.js` and provides:
+- Write with Monaco-powered completions, hover documentation, and diagnostics.
+- Start with a blank sketch, an included example, or a community gallery sketch.
+- Keep code and preferences saved in the browser, then share sketches through URL-based links.
+- Use microphone or line-input analysis for audio-reactive work, and create on desktop or mobile.
 
-- **Zero setup required** - Start coding immediately
-- **Live preview** - See your creations in real-time  
-- **Save & share** - Export your sketches and share with others
-- **Built-in examples** - Learn from interactive examples
-- **Full API access** - All `textmode.js` features available
-
-The web editor is perfect for learning, prototyping, or creating quick experiments without any local setup!
+Use it to create and iterate on core sketches, then combine add-ons as your project grows.
 
 ## Installation
 
-### Prerequisites
-
-To get started with `textmode.js`, you'll need:
-
-- A **modern web browser** with `WebGL2` support *(Chrome, Firefox, Safari, Edge, etc.)*
-- A [`<canvas>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas) in your project *(optional, otherwise the library will create one for you)*
-- [Node.js 20.8.1+](https://nodejs.org/) and `npm` *(optional, for ESM installation)*
-
-> [!IMPORTANT]
-> `textmode.js` is currently fully dependent on `WebGL2`. Ensure your target browsers support it. You can check compatibility on [caniuse.com](https://caniuse.com/webgl2).
-
-### Importing `textmode.js`
-
-#### UMD
-
-To use `textmode.js` in a UMD environment, download the latest `umd` build from the [**GitHub releases page**](https://github.com/humanbydefinition/textmode.js/releases/) or import it directly from a CDN like [**jsDelivr**](https://www.jsdelivr.com/package/npm/textmode.js). The library is distributed as a single JavaScript file, which you can include in your project by adding the following script tag to your HTML file:
-
-```html
-<!-- index.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>textmode.js sketch</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/textmode.js@latest/dist/textmode.umd.js"></script>
-</head>
-<body>
-    <script src="sketch.js"></script>
-</body>
-</html>
-```
-
-```javascript
-// sketch.js
-const t = textmode.create({
-    width: window.innerWidth,
-    height: window.innerHeight,
-    fontSize: 16,
-    frameRate: 60
-});
-
-t.setup(() => {
-    // Optional setup code here (e.g., load fonts/shaders, initialize variables that access 't')
-});
-
-t.draw(() => {
-    t.background(32); // Dark gray background
-
-    t.char('A');
-
-    // Set drawing color to red
-    t.charColor(255, 0, 0);
-
-    // Draw a rectangle of 'A's in the top-left quarter
-    t.translate(-t.grid.cols / 4, -t.grid.rows / 4);
-    t.rect(t.grid.cols / 2, t.grid.rows / 2);
-
-    // ...add your drawing code here!
-});
-
-t.windowResized(() => {
-    t.resizeCanvas(window.innerWidth, window.innerHeight);
-});
-```
-
-#### ESM
-
-To use `textmode.js` in an ESM environment, you can install it via `npm`:
-
-```bash
-npm install textmode.js
-```
-
-Then, you can import it in your JavaScript or TypeScript files:
-
-```html
-<!-- index.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>textmode.js sketch</title>
-</head>
-<body>
-    <script type="module" src="./sketch.js"></script>
-</body>
-</html>
-```
-
-```javascript
-// sketch.js
-import { textmode } from 'textmode.js';
-
-const t = textmode.create({
-    width: window.innerWidth,
-    height: window.innerHeight,
-    fontSize: 16,
-    frameRate: 60
-});
-
-t.setup(() => {
-    // Optional setup code here (e.g., load fonts/shaders, initialize variables that access 't')
-});
-
-t.draw(() => {
-    t.background(32); // Dark gray background
-
-    t.char('A');
-
-    // Set drawing color to red
-    t.charColor(255, 0, 0);
-
-    // Draw a rectangle of 'A's in the top-left quarter
-    t.translate(-t.grid.cols / 4, -t.grid.rows / 4);
-    t.rect(t.grid.cols / 2, t.grid.rows / 2);
-
-    // ...add your drawing code here!
-});
-
-t.windowResized(() => {
-    t.resizeCanvas(window.innerWidth, window.innerHeight);
-});
-```
+Follow the [official installation guide](https://code.textmode.art/docs/installation) to install `textmode.js`
+with npm or a browser-ready UMD bundle and to add official plugins.
 
 ## Next steps
 
-Now that you have `textmode.js` set up, you can start creating your textmode art projects! Going forward, here are some resources to help you get the most out of the library:
+- **[Read the documentation](https://code.textmode.art/)** for core concepts, guides, and installation details.
+- **[Browse the API reference](https://code.textmode.art/api/textmode.js/)** for the complete typed API.
+- **[Explore the examples](./examples/)** to see common drawing, animation, media, and plugin patterns.
+- **[Try the live editor](https://editor.textmode.art/)** to sketch interactively in the browser.
 
-**[Visit the Official Documentation](https://code.textmode.art/)** for detailed guides, interactive examples, complete API reference, tips and tricks, and much more to unlock the full potential of `textmode.js` in your creative coding projects.
+## Contributing
 
-**[Try the Web Editor](https://editor.textmode.art)** to experiment with `textmode.js` without setting up a local environment.
+Thank you for considering contributing to this project! (✿◠‿◠)
 
+Please read the [Contributing Guide](./CONTRIBUTING.md) to get started.
+
+<!-- TEXTMODE-CONTRIBUTORS:START -->
+<!-- prettier-ignore-start -->
+<!-- Generated from https://github.com/humanbydefinition/code.textmode.art/blob/main/.vitepress/data/contributors.json and https://github.com/humanbydefinition/code.textmode.art/blob/main/.vitepress/data/contribution-types.json. Do not edit this section directly. -->
 ## Contributors
 
-Thanks go to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Thanks to the people who contribute code, documentation, design, examples, ideas, infrastructure, and care
+across the textmode.js ecosystem.
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
+<!-- markdownlint-disable MD033 -->
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/humanbydefinition"><img src="https://avatars.githubusercontent.com/u/59119064?v=4?s=100" width="100px;" alt="humanbydefinition"/><br /><sub><b>humanbydefinition</b></sub></a><br /><a href="https://github.com/humanbydefinition/textmode.js/commits?author=humanbydefinition" title="Code">💻</a> <a href="https://github.com/humanbydefinition/textmode.js/commits?author=humanbydefinition" title="Documentation">📖</a> <a href="#design-humanbydefinition" title="Design">🎨</a> <a href="#example-humanbydefinition" title="Examples">💡</a> <a href="#ideas-humanbydefinition" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-humanbydefinition" title="Maintenance">🚧</a> <a href="#infra-humanbydefinition" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#tool-humanbydefinition" title="Tools">🔧</a> <a href="#plugin-humanbydefinition" title="Plugin/utility libraries">🔌</a> <a href="https://github.com/humanbydefinition/textmode.js/pulls?q=is%3Apr+reviewed-by%3Ahumanbydefinition" title="Reviewed Pull Requests">👀</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/trintlermint"><img src="https://www.github.com/trintlermint.png?s=100" width="100px;" alt="trintlermint"/><br /><sub><b>trintlermint</b></sub></a><br /><a href="#design-trintlermint" title="Design">🎨</a> <a href="#example-trintlermint" title="Examples">💡</a></td>
+      <td align="center" valign="top" width="14.28%">
+        <a href="https://github.com/humanbydefinition">
+          <img src="https://github.com/humanbydefinition.png?s=100" width="100px" alt="humanbydefinition avatar" />
+          <br /><sub><b>humanbydefinition</b></sub>
+        </a>
+        <br /><span title="Code: Commits and pull requests" aria-label="Code: Commits and pull requests">💻</span> <span title="Documentation: README, guides, and API documentation" aria-label="Documentation: README, guides, and API documentation">📖</span> <span title="Design: User experience, branding, and visual design" aria-label="Design: User experience, branding, and visual design">🎨</span> <span title="Examples: Usage examples and creative sketches" aria-label="Examples: Usage examples and creative sketches">💡</span> <span title="Ideas and planning: Feature proposals, planning, and feedback" aria-label="Ideas and planning: Feature proposals, planning, and feedback">🤔</span> <span title="Maintenance: Refactoring and project upkeep" aria-label="Maintenance: Refactoring and project upkeep">🚧</span> <span title="Infrastructure: Continuous integration, hosting, and build systems" aria-label="Infrastructure: Continuous integration, hosting, and build systems">🚇</span> <span title="Tools: Developer and community tooling" aria-label="Tools: Developer and community tooling">🔧</span> <span title="Plugins and libraries: Plugin and utility library development" aria-label="Plugins and libraries: Plugin and utility library development">🔌</span> <span title="Code review: Reviewing pull requests" aria-label="Code review: Reviewing pull requests">👀</span>
+      </td>
+      <td align="center" valign="top" width="14.28%">
+        <a href="https://github.com/trintlermint">
+          <img src="https://github.com/trintlermint.png?s=100" width="100px" alt="trintlermint avatar" />
+          <br /><sub><b>trintlermint</b></sub>
+        </a>
+        <br /><span title="Design: User experience, branding, and visual design" aria-label="Design: User experience, branding, and visual design">🎨</span> <span title="Examples: Usage examples and creative sketches" aria-label="Examples: Usage examples and creative sketches">💡</span>
+      </td>
     </tr>
   </tbody>
 </table>
+<!-- markdownlint-enable MD033 -->
 
-<!-- markdownlint-restore -->
+Contribution details and profile links are maintained on the [textmode.js contributors page](https://code.textmode.art/docs/contributors).
 <!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-This project follows the [all-contributors](https://allcontributors.org) specification.
-Contributions of any kind are welcome.
-Maintainers can update this section with `npm run contributors:add -- <github-username> <contribution[,contribution]>`
-and `npm run contributors:generate`.
+<!-- TEXTMODE-CONTRIBUTORS:END -->
 
 ## License
 
 `textmode.js` is licensed under the [MIT License](./LICENSE).
 
-Third-party license attributions are listed in [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md).
-
 ## Acknowledgements
 
-`textmode.js` uses a custom-made TypeScript rewrite and minified version of [`Typr.js`](https://github.com/photopea/Typr.js) by [**Photopea**](https://github.com/photopea) for font loading and parsing, containing only the necessary components for our use case. `Typr.js` is licensed under the [**MIT License**](https://github.com/photopea/Typr.js/blob/main/LICENSE).
+- **[Typr.js](https://github.com/photopea/Typr.js)**
+    - Custom-made TypeScript rewrite and minified subset by [Photopea](https://github.com/photopea), used for font loading and parsing.
+    - License: [MIT License](https://github.com/photopea/Typr.js/blob/gh-pages/LICENSE).
 
-`textmode.js` ships with [`UrsaFont`](https://ursafrank.itch.io/ursafont) as the default font, created by [**UrsaFrank**](https://ursafrank.itch.io/). This font is available under the [**CC0 (Creative Commons Zero) license**](https://creativecommons.org/publicdomain/zero/1.0/).
+- **[UrsaFont](https://ursafrank.itch.io/ursafont)**
+    - Default bundled font created by [UrsaFrank](https://ursafrank.itch.io/).
+    - License: [CC0 (Creative Commons Zero)](https://creativecommons.org/publicdomain/zero/1.0/).

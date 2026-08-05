@@ -8,56 +8,51 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-let ex = 0,
-	ey = 0,
-	ez = 0;
-
-function drawText(text, x, y, r = 200, g = 220, b = 255) {
-	t.push();
-	t.translate(x, y);
-	t.charColor(r, g, b);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
-	t.pop();
-}
-
-function drawScene() {
-	t.push();
-	t.char('.');
-	t.charColor(50, 70, 110);
-	for (let x = -20; x <= 20; x += 4) t.line(x, 0, -20, x, 0, 20);
-	for (let z = -20; z <= 20; z += 4) t.line(-20, 0, z, 20, 0, z);
-	t.pop();
-	for (let i = 0; i < 5; i++) {
-		t.push();
-		t.translate(-16 + i * 8, 3, 0);
-		t.char(['@', '#', '+', '*', 'O'][i]);
-		t.charColor(100 + i * 30, 180, 255 - i * 30);
-		t.box(3, 6, 3);
-		t.pop();
-	}
-}
+let totalDistance = 0;
 
 t.setup(() => {
 	t.perspective(58, 0.1, 4096);
 });
 
+function drawHighway(camZ) {
+	t.push();
+	t.ambientLight(20, 10, 30);
+	t.pointLight(255, 100, 200, 0, 10, camZ - 15);
+
+	for (let i = 0; i < 16; i++) {
+		const obeliskZ = Math.floor(camZ / 12) * 12 - i * 12;
+		t.push();
+		t.translate(-14, 4, obeliskZ);
+		t.charColor(255, 120, 180);
+		t.cellColor(28, 8, 18);
+		t.char('#');
+		t.box(3, 8, 3);
+		t.pop();
+
+		t.push();
+		t.translate(14, 4, obeliskZ);
+		t.charColor(100, 220, 255);
+		t.cellColor(8, 20, 32);
+		t.char('#');
+		t.box(3, 8, 3);
+		t.pop();
+	}
+	t.pop();
+}
+
 t.draw(() => {
-	t.background(6, 10, 22);
+	t.background(14, 4, 18);
 
-	const time = t.frameCount * 0.02;
-	// Start at a fixed position then move() adds an offset
-	const cam = t.createCamera().setPosition(0, 8, 30).lookAt(0, 3, 0);
-	cam.move(Math.sin(time) * 14, 0, 0);
+	const cam = t
+		.createCamera()
+		.setPosition(0, 6, totalDistance)
+		.lookAt(0, 4, totalDistance - 40);
 
-	ex = cam.eyeX;
-	ey = cam.eyeY;
-	ez = cam.eyeZ;
+	cam.move(0, 0, -0.6);
+	totalDistance = cam.eyeZ;
+
 	t.setCamera(cam);
-	drawScene();
+	drawHighway(totalDistance);
 	t.resetCamera();
 });
 
@@ -68,14 +63,22 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('MOVE', x, y++, 100, 255, 140);
-	drawText('--------------------------------', x, y++, 80, 100, 150);
-	drawText('Translate eye by an offset.', x, y++, 100, 220, 255);
-	drawText('Shifts position without resetting', x, y++, 140, 160, 190);
-	drawText('the look-at target.', x, y++, 140, 160, 190);
-	drawText('--------------------------------', x, y++, 80, 100, 150);
-	const eye = `${ex.toFixed(1)},${ey.toFixed(1)},${ez.toFixed(1)}`;
-	drawText(`EYE: ${eye}`, x, y++, 120, 255, 180);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODECAMERA.MOVE', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: LIT HIGHWAY OBELISK FLYBY', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('cam.move(dx, dy, dz) translates eye', x, y++);
+	t.print('& target together in world space.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`TOTAL Z DISTANCE: ${totalDistance.toFixed(1)}`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

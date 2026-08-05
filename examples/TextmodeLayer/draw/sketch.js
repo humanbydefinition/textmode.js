@@ -8,7 +8,7 @@ const t = textmode.create({
 });
 
 const backLayer = t.layers.add({ opacity: 0.6 });
-const effectLayer = t.layers.add({ blendMode: 'additive' });
+const effectLayer = t.layers.add({ blendMode: t.BLEND_ADDITIVE });
 const labelLayer = t.layers.add();
 
 function drawText(text, x, y, rgb = [255, 255, 255]) {

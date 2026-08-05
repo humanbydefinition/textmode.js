@@ -8,16 +8,7 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-
 let density = 1;
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
 
 t.mouseClicked(() => {
 	density = density === 1 ? 2 : 1;
@@ -26,40 +17,36 @@ t.mouseClicked(() => {
 
 t.draw(() => {
 	t.background(6, 10, 22);
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const scale = density === 2 ? 0.4 : 0.2;
 
-	// Crosshair pattern: higher pixel density yields finer lines.
-	const step = 4;
-	const max = 18;
-	t.cellColor(20, 25, 45);
-	for (let i = -max; i <= max; i += step) {
-		t.rect(1, 1);
-		t.translate(1, 0);
-		t.point();
-	}
-	for (let i = -max; i <= max; i += step) {
-		t.push();
-		t.translate(0, i);
-		t.rect(1, 1);
-		t.pop();
-	}
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const dist = Math.hypot(x, y);
+			const moire = Math.sin(dist * scale - t.frameCount * 0.05) * Math.cos((x + y) * 0.1);
 
-	// Diagonal stepped line: smoother at higher resolution.
-	t.cellColor(60, 140, 200);
-	t.push();
-	t.translate(-4, -4);
-	for (let i = 0; i < 9; i++) {
-		t.char('#');
-		t.point();
-		t.translate(1, 1);
-	}
-	t.pop();
+			t.push();
+			t.translate(x, y);
 
-	// Pulse ring that reveals grid density.
-	const radius = 8 + Math.sin(t.frameCount * 0.05) * 3;
-	t.cellColor(200, 120, 60);
-	t.char('*');
-	t.charColor(200, 120, 60);
-	t.ellipse(radius * 2, radius);
+			if (Math.abs(moire) > 0.6) {
+				t.charColor(density === 2 ? 255 : 100, density === 2 ? 180 : 220, 255);
+				t.cellColor(15, 30, 55);
+				t.char('#');
+			} else if (Math.abs(moire) > 0.3) {
+				t.charColor(60, 140, 200);
+				t.cellColor(10, 20, 38);
+				t.char('+');
+			} else {
+				t.charColor(20, 40, 70);
+				t.cellColor(6, 10, 22);
+				t.char(x % 2 === 0 ? ':' : '.');
+			}
+
+			t.point();
+			t.pop();
+		}
+	}
 });
 
 labelLayer.draw(() => {
@@ -68,15 +55,25 @@ labelLayer.draw(() => {
 	const top = -Math.floor(t.grid.rows / 2);
 	let y = top + 3;
 	const x = left + 3;
-	drawText('TEXTMODIFIER.PIXELDENSITY', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: RETINA RENDERING', x, y++, 100, 220, 255);
-	drawText('Click to toggle pixel density.', x, y++, 140, 160, 190);
-	drawText('Backing store scales, CSS fixed.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`DENSITY: ${t.pixelDensity()}x`, x, y++, 140, 255, 180);
-	drawText(`BACKING: ${t.width}x${t.height}`, x, y++, 140, 255, 180);
-	drawText(`GRID: ${t.grid.cols}x${t.grid.rows}`, x, y++, 100, 200, 255);
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODIFIER.PIXELDENSITY', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: RETINA BACKING STORE SCALING', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Click canvas to toggle pixelDensity (1x / 2x).', x, y++);
+	t.print('Backing store scales while CSS stays fixed.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 180);
+	t.print(`PIXEL DENSITY: ${t.pixelDensity()}X`, x, y++);
+	t.charColor(255, 200, 100);
+	t.print(`BACKING STORE: ${t.width}x${t.height}`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

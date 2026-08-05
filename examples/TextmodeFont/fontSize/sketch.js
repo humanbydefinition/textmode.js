@@ -1,8 +1,6 @@
 /**
  * @title TextmodeFont.fontSize
  */
-const BESCII_URL = 'https://cdn.jsdelivr.net/gh/damianvila/font-bescii@main/fonts/v2.0/Bescii-Mono.ttf';
-
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
@@ -11,41 +9,31 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-let activeFont = null;
-let fontReady = false;
-let disposed = false;
-
-t.setup(async () => {
-	activeFont = await t.loadFont(BESCII_URL);
-	fontReady = true;
-});
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
-
 t.draw(() => {
-	t.background(6, 10, 22);
-	if (!fontReady) return;
-	const glyphs = activeFont.characters;
-	const cols = activeFont.textureColumns;
-	const rows = activeFont.textureRows;
-	const startX = -Math.floor(cols / 2);
-	const labelBottom = -Math.floor(t.grid.rows / 2) + 11;
-	const bottomLimit = Math.floor(t.grid.rows / 2) - rows - 2;
-	const startY = Math.max(labelBottom, Math.min(-Math.floor(rows / 2), bottomLimit));
-	for (let i = 0; i < glyphs.length; i++) {
-		const glyph = glyphs[i];
-		t.push();
-		t.translate(startX + (i % cols), startY + Math.floor(i / cols));
-		t.char(glyph.character);
-		t.charColor(120 + (i % cols) * 8, 220, 255 - (i % rows) * 12);
-		t.point();
-		t.pop();
+	t.background(6, 12, 18);
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.02;
+	const glyphs = t.font.characters;
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const dist = Math.hypot(x, y);
+			const scaleRing = Math.floor(dist * 0.35 - tm * 2) % 5;
+			const norm = Math.abs(scaleRing) / 5;
+
+			const gIdx = Math.floor(Math.abs(dist * 0.7 - tm * 10 + Math.sin(x * 0.3) * 4) % (glyphs.length || 1));
+			const glyphObj = glyphs[gIdx] || glyphs[0];
+			const char = glyphObj ? glyphObj.character : '.';
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(Math.floor(240 - norm * 150), Math.floor(160 + norm * 85), Math.floor(60 + norm * 180));
+			t.cellColor(Math.floor(10 + norm * 20), Math.floor(18 + norm * 15), Math.floor(30 + norm * 25));
+			t.char(char);
+			t.point();
+			t.pop();
+		}
 	}
 });
 
@@ -56,16 +44,26 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODEFONT.FONTSIZE', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: GLYPH ATLAS DATA', x, y++, 100, 220, 255);
-	drawText('Bescii web font feeds glyphs.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	if (!fontReady) {
-		drawText('LOADING BESCII...', x, y++, 255, 225, 140);
-		return;
-	}
-	drawText(`FONT SIZE: ${activeFont.fontSize}`, x, y++, 140, 255, 180);
+	const sz = t.font.fontSize;
+	const dims = t.font.maxGlyphDimensions;
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODEFONT.FONTSIZE', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: FONT SIZE METRIC ACCESSOR', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Configures font atlas raster size.', x, y++);
+	t.print('Determines pixel glyph resolution.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`FONT SIZE: ${sz} PX`, x, y++);
+	t.print(`CELL DIMS: ${dims.width} x ${dims.height} PX`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

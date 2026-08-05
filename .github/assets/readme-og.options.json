@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"generator": {
+		"package": "@textmode/og",
+		"version": "0.1.0"
+	},
+	"source": {
+		"name": "textmodeshift",
+		"repository": "https://github.com/humanbydefinition/editor.textmode.art",
+		"revision": "b037294d3e0abeff074d50b41235015b3f7d8e67",
+		"path": "sketches/textmodeshift/sketch.js",
+		"variantSeed": "readme:textmode.js:v1",
+		"randomSeedTemplate": "textmodeshift-v1:${variantSeed}:${seed}"
+	},
+	"output": {
+		"path": "readme-og.png",
+		"layout": {
+			"kind": "main"
+		},
+		"frame": 60,
+		"darken": 70
+	},
+	"branding": {
+		"logo": "default",
+		"labels": {
+			"brandName": "textmode.js",
+			"mainTopRight": "DAS NEST",
+			"mainHeadlinePrefix": "CREATE",
+			"mainHeadlineEmphasis": "TEXTMODE",
+			"mainHeadlineSecondLine": "IN YOUR BROWSER",
+			"mainBottomLeft": "WEBGL2 / REAL-TIME / FRAMEWORK-AGNOSTIC",
+			"mainBottomRight": "CODE.TEXTMODE.ART"
+		}
+	}
+}

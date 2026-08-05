@@ -1,1 +1,0 @@
-export { TextmodeCamera } from './TextmodeCamera';

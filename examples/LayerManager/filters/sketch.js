@@ -7,90 +7,91 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const filteredLayer = t.layers.add({ blendMode: 'screen', opacity: 0.8 });
+const filteredLayer = t.layers.add({ blendMode: t.BLEND_SCREEN, opacity: 0.8 });
 const labelLayer = t.layers.add();
 
 function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
-	t.translate(x, y);
+	t.printAlign('left', 'top');
 	t.charColor(rgb[0], rgb[1], rgb[2]);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
-
+	t.print(text, x, y);
 	t.pop();
-}
-
-function drawOrbit(count, speed, radius, rgb, glyph) {
-	for (let i = 0; i < count; i++) {
-		const angle = t.frameCount * 0.02 * speed + (i / count) * Math.PI * 2;
-		const x = Math.round(Math.cos(angle) * radius * 1.7);
-		const y = Math.round(Math.sin(angle) * radius);
-
-		t.push();
-		t.translate(x, y);
-		t.charColor(rgb[0] + i * 20, rgb[1], rgb[2]);
-		t.char(glyph);
-		t.point();
-		t.pop();
-	}
 }
 
 t.setup(async () => {
 	await t.layers.filters.register(
-		'rgbShift',
+		'ripple',
 		`#version 300 es
-		precision highp float;
-		uniform sampler2D u_texture;
-		uniform float u_time;
-		uniform float u_amount;
-		in vec2 v_uv;
-		out vec4 fragColor;
-		void main() {
-			vec2 shift = vec2(u_amount * sin(u_time), 0.0);
-			float r = texture(u_texture, v_uv + shift).r;
-			float g = texture(u_texture, v_uv).g;
-			float b = texture(u_texture, v_uv - shift).b;
-			float a = texture(u_texture, v_uv).a;
-			fragColor = vec4(r, g, b, a);
-		}`,
-		{
-			u_time: ['time', 0],
-			u_amount: ['amount', 0.01],
-		}
+precision highp float;
+uniform sampler2D u_texture;
+uniform float u_time;
+uniform float u_amount;
+in vec2 v_uv;
+out vec4 fragColor;
+void main() {
+	float d = length(v_uv - 0.5);
+	float w = sin(d * 8.0 - u_time) * u_amount;
+	vec2 uv = v_uv + vec2(w * cos(d * 3.0), w * sin(d * 3.0));
+	fragColor = texture(u_texture, clamp(uv, 0.0, 1.0));
+}`,
+		{ u_time: ['time', 0], u_amount: ['amount', 0.025] }
 	);
 });
 
 t.draw(() => {
 	t.background(6, 10, 22);
-	drawOrbit(4, 0.5, 5, [70, 160, 255], 'o');
+
+	const tc = t.frameCount * 0.022;
+	for (let i = 0; i < 75; i++) {
+		const p = (i / 75) * Math.PI * 2;
+		const r = 3 + 6 * ((i % 8) / 8) + Math.sin(tc + i * 0.15) * 1.2;
+		const a = p + tc * 0.35 * ((i % 3) - 1);
+		const x = Math.round(Math.cos(a) * r * 1.5);
+		const y = Math.round(Math.sin(a) * r);
+
+		t.push();
+		t.translate(x, y);
+		t.charColor(30 + i * 0.8, 60 + i * 0.4, 110 + i * 0.3);
+		t.char('.');
+		t.point();
+		t.pop();
+	}
 });
 
 filteredLayer.draw(() => {
 	t.clear();
 
-	const time = t.frameCount * 0.02;
-	drawOrbit(3, -0.7, 3, [255, 120, 80], '+');
+	const tc = t.frameCount * 0.028;
+	for (let i = 0; i < 60; i++) {
+		const p = (i / 60) * Math.PI * 2;
+		const r = 2 + 4 * ((i % 6) / 6) + Math.sin(tc * 0.8 + i * 0.22) * 1;
+		const a = p - tc * 0.5 * ((i % 3) + 1);
+		const x = Math.round(Math.cos(a) * r * 1.5);
+		const y = Math.round(Math.sin(a) * r);
+		const hue = Math.sin(a + tc) * 0.4 + 0.6;
 
-	filteredLayer.filter('rgbShift', { time: time * 1.5, amount: 0.015 });
+		t.push();
+		t.translate(x, y);
+		t.charColor(200 + hue * 55, 100 + hue * 70, 50 + hue * 40);
+		t.char('*');
+		t.point();
+		t.pop();
+	}
+
+	filteredLayer.filter('ripple', { time: tc * 2, amount: 0.022 });
 });
 
 labelLayer.draw(() => {
 	t.clear();
-	const left = -Math.floor(t.grid.cols / 2);
-	const top = -Math.floor(t.grid.rows / 2);
+	const left = -Math.floor(t.grid.cols / 2),
+		top = -Math.floor(t.grid.rows / 2);
 	let y = top + 3;
-	const x = left + 3;
 
-	drawText('LAYERMANAGER.FILTERS', x, y++, [100, 255, 140]);
-	drawText('------------------------------------', x, y++, [80, 100, 150]);
-	drawText('CONCEPT: GLOBAL FILTER MANAGER', x, y++, [100, 220, 255]);
-	drawText('Registers a custom RGB shift.', x, y++, [140, 160, 190]);
-	drawText('Applies it only to one layer.', x, y++, [140, 160, 190]);
-	drawText('------------------------------------', x, y++, [80, 100, 150]);
-	drawText('FILTER: rgbShift', x, y++, [140, 255, 180]);
+	drawText('LAYERMANAGER.FILTERS', left + 3, y++, [100, 255, 140]);
+	drawText('------------------------------------', left + 3, y++, [80, 100, 150]);
+	drawText('CONCEPT: GLOBAL FILTER MANAGER', left + 3, y++, [100, 220, 255]);
+	drawText('Registers a custom ripple filter.', left + 3, y++, [140, 160, 190]);
+	drawText('FILTER: ripple', left + 3, y++, [140, 255, 180]);
 });
 
 t.windowResized(() => {

@@ -8,63 +8,89 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-
-const pulses = [];
-let count = 0;
-let last = 'WAITING';
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
-
-function addPulse(label, x = 0, y = 0) {
-	count++;
-	last = label;
-	pulses.unshift({ label, x, y, life: 1 });
-	if (pulses.length > 12) pulses.length = 12;
-}
+const shockwaves = [];
+let doubleClickCount = 0;
 
 t.doubleClicked(() => {
-	addPulse('DOUBLE CLICK', t.mouse.x, t.mouse.y);
+	doubleClickCount++;
+	if (t.mouse.x !== Number.NEGATIVE_INFINITY) {
+		shockwaves.push({ x: t.mouse.x, y: t.mouse.y, radius: 0, maxRadius: 28 });
+		if (shockwaves.length > 6) shockwaves.shift();
+	}
 });
 
 t.draw(() => {
-	t.background(6, 10, 22);
+	t.background(6, 8, 20);
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
 
-	for (let i = pulses.length - 1; i >= 0; i--) {
-		const p = pulses[i];
-		p.life -= 0.02;
-		if (p.life <= 0) {
-			pulses.splice(i, 1);
-			continue;
+	for (let i = shockwaves.length - 1; i >= 0; i--) {
+		shockwaves[i].radius += 0.4;
+		if (shockwaves[i].radius > shockwaves[i].maxRadius) {
+			shockwaves.splice(i, 1);
 		}
-		t.push();
-		t.translate(p.x, p.y - (1 - p.life) * 4);
-		t.char('*');
-		t.charColor(255, 210, 120);
-		t.point();
-		t.pop();
+	}
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			let shockIntensity = 0;
+
+			for (const wave of shockwaves) {
+				const dist = Math.hypot(x - wave.x, y - wave.y);
+				if (Math.abs(dist - wave.radius) < 1.5) {
+					shockIntensity = Math.max(shockIntensity, 1 - Math.abs(dist - wave.radius) / 1.5);
+				}
+			}
+
+			t.push();
+			t.translate(x, y);
+
+			if (shockIntensity > 0.6) {
+				t.charColor(255, 220, 80);
+				t.cellColor(45, 30, 10);
+				t.char('@');
+			} else if (shockIntensity > 0.2) {
+				t.charColor(100, 220, 255);
+				t.cellColor(15, 35, 50);
+				t.char('*');
+			} else {
+				const bgVal = (Math.sin(x * 0.2) + Math.cos(y * 0.2)) * 0.5 + 0.5;
+				t.charColor(20, 35, 60);
+				t.cellColor(6, 8, 20);
+				t.char(bgVal > 0.6 ? '+' : '.');
+			}
+
+			t.point();
+			t.pop();
+		}
 	}
 });
 
 labelLayer.draw(() => {
 	t.clear();
-	const left = -Math.floor(t.grid.cols / 2);
+	const left = -Math.floor(t.grid.cols / 2) + 1;
 	const top = -Math.floor(t.grid.rows / 2);
 	let y = top + 3;
 	const x = left + 3;
-	drawText('TEXTMODIFIER.DOUBLECLICKED', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: DOUBLE CLICK', x, y++, 100, 220, 255);
-	drawText('Event updates compact state.', x, y++, 140, 160, 190);
-	drawText('Pulses show recent triggers.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('DOUBLE: ' + count, x, y++, 140, 255, 180);
-	drawText('LAST: ' + last.slice(0, 28), x, y++, 180, 200, 220);
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODIFIER.DOUBLECLICKED', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: DOUBLE-CLICK SHOCKWAVE TRIGGER', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Double-click canvas to emit shockwaves.', x, y++);
+	t.print('Propagates radial energy outward.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(255, 200, 80);
+	t.print(`DOUBLE-CLICKS: ${doubleClickCount}`, x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`ACTIVE WAVES: ${shockwaves.length}`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

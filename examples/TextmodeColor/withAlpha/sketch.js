@@ -20,6 +20,7 @@ layers.forEach((layer, i) => {
 		t.push();
 		t.translate((i - 2) * 5, Math.sin(t.frameCount * 0.05 + i) * 5);
 		t.charColor(base.withAlpha(opacity));
+		t.cellColor(0, 0, 0, 0);
 		t.char(String.fromCharCode(65 + i));
 		t.rect(12, 12);
 		t.pop();

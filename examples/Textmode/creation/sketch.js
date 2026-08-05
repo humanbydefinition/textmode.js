@@ -4,36 +4,44 @@
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
+	fontSize: 16,
 });
 
 const labelLayer = t.layers.add();
-const chars = 'TEXTMODE';
+const RAMP = ' .:+*#@';
 
 t.draw(() => {
-	t.background(8, 12, 24);
+	t.background(14, 6, 26);
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.02;
 
-	for (let i = 0; i < chars.length; i++) {
-		const angle = t.frameCount * 0.03 + (Math.PI * 2 * i) / chars.length;
-		const radius = 7 + Math.sin(t.frameCount * 0.08 + i) * 2;
-		const x = Math.round(Math.cos(angle) * radius * 1.6);
-		const y = Math.round(Math.sin(angle) * radius);
+	const n = 3 + Math.sin(tm * 0.5) * 1.5;
+	const m = 2 + Math.cos(tm * 0.7) * 1.5;
 
-		t.push();
-		t.translate(x, y);
-		t.charColor(120 + i * 14, 180 + i * 6, 255);
-		t.char(chars[i]);
-		t.point();
-		t.pop();
+	for (let y = -hh; y <= hh; y++) {
+		const ny = (y / hh) * Math.PI;
+		for (let x = -hw; x <= hw; x++) {
+			const nx = (x / hw) * Math.PI;
+
+			const chladni = Math.sin(n * nx) * Math.cos(m * ny) - Math.cos(m * nx) * Math.sin(n * ny);
+			const absVal = Math.abs(chladni);
+
+			if (absVal < 0.6) {
+				const norm = 1 - absVal / 0.6;
+				const idx = Math.floor(norm * (RAMP.length - 1));
+
+				t.push();
+				t.translate(x, y);
+				t.charColor(Math.floor(180 + norm * 75), Math.floor(140 + norm * 70), Math.floor(40 + norm * 50));
+				t.cellColor(Math.floor(25 + norm * 20), 8, Math.floor(40 + norm * 20));
+				t.char(RAMP[idx]);
+				t.point();
+				t.pop();
+			}
+		}
 	}
 });
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
 
 labelLayer.draw(() => {
 	t.clear();
@@ -42,11 +50,22 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODE.CREATION', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: INITIALIZATION FUNCTION', x, y++, 100, 220, 255);
-	drawText('Creates a Textmodifier instance.', x, y++, 140, 160, 190);
-	drawText('Configures default viewport/canvas.', x, y++, 140, 160, 190);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODE.CREATION', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: CHLADNI NODAL RESONANCE', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Factory initialization setup.', x, y++);
+	t.print('Configures canvas & grid context.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(255, 210, 90);
+	t.print('RESONANCE: ACTIVE', x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

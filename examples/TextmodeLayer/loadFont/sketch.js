@@ -7,7 +7,7 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const detailedLayer = t.layers.add({ blendMode: 'screen' });
+const detailedLayer = t.layers.add({ blendMode: t.BLEND_SCREEN });
 const labelLayer = t.layers.add();
 
 function drawText(text, x, y, rgb = [255, 255, 255]) {

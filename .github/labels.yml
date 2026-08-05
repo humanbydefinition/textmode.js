@@ -1,0 +1,95 @@
+- name: 'type: bug'
+  color: d73a4a
+  description: Broken or incorrect behavior.
+
+- name: 'type: enhancement'
+  color: a2eeef
+  description: Improvement to an existing feature or workflow.
+
+- name: 'type: feature'
+  color: 0e8a16
+  description: New capability or public API proposal.
+
+- name: 'type: discussion'
+  color: d4c5f9
+  description: Open-ended design, architecture, or project discussion.
+
+- name: 'type: docs'
+  color: 0075ca
+  description: Documentation, guides, comments, or examples-as-documentation.
+
+- name: 'type: question'
+  color: cc317c
+  description: Usage question or support request.
+
+- name: 'area: rendering'
+  color: fbca04
+  description: WebGL renderer, shaders, batching, or framebuffers.
+
+- name: 'area: layers'
+  color: fbca04
+  description: Layer lifecycle, compositing, cameras, or layer state.
+
+- name: 'area: filters'
+  color: fbca04
+  description: Built-in or custom filters and shader effects.
+
+- name: 'area: media'
+  color: fbca04
+  description: Images, video, conversion, textures, or source loading.
+
+- name: 'area: fonts'
+  color: fbca04
+  description: Fonts, typography, glyph metrics, or tilesets.
+
+- name: 'area: input'
+  color: fbca04
+  description: Keyboard, mouse, pointer, touch, or interaction behavior.
+
+- name: 'area: plugins'
+  color: fbca04
+  description: Plugin runtime, extension points, or plugin docs.
+
+- name: 'area: packaging'
+  color: fbca04
+  description: Build, release, npm package, types, or bundler behavior.
+
+- name: 'area: docs'
+  color: fbca04
+  description: README, guides, API reference, or contributor docs.
+
+- name: 'area: examples'
+  color: fbca04
+  description: Example sketches, manifests, assets, or visual demos.
+
+- name: 'area: tests'
+  color: fbca04
+  description: Unit, integration, contract, tooling, or browser tests.
+
+- name: 'status: needs repro'
+  color: ededed
+  description: Needs a smaller or clearer reproduction before work can proceed.
+
+- name: 'status: needs design'
+  color: ededed
+  description: Needs API, architecture, or behavior discussion before implementation.
+
+- name: 'status: accepted'
+  color: ededed
+  description: Accepted by maintainers and ready for implementation.
+
+- name: 'status: blocked'
+  color: ededed
+  description: Blocked by another decision, issue, dependency, or missing information.
+
+- name: 'status: awaiting response'
+  color: ededed
+  description: Waiting for the reporter, contributor, or reviewer to respond.
+
+- name: good first issue
+  color: 7057ff
+  description: Small, well-scoped work suitable for new contributors.
+
+- name: help wanted
+  color: 008672
+  description: Maintainers welcome community help on this issue.

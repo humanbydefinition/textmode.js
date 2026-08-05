@@ -7,63 +7,57 @@ const t = textmode.create({
 	fontSize: 16,
 });
 
-const filteredLayer = t.layers.add({ blendMode: 'screen', opacity: 0.8 });
+const RAMP = ' .:-=+*#%@';
+const waveLayer = t.layers.add({ blendMode: t.BLEND_SCREEN });
 const labelLayer = t.layers.add();
 
-function drawText(text, x, y, rgb = [255, 255, 255]) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(rgb[0], rgb[1], rgb[2]);
-	t.print(text, x, y);
-	t.pop();
-}
-
-function drawCenteredText(text, y, rgb = [255, 255, 255]) {
-	drawText(text, -Math.floor(text.length / 2), y, rgb);
-}
-
 t.draw(() => {
-	t.background(6, 10, 22);
+	t.background(5, 10, 24);
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.04;
 
-	const time = t.frameCount * 0.02;
+	const lissX = Math.sin(tm * 1.3) * (hw * 0.6);
+	const lissY = Math.cos(tm * 0.9) * (hh * 0.6);
 
-	drawCenteredText('Base Layer', 0, [240, 245, 255]);
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const dist = Math.hypot(x - lissX, y - lissY);
+			const wave = (Math.sin(dist * 0.35 - tm * 2) + 1) * 0.5;
 
-	for (let i = 0; i < 4; i++) {
-		const angle = time * 0.5 + (i / 4) * Math.PI * 2;
-		const x = Math.round(Math.cos(angle) * 5 * 1.7);
-		const y = Math.round(Math.sin(angle) * 5);
-
-		t.push();
-		t.translate(x, y);
-		t.charColor(70 + i * 20, 160, 255);
-		t.char('o');
-		t.point();
-		t.pop();
+			if (wave > 0.5) {
+				const idx = Math.floor(((wave - 0.5) / 0.5) * (RAMP.length - 1));
+				t.push();
+				t.translate(x, y);
+				t.charColor(0, Math.floor(120 + wave * 135), 245);
+				t.cellColor(2, 12, 35);
+				t.char(RAMP[idx]);
+				t.point();
+				t.pop();
+			}
+		}
 	}
 });
 
-filteredLayer.draw(() => {
+waveLayer.draw(() => {
 	t.clear();
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.03;
 
-	const time = t.frameCount * 0.02;
-
-	drawCenteredText('Filtered Layer', -8, [120, 255, 180]);
-
-	for (let i = 0; i < 3; i++) {
-		const angle = time * -0.7 + (i / 3) * Math.PI * 2;
-		const x = Math.round(Math.cos(angle) * 3 * 1.7);
-		const y = Math.round(Math.sin(angle) * 3);
-
-		t.push();
-		t.translate(x, y);
-		t.charColor(255, 120, 80);
-		t.char('+');
-		t.point();
-		t.pop();
+	for (let y = -hh; y <= hh; y += 2) {
+		for (let x = -hw; x <= hw; x += 2) {
+			const gridHarmonic = Math.sin(x * 0.2 + tm) * Math.cos(y * 0.2 - tm);
+			if (gridHarmonic > 0.4) {
+				t.push();
+				t.translate(x, y);
+				t.charColor(255, 130, 40);
+				t.char('+');
+				t.point();
+				t.pop();
+			}
+		}
 	}
-
-	filteredLayer.filter('grayscale', 0.5 + 0.5 * Math.sin(time * 2));
 });
 
 labelLayer.draw(() => {
@@ -72,15 +66,27 @@ labelLayer.draw(() => {
 	const top = -Math.floor(t.grid.rows / 2);
 	let y = top + 3;
 	const x = left + 3;
-	const result = t.layers.resultFramebuffer;
 
-	drawText('LAYERMANAGER.RESULTFRAMEBUFFER', x, y++, [100, 255, 140]);
-	drawText('------------------------------------', x, y++, [80, 100, 150]);
-	drawText('CONCEPT: COMPOSITED OUTPUT', x, y++, [100, 220, 255]);
-	drawText('Reads the latest layer result.', x, y++, [140, 160, 190]);
-	drawText('Global filters use this buffer.', x, y++, [140, 160, 190]);
-	drawText('------------------------------------', x, y++, [80, 100, 150]);
-	drawText(`SIZE: ${result.width} x ${result.height}`, x, y++, [140, 255, 180]);
+	const fb = t.layers.resultFramebuffer;
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('LAYERMANAGER.RESULTFRAMEBUFFER', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: OSCILLOSCOPE FEEDBACK LENS', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Inspects composited WebGL framebuffer.', x, y++);
+	t.print('Reads pixel render target bounds.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	if (fb) {
+		t.charColor(255, 180, 40);
+		t.print(`FB BOUNDS: ${fb.width}x${fb.height} PX`, x, y++);
+	}
+	t.pop();
 });
 
 t.windowResized(() => {

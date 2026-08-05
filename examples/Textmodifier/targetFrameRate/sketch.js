@@ -8,28 +8,38 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-
-let target = 60;
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
+let targetFPS = 60;
 
 t.draw(() => {
-	t.background(6, 10, 22);
-	target = Math.floor(t.frameCount / 150) % 2 === 0 ? 24 : 60;
-	t.targetFrameRate(target);
-	for (let i = 0; i < target / 4; i++) {
-		t.push();
-		t.translate(-18 + i, 3);
-		t.char('+');
-		t.charColor(120, 220, 255);
-		t.point();
-		t.pop();
+	t.background(16, 10, 24);
+	targetFPS = Math.floor(t.frameCount / 150) % 2 === 0 ? 15 : 60;
+	t.targetFrameRate(targetFPS);
+
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.05;
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const waveY = Math.round(Math.sin(x * 0.2 + tm) * 6);
+			const isPendulum = y === waveY;
+
+			t.push();
+			t.translate(x, y);
+
+			if (isPendulum) {
+				t.charColor(0, 220, 255);
+				t.cellColor(10, 40, 55);
+				t.char('O');
+			} else {
+				t.charColor(50, 30, 70);
+				t.cellColor(16, 10, 24);
+				t.char('.');
+			}
+
+			t.point();
+			t.pop();
+		}
 	}
 });
 
@@ -39,13 +49,23 @@ labelLayer.draw(() => {
 	const top = -Math.floor(t.grid.rows / 2);
 	let y = top + 3;
 	const x = left + 3;
-	drawText('TEXTMODIFIER.TARGETFRAMERATE', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: TARGET FPS', x, y++, 100, 220, 255);
-	drawText('Sets desired draw cadence.', x, y++, 140, 160, 190);
-	drawText('Readout is kept compact.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`TARGET: ${t.targetFrameRate()}`, x, y++, 140, 255, 180);
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODIFIER.TARGETFRAMERATE', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: STROBOSCOPIC STAGE CADENCE', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Toggles between 15 (film) & 60 FPS.', x, y++);
+	t.print('Motion steps adapt to target cadence.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(255, 60, 180);
+	t.print(`TARGET CADENCE: ${targetFPS} FPS`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

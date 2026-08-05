@@ -9,7 +9,7 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-const topLayer = t.layers.add({ blendMode: 'additive' });
+const topLayer = t.layers.add({ blendMode: t.BLEND_ADDITIVE });
 
 function drawText(text, x, y, r = 220, g = 230, b = 255) {
 	t.push();

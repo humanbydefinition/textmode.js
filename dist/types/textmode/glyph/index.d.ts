@@ -1,1 +1,0 @@
-export { TextmodeGlyphRamp } from './TextmodeGlyphRamp';

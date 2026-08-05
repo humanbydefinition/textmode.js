@@ -1,1 +1,0 @@
-export { TextmodeVector } from './TextmodeVector';

@@ -1,8 +1,6 @@
 /**
  * @title TextmodeFont.characters
  */
-const BESCII_URL = 'https://cdn.jsdelivr.net/gh/damianvila/font-bescii@main/fonts/v2.0/Bescii-Mono.ttf';
-
 const t = textmode.create({
 	width: window.innerWidth,
 	height: window.innerHeight,
@@ -11,41 +9,37 @@ const t = textmode.create({
 
 const labelLayer = t.layers.add();
 
-let activeFont = null;
-let fontReady = false;
-let disposed = false;
-
-t.setup(async () => {
-	activeFont = await t.loadFont(BESCII_URL);
-	fontReady = true;
-});
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
-
 t.draw(() => {
-	t.background(6, 10, 22);
-	if (!fontReady) return;
-	const glyphs = activeFont.characters;
-	const cols = activeFont.textureColumns;
-	const rows = activeFont.textureRows;
-	const startX = -Math.floor(cols / 2);
-	const labelBottom = -Math.floor(t.grid.rows / 2) + 11;
-	const bottomLimit = Math.floor(t.grid.rows / 2) - rows - 2;
-	const startY = Math.max(labelBottom, Math.min(-Math.floor(rows / 2), bottomLimit));
-	for (let i = 0; i < glyphs.length; i++) {
-		const glyph = glyphs[i];
-		t.push();
-		t.translate(startX + (i % cols), startY + Math.floor(i / cols));
-		t.char(glyph.character);
-		t.charColor(120 + (i % cols) * 8, 220, 255 - (i % rows) * 12);
-		t.point();
-		t.pop();
+	t.background(8, 6, 16);
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
+	const tm = t.frameCount * 0.04;
+	const glyphs = t.font.characters;
+
+	for (let y = -hh; y <= hh; y++) {
+		for (let x = -hw; x <= hw; x++) {
+			const angle = Math.atan2(y, x) + tm;
+			const radius = Math.hypot(x, y);
+			const spiral = (angle * 3 + radius * 0.4) % (Math.PI * 2);
+			const val = (Math.sin(spiral) + 1) * 0.5;
+
+			const gIdx = Math.floor((radius * 2 + angle * 4 + tm * 5) % (glyphs.length || 1));
+			const glyphObj = glyphs[gIdx] || glyphs[0];
+			const char = glyphObj ? glyphObj.character : '.';
+			const unicode = glyphObj ? glyphObj.unicode : 32;
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(
+				Math.floor(80 + (unicode % 160)),
+				Math.floor(140 + val * 100),
+				Math.floor(240 - (unicode % 120))
+			);
+			t.cellColor(Math.floor(10 + val * 20), Math.floor(12 + val * 20), Math.floor(30 + val * 30));
+			t.char(char);
+			t.point();
+			t.pop();
+		}
 	}
 });
 
@@ -56,19 +50,28 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODEFONT.CHARACTERS', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: GLYPH ATLAS DATA', x, y++, 100, 220, 255);
-	drawText('Bescii web font feeds glyphs.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	if (!fontReady) {
-		drawText('LOADING BESCII...', x, y++, 255, 225, 140);
-		return;
-	}
-	const index = Math.floor(t.frameCount / 12) % activeFont.characters.length;
-	const glyph = activeFont.characters[index];
-	drawText(`COUNT: ${activeFont.characters.length}`, x, y++, 140, 255, 180);
-	drawText(`GLYPH: ${glyph.character}`, x, y++, 255, 225, 140);
+	const glyphs = t.font.characters;
+	const sampleIdx = Math.floor(t.frameCount * 0.05) % (glyphs.length || 1);
+	const sampleGlyph = glyphs[sampleIdx] || { character: ' ', unicode: 32 };
+	const hexCode = `U+${sampleGlyph.unicode.toString(16).toUpperCase().padStart(4, '0')}`;
+
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODEFONT.CHARACTERS', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: UNICODE GLYPH ARRAY', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Array of all font TextmodeGlyph objects.', x, y++);
+	t.print('Accesses character & unicode attributes.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`TOTAL GLYPHS: ${glyphs.length}`, x, y++);
+	t.print(`SAMPLE "${sampleGlyph.character}": ${hexCode}`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

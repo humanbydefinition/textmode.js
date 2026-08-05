@@ -8,64 +8,45 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-let px = 0,
-	py = 0,
-	pz = 0;
-
-function drawText(text, x, y, r = 200, g = 220, b = 255) {
-	t.push();
-	t.translate(x, y);
-	t.charColor(r, g, b);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
-	t.pop();
-}
-
-function drawScene() {
-	t.push();
-	t.char('.');
-	t.charColor(50, 70, 110);
-	for (let x = -20; x <= 20; x += 4) t.line(x, 0, -20, x, 0, 20);
-	for (let z = -20; z <= 20; z += 4) t.line(-20, 0, z, 20, 0, z);
-	t.pop();
-	// Central subject
-	t.push();
-	t.translate(0, 4, 0);
-	t.char('@');
-	t.charColor(120, 220, 255);
-	t.box(5, 8, 5);
-	t.pop();
-	// Corner pillars
-	for (let i = 0; i < 4; i++) {
-		const a = (i * Math.PI) / 2 + Math.PI / 4;
-		t.push();
-		t.translate(Math.cos(a) * 12, 2, Math.sin(a) * 12);
-		t.char('#');
-		t.charColor(80, 100, 160);
-		t.box(2, 4, 2);
-		t.pop();
-	}
-}
+let curPos = { x: 0, y: 0, z: 0 };
 
 t.setup(() => {
 	t.perspective(58, 0.1, 4096);
 });
 
+function drawMonument(tm, eyeX, eyeY, eyeZ) {
+	t.push();
+	t.ambientLight(60, 80, 120);
+	t.pointLight(255, 220, 160, eyeX, eyeY + 8, eyeZ);
+	t.pointLight(100, 200, 255, Math.sin(tm * 2) * 20, 24, Math.cos(tm * 2) * 20);
+
+	for (let ring = 3; ring >= 1; ring--) {
+		const r = ring * 6;
+		t.push();
+		t.translate(0, (4 - ring) * 3, 0);
+		t.charColor(100 + ring * 40, 200, 255 - ring * 20);
+		t.cellColor(12, 22, 38);
+		t.char('+');
+		t.box(r, 2.5, r);
+		t.pop();
+	}
+	t.pop();
+}
+
 t.draw(() => {
-	t.background(6, 10, 22);
+	t.background(8, 10, 24);
+	const tm = t.frameCount * 0.03;
 
-	// Camera orbits the scene on the XZ plane
-	const time = t.frameCount * 0.02;
-	px = Math.cos(time) * 24;
-	py = 8;
-	pz = Math.sin(time) * 24;
+	const eyeX = Math.sin(tm) * 30;
+	const eyeY = Math.cos(tm * 0.7) * 15 + 10;
+	const eyeZ = Math.cos(tm) * 30;
 
-	const cam = t.createCamera().setPosition(px, py, pz).lookAt(0, 0, 0);
+	curPos = { x: eyeX, y: eyeY, z: eyeZ };
+
+	const cam = t.createCamera().setPosition(eyeX, eyeY, eyeZ).lookAt(0, 4, 0);
+
 	t.setCamera(cam);
-	drawScene();
+	drawMonument(tm, eyeX, eyeY, eyeZ);
 	t.resetCamera();
 });
 
@@ -76,13 +57,22 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('SETPOSITION', x, y++, 100, 255, 140);
-	drawText('--------------------------------', x, y++, 80, 100, 150);
-	drawText('Place the camera eye in 3D space.', x, y++, 100, 220, 255);
-	drawText('Camera orbits the central object.', x, y++, 140, 160, 190);
-	drawText('--------------------------------', x, y++, 80, 100, 150);
-	const pos = `${px.toFixed(1)},${py.toFixed(1)},${pz.toFixed(1)}`;
-	drawText(`POS: ${pos}`, x, y++, 120, 255, 180);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODECAMERA.SETPOSITION', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: HARMONIC LISSAJOUS ORBIT', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('cam.setPosition(x, y, z) explicitly', x, y++);
+	t.print('sets camera eye world coordinates.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`EYE: [${curPos.x.toFixed(1)}, ${curPos.y.toFixed(1)}, ${curPos.z.toFixed(1)}]`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

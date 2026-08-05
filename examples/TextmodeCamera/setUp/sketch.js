@@ -8,54 +8,35 @@ const t = textmode.create({
 });
 
 const labelLayer = t.layers.add();
-let ux = 0,
-	uy = 1,
-	uz = 0;
-
-function drawText(text, x, y, r = 200, g = 220, b = 255) {
-	t.push();
-	t.translate(x, y);
-	t.charColor(r, g, b);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
-	t.pop();
-}
-
-function drawScene() {
-	t.push();
-	t.char('.');
-	t.charColor(60, 80, 120);
-	for (let x = -20; x <= 20; x += 4) t.line(x, 0, -20, x, 0, 20);
-	for (let z = -20; z <= 20; z += 4) t.line(-20, 0, z, 20, 0, z);
-	t.pop();
-	t.push();
-	t.translate(0, 5, 0);
-	t.char('#');
-	t.charColor(200, 220, 255);
-	t.box(4, 10, 4);
-	t.pop();
-}
+let upXVal = 0,
+	upYVal = 0;
 
 t.setup(() => {
 	t.perspective(58, 0.1, 4096);
 });
 
+function drawSpaceStation() {
+	t.push();
+	t.char('#');
+	t.charColor(120, 240, 255);
+	t.cellColor(10, 24, 40);
+	t.box(6, 6, 6);
+	t.char('+');
+	t.charColor(255, 200, 100);
+	t.box(16, 2, 16);
+	t.pop();
+}
+
 t.draw(() => {
-	t.background(6, 10, 22);
+	t.background(4, 6, 14);
+	const tm = t.frameCount * 0.03;
+	upXVal = Math.cos(tm);
+	upYVal = Math.sin(tm);
 
-	const time = t.frameCount * 0.03;
-	const cam = t.createCamera().setPosition(0, 10, 40).lookAt(0, 0, 0);
-	// Oscillating the X component of 'up' creates a rolling tilt
-	cam.setUp(Math.sin(time) * 1.5, 1, 0);
+	const cam = t.createCamera().setPosition(0, 0, 32).lookAt(0, 0, 0).setUp(upXVal, upYVal, 0);
 
-	ux = cam.upX;
-	uy = cam.upY;
-	uz = cam.upZ;
 	t.setCamera(cam);
-	drawScene();
+	drawSpaceStation();
 	t.resetCamera();
 });
 
@@ -66,13 +47,22 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('SETUP', x, y++, 100, 255, 140);
-	drawText('--------------------------------', x, y++, 80, 100, 150);
-	drawText('Set the camera up vector.', x, y++, 100, 220, 255);
-	drawText('Tilting upX rolls the horizon.', x, y++, 140, 160, 190);
-	drawText('--------------------------------', x, y++, 80, 100, 150);
-	const up = `${ux.toFixed(2)},${uy.toFixed(2)},${uz.toFixed(2)}`;
-	drawText(`UP: ${up}`, x, y++, 120, 255, 180);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODECAMERA.SETUP', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: SPACE STATION STABILIZER', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('cam.setUp(x, y, z) defines orientation', x, y++);
+	t.print('vector for camera up direction.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`UP VECTOR: [${upXVal.toFixed(2)}, ${upYVal.toFixed(2)}, 0.00]`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {

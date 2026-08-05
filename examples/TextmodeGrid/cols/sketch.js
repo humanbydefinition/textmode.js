@@ -11,35 +11,40 @@ const labelLayer = t.layers.add();
 
 t.draw(() => {
 	t.background(6, 10, 22);
-
 	const cols = t.grid.cols;
-	const halfWidth = Math.floor(cols / 2);
+	const rows = t.grid.rows;
+	const hw = Math.floor(cols / 2);
+	const hh = Math.floor(rows / 2);
+	const tm = t.frameCount * 0.04;
 
-	t.push();
-	t.translate(0, 0);
-	t.char('=');
-	t.charColor(100, 160, 255, 120);
-	t.rect(cols, 1);
-	t.pop();
+	for (let c = 0; c < cols; c++) {
+		const x = c - hw;
+		const wave = Math.sin(c * 0.3 + tm) * 0.5 + Math.cos(c * 0.12 - tm * 1.5) * 0.3 + 0.5;
+		const barH = Math.floor(1 + wave * (rows - 4));
+		const ramp = ['.', ':', '+', '*', '#', '%', '@'];
 
-	t.push();
-	t.charColor(255, 255, 255);
-	t.translate(-halfWidth, 0);
-	t.char('<');
-	t.point();
-	t.translate(cols - 1, 0);
-	t.char('>');
-	t.point();
-	t.pop();
+		for (let r = 0; r < barH; r++) {
+			const y = hh - r;
+			const ci = Math.min(ramp.length - 1, Math.floor((r / Math.max(1, barH - 1)) * ramp.length));
+
+			t.push();
+			t.translate(x, y);
+			t.charColor(Math.floor(60 + wave * 140), Math.floor(140 + ci * 15), Math.floor(255 - ci * 10));
+			t.cellColor(Math.floor(8 + ci * 3), Math.floor(16 + ci * 4), Math.floor(30 + ci * 5));
+			t.char(ramp[ci]);
+			t.point();
+			t.pop();
+		}
+
+		t.push();
+		t.translate(x, hh - barH);
+		t.charColor(255, 220, 100);
+		t.cellColor(40, 30, 10);
+		t.char('*');
+		t.point();
+		t.pop();
+	}
 });
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
 
 labelLayer.draw(() => {
 	t.clear();
@@ -48,12 +53,22 @@ labelLayer.draw(() => {
 	let y = top + 3;
 	const x = left + 3;
 
-	drawText('TEXTMODEGRID.COLS', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: COLUMN COUNT READOUT', x, y++, 100, 220, 255);
-	drawText('Number of character columns in grid.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText(`GRID COLUMNS: ${t.grid.cols} cells`, x, y++, 100, 160, 255);
+	t.push();
+	t.printAlign('left', 'top');
+	t.charColor(120, 240, 180);
+	t.print('TEXTMODEGRID.COLS', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 210, 255);
+	t.print('CONCEPT: MULTI-CHANNEL EQUALIZER SPECTRUM', x, y++);
+	t.charColor(140, 160, 190);
+	t.print('Number of columns in grid layout.', x, y++);
+	t.print('Renders exact 1:1 column frequency bars.', x, y++);
+	t.charColor(70, 100, 140);
+	t.print('------------------------------------', x, y++);
+	t.charColor(140, 255, 200);
+	t.print(`TOTAL COLUMNS: ${t.grid.cols}`, x, y++);
+	t.pop();
 });
 
 t.windowResized(() => {
