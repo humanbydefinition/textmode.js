@@ -9,9 +9,6 @@ contact_links:
     - name: API reference
       url: https://code.textmode.art/api/textmode.js/
       about: Check the generated API reference for methods, options, and types.
-    - name: Examples gallery
-      url: https://examples.textmode.art/textmode.js/
-      about: Browse runnable textmode.js examples and compare expected behavior.
     - name: Web editor
       url: https://editor.textmode.art/
       about: Create and share a minimal reproduction using the official textmode.js libraries.
