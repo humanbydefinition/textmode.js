@@ -1,12 +1,12 @@
 /**
- * @title plugins.TextmodePluginContext.registerLayerPostRenderHook
+ * @title plugins.TextmodePluginContext.on (layerPostRender)
  */
 let postRenderCount = 0;
 
 const hookPlugin = {
 	name: 'layer-post-render-hook-plugin',
 	install(textmodifier, context) {
-		context.registerLayerPostRenderHook(() => {
+		context.on('layerPostRender', () => {
 			postRenderCount += 1;
 		});
 	},

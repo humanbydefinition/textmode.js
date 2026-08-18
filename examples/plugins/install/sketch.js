@@ -9,6 +9,10 @@ const quantumPlugin = {
 	install(textmodifier) {
 		isInstalled = true;
 		coreEnergy = 1.0;
+		return () => {
+			isInstalled = false;
+			coreEnergy = 0;
+		};
 	},
 };
 
@@ -76,7 +80,8 @@ labelLayer.draw(() => {
 	t.print('CONCEPT: NEURAL MATRIX CORE IGNITION', x, y++);
 	t.charColor(140, 160, 190);
 	t.print('install(t, context) initializes state', x, y++);
-	t.print('during textmode instance creation.', x, y++);
+	t.print('and returns a cleanup function', x, y++);
+	t.print('called once on destroy.', x, y++);
 	t.charColor(70, 100, 140);
 	t.print('------------------------------------', x, y++);
 	t.charColor(140, 255, 200);

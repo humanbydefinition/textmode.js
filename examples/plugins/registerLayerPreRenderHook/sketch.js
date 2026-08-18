@@ -1,12 +1,12 @@
 /**
- * @title plugins.TextmodePluginContext.registerLayerPreRenderHook
+ * @title plugins.TextmodePluginContext.on (layerPreRender)
  */
 let preRenderCount = 0;
 
 const hookPlugin = {
 	name: 'layer-pre-render-hook-plugin',
 	install(textmodifier, context) {
-		context.registerLayerPreRenderHook(() => {
+		context.on('layerPreRender', () => {
 			preRenderCount += 1;
 		});
 	},

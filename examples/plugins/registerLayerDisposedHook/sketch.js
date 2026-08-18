@@ -1,5 +1,5 @@
 /**
- * @title plugins.TextmodePluginContext.registerLayerDisposedHook
+ * @title plugins.TextmodePluginContext.on (layerDisposed)
  */
 let disposedCount = 0;
 let layerToDispose = null;
@@ -7,7 +7,7 @@ let layerToDispose = null;
 const hookPlugin = {
 	name: 'layer-disposed-hook-plugin',
 	install(textmodifier, context) {
-		context.registerLayerDisposedHook(() => {
+		context.on('layerDisposed', () => {
 			disposedCount += 1;
 		});
 	},

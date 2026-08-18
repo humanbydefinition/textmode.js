@@ -1,6 +1,6 @@
 {
 	"name": "textmode.js",
-	"version": "0.17.1",
+	"version": "0.17.2",
 	"description": "textmode.js is a lightweight creative coding library for creating real-time ASCII art on the web.",
 	"type": "module",
 	"engines": {
@@ -35,58 +35,42 @@
 		"stripInternal": true
 	},
 	"scripts": {
-		"dev": "vite --port 5177 --host",
-		"build:bundle": "vite build",
+		"dev": "textmode-build dev --port 5177 --host",
+		"build:bundle": "textmode-build build",
 		"build:types": "textmode-types build",
 		"build": "npm run build:bundle && npm run build:types",
-		"check": "textmode-project check",
+		"check": "npm run format:check && npm run lint && npm run lint:markdown && npm run typecheck && npm run docs:check && npm run test && npm run build && npm run types:verify",
 		"docs:links:add": "textmode-docs links add",
 		"docs:api:check": "textmode-docs api-check",
 		"docs:check": "textmode-docs check",
 		"docs:dev": "textmode-docs watch",
 		"docs:build": "textmode-docs build",
-		"preview": "vite preview",
-		"test": "vitest run",
-		"test:unit": "vitest run --project unit-node --project unit-jsdom",
-		"test:integration": "vitest run --project integration-jsdom",
-		"test:contracts": "vitest run --project contracts-node",
-		"test:tooling": "vitest run --project tooling-node",
-		"test:watch": "vitest",
-		"format": "prettier --write . --ignore-unknown",
-		"format:check": "prettier --check . --ignore-unknown",
+		"preview": "textmode-build preview",
+		"test": "textmode-build test",
+		"test:unit": "textmode-build test --project unit-node --project unit-jsdom",
+		"test:integration": "textmode-build test --project integration-jsdom",
+		"test:contracts": "textmode-build test --project contracts-node",
+		"test:tooling": "textmode-build test --project tooling-node",
+		"test:watch": "textmode-build test:watch",
+		"format": "textmode-lint format",
+		"format:check": "textmode-lint format:check",
 		"typecheck": "textmode-types check",
 		"types:verify": "textmode-types verify",
-		"lint:markdown": "markdownlint-cli2 --config package.json --configPointer /markdownlint-cli2",
-		"lint:markdown:fix": "markdownlint-cli2 --config package.json --configPointer /markdownlint-cli2 --fix",
-		"lint": "eslint src",
-		"prepare": "install-git-hooks",
-		"prepack": "textmode-project prepack",
-		"release": "semantic-release"
+		"lint:markdown": "textmode-lint lint:markdown",
+		"lint:markdown:fix": "textmode-lint lint:markdown --fix",
+		"lint": "textmode-lint lint src",
+		"prepare": "textmode-release hooks",
+		"prepack": "npm run build && npm run types:verify",
+		"release": "textmode-release release"
 	},
 	"devDependencies": {
-		"@commitlint/cli": "^21.2.1",
-		"@textmode/commitlint-config": "^0.1.1",
+		"@textmode/build": "^0.1.0",
 		"@textmode/docs": "^0.3.0",
-		"@textmode/eslint-config": "^0.2.0",
-		"@textmode/markdownlint-config": "^0.1.1",
-		"@textmode/prettier-config": "^0.1.0",
-		"@textmode/release-config": "^0.1.2",
-		"@textmode/tooling-scripts": "^0.5.0",
+		"@textmode/lint": "^0.1.0",
+		"@textmode/release": "^0.2.0",
 		"@textmode/tsconfig": "^0.2.0",
-		"@textmode/vite-config": "^0.1.0",
-		"@textmode/vite-plugin-glsl": "0.1.0",
-		"@textmode/vitest-config": "^0.2.1",
 		"@types/node": "^24.0.0",
-		"@vitest/ui": "^4.1.10",
-		"eslint": "^10.6.0",
-		"jsdom": "^30.0.0",
-		"lint-staged": "^17.0.8",
-		"markdownlint-cli2": "^0.23.0",
-		"prettier": "^3.9.4",
-		"semantic-release": "^25.0.5",
-		"terser": "^5.46.1",
 		"typescript": "^6.0.3",
-		"vite": "^8.1.3",
 		"vitest": "^4.1.10"
 	},
 	"keywords": [
@@ -104,44 +88,12 @@
 	"author": "humanbydefinition <hello@textmode.art> (https://code.textmode.art)",
 	"license": "MIT",
 	"homepage": "https://code.textmode.art",
-	"lint-staged": {
-		"*": "prettier --ignore-unknown --write"
-	},
-	"prettier": "@textmode/prettier-config",
-	"commitlint": {
-		"extends": [
-			"@textmode/commitlint-config"
-		]
-	},
+	"prettier": "@textmode/lint/prettier",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/humanbydefinition/textmode.js-dev.git"
 	},
 	"bugs": {
 		"url": "https://github.com/humanbydefinition/textmode.js/issues"
-	},
-	"markdownlint-cli2": {
-		"globs": [
-			"**/*.md"
-		],
-		"ignores": [
-			"api/**",
-			"node_modules/**",
-			"dist/**",
-			".github/**",
-			".agents/**"
-		],
-		"fix": false,
-		"outputFormatters": [
-			[
-				"markdownlint-cli2-formatter-default"
-			]
-		],
-		"config": {
-			"extends": "@textmode/markdownlint-config"
-		}
-	},
-	"release": {
-		"extends": "@textmode/release-config"
 	}
 }

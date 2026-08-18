@@ -1,12 +1,12 @@
 /**
- * @title plugins.TextmodePluginContext.registerPostDrawHook
+ * @title plugins.TextmodePluginContext.on (postDraw)
  */
 let postDrawFrame = 0;
 
 const vignettePlugin = {
 	name: 'vignette-post',
 	install(textmodifier, context) {
-		context.registerPostDrawHook(() => {
+		context.on('postDraw', () => {
 			postDrawFrame++;
 		});
 	},

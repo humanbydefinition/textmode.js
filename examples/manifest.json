@@ -27,11 +27,6 @@
 					"status": "good"
 				},
 				{
-					"title": "LayerManager.filters",
-					"sourceFile": "examples/LayerManager/filters/sketch.js",
-					"status": "good"
-				},
-				{
 					"title": "LayerManager.move",
 					"sourceFile": "examples/LayerManager/move/sketch.js",
 					"status": "good"
@@ -679,41 +674,6 @@
 							"status": "bad"
 						}
 					]
-				},
-				{
-					"name": "Plugin State",
-					"examples": [
-						{
-							"title": "TextmodeLayer.deletePluginState",
-							"sourceFile": "examples/TextmodeLayer/deletePluginState/sketch.js",
-							"status": "bad"
-						},
-						{
-							"title": "TextmodeLayer.getPluginState",
-							"sourceFile": "examples/TextmodeLayer/getPluginState/sketch.js",
-							"status": "unrated"
-						},
-						{
-							"title": "TextmodeLayer.hasPluginState",
-							"sourceFile": "examples/TextmodeLayer/hasPluginState/sketch.js",
-							"status": "bad"
-						},
-						{
-							"title": "TextmodeLayer.setPluginState",
-							"sourceFile": "examples/TextmodeLayer/setPluginState/sketch.js",
-							"status": "bad"
-						}
-					]
-				},
-				{
-					"name": "Filters",
-					"examples": [
-						{
-							"title": "TextmodeLayer.filter",
-							"sourceFile": "examples/TextmodeLayer/filter/sketch.js",
-							"status": "bad"
-						}
-					]
 				}
 			]
 		},
@@ -1069,22 +1029,6 @@
 			]
 		},
 		{
-			"name": "filters",
-			"description": "Custom filter registry management",
-			"examples": [
-				{
-					"title": "filters.TextmodeFilterManager.has",
-					"sourceFile": "examples/filters/has/sketch.js",
-					"status": "bad"
-				},
-				{
-					"title": "filters.TextmodeFilterManager.unregister",
-					"sourceFile": "examples/filters/unregister/sketch.js",
-					"status": "unrated"
-				}
-			]
-		},
-		{
 			"name": "plugins",
 			"description": "Plugin install lifecycle, hooks, and layer extensions",
 			"subgroups": [
@@ -1095,11 +1039,6 @@
 							"title": "plugins.TextmodePlugin.install",
 							"sourceFile": "examples/plugins/install/sketch.js",
 							"status": "unrated"
-						},
-						{
-							"title": "plugins.TextmodePlugin.uninstall",
-							"sourceFile": "examples/plugins/uninstall/sketch.js",
-							"status": "bad"
 						}
 					]
 				},
@@ -1107,42 +1046,37 @@
 					"name": "Hooks",
 					"examples": [
 						{
-							"title": "plugins.TextmodePluginContext.removeLayerExtension",
-							"sourceFile": "examples/plugins/removeLayerExtension/sketch.js",
-							"status": "bad"
-						},
-						{
-							"title": "plugins.TextmodePluginContext.registerLayerDisposedHook",
+							"title": "plugins.TextmodePluginContext.on (layerDisposed)",
 							"sourceFile": "examples/plugins/registerLayerDisposedHook/sketch.js",
 							"status": "bad"
 						},
 						{
-							"title": "plugins.TextmodePluginContext.registerLayerPostRenderHook",
+							"title": "plugins.TextmodePluginContext.on (layerPostRender)",
 							"sourceFile": "examples/plugins/registerLayerPostRenderHook/sketch.js",
 							"status": "bad"
 						},
 						{
-							"title": "plugins.TextmodePluginContext.registerLayerPreRenderHook",
+							"title": "plugins.TextmodePluginContext.on (layerPreRender)",
 							"sourceFile": "examples/plugins/registerLayerPreRenderHook/sketch.js",
 							"status": "bad"
 						},
 						{
-							"title": "plugins.TextmodePluginContext.registerPostDrawHook",
+							"title": "plugins.TextmodePluginContext.on (postDraw)",
 							"sourceFile": "examples/plugins/registerPostDrawHook/sketch.js",
 							"status": "good"
 						},
 						{
-							"title": "plugins.TextmodePluginContext.registerPostSetupHook",
+							"title": "plugins.TextmodePluginContext.on (postSetup)",
 							"sourceFile": "examples/plugins/registerPostSetupHook/sketch.js",
 							"status": "bad"
 						},
 						{
-							"title": "plugins.TextmodePluginContext.registerPreDrawHook",
+							"title": "plugins.TextmodePluginContext.on (preDraw)",
 							"sourceFile": "examples/plugins/registerPreDrawHook/sketch.js",
 							"status": "good"
 						},
 						{
-							"title": "plugins.TextmodePluginContext.registerPreSetupHook",
+							"title": "plugins.TextmodePluginContext.on (preSetup)",
 							"sourceFile": "examples/plugins/registerPreSetupHook/sketch.js",
 							"status": "good"
 						}
@@ -2373,16 +2307,6 @@
 							"status": "good"
 						},
 						{
-							"title": "Textmodifier.filter",
-							"sourceFile": "examples/Textmodifier/filter/sketch.js",
-							"status": "unrated"
-						},
-						{
-							"title": "Textmodifier.filters",
-							"sourceFile": "examples/Textmodifier/filters/sketch.js",
-							"status": "bad"
-						},
-						{
 							"title": "Textmodifier.flipX",
 							"sourceFile": "examples/Textmodifier/flipX/sketch.js",
 							"status": "unrated"
@@ -2401,11 +2325,6 @@
 							"title": "Textmodifier.modifierState",
 							"sourceFile": "examples/Textmodifier/modifierState/sketch.js",
 							"status": "good"
-						},
-						{
-							"title": "Textmodifier.overlay",
-							"sourceFile": "examples/Textmodifier/overlay/sketch.js",
-							"status": "bad"
 						},
 						{
 							"title": "Textmodifier.createGlyphRamp",

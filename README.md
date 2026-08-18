@@ -5,7 +5,7 @@
 <img alt="textmode.js — create textmode in your browser" src=".github/assets/readme-og.png" />
 
 | [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/) [![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/) [![WebGL2](https://img.shields.io/badge/WebGL2-990000?logo=webgl&logoColor=white)](https://www.khronos.org/webgl/) | [![API](https://img.shields.io/badge/API-typedoc-3178c6?logo=typescript&logoColor=white)](https://code.textmode.art/api/textmode.js/) [![docs](https://img.shields.io/badge/docs-vitepress-646cff?logo=vitepress&logoColor=white)](https://code.textmode.art/) [![Discord](https://img.shields.io/discord/1357070706181017691?color=5865F2&label=Discord&logo=discord&logoColor=white)](https://discord.gg/sjrw8QXNks) | [![ko-fi](https://shields.io/badge/ko--fi-donate-ff5f5f?logo=ko-fi)](https://ko-fi.com/V7V8JG2FY) [![GitHub-sponsors](https://img.shields.io/badge/sponsor-30363D?logo=GitHub-Sponsors&logoColor=#EA4AAA)](https://github.com/sponsors/humanbydefinition) |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:---|:---|:---|
 
 </div>
 
@@ -19,14 +19,13 @@ The library is designed to be easy to use and accessible to developers of all sk
 - **Fonts and tilesets** - Runtime TTF/OTF/WOFF loading, bitmap tilesets, dynamic sizing, and reusable glyph atlases
 - **Layers and compositing** - Independent grids, fonts, transforms, visibility, opacity, and blend modes per layer
 - **Media conversion** - Images, videos, and live textures converted into configurable glyph and color data
-- **Programmable GLSL rendering** - Push beyond the drawing API with custom [`GLSL ES 3.00`](https://registry.khronos.org/OpenGL/specs/es/3.0/GLSL_ES_Specification_3.00.pdf) material and filter shaders, user-defined uniforms, textures, and offscreen framebuffers for fully programmable GPU effects
-- **Multi-stage filter pipelines** - Stack built-in or registered shader passes on individual layers, the composited scene, or the final presentation stage
+- **Programmable GLSL rendering** - Push beyond the drawing API with custom [`GLSL ES 3.00`](https://registry.khronos.org/OpenGL/specs/es/3.0/GLSL_ES_Specification_3.00.pdf) materials, user-defined uniforms, textures, and offscreen framebuffers
 - **Animation and generative tools** - Loop and timing controls, deterministic randomness, noise, vectors, math, and easing
 - **Interaction and responsive rendering** - Mouse, keyboard, touch, gamepad, resize, and HiDPI support
 - **Plugins and framework integration** - Typed lifecycle hooks and layer/source extension points
 
 > [!NOTE]
-> *Performance depends on the complexity of your scene and device capabilities. Consider authoring filter shaders for complex effects at low cost.
+> *Performance depends on the complexity of your scene and device capabilities.
 
 ## Try it online first
 
@@ -103,9 +102,9 @@ Contribution details and profile links are maintained on the [textmode.js contri
 ## Acknowledgements
 
 - **[Typr.js](https://github.com/photopea/Typr.js)**
-    - Custom-made TypeScript rewrite and minified subset by [Photopea](https://github.com/photopea), used for font loading and parsing.
-    - License: [MIT License](https://github.com/photopea/Typr.js/blob/gh-pages/LICENSE).
+  - Custom-made TypeScript rewrite and minified subset by [Photopea](https://github.com/photopea), used for font loading and parsing.
+  - License: [MIT License](https://github.com/photopea/Typr.js/blob/gh-pages/LICENSE).
 
 - **[UrsaFont](https://ursafrank.itch.io/ursafont)**
-    - Default bundled font created by [UrsaFrank](https://ursafrank.itch.io/).
-    - License: [CC0 (Creative Commons Zero)](https://creativecommons.org/publicdomain/zero/1.0/).
+  - Default bundled font created by [UrsaFrank](https://ursafrank.itch.io/).
+  - License: [CC0 (Creative Commons Zero)](https://creativecommons.org/publicdomain/zero/1.0/).

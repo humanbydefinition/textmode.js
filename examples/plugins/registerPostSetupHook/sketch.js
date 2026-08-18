@@ -1,12 +1,12 @@
 /**
- * @title plugins.TextmodePluginContext.registerPostSetupHook
+ * @title plugins.TextmodePluginContext.on (postSetup)
  */
 let postSetupCounter = 0;
 
 const hookPlugin = {
 	name: 'post-setup-hook-plugin',
 	install(textmodifier, context) {
-		context.registerPostSetupHook(() => {
+		context.on('postSetup', () => {
 			postSetupCounter += 1;
 		});
 	},

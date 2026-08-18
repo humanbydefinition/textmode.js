@@ -1,5 +1,5 @@
 /**
- * @title plugins.TextmodePluginContext.registerPreDrawHook
+ * @title plugins.TextmodePluginContext.on (preDraw)
  */
 let preDrawFrames = 0;
 let fluidTime = 0;
@@ -7,7 +7,7 @@ let fluidTime = 0;
 const plasmaPlugin = {
 	name: 'plasma-pre',
 	install(textmodifier, context) {
-		context.registerPreDrawHook(() => {
+		context.on('preDraw', () => {
 			preDrawFrames++;
 			fluidTime += 0.06;
 		});

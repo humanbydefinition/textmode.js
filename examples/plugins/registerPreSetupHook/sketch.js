@@ -1,5 +1,5 @@
 /**
- * @title plugins.TextmodePluginContext.registerPreSetupHook
+ * @title plugins.TextmodePluginContext.on (preSetup)
  */
 let preSetupTriggered = false;
 let matrixSeed = 0;
@@ -7,7 +7,7 @@ let matrixSeed = 0;
 const matrixPlugin = {
 	name: 'matrix-presetup',
 	install(textmodifier, context) {
-		context.registerPreSetupHook(() => {
+		context.on('preSetup', () => {
 			preSetupTriggered = true;
 			matrixSeed = 1337;
 		});
