@@ -9,7 +9,6 @@ const t = textmode.create({
 
 const displayLayer = t.layers.add({ visible: false, blendMode: t.BLEND_ADDITIVE });
 const labelLayer = t.layers.add();
-let isVisible = false;
 
 function drawText(text, x, y, rgb = [255, 255, 255]) {
 	t.push();
@@ -23,12 +22,11 @@ t.draw(() => {
 	t.background(6, 10, 22);
 
 	if (t.frameCount % 120 === 0) {
-		if (isVisible) {
+		if (displayLayer.isVisible()) {
 			displayLayer.hide();
 		} else {
 			displayLayer.show();
 		}
-		isVisible = !isVisible;
 	}
 
 	t.push();
@@ -62,6 +60,7 @@ labelLayer.draw(() => {
 	const top = -Math.floor(t.grid.rows / 2);
 	let y = top + 3;
 	const x = left + 3;
+	const isVisible = displayLayer.isVisible();
 	const statusColor = isVisible ? [140, 255, 180] : [255, 100, 100];
 
 	drawText('TEXTMODELAYER.SHOW', x, y++, [100, 255, 140]);

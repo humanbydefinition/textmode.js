@@ -1,6 +1,6 @@
 {
 	"name": "textmode.js",
-	"version": "0.17.2",
+	"version": "0.18.0",
 	"description": "textmode.js is a lightweight creative coding library for creating real-time ASCII art on the web.",
 	"type": "module",
 	"engines": {
@@ -26,6 +26,11 @@
 			"types": "./dist/types/index.d.ts",
 			"import": "./dist/textmode.esm.js",
 			"require": "./dist/textmode.umd.js"
+		},
+		"./addon": {
+			"types": "./dist/types/exports/addon.d.ts",
+			"import": "./dist/textmode.esm.js",
+			"require": "./dist/textmode.umd.js"
 		}
 	},
 	"files": [
@@ -35,6 +40,8 @@
 		"stripInternal": true
 	},
 	"scripts": {
+		"prebuild": "npm run clean",
+		"clean": "rm -rf dist",
 		"dev": "textmode-build dev --port 5177 --host",
 		"build:bundle": "textmode-build build",
 		"build:types": "textmode-types build",
@@ -68,7 +75,7 @@
 		"@textmode/docs": "^0.3.0",
 		"@textmode/lint": "^0.1.0",
 		"@textmode/release": "^0.2.0",
-		"@textmode/tsconfig": "^0.2.0",
+		"@textmode/tsconfig": "^0.2.1",
 		"@types/node": "^24.0.0",
 		"typescript": "^6.0.3",
 		"vitest": "^4.1.10"

@@ -21,7 +21,7 @@ The library is designed to be easy to use and accessible to developers of all sk
 - **Media conversion** - Images, videos, and live textures converted into configurable glyph and color data
 - **Programmable GLSL rendering** - Push beyond the drawing API with custom [`GLSL ES 3.00`](https://registry.khronos.org/OpenGL/specs/es/3.0/GLSL_ES_Specification_3.00.pdf) materials, user-defined uniforms, textures, and offscreen framebuffers
 - **Animation and generative tools** - Loop and timing controls, deterministic randomness, noise, vectors, math, and easing
-- **Interaction and responsive rendering** - Mouse, keyboard, touch, gamepad, resize, and HiDPI support
+- **Interaction and responsive rendering** - Built-in mouse, keyboard, touch, gamepad, resize, and HiDPI support
 - **Plugins and framework integration** - Typed lifecycle hooks and layer/source extension points
 
 > [!NOTE]
