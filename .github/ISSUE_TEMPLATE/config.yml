@@ -15,6 +15,3 @@ contact_links:
     - name: GitHub Discussions
       url: https://github.com/humanbydefinition/textmode.js/discussions
       about: Ask questions, propose ideas, share sketches, or start design discussions.
-    - name: Discord
-      url: https://discord.gg/sjrw8QXNks
-      about: Ask usage questions or sanity-check ideas before filing an issue.
