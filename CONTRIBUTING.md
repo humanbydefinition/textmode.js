@@ -22,5 +22,4 @@ Read the [Code of Conduct](CODE_OF_CONDUCT.md). Report vulnerabilities privately
 [SECURITY.md](SECURITY.md), not through a public issue.
 
 Need help? [Open an issue](https://github.com/humanbydefinition/textmode.js/issues),
-[start a Discussion](https://github.com/humanbydefinition/textmode.js/discussions), or
-[join Discord](https://discord.gg/sjrw8QXNks).
+[start a Discussion](https://github.com/humanbydefinition/textmode.js/discussions).
