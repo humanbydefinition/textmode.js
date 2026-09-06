@@ -71,14 +71,14 @@
 		"release": "textmode-release release"
 	},
 	"devDependencies": {
-		"@textmode/build": "^0.1.0",
+		"@textmode/build": "^0.1.1",
 		"@textmode/docs": "^0.3.0",
-		"@textmode/lint": "^0.1.1",
-		"@textmode/release": "^0.2.1",
-		"@textmode/tsconfig": "^0.2.1",
-		"@types/node": "^26.4.0",
-		"typescript": "^7.0.2",
-		"vitest": "^4.1.11"
+		"@textmode/lint": "^0.1.2",
+		"@textmode/release": "^0.2.0",
+		"@textmode/tsconfig": "^0.2.2",
+		"@types/node": "^24.0.0",
+		"typescript": "^6.0.3",
+		"vitest": "^4.1.10"
 	},
 	"keywords": [
 		"ascii",
