@@ -13,6 +13,17 @@ updates:
       commit-message:
           prefix: chore
           include: scope
+      groups:
+          npm-development:
+              dependency-type: development
+              update-types:
+                  - minor
+                  - patch
+          npm-production:
+              dependency-type: production
+              update-types:
+                  - minor
+                  - patch
     - package-ecosystem: github-actions
       directory: /
       target-branch: dev
@@ -25,3 +36,7 @@ updates:
       commit-message:
           prefix: chore
           include: scope
+      groups:
+          github-actions:
+              patterns:
+                  - '*'
