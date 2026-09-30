@@ -97,7 +97,8 @@ Contribution details and profile links are maintained on the [textmode.js contri
 
 ## License
 
-`textmode.js` is licensed under the [MIT License](./LICENSE).
+`textmode.js` is licensed under the [MIT License](./LICENSE) for the published distribution. The TypeScript
+development source and build tooling are kept in a private repository and are not publicly available.
 
 ## Acknowledgements
 
