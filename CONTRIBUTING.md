@@ -1,6 +1,13 @@
 # Contributing to `textmode.js`
 
-Thank you for helping improve `textmode.js`.
+Thank you for helping improve the `textmode.js` ecosystem.
+
+You can contribute by improving existing example sketches in the [public examples folder](https://github.com/humanbydefinition/textmode.js/tree/main/examples),
+updating the [documentation](https://code.textmode.art/), or contributing to add-on libraries such as
+[`textmode.synth.js`](https://github.com/humanbydefinition/textmode.synth.js),
+[`textmode.filters.js`](https://github.com/humanbydefinition/textmode.filters.js),
+[`textmode.figlet.js`](https://github.com/humanbydefinition/textmode.figlet.js), and
+[`textmode.export.js`](https://github.com/humanbydefinition/textmode.export.js).
 
 Start with the shared [code contribution guide](https://code.textmode.art/docs/contributing/code) for repository
 routing, setup, workflow, documentation, testing, asset, and review expectations.
