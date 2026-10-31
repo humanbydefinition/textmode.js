@@ -1,75 +1,91 @@
 /**
  * @title TextmodeSource.texture
+ * @author codex
+ * @description Accesses the underlying GPU WebGLTexture instance driven by an interactive procedural canvas.
  */
-const t = textmode.create({
-	width: window.innerWidth,
-	height: window.innerHeight,
-	fontSize: 16,
-});
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 
-const labelLayer = t.layers.add();
+const cw = 64,
+	ch = 36;
+const canvas = Object.assign(document.createElement('canvas'), { width: cw, height: ch });
+const ctx = canvas.getContext('2d');
+const source = t.createTexture(canvas);
+source.characters(' .,:;+=xX$#').charColorMode('sampled').cellColorMode('fixed').cellColor(6, 12, 8);
+const ripples = [],
+	labelLayer = t.layers.add({ fontSize: 16 });
+let px = cw / 2,
+	py = ch / 2;
 
-let source = null;
-let disposed = false;
-
-function createImageUrl() {
-	const canvas = document.createElement('canvas');
-	canvas.width = 96;
-	canvas.height = 64;
-	const ctx = canvas.getContext('2d');
-	const gradient = ctx.createLinearGradient(0, 0, 96, 64);
-	gradient.addColorStop(0, '#0ea5e9');
-	gradient.addColorStop(1, '#f59e0b');
-	ctx.fillStyle = gradient;
-	ctx.fillRect(0, 0, 96, 64);
-	ctx.fillStyle = '#020617';
-	ctx.fillRect(16, 16, 64, 32);
-	ctx.fillStyle = '#f8fafc';
-	ctx.fillRect(28, 26, 40, 12);
-	return canvas.toDataURL();
-}
-
-function configureSource(value) {
-	value.characters(' .:-=+*#%@');
-	value.charColorMode('sampled');
-	value.cellColorMode('fixed');
-}
-
-t.setup(async () => {
-	source = await t.loadImage(createImageUrl());
-	configureSource(source);
-});
-
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
+t.mouseClicked(() => ripples.push({ x: px, y: py, r: 1, a: 1.2 }));
 
 t.draw(() => {
-	t.background(5, 8, 18);
-	if (!source || disposed) return;
-	t.image(source, Math.floor(t.grid.cols * 0.55), Math.floor(t.grid.rows * 0.55));
+	t.background(6, 12, 8);
+	const time = t.frameCount * 0.04;
+	const hasM = Number.isFinite(t.mouse.x) && (t.mouse.x !== 0 || t.mouse.y !== 0);
+	const tx = hasM
+		? ((t.mouse.x + t.grid.cols / 2) / t.grid.cols) * cw
+		: cw * 0.5 + Math.cos(time * 1.4) * (cw * 0.32);
+	const ty = hasM
+		? ((t.mouse.y + t.grid.rows / 2) / t.grid.rows) * ch
+		: ch * 0.5 + Math.sin(time * 2.1) * (ch * 0.32);
+	px += (tx - px) * 0.2;
+	py += (ty - py) * 0.2;
+
+	ctx.fillStyle = 'rgba(6, 12, 8, 0.12)';
+	ctx.fillRect(0, 0, cw, ch);
+
+	if (t.mouseIsPressed && hasM) {
+		ctx.fillStyle = 'rgb(210, 255, 220)';
+		ctx.beginPath();
+		ctx.arc(px, py, 3, 0, Math.PI * 2);
+		ctx.fill();
+		if (t.frameCount % 4 === 0) ripples.push({ x: px, y: py, r: 1.5, a: 1 });
+	} else if (t.frameCount % 18 === 0) {
+		ripples.push({ x: px, y: py, r: 1, a: 0.95 });
+	}
+
+	for (let i = ripples.length - 1; i >= 0; i--) {
+		const r = ripples[i];
+		r.r += 0.65;
+		r.a -= 0.022;
+		if (r.a <= 0 || r.r > Math.max(cw, ch)) {
+			ripples.splice(i, 1);
+			continue;
+		}
+		const col = r.a > 0.55 ? '210, 255, 220' : r.a > 0.25 ? '50, 240, 120' : '20, 130, 65';
+		ctx.lineWidth = 1.6;
+		ctx.strokeStyle = `rgba(${col}, ${Math.min(1, r.a * 1.5)})`;
+		ctx.beginPath();
+		ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
+		ctx.stroke();
+	}
+
+	// Verify GPU WebGLTexture instance accessed via source.texture
+	if (source.texture) {
+		t.push();
+		t.translate(4, 2);
+		t.image(source, Math.floor(t.grid.cols * 0.72), Math.floor(t.grid.rows * 0.72));
+		t.pop();
+	}
 });
 
 labelLayer.draw(() => {
 	t.clear();
-	const left = -Math.floor(t.grid.cols / 2);
-	const top = -Math.floor(t.grid.rows / 2);
-	let y = top + 3;
-	const x = left + 3;
-
-	drawText('TEXTMODESOURCE.TEXTURE', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: SOURCE SETTINGS', x, y++, 100, 220, 255);
-	drawText('Image source conversion API.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	const state = source && source.texture ? 'READY' : 'WAIT';
-	drawText(`TEXTURE: ${state}`, x, y++, 140, 255, 180);
+	const active = source.texture instanceof WebGLTexture;
+	const left = -Math.floor(t.grid.cols / 2) + 2;
+	const top = -Math.floor(t.grid.rows / 2) + 2;
+	t.push();
+	t.printAlign('left', 'top');
+	t.cellColor(6, 12, 8, 220);
+	const panel = `[fg=#32f078]TEXTMODESOURCE.TEXTURE // PHOSPHOR[/fg]
+[fg=#148241]INTERACTIVE SANDBOX [A11][/fg]
+[fg=#d2ffdc]GPU TEXTURE: ${active ? 'ACTIVE' : 'NULL'} [WebGLTexture][/fg]
+[fg=#32f078]CANVAS RES : ${cw}x${ch} STREAM FEED[/fg]
+[fg=#d2ffdc]IMPULSE    : (${Math.round(px)}, ${Math.round(py)}) ${t.mouseIsPressed ? '[PAINT]' : '[IDLE]'}[/fg]
+[fg=#32f078]RIPPLES    : ${ripples.length} PULSES ACTIVE[/fg]
+[fg=#148241]CLICK/DRAG: IMPULSE | IDLE: DRIFT[/fg]`;
+	t.print(panel, left, top);
+	t.pop();
 });
 
-t.windowResized(() => {
-	t.resizeCanvas(window.innerWidth, window.innerHeight);
-});
+t.windowResized(() => t.resizeCanvas(window.innerWidth, window.innerHeight));

@@ -1,95 +1,115 @@
 /**
  * @title TextmodeSource.conversions
+ * @author codex
+ * @description Applies an ordered multi-tier conversion stack mapping distinct brightness intervals to custom glyph sets.
  */
-const t = textmode.create({
-	width: window.innerWidth,
-	height: window.innerHeight,
-	fontSize: 16,
-});
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 
-const labelLayer = t.layers.add();
+const labelLayer = t.layers.add({ fontSize: 16 }),
+	cursor = { x: 0, y: 0 };
+const layers = [
+	{ z: 0.45, s: 0.6, p: 0 },
+	{ z: 0.75, s: 0.85, p: 2.1 },
+	{ z: 1.1, s: 1.15, p: 4.2 },
+];
+let source = null,
+	repulse = false;
 
-let source = null;
-
-function createImageUrl() {
-	const canvas = document.createElement('canvas');
-	Object.assign(canvas, { width: 128, height: 80 });
-	const ctx = canvas.getContext('2d');
-	const gradient = ctx.createLinearGradient(0, 0, 128, 80);
-	gradient.addColorStop(0, '#020617');
-	gradient.addColorStop(0.45, '#0ea5e9');
-	gradient.addColorStop(1, '#f8fafc');
-	ctx.fillStyle = gradient;
-	ctx.fillRect(0, 0, 128, 80);
-	ctx.fillStyle = '#f97316';
-	ctx.fillRect(15, 16, 34, 44);
-	ctx.fillStyle = '#fde68a';
-	ctx.fillRect(78, 22, 34, 34);
-	return canvas.toDataURL();
-}
-
-function configureSource(source) {
-	source.characters(' .:-=+*#%@').charColorMode('sampled').cellColorMode('fixed').cellColor('#020617');
-}
-
-function brightnessPass(start, end, characters, charColor) {
+function step(s, e, ch, col) {
 	return {
 		mode: 'brightness',
-		brightnessStart: start,
-		brightnessEnd: end,
-		characters,
+		brightnessStart: s,
+		brightnessEnd: e,
+		characters: ch,
 		charColorMode: 'fixed',
-		charColor,
+		charColor: col,
+		cellColorMode: 'fixed',
+		cellColor: '#00000000',
 	};
 }
 
+function createTexture() {
+	const c = document.createElement('canvas');
+	c.width = c.height = 128;
+	const ctx = c.getContext('2d'),
+		grad = ctx.createRadialGradient(64, 52, 4, 64, 52, 56);
+	grad.addColorStop(0, '#fff');
+	grad.addColorStop(0.35, '#999');
+	grad.addColorStop(0.7, '#383838');
+	grad.addColorStop(1, '#000');
+	ctx.fillStyle = '#000';
+	ctx.fillRect(0, 0, 128, 128);
+	ctx.fillStyle = grad;
+	ctx.beginPath();
+	ctx.arc(64, 52, 56, 0, Math.PI * 2);
+	ctx.fill();
+	ctx.strokeStyle = '#ccc';
+	ctx.strokeRect(48, 36, 32, 32);
+	return c.toDataURL();
+}
+
 t.setup(async () => {
-	source = await t.loadImage(createImageUrl());
-	configureSource(source);
+	source = await t.loadImage(createTexture());
 	source.conversions([
-		brightnessPass(0, 84, ' .:', '#38bdf8'),
-		brightnessPass(85, 169, '-=+', '#facc15'),
-		brightnessPass(170, 255, '*#@', '#f8fafc'),
+		step(20, 85, ' ~-', '#1e78dc'),
+		step(86, 170, '=_+', '#28e6be'),
+		step(171, 255, '*#', '#c8fff5'),
 	]);
 });
 
-function drawText(text, x, y, r = 220, g = 230, b = 255) {
-	t.push();
-	t.printAlign('left', 'top');
-	t.charColor(r, g, b);
-	t.print(text, x, y);
-	t.pop();
-}
+t.mouseClicked(() => {
+	repulse = !repulse;
+});
 
 t.draw(() => {
-	t.background(4, 7, 16);
-	if (!source) return;
-
-	const width = Math.max(12, Math.floor(t.grid.cols * 0.42));
-	const height = Math.max(8, Math.floor(t.grid.rows * 0.4));
-	const y = Math.floor(t.grid.rows * 0.12);
+	t.background(4, 14, 22);
+	const time = t.secs,
+		cols = t.grid.cols,
+		rows = t.grid.rows;
 	t.push();
-	t.translate(0, y);
-	t.image(source, width, height);
+	t.charColor(30, 120, 220);
+	for (let i = 0; i < 8; i++) {
+		t.print(
+			'~',
+			Math.round(Math.sin(time * 0.35 + i * 1.8) * cols * 0.44),
+			Math.round(Math.cos(time * 0.28 + i * 2.4) * rows * 0.4)
+		);
+	}
 	t.pop();
-	drawText('STACKED SOURCE', -7, y - Math.floor(height / 2) - 2, 255, 225, 140);
+	if (!source) return;
+	const hasMouse = Number.isFinite(t.mouse.x) && Number.isFinite(t.mouse.y);
+	const tx = hasMouse ? t.mouse.x : Math.sin(time * 0.85) * (cols * 0.24);
+	const ty = hasMouse ? t.mouse.y : Math.cos(time * 0.65) * (rows * 0.2);
+	cursor.x += (tx - cursor.x) * 0.08;
+	cursor.y += (ty - cursor.y) * 0.08;
+	const dir = repulse ? -0.85 : 0.85,
+		bw = Math.max(14, Math.floor(cols * 0.32)),
+		bh = Math.max(10, Math.floor(rows * 0.32));
+	for (let i = 0; i < layers.length; i++) {
+		const l = layers[i];
+		const wx = Math.sin(time * 1.1 + l.p) * (6 * l.z),
+			wy = Math.cos(time * 0.8 + l.p) * (4 * l.z);
+		t.push();
+		t.translate(Math.round(cursor.x * l.z * dir + wx), Math.round(cursor.y * l.z * dir + wy));
+		t.image(source, Math.round(bw * l.s), Math.round(bh * l.s));
+		t.pop();
+	}
 });
 
 labelLayer.draw(() => {
 	t.clear();
-	const left = -Math.floor(t.grid.cols / 2);
-	const top = -Math.floor(t.grid.rows / 2);
-	let y = top + 3;
-	const x = left + 3;
-
-	drawText('TEXTMODESOURCE.CONVERSIONS', x, y++, 100, 255, 140);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('CONCEPT: ORDERED SOURCE PASSES', x, y++, 100, 220, 255);
-	drawText('Three brightness ranges stack.', x, y++, 140, 160, 190);
-	drawText('------------------------------------', x, y++, 80, 100, 150);
-	drawText('PASSES: 3', x, y++, 140, 255, 180);
+	const left = -Math.floor(t.grid.cols / 2) + 2;
+	const top = -Math.floor(t.grid.rows / 2) + 2;
+	t.push();
+	t.printAlign('left', 'top');
+	t.cellColor(4, 14, 22, 220);
+	const panel = `[fg=#28e6be]TEXTMODESOURCE.CONVERSIONS[/fg]
+[fg=#1e78dc]DEPTH: 3 ORDERED BRIGHTNESS BANDS[/fg]
+[fg=#c8fff5]MODE: ${repulse ? 'REPULSE' : 'ATTRACT'} (CLICK FLIPS)[/fg]
+[fg=#c8fff5]LO: ~- [30,120]  MID: =_+ [40,230][/fg]
+[fg=#c8fff5]HI: *# [200,255] (DEEP BIOLUME)[/fg]`;
+	t.print(panel, left, top);
+	t.pop();
 });
 
-t.windowResized(() => {
-	t.resizeCanvas(window.innerWidth, window.innerHeight);
-});
+t.windowResized(() => t.resizeCanvas(window.innerWidth, window.innerHeight));

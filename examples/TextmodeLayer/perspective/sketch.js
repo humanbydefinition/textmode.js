@@ -12,81 +12,80 @@ const labelLayer = t.layers.add();
 
 let fov = 60;
 
-function drawText(text, x, y, color = [200, 220, 255]) {
-	t.push();
-	t.translate(x, y);
-	t.charColor(color[0], color[1], color[2]);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
-	t.pop();
-}
-
 t.draw(() => {
-	t.background(8, 10, 18);
-
-	// FOV oscillates between 20° (telephoto) and 100° (wide)
-	fov = 60 + Math.sin(t.frameCount * 0.025) * 40;
+	t.background(18, 12, 6);
+	const time = t.frameCount * 0.03;
+	const idleFov = 60 + Math.sin(time) * 35;
+	fov = isFinite(t.mouse.y) ? Math.min(100, Math.max(25, 60 + t.mouse.y * 1.8)) : idleFov;
 
 	scene.perspective(fov, 0.1, 256);
-	scene.camera(0, 0, 44);
-	scene.lookAt(0, 0, 0);
+	scene.camera(0, -2, 40);
+	scene.lookAt(0, 4, -20);
 });
 
 scene.draw(() => {
 	t.clear();
-	t.pointLight([255, 210, 130], { x: -20, y: -25, z: 30 });
+	t.pointLight([255, 200, 110], { x: 0, y: -25, z: 20 });
+	const time = t.frameCount * 0.02;
 
-	// Three columns at increasing depth to show perspective compression
-	const depths = [0, -12, -24];
-	const colors = [
-		[120, 200, 255],
-		[160, 220, 180],
-		[255, 180, 120],
-	];
-
-	for (let i = 0; i < 3; i++) {
+	// Tunnel archways receding into the distance
+	for (const z of [10, 0, -10, -20, -30, -40, -50]) {
+		const pulse = Math.sin(time + z * 0.08) * 0.5 + 0.5;
 		t.push();
-		t.translate(0, 0, depths[i]);
+		t.translate(0, 6, z);
 		t.char('#');
-		t.charColor(colors[i][0], colors[i][1], colors[i][2]);
-		t.box(8, 8, 8);
+		t.charColor(Math.floor(160 + pulse * 75), Math.floor(90 + pulse * 60), Math.floor(20 + pulse * 20));
+		t.translate(-14, 0, 0);
+		t.box(2, 14, 2);
+		t.translate(28, 0, 0);
+		t.box(2, 14, 2);
+		t.translate(-14, -7, 0);
+		t.box(30, 2, 2);
 		t.pop();
 	}
 
-	// Floor grid for depth reference
-	t.push();
-	t.char('.');
-	t.charColor(40, 55, 80);
-	for (let x = -24; x <= 24; x += 8) {
-		t.line(x, 6, 4, x, 6, -32);
+	// Depth markers at near, mid, and far depths
+	const markers = [
+		[0, 7, 6, 5, '█', [255, 220, 130]],
+		[0, 5, -18, 7, '▓', [230, 150, 40]],
+		[0, 3, -44, 9, '▒', [170, 95, 25]],
+	];
+	for (const [mx, my, mz, sz, ch, col] of markers) {
+		t.push();
+		t.translate(mx, my, mz);
+		t.rotateY(time * 40 + mz);
+		t.rotateX(time * 25);
+		t.char(ch);
+		t.charColor(col[0], col[1], col[2]);
+		t.box(sz, sz, sz);
+		t.pop();
 	}
-	for (let z = 4; z >= -32; z -= 8) {
-		t.line(-24, 6, z, 24, 6, z);
-	}
-	t.pop();
 });
 
 labelLayer.draw(() => {
 	t.clear();
-	const left = -Math.floor(t.grid.cols / 2);
-	const top = -Math.floor(t.grid.rows / 2);
-	let y = top + 3;
-	const x = left + 3;
+	const left = -Math.floor(t.grid.cols / 2) + 2;
+	const top = -Math.floor(t.grid.rows / 2) + 2;
+	const lens = fov < 40 ? 'TELEPHOTO' : fov > 75 ? 'WIDE' : 'NORMAL';
 
-	const fovStr = `FOV: ${fov.toFixed(1)} deg`;
-	drawText('TEXTMODELAYER.PERSPECTIVE', x, y++, [100, 255, 140]);
-	drawText('------------------------------------', x, y++, [80, 100, 150]);
-	drawText('CONCEPT: PERSPECTIVE FOV', x, y++, [100, 220, 255]);
-	drawText('FOV changes depth compression.', x, y++, [140, 160, 190]);
-	drawText('Near/far clip the layer camera.', x, y++, [140, 160, 190]);
-	drawText('------------------------------------', x, y++, [80, 100, 150]);
-	drawText(fovStr, x, y++, [120, 255, 180]);
-	drawText('NEAR: 0.1  FAR: 256.0', x, y++, [200, 200, 200]);
+	t.push();
+	t.printAlign('left', 'top');
+	t.cellColor(18, 12, 6, 240);
+	t.charColor(255, 180, 50);
+	t.print('TEXTMODELAYER.PERSPECTIVE', left, top);
+	t.charColor(160, 90, 20);
+	t.print('------------------------------------', left, top + 1);
+	t.charColor(255, 230, 150);
+	t.print('CONCEPT: FIELD OF VIEW & DEPTH', left, top + 2);
+	t.charColor(220, 160, 80);
+	t.print('perspective sets projection FOV.', left, top + 3);
+	t.print('Wide: deep depth. Tele: flat.', left, top + 4);
+	t.charColor(255, 180, 50);
+	t.print(`FOV:  ${fov.toFixed(1)} deg [${lens}]`, left, top + 5);
+	t.print('CLIP: NEAR 0.1 | FAR 256.0', left, top + 6);
+	t.charColor(255, 230, 150);
+	t.print('MOVE MOUSE Y TO SCRUB FOV', left, top + 7);
+	t.pop();
 });
 
-t.windowResized(() => {
-	t.resizeCanvas(window.innerWidth, window.innerHeight);
-});
+t.windowResized(() => t.resizeCanvas(window.innerWidth, window.innerHeight));

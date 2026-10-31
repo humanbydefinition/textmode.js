@@ -1,6 +1,6 @@
 {
 	"name": "textmode.js",
-	"version": "0.18.0",
+	"version": "0.18.2",
 	"description": "textmode.js is a lightweight creative coding library for creating real-time ASCII art on the web.",
 	"type": "module",
 	"engines": {
@@ -71,14 +71,14 @@
 		"release": "textmode-release release"
 	},
 	"devDependencies": {
-		"@textmode/build": "^0.1.1",
-		"@textmode/docs": "^0.3.0",
+		"@textmode/build": "^0.1.2",
+		"@textmode/docs": "^0.4.1",
 		"@textmode/lint": "^0.1.2",
 		"@textmode/release": "^0.2.0",
 		"@textmode/tsconfig": "^0.2.2",
-		"@types/node": "^26.4.1",
+		"@types/node": "^26.4.0",
 		"typescript": "^6.0.3",
-		"vitest": "^5.0.0"
+		"vitest": "^5.0.5"
 	},
 	"keywords": [
 		"ascii",

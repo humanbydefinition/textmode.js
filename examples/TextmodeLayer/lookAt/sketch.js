@@ -9,85 +9,90 @@ const t = textmode.create({
 
 const scene = t.layers.add();
 const labelLayer = t.layers.add();
-
-let targetX = 0;
-let targetY = 0;
-
-function drawText(text, x, y, color = [200, 220, 255]) {
-	t.push();
-	t.translate(x, y);
-	t.charColor(color[0], color[1], color[2]);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
-	t.pop();
-}
+const target = { x: 0, y: 0, z: 0 };
 
 t.draw(() => {
-	t.background(8, 10, 18);
+	t.background(8, 22, 46);
+	const time = t.frameCount * 0.03;
+	const hw = Math.floor(t.grid.cols / 2);
+	const hh = Math.floor(t.grid.rows / 2);
 
-	targetX = Math.sin(t.frameCount * 0.04) * 12;
-	targetY = Math.cos(t.frameCount * 0.03) * 7;
+	target.x = isFinite(t.mouse.x) ? t.mouse.x * 0.7 : Math.sin(time * 1.4) * 15;
+	target.y = isFinite(t.mouse.y) ? t.mouse.y * 0.6 : Math.cos(time * 1.1) * 9;
+	target.z = Math.sin(time * 0.9) * 6;
 
-	// Camera stays fixed — only the look target moves
 	scene.camera(0, 0, 46);
-	scene.lookAt(targetX, targetY, 0);
+	scene.lookAt(target.x, target.y, target.z);
+
+	t.push();
+	t.charColor(30, 65, 120);
+	for (let y = -hh + (hh % 4); y <= hh; y += 4) {
+		for (let x = -hw + (hw % 8); x <= hw; x += 8) {
+			if (x < -hw + 38 && y < -hh + 10) continue;
+			t.print('+', x, y);
+		}
+	}
+	t.pop();
 });
 
 scene.draw(() => {
 	t.clear();
+	t.pointLight([140, 200, 255], { x: 0, y: -20, z: 30 });
 
-	// Static reference pillars spread around the scene
+	const pillars = [
+		[-16, 0, -12, 100, 160, 240],
+		[16, 0, -12, 100, 160, 240],
+		[0, -10, -14, 60, 120, 200],
+		[0, 10, -14, 60, 120, 200],
+	];
+	for (const [px, py, pz, r, g, b] of pillars) {
+		t.push();
+		t.translate(px, py, pz);
+		t.char('#');
+		t.charColor(r, g, b);
+		t.box(5, 12, 5);
+		t.pop();
+	}
+
+	const time = t.frameCount * 0.04;
 	t.push();
-	t.translate(-16, 4, -10);
-	t.char('H');
-	t.charColor(100, 130, 200);
-	t.box(5, 14, 5);
+	t.rotateY(time * 30);
+	t.rotateX(time * 20);
+	t.charColor(120, 195, 255);
+	t.char(':');
+	t.box(16, 16, 1);
 	t.pop();
 
 	t.push();
-	t.translate(16, 4, -10);
-	t.char('H');
-	t.charColor(100, 130, 200);
-	t.box(5, 14, 5);
-	t.pop();
-
-	t.push();
-	t.translate(0, 8, -18);
-	t.char('+');
-	t.charColor(80, 100, 160);
-	t.box(30, 2, 2);
-	t.pop();
-
-	// Moving glowing target — the camera tracks this
-	t.push();
-	t.translate(targetX, targetY, 0);
+	t.translate(target.x, target.y, target.z);
 	t.char('*');
-	t.charColor(255, 230, 80);
+	t.charColor(240, 248, 255);
 	t.box(4, 4, 4);
 	t.pop();
 });
 
 labelLayer.draw(() => {
 	t.clear();
-	const left = -Math.floor(t.grid.cols / 2);
-	const top = -Math.floor(t.grid.rows / 2);
-	let y = top + 3;
-	const x = left + 3;
-	const tgtStr = `Cam Target: [${targetX.toFixed(1)}, ${targetY.toFixed(1)}, 0.0]`;
+	const left = -Math.floor(t.grid.cols / 2) + 2;
+	const top = -Math.floor(t.grid.rows / 2) + 2;
 
-	drawText('TEXTMODELAYER.LOOKAT', x, y++, [100, 255, 140]);
-	drawText('------------------------------------', x, y++, [80, 100, 150]);
-	drawText('CONCEPT: CAMERA TARGET', x, y++, [100, 220, 255]);
-	drawText('Camera eye stays fixed.', x, y++, [140, 160, 190]);
-	drawText('lookAt follows a moving target.', x, y++, [140, 160, 190]);
-	drawText('------------------------------------', x, y++, [80, 100, 150]);
-	drawText('Eye: [0.0, 0.0, 46.0]', x, y++, [200, 200, 200]);
-	drawText(tgtStr, x, y++, [120, 255, 180]);
+	t.push();
+	t.printAlign('left', 'top');
+	t.cellColor(8, 22, 46, 240);
+	t.charColor(120, 195, 255);
+	t.print('TEXTMODELAYER.LOOKAT', left, top);
+	t.charColor(45, 95, 165);
+	t.print('------------------------------------', left, top + 1);
+	t.charColor(240, 248, 255);
+	t.print('CONCEPT: CAMERA TRACKING GAZE', left, top + 2);
+	t.charColor(150, 195, 235);
+	t.print('lookAt updates view target vector.', left, top + 3);
+	t.charColor(120, 195, 255);
+	t.print('EYE:    [0.0, 0.0, 46.0]', left, top + 4);
+	t.print(`TARGET: [${target.x.toFixed(1)}, ${target.y.toFixed(1)}, ${target.z.toFixed(1)}]`, left, top + 5);
+	t.charColor(240, 248, 255);
+	t.print('MOVE MOUSE TO AIM TRACKING TARGET', left, top + 6);
+	t.pop();
 });
 
-t.windowResized(() => {
-	t.resizeCanvas(window.innerWidth, window.innerHeight);
-});
+t.windowResized(() => t.resizeCanvas(window.innerWidth, window.innerHeight));
