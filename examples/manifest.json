@@ -272,7 +272,7 @@
 						{
 							"title": "TextmodeTileset.fontFramebuffer",
 							"sourceFile": "examples/TextmodeTileset/fontFramebuffer/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeTileset.framebuffer",
@@ -312,7 +312,7 @@
 						{
 							"title": "TextmodeTileset.creation",
 							"sourceFile": "examples/TextmodeTileset/creation/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeTileset.dispose",
@@ -526,7 +526,7 @@
 						{
 							"title": "TextmodeLayer.draw",
 							"sourceFile": "examples/TextmodeLayer/draw/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeLayer.hide",
@@ -536,7 +536,7 @@
 						{
 							"title": "TextmodeLayer.show",
 							"sourceFile": "examples/TextmodeLayer/show/sketch.js",
-							"status": "bad"
+							"status": "good"
 						}
 					]
 				},
@@ -551,7 +551,7 @@
 						{
 							"title": "TextmodeLayer.offset",
 							"sourceFile": "examples/TextmodeLayer/offset/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeLayer.opacity",
@@ -561,7 +561,7 @@
 						{
 							"title": "TextmodeLayer.rotateZ",
 							"sourceFile": "examples/TextmodeLayer/rotateZ/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeLayer.useTileColors",
@@ -586,7 +586,7 @@
 						{
 							"title": "TextmodeLayer.lookAt",
 							"sourceFile": "examples/TextmodeLayer/lookAt/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeLayer.ortho",
@@ -596,7 +596,7 @@
 						{
 							"title": "TextmodeLayer.perspective",
 							"sourceFile": "examples/TextmodeLayer/perspective/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeLayer.resetCamera",
@@ -606,7 +606,7 @@
 						{
 							"title": "TextmodeLayer.setCamera",
 							"sourceFile": "examples/TextmodeLayer/setCamera/sketch.js",
-							"status": "bad"
+							"status": "good"
 						}
 					]
 				},
@@ -631,7 +631,7 @@
 						{
 							"title": "TextmodeLayer.loadTileset",
 							"sourceFile": "examples/TextmodeLayer/loadTileset/sketch.js",
-							"status": "bad"
+							"status": "good"
 						}
 					]
 				},
@@ -641,17 +641,17 @@
 						{
 							"title": "TextmodeLayer.asciiFramebuffer",
 							"sourceFile": "examples/TextmodeLayer/asciiFramebuffer/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeLayer.drawFramebuffer",
 							"sourceFile": "examples/TextmodeLayer/drawFramebuffer/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeLayer.texture",
 							"sourceFile": "examples/TextmodeLayer/texture/sketch.js",
-							"status": "bad"
+							"status": "good"
 						}
 					]
 				},
@@ -666,12 +666,12 @@
 						{
 							"title": "TextmodeLayer.width",
 							"sourceFile": "examples/TextmodeLayer/width/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeLayer.height",
 							"sourceFile": "examples/TextmodeLayer/height/sketch.js",
-							"status": "bad"
+							"status": "good"
 						}
 					]
 				}
@@ -687,7 +687,7 @@
 						{
 							"title": "TextmodeFramebuffer.attachmentCount",
 							"sourceFile": "examples/TextmodeFramebuffer/attachmentCount/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeFramebuffer.height",
@@ -697,7 +697,7 @@
 						{
 							"title": "TextmodeFramebuffer.width",
 							"sourceFile": "examples/TextmodeFramebuffer/width/sketch.js",
-							"status": "bad"
+							"status": "good"
 						}
 					]
 				},
@@ -707,22 +707,22 @@
 						{
 							"title": "TextmodeFramebuffer.begin",
 							"sourceFile": "examples/TextmodeFramebuffer/begin/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeFramebuffer.dispose",
 							"sourceFile": "examples/TextmodeFramebuffer/dispose/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeFramebuffer.end",
 							"sourceFile": "examples/TextmodeFramebuffer/end/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeFramebuffer.resize",
 							"sourceFile": "examples/TextmodeFramebuffer/resize/sketch.js",
-							"status": "bad"
+							"status": "good"
 						}
 					]
 				},
@@ -732,7 +732,7 @@
 						{
 							"title": "TextmodeFramebuffer.framebuffer",
 							"sourceFile": "examples/TextmodeFramebuffer/framebuffer/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeFramebuffer.readPixels",
@@ -742,7 +742,7 @@
 						{
 							"title": "TextmodeFramebuffer.textures",
 							"sourceFile": "examples/TextmodeFramebuffer/textures/sketch.js",
-							"status": "bad"
+							"status": "good"
 						}
 					]
 				}
@@ -755,7 +755,7 @@
 				{
 					"title": "TextmodeShader.dispose",
 					"sourceFile": "examples/TextmodeShader/dispose/sketch.js",
-					"status": "bad"
+					"status": "good"
 				},
 				{
 					"title": "TextmodeShader.program",
@@ -829,7 +829,7 @@
 						{
 							"title": "TextmodeSource.clearConversions",
 							"sourceFile": "examples/TextmodeSource/clearConversions/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "TextmodeSource.conversionMode",
@@ -839,7 +839,7 @@
 						{
 							"title": "TextmodeSource.conversions",
 							"sourceFile": "examples/TextmodeSource/conversions/sketch.js",
-							"status": "bad"
+							"status": "good"
 						}
 					]
 				},
@@ -874,7 +874,7 @@
 						{
 							"title": "TextmodeSource.texture",
 							"sourceFile": "examples/TextmodeSource/texture/sketch.js",
-							"status": "bad"
+							"status": "good"
 						}
 					]
 				},
@@ -884,7 +884,7 @@
 						{
 							"title": "TextmodeSource.characters",
 							"sourceFile": "examples/TextmodeSource/characters/sketch.js",
-							"status": "bad"
+							"status": "good"
 						}
 					]
 				},
@@ -894,7 +894,7 @@
 						{
 							"title": "TextmodeSource.dispose",
 							"sourceFile": "examples/TextmodeSource/dispose/sketch.js",
-							"status": "bad"
+							"status": "good"
 						}
 					]
 				}
@@ -907,7 +907,7 @@
 				{
 					"title": "TextmodeTexture.source",
 					"sourceFile": "examples/TextmodeTexture/source/sketch.js",
-					"status": "bad"
+					"status": "good"
 				}
 			]
 		},
@@ -1764,12 +1764,12 @@
 						{
 							"title": "Textmodifier.createShader",
 							"sourceFile": "examples/Textmodifier/createShader/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "Textmodifier.resetShader",
 							"sourceFile": "examples/Textmodifier/resetShader/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "Textmodifier.setUniform",
@@ -1794,12 +1794,12 @@
 						{
 							"title": "Textmodifier.createFramebuffer",
 							"sourceFile": "examples/Textmodifier/createFramebuffer/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "Textmodifier.createTexture",
 							"sourceFile": "examples/Textmodifier/createTexture/sketch.js",
-							"status": "bad"
+							"status": "good"
 						},
 						{
 							"title": "Textmodifier.noTexture",
