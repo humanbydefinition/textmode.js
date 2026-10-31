@@ -1,82 +1,118 @@
 /**
  * @title TextmodeFramebuffer.dispose
+ * @author codex
+ * @description Demonstrates explicit GPU resource cleanup and lifecycle recycling without memory leaks.
  */
-const t = textmode.create({
-	width: window.innerWidth,
-	height: window.innerHeight,
-	fontSize: 16,
-});
+const t = textmode.create({ width: window.innerWidth, height: window.innerHeight, fontSize: 16 });
 
-const labelLayer = t.layers.add();
-let fb = null;
-let fbSize = 12;
-let growing = true;
+const labelLayer = t.layers.add({ fontSize: 16 });
+const RAMP = ' .:-=+*#@',
+	SIZES = [16, 22, 26, 20],
+	CYCLE_FRAMES = 130;
+let sizeIdx = -1,
+	fb = null,
+	cycleCount = 0,
+	progress = 0,
+	glitchTimer = 0;
 
-function drawText(text, x, y, r = 200, g = 220, b = 255) {
+function recycleFramebuffer() {
+	if (fb) {
+		fb.dispose();
+		cycleCount++;
+	}
+	sizeIdx = (sizeIdx + 1) % SIZES.length;
+	fb = t.createFramebuffer({ width: SIZES[sizeIdx], height: SIZES[sizeIdx] });
+	progress = 0;
+	glitchTimer = 8;
+}
+t.setup(recycleFramebuffer);
+t.mouseClicked(recycleFramebuffer);
+function plot(x, y, ch, fg, bg) {
 	t.push();
 	t.translate(x, y);
-	t.charColor(r, g, b);
-	for (let i = 0; i < text.length; i++) {
-		t.char(text[i]);
-		t.point();
-		t.translate(1, 0);
-	}
+	t.charColor(...fg);
+	if (bg) t.cellColor(...bg);
+	t.char(ch);
+	t.point();
 	t.pop();
 }
 
-function rebuildFramebuffer() {
-	if (fb) fb.dispose();
-
-	if (growing) {
-		fbSize += 2;
-		if (fbSize >= 20) growing = false;
-	} else {
-		fbSize -= 2;
-		if (fbSize <= 10) growing = true;
-	}
-
-	fb = t.createFramebuffer({ width: fbSize, height: fbSize });
-	fb.begin();
-	t.background(15, 10, 30);
-	t.charColor(255, 100, 150);
-	t.char('+');
-	t.rect(fbSize, fbSize);
-	fb.end();
-}
-
-t.setup(() => {
-	rebuildFramebuffer();
-});
-
 t.draw(() => {
-	t.background(8, 10, 18);
-
-	if (t.frameCount % 90 === 0) rebuildFramebuffer();
-
+	t.background(10, 10, 14);
+	if (!fb) return;
+	if (++progress >= CYCLE_FRAMES) recycleFramebuffer();
+	if (glitchTimer > 0) glitchTimer--;
+	const sz = SIZES[sizeIdx],
+		half = Math.floor(sz / 2),
+		time = t.frameCount * 0.05;
+	fb.begin();
+	t.background(10, 10, 14);
+	for (let y = -half; y <= half; y++) {
+		for (let x = -half; x <= half; x++) {
+			const wave = Math.sin(Math.hypot(x, y) * 0.7 - time * 3) + Math.cos(Math.atan2(y, x) * 4 + time * 2);
+			const v = Math.max(0, Math.min(1, (wave + (glitchTimer > 0 ? (Math.random() - 0.5) * 1.5 : 0) + 2) / 4));
+			const c = v > 0.68 ? [255, 255, 255] : v > 0.38 ? [240, 65, 85] : [210, 215, 225];
+			plot(
+				x,
+				y,
+				RAMP[Math.floor(v * (RAMP.length - 1))],
+				c,
+				v > 0.68 ? [240, 65, 85, 210] : v > 0.38 ? [26, 18, 24] : [10, 10, 14]
+			);
+		}
+	}
+	fb.end();
+	const mx = Number.isFinite(t.mouse.x) ? t.mouse.x * 0.08 : 0,
+		my = Number.isFinite(t.mouse.y) ? t.mouse.y * 0.08 : 0;
+	const ox = Math.round(
+			Math.sin(t.frameCount * 0.03) * 2 + mx + 13 + (glitchTimer > 0 ? (Math.random() - 0.5) * 3 : 0)
+		),
+		oy = Math.round(Math.cos(t.frameCount * 0.025) * 1.5 + my);
+	for (let i = 0; i < 36; i++) {
+		const a = (i / 36) * Math.PI * 2 - Math.PI / 2,
+			filled = i / 36 <= progress / CYCLE_FRAMES;
+		plot(
+			Math.round(ox + Math.cos(a) * (half + 4) * 1.45),
+			Math.round(oy + Math.sin(a) * (half + 4)),
+			filled ? '#' : '.',
+			filled ? [240, 65, 85] : [65, 70, 85]
+		);
+	}
+	const b = half + 1,
+		fc = glitchTimer > 0 ? [240, 65, 85] : [210, 215, 225];
+	for (let i = -b; i <= b; i++) {
+		plot(ox + i, oy - b, i === -b || i === b ? '+' : '-', fc);
+		plot(ox + i, oy + b, i === -b || i === b ? '+' : '-', fc);
+		if (i > -b && i < b) {
+			plot(ox - b, oy + i, '|', fc);
+			plot(ox + b, oy + i, '|', fc);
+		}
+	}
 	t.push();
-	t.translate(0, 2);
-	t.rotateZ(t.frameCount * 1.5);
+	t.translate(ox, oy);
+	if (glitchTimer > 0) t.rotateZ((Math.random() - 0.5) * 8);
 	t.image(fb);
 	t.pop();
 });
 
 labelLayer.draw(() => {
 	t.clear();
-	const left = -Math.floor(t.grid.cols / 2);
-	const top = -Math.floor(t.grid.rows / 2);
-	let y = top + 3;
-	const x = left + 3;
-
-	drawText('DISPOSE', x, y++, 100, 255, 140);
-	drawText('--------------------------------', x, y++, 80, 100, 150);
-	drawText('Releases GPU resources early.', x, y++, 100, 220, 255);
-	drawText('Framebuffer is rebuilt every 90 frames.', x, y++, 140, 160, 190);
-	drawText('--------------------------------', x, y++, 80, 100, 150);
-	drawText(`Size: ${fbSize}x${fbSize} cells`, x, y++, 120, 255, 180);
-	const rem = 90 - (t.frameCount % 90);
-	drawText(`Rebuild in: ${rem} frames`, x, y++, 160, 160, 160);
+	const left = -Math.floor(t.grid.cols / 2) + 2;
+	const top = -Math.floor(t.grid.rows / 2) + 2;
+	const pct = Math.floor((progress / CYCLE_FRAMES) * 10);
+	t.push();
+	t.printAlign('left', 'top');
+	t.cellColor(10, 14, 24, 220);
+	// Inline colors keep the complete telemetry panel in one text block.
+	const panel = `[fg=#ffffff]FRAMEBUFFER.DISPOSE[/fg]
+[fg=#464b5a]------------------------[/fg]
+[fg=#d2d7e1]BUFFER   : ${fb ? fb.width : 0}x${fb ? fb.height : 0}[/fg]
+[fg=#${glitchTimer > 0 ? 'f04155' : 'd2d7e1'}]STATUS   : ${glitchTimer > 0 ? 'PURGING' : 'ACTIVE'}[/fg]
+[fg=#f04155]FREED    : ${cycleCount} CYCLES[/fg]
+[fg=#d2d7e1]VRAM     : [${'#'.repeat(pct)}${'.'.repeat(10 - pct)}] ${pct * 10}%[/fg]
+[fg=#464b5a]------------------------[/fg]
+[fg=#ffffff]CLICK: TRIGGER DISPOSE[/fg]`;
+	t.print(panel, left, top);
+	t.pop();
 });
-
-t.windowResized(() => {
-	t.resizeCanvas(window.innerWidth, window.innerHeight);
-});
+t.windowResized(() => t.resizeCanvas(window.innerWidth, window.innerHeight));
