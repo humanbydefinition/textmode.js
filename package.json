@@ -72,8 +72,8 @@
 	},
 	"devDependencies": {
 		"@textmode/build": "^0.1.2",
-		"@textmode/docs": "^0.4.1",
-		"@textmode/lint": "^0.1.2",
+		"@textmode/docs": "^0.4.3",
+		"@textmode/lint": "^0.1.3",
 		"@textmode/release": "^0.2.0",
 		"@textmode/tsconfig": "^0.2.2",
 		"@types/node": "^26.4.0",
