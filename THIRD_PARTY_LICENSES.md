@@ -12,7 +12,7 @@ artwork used by the example sketches. Each asset keeps its own license. The text
 
 ## Tilesets
 
-- **[Roguelike pack](https://kenney.nl/assets/roguelike-caves-dungeons)**
-  - Creator: [Kenney](https://kenney.nl/)
-  - License: [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)
-  - File: [`examples/assets/kenney-roguelike-dungeon.png`](examples/assets/kenney-roguelike-dungeon.png)
+- **[Rook](https://outer-spec.itch.io/rook)**
+  - Creator: [Quintin Stokes (Funky Tiger Highsaturn)](https://autojunkio.itch.io/)
+  - License: The download page permits use for any purpose but does not specify a formal license
+  - File: [`examples/assets/rookbyquintinstokes.png`](examples/assets/rookbyquintinstokes.png)
